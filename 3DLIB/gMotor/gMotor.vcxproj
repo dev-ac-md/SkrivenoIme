@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug9|Win32">
+      <Configuration>Debug9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mtd9|Win32">
+      <Configuration>Mtd9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Mtd|Win32">
+      <Configuration>Mtd</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release9|Win32">
+      <Configuration>Release9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{0B70C49E-FCC6-47F0-BDA5-FC889B280EB4}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mtd9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mtd|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Mtd9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Mtd|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>17.0.34511.75</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\../../_debug/gMotor\</OutDir>
+    <IntDir>.\../../_debug/gMotor\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mtd|Win32'">
+    <OutDir>.\../../_mtd/gMotor\</OutDir>
+    <IntDir>.\../../_mtd/gMotor\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\</OutDir>
+    <IntDir>.\../../_release/gMotor\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release9|Win32'">
+    <OutDir>.\../../_release9/gMotor\</OutDir>
+    <IntDir>.\../../_release9/gMotor\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mtd9|Win32'">
+    <OutDir>.\../../_mtd9/gMotor\</OutDir>
+    <IntDir>.\../../_mtd9/gMotor\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug9|Win32'">
+    <OutDir>.\../../_debug9/gMotor\</OutDir>
+    <IntDir>.\../../_debug9/gMotor\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\../../_debug/gMotor/gMotor.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\../../_debug/gMotor/</AssemblerListingLocation>
+      <ObjectFileName>.\../../_debug/gMotor/</ObjectFileName>
+      <ProgramDataBaseFileName>.\../../_debug/gMotor/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0422</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>../../lib/gMotor.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\../../_debug/gMotor/gMotor.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mtd|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\../../_mtd/gMotor/gMotor.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\../../_mtd/gMotor/</AssemblerListingLocation>
+      <ObjectFileName>.\../../_mtd/gMotor/</ObjectFileName>
+      <ProgramDataBaseFileName>.\../../_mtd/gMotor/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0422</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>../../lib_mtd/gMotor.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\../../_mtd/gMotor/gMotor.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_INLINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\../../_release/gMotor/gMotor.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\../../_release/gMotor/</AssemblerListingLocation>
+      <ObjectFileName>.\../../_release/gMotor/</ObjectFileName>
+      <ProgramDataBaseFileName>.\../../_release/gMotor/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <BrowseInformationFile>.\../../_release/gMotor/</BrowseInformationFile>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0422</Culture>
+    </ResourceCompile>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\../../_release/gMotor/gMotor.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release9|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_INLINES;_DX9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\../../_release9/gMotor/gMotor.pch</PrecompiledHeaderOutputFile>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
+      <AssemblerListingLocation>../../_listings/gMotor/</AssemblerListingLocation>
+      <ObjectFileName>.\../../_release9/gMotor/</ObjectFileName>
+      <ProgramDataBaseFileName>.\../../_release9/gMotor/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0422</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>../../lib/gMotor.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\../../_release9/gMotor/gMotor.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mtd9|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_DX9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\../../_mtd9/gMotor/gMotor.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\../../_mtd9/gMotor/</AssemblerListingLocation>
+      <ObjectFileName>.\../../_mtd9/gMotor/</ObjectFileName>
+      <ProgramDataBaseFileName>.\../../_mtd9/gMotor/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0422</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>../../lib_mtd/gMotor.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\../../_mtd9/gMotor/gMotor.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug9|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_DX9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\../../_debug9/gMotor/gMotor.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\../../_debug9/gMotor/</AssemblerListingLocation>
+      <ObjectFileName>.\../../_debug9/gMotor/</ObjectFileName>
+      <ProgramDataBaseFileName>.\../../_debug9/gMotor/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0422</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>../../lib/gMotor.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\../../_debug9/gMotor/gMotor.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="fexG16RealTime.cpp" />
+    <ClCompile Include="fexLzoDecompress.cpp" />
+    <ClCompile Include="fexUclDecompress.cpp" />
+    <ClCompile Include="gpAnimModel.cpp" />
+    <ClCompile Include="gpAuxPrim.cpp" />
+    <ClCompile Include="gpBitmap.cpp" />
+    <ClCompile Include="gpBucket.cpp" />
+    <ClCompile Include="gpColor.cpp" />
+    <ClCompile Include="gpGN16.cpp" />
+    <ClCompile Include="gpGU16.cpp" />
+    <ClCompile Include="gpMesh.cpp" />
+    <ClCompile Include="gpPackage.cpp" />
+    <ClCompile Include="gpRenderSystem.cpp" />
+    <ClCompile Include="gpSeries.cpp" />
+    <ClCompile Include="gpSkyBox.cpp" />
+    <ClCompile Include="gpSystem.cpp" />
+    <ClCompile Include="gpText.cpp" />
+    <ClCompile Include="kAssert.cpp" />
+    <ClCompile Include="kBmptool.cpp" />
+    <ClCompile Include="kCache.cpp" />
+    <ClCompile Include="kInput.cpp" />
+    <ClCompile Include="kIO.cpp" />
+    <ClCompile Include="kLog.cpp" />
+    <ClCompile Include="kResfile.cpp" />
+    <ClCompile Include="kResource.cpp" />
+    <ClCompile Include="kStatistics.cpp" />
+    <ClCompile Include="kString.cpp" />
+    <ClCompile Include="kStrUtil.cpp" />
+    <ClCompile Include="kThread.cpp" />
+    <ClCompile Include="kUtilities.cpp" />
+    <ClCompile Include="mArcBall.cpp" />
+    <ClCompile Include="mCamera.cpp" />
+    <ClCompile Include="mMath3D.cpp" />
+    <ClCompile Include="rsDX.cpp" />
+    <ClCompile Include="rsDXErr.cpp" />
+    <ClCompile Include="rsPrimitiveBufferDX.cpp" />
+    <ClCompile Include="rsRenderSystemDX.cpp" />
+    <ClCompile Include="rsSettings.cpp" />
+    <ClCompile Include="rsShaderDX.cpp" />
+    <ClCompile Include="rsTextureDX.cpp" />
+    <ClCompile Include="rsVertex.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mtd9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mtd|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="fexG16Common.h" />
+    <ClInclude Include="fexPack.h" />
+    <ClInclude Include="gmDefines.h" />
+    <ClInclude Include="gMotor.h" />
+    <ClInclude Include="gMotorRC.h" />
+    <ClInclude Include="gpAnimModel.h" />
+    <ClInclude Include="gpAuxPrim.h" />
+    <ClInclude Include="gpBitmap.h" />
+    <ClInclude Include="gpBucket.h" />
+    <ClInclude Include="gpColor.h" />
+    <ClInclude Include="gpGN16.h" />
+    <ClInclude Include="gpGU16.h" />
+    <ClInclude Include="gpMesh.h" />
+    <ClInclude Include="gpPackage.h" />
+    <ClInclude Include="gpRenderSystem.h" />
+    <ClInclude Include="gpSeries.h" />
+    <ClInclude Include="gpSkyBox.h" />
+    <ClInclude Include="gpSystem.h" />
+    <ClInclude Include="gpSystem.hpp" />
+    <ClInclude Include="gpText.h" />
+    <ClInclude Include="IRenderSystem.h" />
+    <ClInclude Include="kArray.hpp" />
+    <ClInclude Include="kAssert.h" />
+    <ClInclude Include="kBmptool.h" />
+    <ClInclude Include="kCache.h" />
+    <ClInclude Include="kHash.hpp" />
+    <ClInclude Include="kInput.h" />
+    <ClInclude Include="kIO.h" />
+    <ClInclude Include="kLog.h" />
+    <ClInclude Include="kResfile.h" />
+    <ClInclude Include="kResource.h" />
+    <ClInclude Include="kStatistics.h" />
+    <ClInclude Include="kString.h" />
+    <ClInclude Include="kStrUtil.h" />
+    <ClInclude Include="kThread.h" />
+    <ClInclude Include="kUtilities.h" />
+    <ClInclude Include="mArcBall.h" />
+    <ClInclude Include="mCamera.h" />
+    <ClInclude Include="mMath3D.h" />
+    <ClInclude Include="rsDX.h" />
+    <ClInclude Include="rsDXErr.h" />
+    <ClInclude Include="rsPrimitiveBufferDX.h" />
+    <ClInclude Include="rsRenderSystemDX.h" />
+    <ClInclude Include="rsSettings.h" />
+    <ClInclude Include="rsShaderDX.h" />
+    <ClInclude Include="rsTextureDX.h" />
+    <ClInclude Include="rsVertex.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gpBitmap.inl" />
+    <None Include="gpBucket.inl" />
+    <None Include="gpColor.inl" />
+    <None Include="gpGN16.inl" />
+    <None Include="gpGU16.inl" />
+    <None Include="gpMesh.inl" />
+    <None Include="gpPackage.inl" />
+    <None Include="gpSystem.inl" />
+    <None Include="kCache.inl" />
+    <None Include="kIO.inl" />
+    <None Include="kResource.inl" />
+    <None Include="kString.inl" />
+    <None Include="kStrUtil.inl" />
+    <None Include="kUtilities.inl" />
+    <None Include="mCamera.inl" />
+    <None Include="mMath3d.inl" />
+    <None Include="rsDX.inl" />
+    <None Include="rsPrimitiveBufferDX.inl" />
+    <None Include="rsShaderDX.inl" />
+    <None Include="rsTextureDX.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="FormatInfo.txt" />
+    <Text Include="FormatNonUniform.txt" />
+    <Text Include="FormatPalette.txt" />
+    <Text Include="FormatUniform.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="err.bmp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

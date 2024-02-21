@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{3216b554-4e84-4cb8-88c2-adc31be1f031}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{9c0f0696-c0e0-4440-a263-0dcaea85d3a9}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{231ec4f6-960c-4b00-883e-2ef2b99e415e}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="vital">
+      <UniqueIdentifier>{1ba7ac6e-98e6-41a4-a279-854b59f681c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vital\battle scripts">
+      <UniqueIdentifier>{90e1b8f0-a957-4157-b018-dff8afaf784c}</UniqueIdentifier>
+      <Extensions>*.scr</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BasicDiploRelation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DIP_SimpleBuilding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DipInit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiplomacySystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DipMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DipServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Economic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IntExplorer\ParseRQ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleDialogs.cpp">
+      <Filter>vital</Filter>
+    </ClCompile>
+    <ClCompile Include="Mind.cpp">
+      <Filter>vital</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>vital</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AddScenario.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicDiploRelation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonDip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DIP_SimpleBuilding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DiplomacySystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Economic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Import.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitsGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\UpgCategory.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleDialogs.h">
+      <Filter>vital</Filter>
+    </ClInclude>
+    <ClInclude Include="Mind.h">
+      <Filter>vital</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>vital</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Acr\Battle\tmp.cml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\Acr\War01.scr">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War01.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War02.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War03.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War04.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War05.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War06.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War07.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War08.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War09.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+    <None Include="..\..\..\Acr\Battle\War10.scr">
+      <Filter>vital\battle scripts</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

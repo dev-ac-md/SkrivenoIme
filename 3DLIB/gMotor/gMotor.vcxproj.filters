@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{c59b39f7-6e33-445a-a158-16994a490e12}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{06b4fb8e-1369-45fd-aa27-2549f6ad3c81}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Inline Files">
+      <UniqueIdentifier>{39548f86-fc55-4886-8bd1-12db24cc4469}</UniqueIdentifier>
+      <Extensions>inl</Extensions>
+    </Filter>
+    <Filter Include="Dox Files">
+      <UniqueIdentifier>{971e885e-36c8-4855-88fb-25f0a1197c1b}</UniqueIdentifier>
+      <Extensions>txt</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4a514a70-dc65-4eed-9c5b-e29dc7b6aabc}</UniqueIdentifier>
+      <Extensions>rc</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="fexG16RealTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fexLzoDecompress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fexUclDecompress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpAnimModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpAuxPrim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpBitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpBucket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpColor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpGN16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpGU16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpPackage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpRenderSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpSeries.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpSkyBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gpText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kAssert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kBmptool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kResfile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kResource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kStatistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kStrUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kUtilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mArcBall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mMath3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rsDX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rsDXErr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rsPrimitiveBufferDX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rsRenderSystemDX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rsSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rsShaderDX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rsTextureDX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rsVertex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="fexG16Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fexPack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gmDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gMotor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gMotorRC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpAnimModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpAuxPrim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpBucket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpGN16.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpGU16.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpPackage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpRenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpSeries.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpSkyBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gpText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kAssert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kBmptool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kCache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kIO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kResfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kStatistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kStrUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kUtilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mArcBall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mMath3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rsDX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rsDXErr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rsPrimitiveBufferDX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rsRenderSystemDX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rsSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rsShaderDX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rsTextureDX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rsVertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kArray.hpp">
+      <Filter>Inline Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kHash.hpp">
+      <Filter>Inline Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gpBitmap.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="gpBucket.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="gpColor.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="gpGN16.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="gpGU16.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="gpMesh.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="gpPackage.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="gpSystem.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="kCache.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="kIO.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="kResource.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="kString.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="kStrUtil.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="kUtilities.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="mCamera.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="mMath3d.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="rsDX.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="rsPrimitiveBufferDX.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="rsShaderDX.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+    <None Include="rsTextureDX.inl">
+      <Filter>Inline Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="FormatInfo.txt">
+      <Filter>Dox Files</Filter>
+    </Text>
+    <Text Include="FormatNonUniform.txt">
+      <Filter>Dox Files</Filter>
+    </Text>
+    <Text Include="FormatPalette.txt">
+      <Filter>Dox Files</Filter>
+    </Text>
+    <Text Include="FormatUniform.txt">
+      <Filter>Dox Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="err.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

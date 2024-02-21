@@ -1,0 +1,17 @@
+#include "ddini.h"
+#include "ResFile.h"
+#include "FastDraw.h"
+#include "mgraph.h"
+#include "mouse.h"
+#include "menu.h"
+#include "MapDiscr.h"
+#include "fog.h"
+#include "Megapolis.h"
+#include <assert.h>
+#include "walls.h"
+#include "mode.h"
+#include "GSound.h"
+#include "MapSprites.h"
+#include "NewMon.h"
+#include "Math.h"
+//byte NBars3D[

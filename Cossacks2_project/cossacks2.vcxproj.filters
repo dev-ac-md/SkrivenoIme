@@ -1,0 +1,1059 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Dump">
+      <UniqueIdentifier>{82a56b2d-8a30-4c62-a42a-4dd032096403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{b78a980d-8859-4087-a50e-4213ba6d0d82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arc">
+      <UniqueIdentifier>{44645d22-4a85-4e32-993f-dd03f1e47027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSpy">
+      <UniqueIdentifier>{1d9a1246-22c5-4a1c-905e-764422749ddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{9a62979c-6748-45ed-924a-726f88b70e05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3D Engine">
+      <UniqueIdentifier>{9500f812-c2d0-4053-a8db-4303dd34cb65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics&amp;DirectX">
+      <UniqueIdentifier>{7253a74b-5e95-4925-806a-aa44f9925c82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{95a585ce-dc08-45b5-98b0-3593d38d4e17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenario">
+      <UniqueIdentifier>{39c0ded4-9f12-40aa-9300-a6ee581b7b46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{d1de8e8b-2005-4973-a362-2773d152e958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Device">
+      <UniqueIdentifier>{de22e423-3c3d-4432-b4b6-c65ab2544047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LIB">
+      <UniqueIdentifier>{e4133b7f-9566-4bc0-81f9-f6fb951ef82a}</UniqueIdentifier>
+      <Extensions>*.lib</Extensions>
+    </Filter>
+    <Filter Include="OLD FILES">
+      <UniqueIdentifier>{f43c3e19-2cf4-4a9a-aafb-88a277363579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internet Rating&amp;Profiles">
+      <UniqueIdentifier>{168dc48a-3e83-47ec-a540-21e12a1ff99a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Internet Rating&amp;Profiles\Stats">
+      <UniqueIdentifier>{43053846-1037-44be-a8d7-5f93e770f5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs">
+      <UniqueIdentifier>{6daafadb-45db-4970-822a-2522641efbed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\MainMenu">
+      <UniqueIdentifier>{b30db1bf-c67b-4df3-9535-f0de2356cc86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Game">
+      <UniqueIdentifier>{e31353cb-2003-4ffd-b69c-d0bcf9c17de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Game\Editor">
+      <UniqueIdentifier>{1a50fe9a-5a13-486e-99fb-e79da229f712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bink">
+      <UniqueIdentifier>{763c5c22-4e35-4769-ae46-13bdbae491be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MP3">
+      <UniqueIdentifier>{858cdc84-c967-4ac2-92f3-195d0fb2805c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FEX">
+      <UniqueIdentifier>{2bd1cdf5-68b3-4daa-bde4-01e98e82951e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FEX\FEX_Include">
+      <UniqueIdentifier>{7947fc38-c503-4058-b523-0e9c75613563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BAT">
+      <UniqueIdentifier>{afbb86bb-d835-4a15-abd8-1a131a764efa}</UniqueIdentifier>
+      <Extensions>*.bat</Extensions>
+    </Filter>
+    <Filter Include="BrigAI">
+      <UniqueIdentifier>{9fa6b592-08ce-435c-aaae-ebe9cb88deb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Topology">
+      <UniqueIdentifier>{dd1b3755-a2bb-4418-9207-20b45517d4ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G17">
+      <UniqueIdentifier>{32f3c1b5-9623-4ae9-a018-173095c2ddb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G17\bz2">
+      <UniqueIdentifier>{792578cb-159d-46ec-b746-e93eb48e3fae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="others">
+      <UniqueIdentifier>{2796b096-7084-41f4-85e0-13d91b518357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{3f9b30e0-0436-4c27-8d81-c1fc85b4f9ce}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Ddini.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="Dplay.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="event.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="Lines.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="mgraph.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="mode.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="Dpchat.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dplobby.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="fog.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Multipl.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Nucl.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resfile.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="gFile.h">
+      <Filter>Arc</Filter>
+    </ClInclude>
+    <ClInclude Include="Arc\GSCarch.h">
+      <Filter>Arc</Filter>
+    </ClInclude>
+    <ClInclude Include="Arc\GSCset.h">
+      <Filter>Arc</Filter>
+    </ClInclude>
+    <ClInclude Include="Arc\GSCtypes.h">
+      <Filter>Arc</Filter>
+    </ClInclude>
+    <ClInclude Include="GSINC.h">
+      <Filter>Arc</Filter>
+    </ClInclude>
+    <ClInclude Include="Arc\isiMasks.h">
+      <Filter>Arc</Filter>
+    </ClInclude>
+    <ClInclude Include="Chat\chat.h">
+      <Filter>GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="CommCore.h">
+      <Filter>GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEngine\goaceng.h">
+      <Filter>GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="peer.h">
+      <Filter>GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="PeerClass.h">
+      <Filter>GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="Pinger.h">
+      <Filter>GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="EinfoClass.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Megapolis.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="NewAI.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Safety.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="StrategyResearch.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Towers.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="3DBars.h">
+      <Filter>3D Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="3DGraph.h">
+      <Filter>3D Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="3DMapEd.h">
+      <Filter>3D Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="3DRandMap.h">
+      <Filter>3D Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="3DSurf.h">
+      <Filter>3D Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Masks.h">
+      <Filter>3D Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchTool.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="bmptool.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Curve.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawForm.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Fastdraw.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="GP_Draw.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphs.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Icons.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="IconTool.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Scape3D.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Video.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtScreen.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="ZBuffer.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadSave.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MapDiscr.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MapSprites.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MPlayer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Nature.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="NewMon.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="NewUpgrade.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RealWater.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Recorder.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Transport.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Upgrade.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="walls.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponID.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ActiveScenary.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="ActiveZone.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="vital\ArmyMind.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="vital\BattleDialogs.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="vital\vital.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="vital\vital_def.h">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiBug.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Unrar.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="UnSyncro.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Cdirsnd.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Cwave.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceCD.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="GSound.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="TMixer.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="protest.h">
+      <Filter>OLD FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\gp.h">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="queryreporting\Gqueryreporting.h">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="IR.h">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSpy\Nonport.h">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSpy\Peer.h">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\darray.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\stats\gbucket.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\stats\gpersist.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\stats\gstats.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\hashtable.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\md5.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\nonport.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\AllDialogs.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\InitFonts.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\NewLogin.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SingleOptions.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\EnterName.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\HistoryBattle.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MainMenu.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MenuOptions.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MLoadGame.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\MultiplayerRoom.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\PostCampaignMessage.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ProcessCampagins.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ProcessCapaigns.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ProcessLoadingFile.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ProcessMultiPlayer.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ProcessSavingFile.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ProcessSingleCampagin.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ProcessSingleMission.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ProcessSinglePlayer.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ProcessWars.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SelectGameToJoin.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SelectProtocol.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SelectSingleBattle.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SelectSingleMission.h">
+      <Filter>Dialogs\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\GameMainMenu.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\GameOptions.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\InGameLoadGame.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\InGameSaveGame.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\LowPanel.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\Messages.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\RightInfoPanel.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\RightUnitInfoPanel.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\SendResources.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\ShowResPanel.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\UpperMiniMenu.h">
+      <Filter>Dialogs\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\EditMainMenu.h">
+      <Filter>Dialogs\Game\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\EditorToolsPanel.h">
+      <Filter>Dialogs\Game\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs\TerrainEdit.h">
+      <Filter>Dialogs\Game\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Bink\Bink.h">
+      <Filter>Bink</Filter>
+    </ClInclude>
+    <ClInclude Include="Bink\Rad.h">
+      <Filter>Bink</Filter>
+    </ClInclude>
+    <ClInclude Include="Dsound.h">
+      <Filter>MP3</Filter>
+    </ClInclude>
+    <ClInclude Include="mp3\oggvor.h">
+      <Filter>MP3</Filter>
+    </ClInclude>
+    <ClInclude Include="mp3\vopl_globals.h">
+      <Filter>MP3</Filter>
+    </ClInclude>
+    <ClInclude Include="Fex\FEXModule.h">
+      <Filter>FEX</Filter>
+    </ClInclude>
+    <ClInclude Include="Fex\Include\BaseTsd.h">
+      <Filter>FEX\FEX_Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Fex\Include\dmusici.h">
+      <Filter>FEX\FEX_Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Fex\Include\MultiMon.h">
+      <Filter>FEX\FEX_Include</Filter>
+    </ClInclude>
+    <ClInclude Include="BrigadeAI.h">
+      <Filter>BrigAI</Filter>
+    </ClInclude>
+    <ClInclude Include="HashTop.h">
+      <Filter>Topology</Filter>
+    </ClInclude>
+    <ClInclude Include="TopoGraf.h">
+      <Filter>Topology</Filter>
+    </ClInclude>
+    <ClInclude Include="G17\FCompressor.h">
+      <Filter>G17</Filter>
+    </ClInclude>
+    <ClInclude Include="G17\bz2\bzlib.h">
+      <Filter>G17\bz2</Filter>
+    </ClInclude>
+    <ClInclude Include="G17\bz2\bzlib_private.h">
+      <Filter>G17\bz2</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstStr.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="CTables.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="Danger.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="diplomacy.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="FMM\FMM.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="FMM\FMManager.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="GP_Proc.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="Http\HttpComm.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="Limitations.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="newmemory.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="wintab\Pktdef.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="Bink\radbase.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="Sort.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHash.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="wintab\Wintab.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="wintab\Wintabx.h">
+      <Filter>others</Filter>
+    </ClInclude>
+    <ClInclude Include="SpraySystem.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="SquareObject.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Lines.cpp">
+      <Filter>Dump</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>Dump</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveToXY.cpp">
+      <Filter>Dump</Filter>
+    </ClCompile>
+    <ClCompile Include="Resfile.cpp">
+      <Filter>Dump</Filter>
+    </ClCompile>
+    <ClCompile Include="Arc\GSCarch.cpp">
+      <Filter>Arc</Filter>
+    </ClCompile>
+    <ClCompile Include="Arc\GSCset.cpp">
+      <Filter>Arc</Filter>
+    </ClCompile>
+    <ClCompile Include="gText.cpp">
+      <Filter>Arc</Filter>
+    </ClCompile>
+    <ClCompile Include="Arc\isiMasks.cpp">
+      <Filter>Arc</Filter>
+    </ClCompile>
+    <ClCompile Include="MPlayer.cpp">
+      <Filter>GameSpy</Filter>
+    </ClCompile>
+    <ClCompile Include="PeerClass.cpp">
+      <Filter>GameSpy</Filter>
+    </ClCompile>
+    <ClCompile Include="Brigade.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="EinfoClass.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Megapolis.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="NewAI.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SafeNet.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyResearch.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="3DBars.cpp">
+      <Filter>3D Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="3DGraph.cpp">
+      <Filter>3D Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="3DMapEd.cpp">
+      <Filter>3D Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="3DRandMap.cpp">
+      <Filter>3D Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="3DSurf.cpp">
+      <Filter>3D Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ArchTool.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="bmptool.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Ddini.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogs.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawForms.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Fastdraw.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="fog.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="GP_Draw.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphs.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="GVClass.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Hint.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="IconTool.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Masks.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse_X.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="MousZone.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="NewMon3D.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Relink.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Scape3D.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Video.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtScr.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="ZBuffer.cpp">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Build.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Ddex1.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Economy.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Fractal.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Groups.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadSave.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="mapa.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MapSprites.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Motion.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Multi.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Nation.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Nature.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="NewMon.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="NewUpgrade.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="OnWater.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="path.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RealWater.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Recorder.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="River.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveNewMap.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Timing.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Transport.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Upgrade.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="walls.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ActiveScenary.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="ActiveZone.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupPurpose.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractiveScenario.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="AntiBug.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Report.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="UnRar.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="UnSyncro.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Cdirsnd.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Cwave.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceCD.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSound.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="TMixer.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Navorots.cpp">
+      <Filter>OLD FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="Nuclear.cpp">
+      <Filter>OLD FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\IR_Main.cpp">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\darray.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\stats\gbucket.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\stats\gstats.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\hashtable.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\md5c.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\nonport.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="Bink\PlayBink.cpp">
+      <Filter>Bink</Filter>
+    </ClCompile>
+    <ClCompile Include="mp3\oggvor.cpp">
+      <Filter>MP3</Filter>
+    </ClCompile>
+    <ClCompile Include="mp3\PlayMP3.cpp">
+      <Filter>MP3</Filter>
+    </ClCompile>
+    <ClCompile Include="Fex\FEXModule.cpp">
+      <Filter>FEX</Filter>
+    </ClCompile>
+    <ClCompile Include="Fex\FEXSysInfo.cpp">
+      <Filter>FEX</Filter>
+    </ClCompile>
+    <ClCompile Include="BrigadeAI.cpp">
+      <Filter>BrigAI</Filter>
+    </ClCompile>
+    <ClCompile Include="HashTop.cpp">
+      <Filter>Topology</Filter>
+    </ClCompile>
+    <ClCompile Include="TopoGraf.cpp">
+      <Filter>Topology</Filter>
+    </ClCompile>
+    <ClCompile Include="G17\FCompressor.cpp">
+      <Filter>G17</Filter>
+    </ClCompile>
+    <ClCompile Include="G17\bz2\blocksort.cpp">
+      <Filter>G17\bz2</Filter>
+    </ClCompile>
+    <ClCompile Include="G17\bz2\bzlib.cpp">
+      <Filter>G17\bz2</Filter>
+    </ClCompile>
+    <ClCompile Include="G17\bz2\compress.cpp">
+      <Filter>G17\bz2</Filter>
+    </ClCompile>
+    <ClCompile Include="G17\bz2\crctable.cpp">
+      <Filter>G17\bz2</Filter>
+    </ClCompile>
+    <ClCompile Include="G17\bz2\decompress.cpp">
+      <Filter>G17\bz2</Filter>
+    </ClCompile>
+    <ClCompile Include="G17\bz2\huffman.cpp">
+      <Filter>G17\bz2</Filter>
+    </ClCompile>
+    <ClCompile Include="G17\bz2\randtable.cpp">
+      <Filter>G17\bz2</Filter>
+    </ClCompile>
+    <ClCompile Include="ChkInet.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstStr.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="Danger.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="ExConst.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtDial.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="Factures3D.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="FBI.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="FMM\FMManager.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundPieces.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="HiBars.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="Http\HttpComm.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="Mechanics.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="Mine.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMap4X.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="Morale.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="NewILogin.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="NewInternetReport.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="Reflection.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="SelProp.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="ShipTrace.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="stRecog.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="StringsHash.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="testserver.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="Waves.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="wintab\WTSupport.cpp">
+      <Filter>others</Filter>
+    </ClCompile>
+    <ClCompile Include="PiroObjects.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="SpraySystem.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="SquareObject.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="3DGroundModels.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Peer.lib">
+      <Filter>GameSpy</Filter>
+    </Library>
+    <Library Include="Bink\binkw32.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="Pinger.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="ProTest.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="Winmm.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="wintab\Wintab32.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="InetRaiting\GP.lib">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mode.dat">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </None>
+    <None Include="..\Bat\all.bat">
+      <Filter>BAT</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Script1.rc">
+      <Filter>OLD FILES</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\ACR\Battle\mainscript.txt">
+      <Filter>Dialogs\Game</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico">
+      <Filter>others</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="NewMon3D.h">
+      <Filter>Graphics&amp;DirectX</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
