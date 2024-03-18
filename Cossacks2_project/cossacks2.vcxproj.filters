@@ -622,9 +622,6 @@
     <ClCompile Include="Arc\isiMasks.cpp">
       <Filter>Arc</Filter>
     </ClCompile>
-    <ClCompile Include="MPlayer.cpp">
-      <Filter>GameSpy</Filter>
-    </ClCompile>
     <ClCompile Include="PeerClass.cpp">
       <Filter>GameSpy</Filter>
     </ClCompile>
@@ -1004,6 +1001,9 @@
       <Filter>Effects</Filter>
     </ClCompile>
     <ClCompile Include="3DGroundModels.cpp" />
+    <ClCompile Include="MPlayer.cpp">
+      <Filter>GameSpy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Peer.lib">

@@ -746,7 +746,13 @@ bool UnderFirewall=0;
 bool CheckFirewall(DWORD IP){
 	char cc[128];
 	DWORD L=128;
-	GetComputerName(cc,&L);
+    //char buffer[256] = "";
+    //DWORD size = sizeof(buffer);
+	
+    /*char buffer[256] = "";
+    DWORD size = sizeof(buffer);
+    GetComputerName(buffer, &size);*/
+    GetComputerName(cc, &L);
 	hostent* ht=gethostbyname(cc);
 	int p=0;
 	do{
