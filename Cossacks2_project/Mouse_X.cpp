@@ -46,7 +46,7 @@ extern int smapy;
 extern IRenderSystem* IRS;
 
 
-#include "kThread.h"
+#include "..\3DLIB\gMotor\kThread.h"
 
 class MouseThread : public Thread
 {

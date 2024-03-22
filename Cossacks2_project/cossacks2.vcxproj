@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release3d_inl|Win32">
@@ -112,8 +112,8 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>Default</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;GSI_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ResourceCompile>
@@ -122,7 +122,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/FIXED:NO /MAPINFO:EXPORTS %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>msvcrt.lib;Peer.lib;libcmtd.lib;commcore.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;oldnames.lib;dsound.lib;dxguid.lib;dplayx.lib;strmiids.lib;ddraw.lib;ichat.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;DipServer.lib;iChat.lib;IntExplorer.lib;LF_Server.lib;dmcr.lib;gMotor.lib;libcmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msvcrt.lib;libcmtd.lib;commcore.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;oldnames.lib;dsound.lib;dxguid.lib;dplayx.lib;strmiids.lib;ddraw.lib;ichat.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;DipServer.lib;iChat.lib;IntExplorer.lib;LF_Server.lib;dmcr.lib;gMotor.lib;libcmt.lib;peerc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\bin\dmcr.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>../lib;../bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -387,8 +387,14 @@
     <ClInclude Include="G17\bz2\bzlib.h" />
     <ClInclude Include="G17\bz2\bzlib_private.h" />
     <ClInclude Include="G17\FCompressor.h" />
-    <ClInclude Include="GameSpy\Nonport.h" />
-    <ClInclude Include="GameSpy\Peer.h" />
+    <ClInclude Include="GameSpy\GameSpy\nonport.h" />
+    <ClInclude Include="GameSpy\GameSpy\Peer\peer.h" />
+    <ClInclude Include="GameSpy\Nonport.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="GameSpy\Peer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="gFile.h" />
     <ClInclude Include="GP_Draw.h" />
     <ClInclude Include="GP_Proc.h" />
@@ -399,11 +405,17 @@
     <ClInclude Include="Http\HttpComm.h" />
     <ClInclude Include="Icons.h" />
     <ClInclude Include="IconTool.h" />
-    <ClInclude Include="InetRaiting\darray.h" />
+    <ClInclude Include="InetRaiting\darray.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="InetRaiting\gp.h" />
-    <ClInclude Include="InetRaiting\hashtable.h" />
+    <ClInclude Include="InetRaiting\hashtable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="InetRaiting\md5.h" />
-    <ClInclude Include="InetRaiting\nonport.h" />
+    <ClInclude Include="InetRaiting\nonport.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="InetRaiting\stats\gbucket.h" />
     <ClInclude Include="InetRaiting\stats\gpersist.h" />
     <ClInclude Include="InetRaiting\stats\gstats.h" />
@@ -433,7 +445,9 @@
     <ClInclude Include="NewUpgrade.h" />
     <ClInclude Include="Nucl.h" />
     <ClInclude Include="Path.h" />
-    <ClInclude Include="peer.h" />
+    <ClInclude Include="peer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="PeerClass.h" />
     <ClInclude Include="Pinger.h" />
     <ClInclude Include="Process.h" />
@@ -552,11 +566,17 @@
     <ClCompile Include="Hint.cpp" />
     <ClCompile Include="Http\HttpComm.cpp" />
     <ClCompile Include="IconTool.cpp" />
-    <ClCompile Include="InetRaiting\darray.c" />
-    <ClCompile Include="InetRaiting\hashtable.c" />
+    <ClCompile Include="InetRaiting\darray.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\hashtable.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="InetRaiting\IR_Main.cpp" />
     <ClCompile Include="InetRaiting\md5c.c" />
-    <ClCompile Include="InetRaiting\nonport.c" />
+    <ClCompile Include="InetRaiting\nonport.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="InetRaiting\stats\gbucket.c" />
     <ClCompile Include="InetRaiting\stats\gstats.c" />
     <ClCompile Include="InteractiveScenario.cpp" />
@@ -755,7 +775,9 @@
   <ItemGroup>
     <Library Include="Bink\binkw32.lib" />
     <Library Include="InetRaiting\GP.lib" />
-    <Library Include="Peer.lib" />
+    <Library Include="Peer.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
     <Library Include="Pinger.lib" />
     <Library Include="ProTest.lib" />
     <Library Include="Winmm.lib" />

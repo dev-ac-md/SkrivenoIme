@@ -16,7 +16,7 @@
 #include "TopoGraf.h"
 #include "GSINC.h" 
 #include <direct.h>
-#include "gpAnimModel.h"
+#include "..\3DLIB\gMotor\gpAnimModel.h"
 #define MAXMODEL 512
 AnimModel* MODELS[MAXMODEL];
 int NModels=0;

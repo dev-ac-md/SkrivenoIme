@@ -596,6 +596,12 @@
     <ClInclude Include="SquareObject.h">
       <Filter>Effects</Filter>
     </ClInclude>
+    <ClInclude Include="GameSpy\GameSpy\nonport.h">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSpy\GameSpy\Peer\peer.h">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Lines.cpp">
@@ -1006,9 +1012,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="Peer.lib">
-      <Filter>GameSpy</Filter>
-    </Library>
     <Library Include="Bink\binkw32.lib">
       <Filter>LIB</Filter>
     </Library>
@@ -1026,6 +1029,9 @@
     </Library>
     <Library Include="InetRaiting\GP.lib">
       <Filter>Internet Rating&amp;Profiles</Filter>
+    </Library>
+    <Library Include="Peer.lib">
+      <Filter>GameSpy</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>

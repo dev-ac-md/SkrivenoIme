@@ -6,20 +6,20 @@
 /*****************************************************************************/
 #ifdef _USE3D
 
-#include "gmDefines.h"
+#include "..\3DLIB\gMotor\gmDefines.h"
 
 #include "windows.h"
-#include "kLog.h"
-#include "kAssert.h"
-#include "kArray.hpp"
-#include "kString.h"
-#include "IRenderSystem.h"
-#include "rsVertex.h"
+#include "..\3DLIB\gMotor\kLog.h"
+#include "..\3DLIB\gMotor\kAssert.h"
+#include "..\3DLIB\gMotor\kArray.hpp"
+#include "..\3DLIB\gMotor\kString.h"
+#include "..\3DLIB\gMotor\IRenderSystem.h"
+#include "..\3DLIB\gMotor\rsVertex.h"
 #include <stdio.h>
-#include "mMath3D.h"
-#include "mCamera.h"
-#include "gpMesh.h"
-#include "gpAnimModel.h"
+#include "..\3DLIB\gMotor\mMath3D.h"
+#include "..\3DLIB\gMotor\mCamera.h"
+#include "..\3DLIB\gMotor\gpMesh.h"
+#include "..\3DLIB\gMotor\gpAnimModel.h"
 #include "assert.h"
 #include "ResFile.h"
 #include "ddini.h"

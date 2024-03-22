@@ -62,7 +62,7 @@
 
 #ifdef _USE3D
 #define TITLE "Cossacks2"
-#include "mCamera.h"
+#include "..\3DLIB\gMotor\mCamera.h"
 #endif // _USE3D
 
 void CreateMapShot();

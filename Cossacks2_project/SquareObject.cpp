@@ -7,7 +7,7 @@
 #include "MapDiscr.h"
 #include "GP_Draw.h"
 #include <math.h>
-#include "d3d8.h"
+#include "..\3DLIB\gMotor\d3d8.h"
 #include "bmptool.h"
 #include "SquareObject.h"
 

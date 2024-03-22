@@ -51,9 +51,9 @@
 
 #ifdef _USE3D
 #include "NewMon3D.h"
-#include "mCamera.h"
+#include "..\3DLIB\gMotor\mCamera.h"
 #include "Scape3D.h"
-#include "gpText.h"
+#include "..\3DLIB\gMotor\gpText.h"
 #endif // _USE3D
 
 #define M4CellLX 32

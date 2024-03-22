@@ -20,7 +20,7 @@
 #include "Recorder.h"
 #include "Graphs.h"
 #include "Protest.h"
-#include "peer.h"
+#include "Gamespy\GameSpy\Peer\peer.h"
 #include "PeerClass.h"
 #include "Graphs.h"
 #include "Fonts.h"

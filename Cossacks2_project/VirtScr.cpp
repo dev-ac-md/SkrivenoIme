@@ -25,8 +25,8 @@
 #include <crtdbg.h>
 #ifdef _USE3D
 
-#include "IRenderSystem.h"  
-#include "GPSystem.h"
+#include "..\3DLIB\gMotor\IRenderSystem.h"  
+#include "..\3DLIB\gMotor\GPSystem.h"
 #include "GP_Draw.h"
 
 extern IRenderSystem*	IRS;

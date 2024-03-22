@@ -250,7 +250,7 @@ void Ground3D::ClearFactureRound(int x,int y,int r,int dr){
 void Ground3D::Setup(){
 	//loading textures
 	for(int i=0;i<40;i++)LoadTexture(i+1,i,0);
-	for(i=9;i<19;i++)GTex[i].Usage=1;
+	for(int i=9;i<19;i++)GTex[i].Usage=1;
 	GTex[34].Usage=1;
 	GTex[35].Usage=1;
 	NGTex=40;
@@ -998,7 +998,7 @@ void SetNewFactureInRound(int x,int y,int r,int dr,int Facture,int Weight){
 	int MaxDirtyX=0;
 	int MaxDirtyY=0;
 
-	for(iy=VY0;iy<=VY1;iy++){
+	for(int iy=VY0;iy<=VY1;iy++){
 		for(int ix=VX0;ix<=VX1;ix++){
 			int ofs=ix+iy*VertInLine;
 			if(GetMostTextureEx(ofs,CTexID)==CTexID){
@@ -1505,6 +1505,7 @@ void PerformTexSmoothingInPoint(int vx,int vy,int x0,int y0,int r){
 		int TEXS[20];
 		int TWS[20];
 		int NTWS[20];
+        int j = 0;
 		for(int i=0;i<7;i++){
 			byte stage=0;
 			do{
@@ -1521,7 +1522,7 @@ void PerformTexSmoothingInPoint(int vx,int vy,int x0,int y0,int r){
 					W<<=1;
 					WW=2;
 				};
-				for(int j=0;j<NTEX;j++)if(TEXS[j]==T){
+				for(j=0;j<NTEX;j++)if(TEXS[j]==T){
 					NTWS[j]+=WW;
 					TWS[j]+=W;
 					break;
@@ -2421,7 +2422,7 @@ void DrawTriStrip(int DevID,int x,int y,int mx,int Gy,int mLx,int GLy,int ScShif
 							VG[1].y=V0[q+1].y;
 							VG[2].x=V0[q+2].x;
 							VG[2].y=V0[q+2].y;
-							int maxw1,int maxw2,int maxw3;
+							int maxw1, maxw2, maxw3;
 							GetFactureUVW(v1,F1,VG[0].u,VG[0].v,maxw1);
 							GetFactureUVW(v2,F1,VG[1].u,VG[1].v,maxw2);
 							GetFactureUVW(v3,F1,VG[2].u,VG[2].v,maxw3);
@@ -2462,7 +2463,7 @@ void DrawTriStrip(int DevID,int x,int y,int mx,int Gy,int mLx,int GLy,int ScShif
 							VG[1].y=V0[q+1].y;
 							VG[2].x=V0[q+2].x;
 							VG[2].y=V0[q+2].y;
-							int maxw1,int maxw2,int maxw3;
+							int maxw1, maxw2, maxw3;
 							GetFactureUVW(v1,F2,VG[0].u,VG[0].v,maxw1);
 							GetFactureUVW(v2,F2,VG[1].u,VG[1].v,maxw2);
 							GetFactureUVW(v3,F2,VG[2].u,VG[2].v,maxw3);
@@ -2501,7 +2502,7 @@ void DrawTriStrip(int DevID,int x,int y,int mx,int Gy,int mLx,int GLy,int ScShif
 							VG[1].y=V0[q+1].y;
 							VG[2].x=V0[q+2].x;
 							VG[2].y=V0[q+2].y;
-							int maxw1,int maxw2,int maxw3;
+							int maxw1,maxw2, maxw3;
 							GetFactureUVW(v1,F2,VG[0].u,VG[0].v,maxw1);
 							GetFactureUVW(v2,F2,VG[1].u,VG[1].v,maxw2);
 							GetFactureUVW(v3,F2,VG[2].u,VG[2].v,maxw3);
@@ -3289,7 +3290,8 @@ void AttractRoad(int idx,int x,int y){
 	if(idx<ROADSSYS.NRoads){
 		OneRoad* OR=ROADSSYS.Roads+idx;
 		int NP=OR->Np;
-		for(int i=0;i<NP;i++){
+        int i = 0;
+		for(i=0;i<NP;i++){
 			float xp=OR->XY[i+i];
 			float yp=OR->XY[i+i+1];
 			float dx=xp-x;
@@ -3345,7 +3347,7 @@ void AttractRoad(int idx,int x,int y){
 				OR->XY[i+i+1]=(Yn+Yp)/2.0;
 			};
 		};
-		for(int i=0;i<NP;i++){
+		for(i=0;i<NP;i++){
 			int X=OR->XY[i+i  ];
 			int Y=OR->XY[i+i+1];
 			int H=GetHeight(X,Y);
@@ -3702,6 +3704,7 @@ void AddGSprite(int x,int y,byte SType,byte SIndex){
 	int yc=yr>>6;
 	int yyy0=yr&63;
 	int xxx0=x&127;
+    int i = 0;
 	if(xc>=0&&xc<VAL_MAXCX-1&&yc>=0&&yc<VAL_MAXCX-1){
 		int cell=xc+(yc<<VAL_SHFCX);
 		int N=NInGSMAP[cell];
@@ -3714,7 +3717,7 @@ void AddGSprite(int x,int y,byte SType,byte SIndex){
 			int L=GetLighting3DInPoint(x,y);
 			int T=GetNearestStoneTex(x,y);
 			OneGSprite* GP;
-			for(int i=N-1;i>=0;i--){
+			for(i=N-1;i>=0;i--){
 				OneGSprite* GP1=GP0+i;
 				int yy=GP1->y;
 				GP1=GP0+i+1;
@@ -3962,7 +3965,7 @@ void RM_SaveGSprites(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 	int i=NS*10+12;
 	RBlockWrite(F,&i,4);
 	RBlockWrite(F,&NS,4);
-	for(ix=cx0;ix<=cx1;ix++){
+	for(int ix=cx0;ix<=cx1;ix++){
 		for(int iy=cy0;iy<=cy1;iy++){
 			if(ix>=0&&ix<VAL_MAXCX&&iy>=0&&iy<VAL_MAXCX){
 				int dx=ix<<7;

@@ -132,32 +132,32 @@ public:
 #pragma pack (8)
 
 //-------------------------
-#include "gmDefines.h"
+#include "../3DLIB/gMotor/gmDefines.h"
 
-#include "kAssert.h"
+#include "../3DLIB/gMotor/kAssert.h"
 
-#include "kLog.h"
-#include "kString.h"
-#include "kArray.hpp"
-#include "kHash.hpp"
-#include "kResource.h"
+#include "../3DLIB/gMotor/kLog.h"
+#include "../3DLIB/gMotor/kString.h"
+#include "../3DLIB/gMotor/kArray.hpp"
+#include "../3DLIB/gMotor/kHash.hpp"
+#include "../3DLIB/gMotor/kResource.h"
 
-#include "IRenderSystem.h"
+#include "../3DLIB/gMotor/IRenderSystem.h"
 
-#include "mMath3D.h"
-#include "mCamera.h"
+#include "../3DLIB/gMotor/mMath3D.h"
+#include "../3DLIB/gMotor/mCamera.h"
 
-#include "kResource.h"
-#include "kCache.h"
-#include "kStatistics.h"
+#include "../3DLIB/gMotor/kResource.h"
+#include "../3DLIB/gMotor/kCache.h"
+#include "../3DLIB/gMotor/kStatistics.h"
 
-#include "gpBitmap.h"
-#include "gpColor.h"
-#include "gpMesh.h"
-#include "gpBitmap.h"
+#include "../3DLIB/gMotor/gpBitmap.h"
+#include "../3DLIB/gMotor/gpColor.h"
+#include "../3DLIB/gMotor/gpMesh.h"
+#include "../3DLIB/gMotor/gpBitmap.h"
 //-------------------------
-#include "gpPackage.h"
-#include "gpSystem.h"
+#include "../3DLIB/gMotor/gpPackage.h"
+#include "../3DLIB/gMotor/gpSystem.h"
 
 class GP_API GP_System: public GPSystem
 {

@@ -855,7 +855,7 @@ void TotalPeerEngine::Connect(char* Nick){
 	PCB.ping=&PEER_PingCallback;
 	PCB.playerChangedNick=&PEER_PlayerChangedNickCallback;
 	PCB.playerJoined=&PEER_PlayerJoinedCallback;
-	PCB.playerLeft=&PEER_PlayerJoinedCallback;
+	PCB.playerLeft=&PEER_PlayerLeftCallback;
 	PCB.playerMessage=&PEER_PlayerMessageCallback;
 	PCB.readyChanged=&PEER_ReadyChangedCallback;
 	PCB.roomMessage=&PEER_RoomMessageCallback;
@@ -1402,7 +1402,7 @@ int TotalPeerEngine::CompareGRooms(RoomInGame* R1,RoomInGame* R2){
 //>0 if R1>R2
 // 0 if R1==R2
 int TotalPeerEngine::CompareRooms(TPE_Room* R1,TPE_Room* R2){
-	bool modex1=0;
+	int modex1=0;
 	char* ccx=ServerGetStringValue(R1->G,"gamemode","x");
 	if(!strcmp(ccx,"closedplaying")){
 		modex1=0;
@@ -1410,7 +1410,7 @@ int TotalPeerEngine::CompareRooms(TPE_Room* R1,TPE_Room* R2){
 	if(strcmp(ccx,"wait")){
 		modex1=1;
 	}else modex1=2;
-	bool modex2=0;
+	int modex2=0;
 	ccx=ServerGetStringValue(R2->G,"gamemode","x");
 	if(!strcmp(ccx,"closedplaying")){
 		modex2=0;

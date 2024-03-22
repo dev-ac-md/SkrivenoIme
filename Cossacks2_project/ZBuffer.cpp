@@ -22,7 +22,7 @@
 
 #pragma pack (push)
 #pragma pack (8)
-#include "mCamera.h" 
+#include "..\3DLIB\gMotor\mCamera.h" 
 extern Camera CAM;
 #pragma pack (pop)
 int g_CurTree = 0;
