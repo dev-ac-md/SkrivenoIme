@@ -54,7 +54,7 @@ BOOL CGSCarch::Open(LPCSTR lpcsArchFileName)
 {
 	m_bDamnWindows=FALSE;
 
-	strcpy(m_ArchName,lpcsArchFileName);
+	strcpy_s(m_ArchName,lpcsArchFileName);
 
 	m_hMapFile=CreateFile(
 		m_ArchName,
@@ -144,12 +144,12 @@ LPGSCfile CGSCarch::GetFileHandle(LPCSTR lpcsFileName)
 	CHAR			sUpFileName[64];
 
 	memset(sUpFileName,0,64);
-	strcpy(sUpFileName,lpcsFileName);
-	_strupr(sUpFileName);
+	strcpy_s(sUpFileName,lpcsFileName);
+	_strupr_s(sUpFileName);
 
 	DWORD HASH=isiCalcHash(sUpFileName);
 
-	for(int i=0;i<m_Header->m_Entries;i++){
+	for( i=0;i<m_Header->m_Entries;i++){
 		pFAT=(TGSCarchFAT*)(LPBYTE(m_FAT)+i*sizeof(TGSCarchFAT));
 		if(pFAT->m_Hash==HASH)
 			if(!strcmp(LPCSTR(pFAT->m_FileName),sUpFileName)){
@@ -226,24 +226,24 @@ LPGSCFindData CGSCarch::FindFile(LPCSTR lpcsMask)
 	CHAR	sUpMask[64];
 
 	memset(sUpMask,0,64);
-	strcpy(sUpMask,lpcsMask);
-	_strupr(sUpMask);
+	strcpy_s(sUpMask,lpcsMask);
+	_strupr_s(sUpMask);
 	
 	DWORD i;
 
 	pFindData=new TGSCFindData;
 
-	strcpy(pFindData->m_Mask,sUpMask);
+	strcpy_s(pFindData->m_Mask,sUpMask);
 	pFindData->m_Found=-1;
 
-	for(int i=0;i<m_Header->m_Entries;i++){
+	for( i=0;i<m_Header->m_Entries;i++){
 		pFAT=(TGSCarchFAT*)(LPBYTE(m_FAT)+i*sizeof(TGSCarchFAT));
 		if(isiMatchesMask(LPSTR(pFAT->m_FileName),sUpMask)){
 			lpsDelim=strrchr(LPSTR(pFAT->m_FileName),'\\');
 			if(lpsDelim)
-				strcpy(LPSTR(pFindData->m_FileName),LPSTR(lpsDelim+1));
+				strcpy_s(LPSTR(pFindData->m_FileName), sizeof pFindData->m_FileName,LPSTR(lpsDelim+1));
 			else
-				strcpy(LPSTR(pFindData->m_FileName),LPSTR(pFAT->m_FileName));
+				strcpy_s(LPSTR(pFindData->m_FileName), sizeof pFindData->m_FileName,LPSTR(pFAT->m_FileName));
 			
 			pFindData->m_Found=i;
 			return pFindData;
@@ -267,9 +267,9 @@ BOOL CGSCarch::NextFile(LPGSCFindData gFindData)
 		if(isiMatchesMask(LPSTR(pFAT->m_FileName),LPSTR(gFindData->m_Mask))){
 			lpsDelim=strrchr(LPSTR(pFAT->m_FileName),'\\');
 			if(lpsDelim)
-				strcpy(LPSTR(gFindData->m_FileName),LPSTR(lpsDelim+1));
+				strcpy_s(LPSTR(gFindData->m_FileName), sizeof gFindData->m_FileName, LPSTR(lpsDelim+1));
 			else
-				strcpy(LPSTR(gFindData->m_FileName),LPSTR(pFAT->m_FileName));
+				strcpy_s(LPSTR(gFindData->m_FileName), sizeof gFindData->m_FileName, LPSTR(pFAT->m_FileName));
 			gFindData->m_Found=i;
 			return TRUE;
 		};

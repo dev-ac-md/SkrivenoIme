@@ -207,7 +207,7 @@ void LoadWeapon(){
 				int p6=0;
 				z=sscanf(LINE,"%s%d%d%s%s%s%d%d%d%d",gx3,&p1,&p2,gx2,gx1,gx,&p3,&p4,&p5,&p6);
 				mbm[nmbm]=znew(char,strlen(gg)+1);
-				strcpy(mbm[nmbm],gg);
+				strcpy_s(mbm[nmbm], sizeof mbm[nmbm],gg);
 				WPLIST[nmbm]=new Weapon;
 				Weapon* WPL=WPLIST[nmbm];
 				WPL->MyIndex=nmbm;

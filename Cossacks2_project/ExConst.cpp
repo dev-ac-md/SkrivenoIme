@@ -45,9 +45,9 @@ GameConstants::GameConstants(){
 						};
 						normstr(gy);
 						Strings[nsnames]=znew(char,strlen(gy)+1);
-						strcpy(Strings[nsnames],gy);
+						strcpy_s(Strings[nsnames], sizeof Strings[nsnames],gy);
 						Snames[nsnames]=znew(char,strlen(gx)+1);
-						strcpy(Snames[nsnames],gx);
+						strcpy_s(Snames[nsnames],sizeof Snames[nsnames],gx);
 						if(strstr(gy,".rlc"))AFile(gy);
 						if(strstr(gy,".bpx"))AFile(gy);
 						nsnames++;
@@ -59,7 +59,7 @@ GameConstants::GameConstants(){
 						};
 						Values[nnames]=value;
 						names[nnames]=znew(char,strlen(gx)+1);
-						strcpy(names[nnames],gx);
+						strcpy_s(names[nnames], sizeof names[nnames],gx);
 						nnames++;
 					};
 				}else{

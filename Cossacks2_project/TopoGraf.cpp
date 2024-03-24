@@ -2165,7 +2165,7 @@ void SaveTopology(ResFile f1){
 	EraseAreas();
 	rando();//!!
 	CreateTotalLocking();
-	word i='1POT';
+	int i='1POT';
 	RBlockWrite(f1,&i,4);
 	i=4+4+NAreas*sizeof(Area)+4*NAreas*NAreas+2*TopLx*TopLy;
 	for(int j=0;j<NAreas;j++){
@@ -2212,7 +2212,7 @@ void LoadTopology(ResFile f1){
 };
 */
 void SaveWTopology(ResFile f1){
-	word i='WPOT';
+	int i='WPOT';
 	RBlockWrite(f1,&i,4);
 	i=4+4+WNAreas*sizeof(Area)+4*WNAreas*WNAreas+2*TopLx*TopLy;
 	for(int j=0;j<WNAreas;j++){

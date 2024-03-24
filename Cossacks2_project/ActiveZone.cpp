@@ -90,7 +90,7 @@ int CreateNewZone(char* Name,int x,int y,int R){
 	AZones[NAZones].x=x;
 	AZones[NAZones].y=y;
 	AZones[NAZones].Name=znew(char,strlen(Name)+1);
-	strcpy(AZones[NAZones].Name,Name);
+	strcpy_s(AZones[NAZones].Name,sizeof AZones[NAZones].Name,Name);
 	AZones[NAZones].R=R;
 	AZones[NAZones].Dir=0;
 	NAZones++;
@@ -299,7 +299,7 @@ void CreateNewActiveGroup(char* gName){
 	AG->Serials=znew(word,NU);
 	AG->N=0;
 	AG->Name=znew(char,strlen(gName)+1);
-	strcpy(AG->Name,gName);
+	strcpy_s(AG->Name,sizeof AG->Name,gName);
 	for(int i=0;i<NU;i++){
 		word MID=ids[i];
 		if(MID!=0xFFFF){
@@ -322,7 +322,7 @@ int CreateFreeActiveGroup(char* gName){
 	ActiveGroup* AG=AGroups+NAGroups;
 	memset(AG,0,sizeof ActiveGroup);
 	AG->Name=znew(char,strlen(gName)+1);
-	strcpy(AG->Name,gName);
+	strcpy_s(AG->Name,sizeof AG->Name,gName);
 	NAGroups++;
 	return NAGroups-1;
 };

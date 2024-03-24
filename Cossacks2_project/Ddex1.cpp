@@ -2312,7 +2312,7 @@ BOOL GetCossacksDir(LPSTR lpszPath)
 			szValue,
 			&lValue)==ERROR_SUCCESS)
 		{
-			strcpy(lpszPath,(LPSTR)szValue);
+			strcpy_s(lpszPath, sizeof lpszPath,(LPSTR)szValue);
 			RegCloseKey(hKey);
 			return TRUE;
 		};		
@@ -3448,7 +3448,7 @@ void Rept (LPSTR sz,...)
         va_list va;
 
         va_start( va, sz );
-        vsprintf ( ach, sz, va );   
+        vsprintf_s ( ach, sz, va );   
         va_end( va );
 		FILE* f=fopen("log.log","a");
 		fprintf(f,ach);
@@ -3462,7 +3462,7 @@ void LogIt (LPSTR sz,...)
         va_list va;
 
         va_start( va, sz );
-        vsprintf ( ach, sz, va );   
+        vsprintf_s ( ach, sz, va );   
         va_end( va );
 		FILE* f=fopen("log.log","a");
 		fprintf(f,ach);

@@ -16,7 +16,7 @@ CEXPORT void CreateAGroup(byte NI,char* gName){
 	AG->Serials=znew(word,NU);
 	AG->N=0;
 	AG->Name=znew(char,strlen(gName)+1);
-	strcpy(AG->Name,gName);
+	strcpy_s(AG->Name,sizeof AG->Name,gName);
 	for(int i=0;i<NU;i++){
 		word MID=ids[i];
 		if(MID!=0xFFFF){

@@ -23,7 +23,7 @@ void DDLog (LPSTR sz,...)
         va_list va;
 
         va_start( va, sz );
-        vsprintf ( ach, sz, va );   
+        vsprintf_s ( ach, sz, va );   
         va_end( va );
 		FILE* f=fopen("DDraw.log","a");
 		fprintf(f,ach);

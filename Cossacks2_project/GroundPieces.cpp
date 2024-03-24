@@ -838,7 +838,7 @@ void SetPixLine(int x0,int y0,int x1,int y1,int R,int h0,int h1){
 					float x=xx0+ix;
 					float y=yy0+iy;
 					float N=(((x-x0)*Dx+(y-y0)*Dy))/D;
-					float r;
+					double r;
 					if(N<0)r=sqrt((x-fx0)*(x-fx0)+(y-fy0)*(y-fy0));
 					else if(N>1)r=sqrt((x-fx1)*(x-fx1)+(y-fy1)*(y-fy1));
 					else{
@@ -979,7 +979,7 @@ void SetPixLine(int x0,int y0,int x1,int y1,int R,int R1,int h0,int h1,int h01){
 					float x=xx0+ix;
 					float y=yy0+iy;
 					float N=(((x-x0)*Dx+(y-y0)*Dy))/D;
-					float r;
+					double r;
 					if(N<0){
 						r=sqrt((x-fx0)*(x-fx0)+(y-fy0)*(y-fy0));
 						N=0;
@@ -3399,7 +3399,7 @@ bool OneWavesGroup::BornAt(int x,int y){
 			int DD=dx+(rand()&7)-3;
 			int DX=(DD*RX)/9;
 			int DY=(DD*RY)/9;
-			int Speed;
+			double Speed;
 			if(abs(RY+RY)>abs(RX)){
 				Speed=256+sin((Phase+dx)/20.0)*20;
 			}else Speed=256+sin((Phase+dx)/10.0)*32;

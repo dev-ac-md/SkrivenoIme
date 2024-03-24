@@ -344,16 +344,16 @@ void ScenaryInterface::Load(char* Name,char* Text){
 					};
 					STR0+=L+1;
 					PageID[NPages]=znew(char,strlen(TMP)+1);
-					strcpy(PageID[NPages],TMP);
+					strcpy_s(PageID[NPages],sizeof PageID[NPages],TMP);
 					L=ReadStr(TMP,STR0,0x0D);
 					STR0+=L;
 					PageBMP[NPages]=znew(char,strlen(TMP)+1);
-					strcpy(PageBMP[NPages],TMP);
+					strcpy_s(PageBMP[NPages], sizeof PageBMP[NPages],TMP);
 					if(STR0[0]==0x0D)STR0+=2;
 					L=ReadStr(TMP,STR0,'#');
 					Page[NPages]=znew(char,strlen(TMP)+1);
 					PageSize[NPages]=L;
-					strcpy(Page[NPages],TMP);
+					strcpy_s(Page[NPages],sizeof Page[NPages],TMP);
 					NPages++;
 					STR0+=L;
 				}else exit=true;
@@ -365,7 +365,7 @@ void ScenaryInterface::Load(char* Name,char* Text){
 		RClose(RF);
 	};
 	char cc3[200];
-	strcpy(cc3,Name);
+	strcpy_s(cc3,sizeof cc3,Name);
 	strupr(cc3);
 	if(strstr(cc3,".CMS")){
 		FILE* F=fopen("UserMissions\\start.dat","w");
@@ -492,7 +492,7 @@ bool RegisterSound(GAMEOBJ* GOBJ,char* Name){
 		SCENINF.Sounds=(char**)realloc(SCENINF.Sounds,4*SCENINF.MaxSnds);
 	};
 	SCENINF.Sounds[SCENINF.NSnd]=znew(char,strlen(Name)+1);
-	strcpy(SCENINF.Sounds[SCENINF.NSnd],Name);
+	strcpy_s(SCENINF.Sounds[SCENINF.NSnd],sizeof SCENINF.Sounds[SCENINF.NSnd],Name);
 	SCENINF.NSnd++;
 	return true;
 };
@@ -2523,7 +2523,7 @@ void ProcessMissionText(char* Bmp,char* Text);
 void AddHistory(Nation* NAT,char* Name){
 	NAT->History=(char**)realloc(NAT->History,4*NAT->NHistory+4);
 	NAT->History[NAT->NHistory]=znew(char,strlen(Name)+1);
-	strcpy(NAT->History[NAT->NHistory],Name);
+	strcpy_s(NAT->History[NAT->NHistory],sizeof NAT->History[NAT->NHistory],Name);
 	NAT->NHistory++;
 };
 DLLEXPORT
@@ -2674,7 +2674,7 @@ void ShowHistory(){
 			res=ShowHistryItem(SCENINF.PageBMP[cp],SCENINF.Page[cp],sh);
 		}else{
 			char CC3[4096];
-			strcpy(CC3,Name);
+			strcpy_s(CC3,sizeof CC3,Name);
 			char* cc=strstr(CC3,"@");
 			if(cc){
 				cc[-1]=0;
@@ -3573,7 +3573,7 @@ void StartAIEx(byte Nat,char* Name,int Land,int Money,int ResOnMap,int Difficult
 	CITY[Nat].StartRes=Money;
 	CITY[Nat].LandType=Land;
 	CITY[Nat].ResOnMap=ResOnMap;
-	strcpy(CITY[Nat].AIID,Name);
+	strcpy_s(CITY[Nat].AIID,sizeof CITY[Nat].AIID,Name);
 	NATIONS[Nat].AI_Enabled=1;
 	for(int i=0;i<8;i++)ResearchCurrentIsland(i);
 	word* Units=NatList[Nat];
@@ -4855,9 +4855,9 @@ DLLEXPORT
 void SetPlayerName(byte Nat,char* ID){
 	for(int i=0;i<8;i++)if(PINFO[i].ColorID==Nat){
 		char cc[128];
-		strcpy(cc,GetTextByID(ID));
+		strcpy_s(cc,sizeof cc,GetTextByID(ID));
 		cc[31]=0;
-		strcpy(PINFO[i].name,cc);
+		strcpy_s(PINFO[i].name,sizeof PINFO[i].name,cc);
 		return;
 	};
 
@@ -4997,15 +4997,15 @@ void MissPack::LoadMissions(){
 				SingleMission* SM=MISS+NMiss;
 				NMiss++;
 				SM->ID=znew(char,strlen(MissID)+1);
-				strcpy(SM->ID,MissID);
+				strcpy_s(SM->ID,sizeof SM->ID,MissID);
 				SM->Name=znew(char,strlen(MissName)+1);
-				strcpy(SM->Name,MissName);
+				strcpy_s(SM->Name, sizeof SM->Name, MissName);
 				SM->DLLPath=znew(char,strlen(DLLPath)+1);
-				strcpy(SM->DLLPath,DLLPath);
+				strcpy_s(SM->DLLPath, sizeof SM->DLLPath, DLLPath);
 				SM->MapName=znew(char,strlen(MapName)+1);
-				strcpy(SM->MapName,MapName);
+				strcpy_s(SM->MapName, sizeof SM->MapName, MapName);
 				SM->Description=znew(char,strlen(MissDesc)+1);
-				strcpy(SM->Description,MissDesc);
+				strcpy_s(SM->Description, sizeof SM->Description, MissDesc);
 				MissLoad=true;
 				ReadWinString(F,MissDesc,256);
 				int z=sscanf(MissDesc,"%d",&SM->NIntro);
@@ -5016,7 +5016,7 @@ void MissPack::LoadMissions(){
 				for(int j=0;j<SM->NIntro;j++){
 					ReadWinString(F,MissDesc,256);
 					SM->Intro[j]=znew(char,strlen(MissDesc)+1);
-					strcpy(SM->Intro[j],MissDesc);
+					strcpy_s(SM->Intro[j], sizeof SM->Intro[j],MissDesc);
 				};
 			};
 		}while(MissLoad);
@@ -5095,11 +5095,11 @@ CampaginPack::CampaginPack(){
 			ReadWinString(F,cc,255);
 			if(cc[0]&&CampMessage[0]&&CampText[0]&&CampBmp[0]){
 				SCamp[i].CampMessage=znew(char,strlen(CampMessage)+1);
-				strcpy(SCamp[i].CampMessage,CampMessage);
+				strcpy_s(SCamp[i].CampMessage, sizeof SCamp[i].CampMessage,CampMessage);
 				SCamp[i].CampText=znew(char,strlen(CampText)+1);
-				strcpy(SCamp[i].CampText,CampText);
+				strcpy_s(SCamp[i].CampText , sizeof SCamp[i].CampText, CampText);
 				SCamp[i].CampBmp=znew(char,strlen(CampBmp)+1);
-				strcpy(SCamp[i].CampBmp,CampBmp);
+				strcpy_s(SCamp[i].CampBmp, sizeof SCamp[i].CampBmp, CampBmp);
 				z=sscanf(cc,"%d",&SCamp[i].NMiss);
 				if(z!=1)InvCamp();
 				SCamp[i].Miss=znew(int,SCamp[i].NMiss);
@@ -5288,53 +5288,53 @@ WarPack::WarPack(){
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->ID=znew(char,strlen(ccc)+1);
-			strcpy(BTL->ID,ccc);	
+			strcpy_s(BTL->ID, sizeof BTL->ID, ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->Map=znew(char,strlen(ccc)+1);
-			strcpy(BTL->Map,ccc);
+            strcpy_s(BTL->Map, sizeof BTL->Map, ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->Text=znew(char,strlen(ccc)+1);
-			strcpy(BTL->Text,ccc);
+            strcpy_s(BTL->Text, sizeof BTL->Text, ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->Brief=znew(char,strlen(ccc)+1);
-			strcpy(BTL->Brief,ccc);
+            strcpy_s(BTL->Brief, sizeof BTL->Brief, ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->BigMap=znew(char,strlen(ccc)+1);
-			strcpy(BTL->BigMap,ccc);
+            strcpy_s(BTL->BigMap, sizeof BTL->BigMap, ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->MiniMap=znew(char,strlen(ccc)+1);
-			strcpy(BTL->MiniMap,ccc);
+            strcpy_s(BTL->MiniMap, sizeof BTL->MiniMap, ccc);
 
 			NLine(f);
 			ReadWinString(f,ccc,200);
 			BTL->BigHeader=znew(char,strlen(ccc)+1);
-			strcpy(BTL->BigHeader,ccc);
+            strcpy_s(BTL->BigHeader, sizeof BTL->BigHeader, ccc);
 
 			ReadWinString(f,ccc,200);
 			BTL->Date=znew(char,strlen(ccc)+1);
-			strcpy(BTL->Date,ccc);
+            strcpy_s(BTL->Date, sizeof BTL->Date, ccc);
 
 			ReadWinString(f,ccc,200);
 			BTL->SmallHeader=znew(char,strlen(ccc)+1);
-			strcpy(BTL->SmallHeader,ccc);
+            strcpy_s(BTL->SmallHeader, sizeof BTL->SmallHeader, ccc);
 			
 			ReadWinString(f,ccc,200);
 			BTL->RedUnits=znew(char,strlen(ccc)+1);
-			strcpy(BTL->RedUnits,ccc);
+            strcpy_s(BTL->RedUnits, sizeof BTL->RedUnits, ccc);
 
 			ReadWinString(f,ccc,200);
 			BTL->BlueUnits=znew(char,strlen(ccc)+1);
-			strcpy(BTL->BlueUnits,ccc);
+            strcpy_s(BTL->BlueUnits, sizeof BTL->BlueUnits, ccc);
 
 			z=Gscanf(f,"%d",&Battles[i].NHints);
 			if(z!=1)InvBatt();
@@ -5352,7 +5352,7 @@ WarPack::WarPack(){
 				NLine(f);
 				ReadWinString(f,ccc,200);
 				BTL->Hints[j]=znew(char,strlen(ccc)+1);
-				strcpy(BTL->Hints[j],ccc);
+				strcpy_s(BTL->Hints[j], sizeof BTL->Hints[j], ccc);
 			};
 		};
 		Gclose(f);
@@ -5371,15 +5371,15 @@ WarPack::WarPack(){
 			OneWar* WAR=Wars+i;
 			ReadWinString(f,ccc,200);
 			WAR->Name=znew(char,strlen(ccc)+1);
-			strcpy(WAR->Name,ccc);
+			strcpy_s(WAR->Name, sizeof WAR->Name, ccc);
 			
 			ReadWinString(f,ccc,200);
 			WAR->Date=znew(char,strlen(ccc)+1);
-			strcpy(WAR->Date,ccc);
+			strcpy_s(WAR->Date, sizeof WAR->Date, ccc);
 
 			ReadWinString(f,ccc,200);
 			WAR->Text=znew(char,strlen(ccc)+1);
-			strcpy(WAR->Text,ccc);
+			strcpy_s(WAR->Text, sizeof WAR->Text, ccc);
 
 			z=Gscanf(f,"%d",&WAR->NBatles);
 			if(z!=1)InvWar();
@@ -5440,12 +5440,12 @@ char USERMISSPATH[128];
 DLLEXPORT
 void RunMapeditor(char* path){
 	RUNMAPEDITOR=1;
-	strcpy(USERMISSPATH,path);
+	strcpy_s(USERMISSPATH, sizeof USERMISSPATH,path);
 };
 DLLEXPORT
 void RunUserMission(char* path){
 	RUNUSERMISSION=1;
-	strcpy(USERMISSPATH,path);
+	strcpy_s(USERMISSPATH, sizeof USERMISSPATH,path);
 };
 //------------------------NEW! FUNCTIONS----------------------//
 /*

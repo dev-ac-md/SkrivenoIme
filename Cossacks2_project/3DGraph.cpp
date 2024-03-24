@@ -1945,7 +1945,7 @@ void Loadtextures(){
 			if(z>0&&gx[0]!='/'&&gx[0]!=0){
 				z=Gscanf(f,"%d%s",&nte,gy);
 				TexNames[nte]=znew(char,strlen(gx)+1);
-				strcpy(TexNames[nte],gx);
+                strcpy_s(TexNames[nte], sizeof TexNames[nte], gx);
 				if(strchr(gy,'W'))TexFlags[nte]|=TEX_ALWAYS_WATER_UNLOCK;
 				if(strchr(gy,'L'))TexFlags[nte]|=TEX_ALWAYS_LAND_LOCK;
 				if(strchr(gy,'U'))TexFlags[nte]|=TEX_ALWAYS_LAND_UNLOCK;

@@ -205,9 +205,9 @@ bool GetUpgHint(byte NI, word UIndex, char* Str){
 	char* hnt=Str;
 	sprintf(hnt,"%s/",NU->Message);
 	hnt+=strlen(hnt);
-	strcpy(hnt,GetTextByID("UI_Cost"));
+	strcpy_s(hnt, sizeof hnt,GetTextByID("UI_Cost"));
 	hnt+=strlen(hnt);
-	strcpy(hnt,"  ");
+	strcpy_s(hnt, sizeof hnt,"  ");
 	hnt+=strlen(hnt);
 	GetCostString(NU->Cost,hnt);		
 }

@@ -501,7 +501,7 @@ TextButton* DialogsSystem::addTextButton(SimpleDialog* Parent,
 		tb->ActiveDY=0;
 		tb->Align=Align;
 		tb->Message=znew(char,strlen(str)+1);
-		strcpy(tb->Message,str);
+		strcpy_s(tb->Message,sizeof tb->Message,str);
 		tb->OnDraw=&TextButton_OnDraw;
 		tb->OnMouseOver=&TextButton_OnMouseOver;
 		tb->Destroy=&TextButton_Destroy;
@@ -572,7 +572,7 @@ GP_TextButton* DialogsSystem::addGP_TextButton(SimpleDialog* Parent,int x,int y,
 		tb->FontDy=-1;
 		tb->FontDx=0;
 		tb->Message=znew(char,strlen(str)+1);
-		strcpy(tb->Message,str);
+		strcpy_s(tb->Message, sizeof tb->Message,str);
 		tb->OnDraw=&GP_TextButton_OnDraw;
 		tb->Destroy=&GP_TextButton_Destroy;
 		tb->Enabled=true;
@@ -608,7 +608,7 @@ GP_TextButton* DialogsSystem::addGP_TextButtonLimited(SimpleDialog* Parent,int x
 		tb->FontDy=-1;
 		tb->FontDx=0;
 		tb->Message=znew(char,strlen(str)+1);
-		strcpy(tb->Message,str);
+		strcpy_s(tb->Message, sizeof tb->Message,str);
 		tb->OnDraw=&GP_TextButton_OnDraw;
 		tb->Destroy=&GP_TextButton_Destroy;
 		tb->Enabled=true;
@@ -679,7 +679,7 @@ GP_TextButton* DialogsSystem::addStdGP_TextButton(int x,int y,int Lx,char* str,
 		tb->FontDy=0;
 		tb->FontDx=0;
 		tb->Message=znew(char,strlen(str)+1);
-		strcpy(tb->Message,str);
+		strcpy_s(tb->Message,sizeof tb->Message,str);
 		tb->OnDraw=&GP_StdTextButton_OnDraw;
 		tb->Destroy=&GP_TextButton_Destroy;
 		tb->Enabled=true;
@@ -812,7 +812,7 @@ UniversalButton* DialogsSystem::addUniversalButton(int x,int y,int Lx,char* str,
 		tb->FontDy=0;
 		tb->FontDx=0;
 		tb->Message=znew(char,strlen(str)+1);
-		strcpy(tb->Message,str);
+		strcpy_s(tb->Message, sizeof tb->Message, str);
 		tb->OnDraw  =&UniversalButton_OnDraw;
 		tb->Destroy =&UniversalButton_Destroy;
 		tb->OnClick =&UniversalButton_OnKlick;
@@ -891,7 +891,7 @@ BpxTextButton* DialogsSystem::addBpxTextButton(SimpleDialog* Parent,
 		tb->ActiveDX=0;
 		tb->ActiveDY=0;
 		tb->Message=znew(char,strlen(str)+1);
-		strcpy(tb->Message,str);
+		strcpy_s(tb->Message, sizeof tb->Message,str);
 		tb->OnDraw=&BpxTextButton_OnDraw;
 		tb->Destroy=&TextButton_Destroy;
 		tb->Enabled=true;
@@ -1653,7 +1653,7 @@ void ListBox::AddItem(char* str,int n){
 	LastItem=LB;
 	NItems++;
 	LB->Message=znew(char,strlen(str)+1);
-	strcpy(LB->Message,str);
+	strcpy_s(LB->Message, sizeof LB->Message, str);
 	LB->Param1=n;
 	LB->Flags=0;
 };
@@ -1671,7 +1671,7 @@ void ListBox::AddStaticItem(char* str,int n){
 	LastItem=LB;
 	NItems++;
 	LB->Message=znew(char,strlen(str)+1);
-	strcpy(LB->Message,str);
+	strcpy_s(LB->Message, sizeof LB->Message, str);
 	LB->Param1=n;
 	LB->Flags=1;
 };
@@ -1972,7 +1972,7 @@ bool InputBox_OnDraw(SimpleDialog* SD){
 		//CutStringToLength(IB->Str,IB->AFont,IB->x1-IB->x);
 		int LL=IB->x1-IB->x;
 		char base[2048];
-		strcpy(base,IB->Str);
+		strcpy_s(base, sizeof base,IB->Str);
 		if(IB->Anonim){
 			int L=strlen(IB->Str);
 			for(int i=0;i<L;i++)base[i]='*';
@@ -2064,14 +2064,14 @@ bool InputBox_OnKeyDown(SimpleDialog* SD){
 	}else
 	if(LastKey==VK_BACK){
 		if(IB->CursPos>0){
-			strcpy(IB->Str+IB->CursPos-1,IB->Str+IB->CursPos);
+			strcpy_s(IB->Str+IB->CursPos-1,sizeof IB->Str + IB->CursPos - 1,IB->Str+IB->CursPos);
 			IB->CursPos--;
 		};
 		//if(strlen(IB->Str)>0)IB->Str[strlen(IB->Str)-1]=0;
 		return true;
 	}else
 	if(LastKey==46){//VK_DEL
-		if(IB->CursPos<strlen(IB->Str))strcpy(IB->Str+IB->CursPos,IB->Str+IB->CursPos+1);
+		if(IB->CursPos<strlen(IB->Str))strcpy_s(IB->Str+IB->CursPos, sizeof IB->Str + IB->CursPos,IB->Str+IB->CursPos+1);
 		//if(strlen(IB->Str)>0)IB->Str[strlen(IB->Str)-1]=0;
 		return true;
 	}else{
@@ -2082,11 +2082,11 @@ bool InputBox_OnKeyDown(SimpleDialog* SD){
 			xx[0]=char(LastKey);
 				if(strlen(IB->Str)+1<DWORD(IB->StrMaxLen)){
 				char ccc[2048];
-				strcpy(ccc,IB->Str);
+				strcpy_s(ccc, sizeof ccc, IB->Str);
 				ccc[IB->CursPos]=0;
 				strcat(ccc,xx);
 				strcat(ccc,IB->Str+IB->CursPos);
-				strcpy(IB->Str,ccc);
+				strcpy_s(IB->Str, sizeof IB->Str,ccc);
 				IB->CursPos++;
 			};
 			return true;
@@ -2321,7 +2321,7 @@ CheckBox* DialogsSystem::addCheckBox(SimpleDialog* Parent,
 		CB->GP_File=-1;
 		CB->Central=0;
 		CB->Sprite3=-1;
-		strcpy(CB->Message,message);
+		strcpy_s(CB->Message, sizeof CB->Message,message);
 		return CB;
 	};
 	return NULL;
@@ -2357,7 +2357,7 @@ CheckBox* DialogsSystem::addGP_CheckBox(SimpleDialog* Parent,
 		CB->AFont=a_font;
 		CB->Message=znew(char,strlen(message)+1);
 		CB->Transparent=true;
-		strcpy(CB->Message,message);
+		strcpy_s(CB->Message, sizeof CB->Message,message);
 		CB->Central=0;
 		CB->Sprite3=-1;
 		return CB;
@@ -2825,10 +2825,10 @@ bool ChatViewer_OnDraw(SimpleDialog* SD){
 					if((GetTickCount()/500)&1)ShowString(x0,y0+(i-DYL)*CLY,cc3,&WhiteFont);
 					else ShowString(x0,y0+(i-DYL)*CLY,cc3,&YellowFont);
 					if(Lpressed){
-						strcpy(LASTCLICKCHATNAME,ChatSender[i]);
+						strcpy_s(LASTCLICKCHATNAME, sizeof LASTCLICKCHATNAME,ChatSender[i]);
 						char* ss=strstr(LASTCLICKCHATNAME,"-->");
 						if(ss){
-							strcpy(LASTCLICKCHATNAME,ss+3);
+							strcpy_s(LASTCLICKCHATNAME, sizeof LASTCLICKCHATNAME, ss+3);
 						};
 						ss=strstr(LASTCLICKCHATNAME,GetTextByID("ONLYOU"));
 						if(ss)ss[0]=0;
@@ -3763,18 +3763,18 @@ void ComboBox::AddLine(char* Text){
 	if(Lines){
 		Lines=(char**)realloc(Lines,(NLines+1)<<2);
 		Lines[NLines]=znew(char,strlen(Text)+1);
-		strcpy(Lines[NLines],Text);
+		strcpy_s(Lines[NLines], sizeof Lines[NLines],Text);
 		NLines++;
 	}else{
 		Lines=(char**)malloc(4);
 		Lines[0]=znew(char,strlen(Text)+1);
-		strcpy(Lines[0],Text);
+		strcpy_s(Lines[0], sizeof Lines[0],Text);
 		NLines++;
 	};
 };
 void ComboBox::AddComplexLine(char* Text){
 	char* Tmp=znew(char,strlen(Text)+1);
-	strcpy(Tmp,Text);
+	strcpy_s(Tmp, sizeof Tmp,Text);
 	int pos=0;
 	int Nextpos=0;
 	bool All=false;
@@ -3910,12 +3910,12 @@ void WinComboBox::AddLine(char* Text){
 	if(Lines){
 		Lines=(char**)realloc(Lines,(NLines+1)<<2);
 		Lines[NLines]=znew(char,strlen(Text)+1);
-		strcpy(Lines[NLines],Text);
+		strcpy_s(Lines[NLines],sizeof Lines[NLines],Text);
 		NLines++;
 	}else{
 		Lines=(char**)malloc(4);
 		Lines[0]=znew(char,strlen(Text)+1);
-		strcpy(Lines[0],Text);
+		strcpy_s(Lines[0], sizeof Lines[0],Text);
 		NLines++;
 	};
 };
