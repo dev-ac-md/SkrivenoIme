@@ -36,6 +36,7 @@ void ClearKeyStack();
 int ReadKey();
 void AddKey(byte Key,byte Ascii);
 extern int CurPalette;
+
 void ErrD(LPCSTR s)
 {
 	char pal[128];

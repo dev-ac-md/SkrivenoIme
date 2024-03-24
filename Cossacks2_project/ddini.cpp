@@ -463,7 +463,8 @@ int BestBPP=32;
 HRESULT CALLBACK ModeCallback(LPDDSURFACEDESC pdds, LPVOID lParam)
 {
 	//Rept("ModeCallBack\n");
-    int width  = pdds->dwWidth;
+
+    /*int width = pdds->dwWidth;
     int height = pdds->dwHeight;
     int bpp    = pdds->ddpfPixelFormat.dwRGBBitCount;
 	if(width==640&&height==480){
@@ -477,14 +478,39 @@ HRESULT CALLBACK ModeCallback(LPDDSURFACEDESC pdds, LPVOID lParam)
 		ModeLY[NModes]=height;
 		NModes++;
 		//Rept("AddMode: %dx%d \n",width,height);
-	};
+	};*/
+
+    if (1024 > pdds->dwWidth || 768 > pdds->dwHeight)
+    {//Don't allow for resolutions less than 1024 x 768 ot bigger than 1920x[...]
+        return S_FALSE;
+    }
+
+    /*if (1920 < pdds->dwWidth)
+    {//Also disable all resolutions above ~1920 px wide for fairness reasons
+        return S_FALSE;
+    }*/
+
+    if (32 == pdds->ddpfPixelFormat.dwRGBBitCount)
+    {
+        ModeLX[NModes] = pdds->dwWidth;
+        ModeLY[NModes] = pdds->dwHeight;
+        NModes++;
+    }
+
     //return S_TRUE to stop enuming modes, S_FALSE to continue
     return S_FALSE;
 }
 bool EnumModesOnly(){
-	HRESULT ddrval = DirectDrawCreate( NULL, &lpDD, NULL );
+	//HRESULT ddrval = DirectDrawCreate( NULL, &lpDD, NULL );
+    HRESULT ddrval = DirectDrawCreate_wrapper( NULL, &lpDD, NULL );
+
 	if(ddrval==DD_OK){
-		lpDD->EnumDisplayModes(0,NULL,NULL,ModeCallback);
+
+        lpDD->EnumDisplayModes(0, NULL, NULL, ModeCallback);
+        lpDD->Release();
+        lpDD = NULL;
+        
+        /*lpDD->EnumDisplayModes(0, NULL, NULL, ModeCallback);
 		lpDD->Release();
 		lpDD=NULL;
 		if(m640_32)BestBPP=32;
@@ -493,13 +519,15 @@ bool EnumModesOnly(){
 		if(!m1024_768){
 			if(MessageBox(hwnd,"Dilplay mode 1024x768x8 not found. Cossacks should not run.","Loading error",MB_RETRYCANCEL)!=IDRETRY)
 				exit(0);
-		};
+		};*/
+
+
 		return true;
-	}else{
+    }
+    else{
 		MessageBox(hwnd,"Unable to initialise Direct Draw. Cossacks should not run.","Loading error",MB_ICONSTOP);
 		exit(0);
 	};
-	return false;
 };
 
 void DelLog(){
@@ -559,15 +587,15 @@ bool CreateDDObjects(HWND hwnd)
 	if (DDDebug)
 	{
 	
-		SVSC.SetSize(RealLx,RealLy);
-		DDError=false;
-		SCRSizeX=MaxSizeX;
-		SCRSizeY=MaxSizeY;
-		COPYSizeX=RealLx;
-		RSCRSizeX=RealLx;
-		RSCRSizeY=RealLy;
-		ScrHeight=SCRSizeY;
-		ScrWidth=SCRSizeX;
+        SVSC.SetSize(RealLx, RealLy);
+        DDError = false;
+        SCRSizeX = MaxSizeX;
+        SCRSizeY = MaxSizeY;
+        COPYSizeX = RealLx;
+        RSCRSizeX = RealLx;
+        RSCRSizeY = RealLy;
+        ScrHeight = SCRSizeY;
+        ScrWidth = SCRSizeX;
 		InitRLCWindows();
 #ifndef _USE3D
 		WindX=0;
@@ -581,11 +609,32 @@ bool CreateDDObjects(HWND hwnd)
 #endif // _USE3D
 		BytesPerPixel=1;
 		offScreenPtr=(malloc(SCRSizeX*(SCRSizeY+32*4)));
-		NModes=2;
+
+        const int screen_width = GetSystemMetrics(SM_CXSCREEN);
+        const int screen_height = GetSystemMetrics(SM_CYSCREEN);
+
+        const int ModeLX_candidates[] = { 1024, 1152, 1280, 1280, 1366, 1600, 1920 };
+        const int ModeLY_candidates[] = { 768,  864,  720, 1024,  768,  900, 1080 };
+
+        NModes = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            //Only show resolutions up to current screen resolution
+            if (ModeLX_candidates[i] <= screen_width
+                && ModeLY_candidates[i] <= screen_height)
+            {
+                ModeLX[i] = ModeLX_candidates[i];
+                ModeLY[i] = ModeLY_candidates[i];
+                NModes++;
+            }
+        }
+
+		/*NModes = 2;
 		ModeLX[0]=800;
 		ModeLY[0]=600;
 		ModeLX[1]=1024;
-		ModeLY[1]=768;
+		ModeLY[1]=768;*/
+
 		return true;
 	}
 #ifdef COPYSCR
@@ -599,12 +648,16 @@ bool CreateDDObjects(HWND hwnd)
 		goto SDMOD;
 	};
 	lpDD=NULL;
-	ddrval = DirectDrawCreate( NULL, &lpDD, NULL );
+
+	/*ddrval = DirectDrawCreate(NULL, &lpDD, NULL);
 	{
 		for(int j=0;j<NModes;j++){
 			DDLog("%dx%dx8\n",ModeLX[j],ModeLY[j]);
 		};
-	};
+	};*/
+
+    ddrval = DirectDrawCreate_wrapper(NULL, &lpDD, NULL);
+
 	DDLog("DirectDrawCreate:%d\n",ddrval);
     if( ddrval == DD_OK )
     {
@@ -728,7 +781,7 @@ BOOL CreateRGBDDObjects(HWND hwnd)
 		lpDDSPrimary->Release();
 		goto SDMOD;
 	};
-	ddrval = DirectDrawCreate( NULL, &lpDD, NULL );
+	ddrval = DirectDrawCreate_wrapper( NULL, &lpDD, NULL );
 	DDLog("RGB: DirectDrawCreate:%d\n",ddrval);
     if( ddrval == DD_OK )
     {
@@ -819,7 +872,7 @@ BOOL CreateRGB640DDObjects(HWND hwnd)
 		lpDDSPrimary->Release();
 		goto SDMOD;
 	};
-	ddrval = DirectDrawCreate( NULL, &lpDD, NULL );
+	ddrval = DirectDrawCreate_wrapper( NULL, &lpDD, NULL );
 	DDLog("RGB640: DirectDrawCreate:%d\n",ddrval);
     if( ddrval == DD_OK )
     {
@@ -882,7 +935,7 @@ void LoadPalette(char const* lpFileName)
 {
 	if(!lpDD)return;
 	AFile((char*)lpFileName);
-	//if (DDDebug) return;
+	if (DDDebug) return;
 	if (DDError) return;
 	ResFile pf=RReset(lpFileName);
 	memset(&GPal,0,1024);
@@ -1174,18 +1227,45 @@ void FreeDDObjects( void )
 }
 void SetDebugMode()
 {
-	DDDebug=true;
+    DDDebug =true;
 }
 void NoDebugMode()
 {
-	DDDebug=false;
+    DDDebug =false;
 }
+
 CEXPORT
 void GetPalColor(byte idx,byte* r,byte* g,byte* b){
 	*r=GPal[idx].peRed;
 	*g=GPal[idx].peGreen;
 	*b=GPal[idx].peBlue;
 };
+
+/*
+    DirectDraw substitute.
+    Uses mdraw.dll instead of the original, ddraw.lib exported DirectDrawCreate().
+    Prevents the color palette corruption bug in modern Windows systems.
+    No idea what the mdraw.dll funtion does, but you end up with a working
+    IDirectDraw interface and no legacy bugs.
+*/
+HRESULT DirectDrawCreate_wrapper(GUID FAR* lpGUID, LPDIRECTDRAW FAR* lplpDD, IUnknown FAR* pUnkOuter)
+{
+    HMODULE mdrawHandle = LoadLibrary("mdraw.dll");
+    if (nullptr != mdrawHandle)
+    {
+        typedef HRESULT(__stdcall* mdrawProcType)(GUID FAR* lpGUID, LPDIRECTDRAW FAR* lplpDD, IUnknown FAR* pUnkOuter);
+        mdrawProcType mdrawProc = (mdrawProcType)GetProcAddress(mdrawHandle, "DirectDrawCreate");
+        if (nullptr != mdrawProc)
+        {
+            HRESULT mdrawResult = mdrawProc(lpGUID, lplpDD, pUnkOuter);
+            return mdrawResult;
+        }
+        FreeLibrary(mdrawHandle);
+    }
+    return DDERR_GENERIC;
+}
+//OVO SAM UKRAO OD COSSACK REVAMPA
+
 #ifdef _USE3D
 BaseMesh BMS;
 bool init=0;

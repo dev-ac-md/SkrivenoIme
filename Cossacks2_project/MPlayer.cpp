@@ -1780,7 +1780,7 @@ void ComeInGame(){
 	for(int i=0;i<8;i++){
 		PLNAT[i]=-1;
 	};
-	int x,y;
+	int x,y=0;
 	
 	y+=16;
 	FlipPages();

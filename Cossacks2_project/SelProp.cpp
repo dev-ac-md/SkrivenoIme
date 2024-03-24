@@ -461,7 +461,7 @@ void ShowProp(){
 	OneObject* OBJ;
 	GeneralObject* GO;
 	MonInf* MI;
-	int i,j,k;
+	int i,j=0,k;
 	//ResFon(PrpX,PrpY,PrpNx*IconLx,PrpNy*IconLy);
 	word Nsel=ImNSL[MyNation];
 	word* SMon=ImSelm[MyNation];
@@ -1932,7 +1932,7 @@ void ShowAbility(){
 	AblInf* MI;
 	Nation* NT;
 	word s;
-	int i,j,k,p,q,r;
+	int i,j=0,k,p,q,r;
 	//if(NINF)ResFon(AblX,AblY,AblNx*IconLx,AblNy*IconLy);
 	if(!NINF){
 		//ResFon(AblX,AblY,AblNx*IconLx,AblNy*IconLy);

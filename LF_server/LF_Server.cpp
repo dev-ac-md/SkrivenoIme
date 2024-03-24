@@ -4,6 +4,7 @@
 #include "..\common.h"
 #include "StdAfx.h"
 #include "..\IntExplorer\ParseRQ.h"
+#include "..\Cossacks2_project\Resfile.h"
 #include <cstdlib>
 #include <cstdio>
 
@@ -191,23 +192,18 @@ void LF_Requests::LF_CloseAll(){
 };
 //--------exports--------
 LF_Requests LFREQ;
-CEXPORT
-DWORD LF_SendRequest(char* request,int size){
+__declspec(dllexport) DWORD LF_SendRequest(char* request,int size){
 	return LFREQ.LF_SendRequest(request,size);
 };
-CEXPORT
-void LF_Process(){
+__declspec(dllexport) void LF_Process(){
 	LFREQ.LF_Process();
 };
-CEXPORT
-DWORD LF_GetRequestResult(DWORD Handle,char** Result,int* Size){
+__declspec(dllexport) DWORD LF_GetRequestResult(DWORD Handle,char** Result,int* Size){
 	return LFREQ.LF_GetRequestResult(Handle,Result,Size);
 };
-CEXPORT
-void LF_CloseRequest(DWORD Handle){
+__declspec(dllexport) void LF_CloseRequest(DWORD Handle){
 	LFREQ.LF_CloseRequest(Handle);
 };
-CEXPORT
-void LF_CloseAll(){
+__declspec(dllexport) void LF_CloseAll(){
 	LFREQ.LF_CloseAll();
 };

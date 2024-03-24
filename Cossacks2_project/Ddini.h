@@ -92,6 +92,10 @@ CEXPORT void LoadPalette(LPCSTR lpFileName);
 void SetDebugMode();
 void NoDebugMode();
 //#endif
+
+// Define own DirectDrawCreate helper function which loads mdraw.dll at runtime
+HRESULT DirectDrawCreate_wrapper(GUID FAR* lpGUID, LPDIRECTDRAW FAR* lplpDD, IUnknown FAR* pUnkOuter);
+
 #endif //__DDINI_H_
 
 

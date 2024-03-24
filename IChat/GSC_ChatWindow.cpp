@@ -1,5 +1,6 @@
 #include "..\common.h"
 #include "Chat\chat.h"
+#include "..\Cossacks2_project\GameSpy\GameSpy\Chat\chat.h"
 #include "cs_chat.h"
 #include "..\IntExplorer\ParseRQ.h"
 #include "StdAfx.h"
@@ -75,7 +76,7 @@ public:
 };
 CNamesCash NMCASH;
 
-CIMPORT void LoadPalette(char const* lpFileName);
+__declspec(dllimport) void LoadPalette(char const* lpFileName);
 //#include <varargs.h>
 void ReportIt(char* s,...){
 	return;
@@ -93,10 +94,8 @@ void ReportIt(char* s,...){
 		fclose(F);
 	};
 };
-CIMPORT
-int GetSound(char* Name);
-CIMPORT 
-void PlayEffect(int n,int pan,int vol);
+__declspec(dllimport) int GetSound(char* Name);
+__declspec(dllimport) void PlayEffect(int n,int pan,int vol);
 void PlayStart(){
 	PlayEffect(GetSound("START"),0,0);
 };
@@ -178,23 +177,21 @@ public:
 	};
 };
 
-CIMPORT void ExplorerBack(int Index);
-CIMPORT void ExplorerForw(int Index);
-CIMPORT void ExplorerRefresh(int Index);
-CIMPORT void ExplorerSetVar(int Index,char* Name,char* value);
-CIMPORT char* ExplorerGetVar(int Index,char* Name);
-CIMPORT char LobbyVersion[32];
-CIMPORT word dwVersion;
-CIMPORT void RunExplorer(int Index,char* ref,int x,int y,int x1,int y1);
-CIMPORT void ProcessExplorer(int Index);
-CIMPORT void ProcessExplorerDSS(int Index,DialogsSystem* DSS);
-CIMPORT void ExplorerOpenRef(int Index,char* ref);
-CIMPORT void ExplorerResize(int Index,int x,int y,int x1,int y1);
+__declspec(dllimport) void ExplorerBack(int Index);
+__declspec(dllimport) void ExplorerForw(int Index);
+__declspec(dllimport) void ExplorerRefresh(int Index);
+__declspec(dllimport) void ExplorerSetVar(int Index, char* Name, char* value);
+__declspec(dllimport) char* ExplorerGetVar(int Index, char* Name);
+__declspec(dllimport) char LobbyVersion[32];
+__declspec(dllimport) word dwVersion;
+__declspec(dllimport) void RunExplorer(int Index, char* ref, int x, int y, int x1, int y1);
+__declspec(dllimport) void ProcessExplorer(int Index);
+__declspec(dllimport) void ProcessExplorerDSS(int Index, DialogsSystem* DSS);
+__declspec(dllimport) void ExplorerOpenRef(int Index, char* ref);
+__declspec(dllimport) void ExplorerResize(int Index, int x, int y, int x1, int y1);
 ChatSystem CSYS;
-CIMPORT
-byte GetPaletteColor(int r,int g,int b);
-CIMPORT
-void xLine(int x,int y,int x1,int y1,byte c);
+__declspec(dllimport) byte GetPaletteColor(int r, int g, int b);
+__declspec(dllimport) void xLine(int x,int y,int x1,int y1,byte c);
 int NCHATS[3]={0,0,0};
 int MAXCHATS[3]={0,0,0};
 char** ChatMess[3]={NULL,NULL,NULL};

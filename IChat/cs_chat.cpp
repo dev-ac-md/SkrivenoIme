@@ -1,6 +1,6 @@
 #include "..\common.h"
 #pragma pack(4)
-#include "Chat\chat.h"
+#include "..\Cossacks2_project\GameSpy\GameSpy\Chat\chat.h"
 #pragma pack(1)
 #include "cs_chat.h"
 #include "StdAfx.h"
@@ -86,8 +86,8 @@ void ChangedNickCallback(CHAT chat, CHATBool success, const char * oldNick, cons
 	ChatSystem* CC=(ChatSystem*)param;
 	if(CC)CC->LastAccessTime=current_time();
 }
-CIMPORT void AddToGChat(char* Nick,char* Message);
-CIMPORT void ClearGChat();
+__declspec(dllimport) void AddToGChat(char* Nick,char* Message);
+__declspec(dllimport) void ClearGChat();
 void PlayStart();
 void PrivateMessage(CHAT chat, const char * user, const char * message, int type, void * param)
 {

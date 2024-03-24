@@ -48,7 +48,7 @@
 
 #ifdef _USE3D
 #include "NewMon3D.h"
-#include "mCamera.h"
+#include "..\3DLIB\gMotor\mCamera.h"
 #include "Scape3D.h"
 #endif // _USE3D
 

@@ -235,7 +235,7 @@ bool CheckSpritePressed(int sp){
 void ControlZones(){
 	MouseOverZone=0;
 	if(LockMouse)return;
-	int i;
+	int i=0;
 	MouseZone* Z;
 	if(!Lpressed)
 		for(int i=0;i<NZones;i++)Zones[i].Pressed=CheckZonePressed(i);

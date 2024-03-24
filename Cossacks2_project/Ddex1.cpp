@@ -10,6 +10,12 @@
 //#define VIEW_TOP
 //#define WIN32_LEAN_AND_MEAN
 #include "ddini.h"
+
+int screen_width;
+int screen_height;
+double screen_ratio;
+DWORD window_style = WS_OVERLAPPED | WS_BORDER | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+
 #include "wintab\wintab.h"
 #include "ResFile.h"
 #include "FastDraw.h"
