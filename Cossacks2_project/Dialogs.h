@@ -336,7 +336,7 @@ public:
 class DIALOGS_API InputBox:public SimpleDialog{
 public:
 	char* Str;
-	int CursPos;
+    size_t CursPos;
 	int totdx;
 	int StrMaxLen;
 	RLCFont* Font;
@@ -352,7 +352,7 @@ public:
 	SQPicture* OnPic;
 	SQPicture* OffPic;
 	char* Message;
-	bool State:2;
+    unsigned int State:2;
 	bool Transparent:1;
 	bool Central:1;
 	int GroupIndex;

@@ -839,7 +839,7 @@ public:
 	bool Enabled:1;
 	bool CondEnabled:1;
 	bool Transport:1;
-	bool Options:1;
+	int Options:1;
 	bool WATT:1;
 	bool AATT:1;
 	bool P100:1;

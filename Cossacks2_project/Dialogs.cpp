@@ -1979,7 +1979,7 @@ bool InputBox_OnDraw(SimpleDialog* SD){
 		};
 		int xx=0;
 		if(IB->CursPos>strlen(IB->Str))IB->CursPos=strlen(IB->Str);
-		for(int j=0;j<IB->CursPos;j++){
+		for(size_t j=0;j<IB->CursPos;j++){
 			xx+=GetRLCWidth(IB->Font->RLC,base[j]);
 		};
 		if(xx<IB->totdx){
@@ -2274,7 +2274,7 @@ bool CheckBox_OnClick(SimpleDialog* SD){
 		if(st==1)CB->State=2;
 		else CB->State=1;
 	}else{
-		CB->State=!CB->State;
+        CB->State = !CB->State;
 	};
 	return false;
 };
@@ -3800,7 +3800,6 @@ bool WinComboBox_OnDraw(SimpleDialog* SD){
 		if(!CB->Enabled)MouseOvList=false;
 		int Cur=-1;
 		int Ly=CB->y1-CB->y;
-		int i;
 		if(CB->Enabled){
 			if(CanChoose||MouseOvList){
 				for(int i=0;i<CB->NBox;i++){

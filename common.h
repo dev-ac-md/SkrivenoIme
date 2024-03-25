@@ -20,14 +20,14 @@ typedef unsigned short word;
 #define CEXPORT __declspec(dllexport)
 #define CIMPORT __declspec(dllimport)
 
-#include "..\Cossacks2_Project\fastdraw.h"
+#include "Cossacks2_Project\fastdraw.h"
 #pragma pack(1)
-#include "..\Cossacks2_Project\gp_draw.h"
-#include "..\Cossacks2_Project\dialogs.h"
-#include "..\Cossacks2_Project\fonts.h"
-#include "..\Cossacks2_Project\arc\gscarch.h"
-#include "..\Cossacks2_Project\resfile.h"
-#include "..\Cossacks2_Project\gfile.h"
+#include "Cossacks2_Project\gp_draw.h"
+#include "Cossacks2_Project\dialogs.h"
+#include "Cossacks2_Project\fonts.h"
+#include "Cossacks2_Project\arc\gscarch.h"
+#include "Cossacks2_Project\resfile.h"
+#include "Cossacks2_Project\gfile.h"
 
 extern CIMPORT int RealLx;
 extern CIMPORT int RealLy;

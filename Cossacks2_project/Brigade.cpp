@@ -3340,7 +3340,7 @@ void B_HumanGlobalSendToLink(Brigade* BR){
 		int MaxPre=5;
 		int cox=xc>>4;
 		int coy=yc>>4;
-		bool NSteps=0;		
+		int NSteps=0;		
 		do{
 			int Next2=GetMotionLinks(FinalTop+NA*NextNextTop,lockType);
 			if(Next2!=0xFFFF){
