@@ -19,9 +19,6 @@
     <Filter Include="3D Engine">
       <UniqueIdentifier>{9500f812-c2d0-4053-a8db-4303dd34cb65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics&amp;DirectX">
-      <UniqueIdentifier>{7253a74b-5e95-4925-806a-aa44f9925c82}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{95a585ce-dc08-45b5-98b0-3593d38d4e17}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,15 @@
     <Filter Include="Effects">
       <UniqueIdentifier>{3f9b30e0-0436-4c27-8d81-c1fc85b4f9ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphic">
+      <UniqueIdentifier>{7253a74b-5e95-4925-806a-aa44f9925c82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphic\Graphic Headers">
+      <UniqueIdentifier>{c080b480-ebe7-4ef4-a133-220172cb9b79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Engine Headers">
+      <UniqueIdentifier>{101f7f6f-2307-44d2-8f1a-9a982131207a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ddini.h">
@@ -155,16 +161,10 @@
     <ClInclude Include="Arc\isiMasks.h">
       <Filter>Arc</Filter>
     </ClInclude>
-    <ClInclude Include="Chat\chat.h">
-      <Filter>GameSpy</Filter>
-    </ClInclude>
     <ClInclude Include="CommCore.h">
       <Filter>GameSpy</Filter>
     </ClInclude>
     <ClInclude Include="CEngine\goaceng.h">
-      <Filter>GameSpy</Filter>
-    </ClInclude>
-    <ClInclude Include="peer.h">
       <Filter>GameSpy</Filter>
     </ClInclude>
     <ClInclude Include="PeerClass.h">
@@ -208,99 +208,6 @@
     </ClInclude>
     <ClInclude Include="Masks.h">
       <Filter>3D Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="ArchTool.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="bmptool.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Curve.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Dialogs.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawForm.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Fastdraw.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Fonts.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="GP_Draw.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphs.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Icons.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="IconTool.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="mouse.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Scape3D.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Video.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="VirtScreen.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="ZBuffer.h">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadSave.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="MapDiscr.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="MapSprites.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="MPlayer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Nature.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="NewMon.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="NewUpgrade.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Process.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="RealWater.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Recorder.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Transport.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Upgrade.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="walls.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="WeaponID.h">
-      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="ActiveScenary.h">
       <Filter>Scenario</Filter>
@@ -356,14 +263,8 @@
     <ClInclude Include="IR.h">
       <Filter>Internet Rating&amp;Profiles</Filter>
     </ClInclude>
-    <ClInclude Include="GameSpy\Nonport.h">
-      <Filter>Internet Rating&amp;Profiles</Filter>
-    </ClInclude>
     <ClInclude Include="GameSpy\Peer.h">
       <Filter>Internet Rating&amp;Profiles</Filter>
-    </ClInclude>
-    <ClInclude Include="InetRaiting\darray.h">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
     </ClInclude>
     <ClInclude Include="InetRaiting\stats\gbucket.h">
       <Filter>Internet Rating&amp;Profiles\Stats</Filter>
@@ -374,13 +275,7 @@
     <ClInclude Include="InetRaiting\stats\gstats.h">
       <Filter>Internet Rating&amp;Profiles\Stats</Filter>
     </ClInclude>
-    <ClInclude Include="InetRaiting\hashtable.h">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClInclude>
     <ClInclude Include="InetRaiting\md5.h">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="InetRaiting\nonport.h">
       <Filter>Internet Rating&amp;Profiles\Stats</Filter>
     </ClInclude>
     <ClInclude Include="Dialogs\AllDialogs.h">
@@ -596,11 +491,104 @@
     <ClInclude Include="SquareObject.h">
       <Filter>Effects</Filter>
     </ClInclude>
-    <ClInclude Include="GameSpy\GameSpy\nonport.h">
-      <Filter>Internet Rating&amp;Profiles</Filter>
-    </ClInclude>
     <ClInclude Include="GameSpy\GameSpy\Peer\peer.h">
       <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchTool.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="bmptool.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Curve.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogs.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawForm.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Fastdraw.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GP_Draw.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphs.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Icons.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="IconTool.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Scape3D.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Video.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtScreen.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ZBuffer.h">
+      <Filter>Graphic\Graphic Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadSave.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MapDiscr.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MapSprites.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MPlayer.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Nature.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="NewMon.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="NewUpgrade.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RealWater.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Recorder.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Transport.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Upgrade.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="walls.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponID.h">
+      <Filter>Engine\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSpy\GameSpy\Chat\chat.h">
+      <Filter>GameSpy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -665,67 +653,67 @@
       <Filter>3D Engine</Filter>
     </ClCompile>
     <ClCompile Include="ArchTool.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="bmptool.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Ddini.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Dialogs.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="DrawForms.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Fastdraw.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="fog.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="GP_Draw.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Graphs.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="GVClass.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Hint.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="IconTool.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Masks.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Mouse_X.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="MousZone.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="NewMon3D.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Relink.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Scape3D.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Video.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="VirtScr.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="ZBuffer.cpp">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic</Filter>
     </ClCompile>
     <ClCompile Include="Build.cpp">
       <Filter>Engine</Filter>
@@ -850,22 +838,13 @@
     <ClCompile Include="InetRaiting\IR_Main.cpp">
       <Filter>Internet Rating&amp;Profiles</Filter>
     </ClCompile>
-    <ClCompile Include="InetRaiting\darray.c">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClCompile>
     <ClCompile Include="InetRaiting\stats\gbucket.c">
       <Filter>Internet Rating&amp;Profiles\Stats</Filter>
     </ClCompile>
     <ClCompile Include="InetRaiting\stats\gstats.c">
       <Filter>Internet Rating&amp;Profiles\Stats</Filter>
     </ClCompile>
-    <ClCompile Include="InetRaiting\hashtable.c">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClCompile>
     <ClCompile Include="InetRaiting\md5c.c">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClCompile>
-    <ClCompile Include="InetRaiting\nonport.c">
       <Filter>Internet Rating&amp;Profiles\Stats</Filter>
     </ClCompile>
     <ClCompile Include="Interface.cpp">
@@ -1030,16 +1009,13 @@
     <Library Include="InetRaiting\GP.lib">
       <Filter>Internet Rating&amp;Profiles</Filter>
     </Library>
-    <Library Include="Peer.lib">
-      <Filter>GameSpy</Filter>
-    </Library>
   </ItemGroup>
   <ItemGroup>
-    <None Include="mode.dat">
-      <Filter>Graphics&amp;DirectX</Filter>
-    </None>
     <None Include="..\Bat\all.bat">
       <Filter>BAT</Filter>
+    </None>
+    <None Include="mode.dat">
+      <Filter>Graphic\Graphic Headers</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1059,7 +1035,7 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="NewMon3D.h">
-      <Filter>Graphics&amp;DirectX</Filter>
+      <Filter>Graphic\Graphic Headers</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

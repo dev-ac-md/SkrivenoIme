@@ -159,7 +159,7 @@ public:
 #include "../3DLIB/gMotor/gpPackage.h"
 #include "../3DLIB/gMotor/gpSystem.h"
 
-class GP_API GP_System: public GPSystem
+class GP_API GP_System : public GPSystem
 {
 public:
 	GP_System();

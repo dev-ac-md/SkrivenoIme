@@ -584,7 +584,7 @@ void LoadNewAimations(){
 						};
 						NewFrame* NF=&NANM->Frames[i];
 						NF->FileID=RLCRef[z1];
-						if(z3>=GPS.GPNFrames(RLCRef[z1])){+
+						if(z3>=GPS.GPNFrames(RLCRef[z1])){
 
 							sprintf(gy,"Weapon.ads,line %d : Reference to RLC sprite is beyond the end of file: %d",Line,z3);
 							ErrM(gy);

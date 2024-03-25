@@ -137,7 +137,7 @@ public:
 	SQPicture* ActivePicture;
 	SQPicture* DisabledPicture;
 	bool Transparent:1;
-	Picture(){SimpleDialog;};
+    Picture() { SimpleDialog; };
 };
 class DIALOGS_API RLCPicture:public SimpleDialog{
 public:

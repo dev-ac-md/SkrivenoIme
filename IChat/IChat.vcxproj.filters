@@ -16,6 +16,9 @@
       <UniqueIdentifier>{39b987df-6071-4876-b572-5e431aa9edbd}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Chat\Chat Headers">
+      <UniqueIdentifier>{1a5a6a1e-010a-4d2e-a09a-998c36a5b906}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cs_chat.cpp">
@@ -71,35 +74,35 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Chat\chat.h">
-      <Filter>Chat</Filter>
-    </ClInclude>
     <ClInclude Include="Chat\chatCallbacks.h">
-      <Filter>Chat</Filter>
+      <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
     <ClInclude Include="Chat\chatChannel.h">
-      <Filter>Chat</Filter>
+      <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
     <ClInclude Include="Chat\chatHandlers.h">
-      <Filter>Chat</Filter>
+      <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
     <ClInclude Include="Chat\chatMain.h">
-      <Filter>Chat</Filter>
+      <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
     <ClInclude Include="Chat\chatSocket.h">
-      <Filter>Chat</Filter>
+      <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
     <ClInclude Include="darray.h">
-      <Filter>Chat</Filter>
+      <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
     <ClInclude Include="hashtable.h">
-      <Filter>Chat</Filter>
+      <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
     <ClInclude Include="md5.h">
-      <Filter>Chat</Filter>
+      <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
     <ClInclude Include="nonport.h">
-      <Filter>Chat</Filter>
+      <Filter>Chat\Chat Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Chat\chat.h">
+      <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -39,7 +39,7 @@
 #include "EinfoClass.h"
 
 #ifdef _USE3D
-#include "mCamera.h"
+#include "..\3DLIB\gMotor\mCamera.h"
 #include "Scape3D.h"
 extern Camera CAM;
 #endif // _USE3D
