@@ -72,7 +72,7 @@ bool xLoadHeader(ResFile f1){
 extern HGLOBAL PTR_LAND;
 #endif
 void SaveSurface(ResFile f1){
-	word i='FRUS';
+	int i='FRUS';
 	RBlockWrite(f1,&i,4);
 	i=4+(MaxTH+1)*MaxTH*2;
 	RBlockWrite(f1,&i,4);
@@ -100,7 +100,7 @@ void LoadLock(ResFile f1){
 	
 };
 void SaveLockNew(ResFile f1){
-	word i='1COL';
+	int i='1COL';
 	RBlockWrite(f1,&i,4);
 	i=4+4+4+((LockBars.NBars+UnLockBars.NBars)<<2);
 	RBlockWrite(f1,&i,4);
@@ -122,7 +122,7 @@ void LoadLockNew(ResFile f1){
 	UnLockBars.MaxBars=UnLockBars.NBars;
 };
 void SaveTiles(ResFile f1){
-	word i='ELIT';
+	int i='ELIT';
 	RBlockWrite(f1,&i,4);
 	i=4+(MaxTH+1)*MaxTH;
 	RBlockWrite(f1,&i,4);
@@ -159,7 +159,7 @@ void LoadTilesEx(ResFile f1){
 void SaveSect(ResFile f1){
 #ifndef _USE3D
 	if(SectMap){
-		word i='TCES';
+		int i='TCES';
 		RBlockWrite(f1,&i,4);
 		i=4+MaxSector*MaxTH*6;
 		RBlockWrite(f1,&i,4);
@@ -200,10 +200,10 @@ void SaveSprites(ResFile f1){
 	for(int i=0;i<MaxSprt;i++){
 		if(Sprites[i].Enabled)ns++;
 	};
-	word i='1ERT';
+	int i='1ERT';
 	RBlockWrite(f1,&i,4);
 	i=(ns*14)+8;
-	word j='GA';
+	int j='GA';
 	RBlockWrite(f1,&i,4);
 	RBlockWrite(f1,&ns,4);
 	for(int i=0;i<MaxSprt;i++){
@@ -312,7 +312,7 @@ void DeleteAllUnits(){
 	};
 };
 void SaveUnits(ResFile f1){
-	word i='TINU';
+	int i='TINU';
 	RBlockWrite(f1,&i,4);
 	int NU=0;
 	for(int i=0;i<ULIMIT;i++){
@@ -342,7 +342,7 @@ void SaveUnits(ResFile f1){
 	};
 };
 void SaveUnits2(ResFile f1){
-	word i='2INU';
+	int i='2INU';
 	RBlockWrite(f1,&i,4);
 	int NU=0;
 	for(int i=0;i<ULIMIT;i++){
@@ -374,7 +374,7 @@ void SaveUnits2(ResFile f1){
 	};
 };
 void SaveUnits3(ResFile f1){
-	word i='3INU';
+	int i='3INU';
 	RBlockWrite(f1,&i,4);
 	int NU=0;
 	for(int i=0;i<ULIMIT;i++){
@@ -660,7 +660,7 @@ void TestUnits3(ResFile f1){
 	};
 };
 void SaveNewWalls(ResFile f1){
-	word i='LLAW';
+	int i='LLAW';
 	RBlockWrite(f1,&i,4);
 	//calculating the size of data
 	int dsize=8;
@@ -741,7 +741,7 @@ void LoadNewWalls(ResFile f1){
 };
 
 void SaveNewWallsV1(ResFile f1){
-	word i='1LAW';
+	int i='1LAW';
 	RBlockWrite(f1,&i,4);
 	//calculating the size of data
 	int dsize=8;
@@ -827,7 +827,7 @@ void LoadNewWallsV1(ResFile f1){
 	};
 };
 void SaveNewWallsV2(ResFile f1){
-	word i='2LAW';
+	int i='2LAW';
 	RBlockWrite(f1,&i,4);
 	//calculating the size of data
 	int dsize=8;
@@ -940,7 +940,7 @@ void LoadNewWallsV2(ResFile f1){
 };
 void SaveGates(ResFile f1){
 	if(!NGates)return;
-	word i='1TAG';
+	int i='1TAG';
 	RBlockWrite(f1,&i,4);
 	i=12+NGates*sizeof Gate;
 	RBlockWrite(f1,&i,4);
@@ -956,7 +956,7 @@ void LoadGates(ResFile f1){
 };
 extern byte* WaterBright;
 void SaveWaterCost(ResFile f1){
-	word i='2AES';
+	int i='2AES';
 	RBlockWrite(f1,&i,4);
 	int Lx=msx+2;
 	int Ly=msy+2;
@@ -986,7 +986,7 @@ void LoadWaterCost(ResFile f1){
 };
 extern int RES[8][8];
 void SaveRES(ResFile f1){
-	word i='USER';
+	int i='USER';
 	RBlockWrite(f1,&i,4);
 	i=sizeof(RES)+4;
 	RBlockWrite(f1,&i,4);
@@ -1014,7 +1014,7 @@ void LoadRES(ResFile f1){
 };
 
 void SaveZonesAndGroups(ResFile f1){
-	word i='1NOZ';
+	int i='1NOZ';
 	RBlockWrite(f1,&i,4);
 	int sz=4+8+NAZones*(sizeof ActiveZone)+NAGroups*(sizeof ActiveGroup);
 	for(int i=0;i<NAZones;i++){
@@ -1106,7 +1106,7 @@ void LoadZonesAndGroups(ResFile f1){
 };
 extern City CITY[8];
 void SaveFormations(ResFile f1){
-	word i='MROF';
+	int i='MROF';
 	RBlockWrite(f1,&i,4);
 	int sz=4+4;
 	int NB=0;
@@ -1263,7 +1263,7 @@ void LoadFormations(ResFile f1){
 	};
 };
 void SaveFormationsNew(ResFile f1){
-	word i='1ROF';
+	int i='1ROF';
 	RBlockWrite(f1,&i,4);
 	int sz=4+4;
 	int NB=0;
@@ -1584,7 +1584,7 @@ void LoadFormationsNewC2(ResFile f1){
 #endif //COSSACKS2
 };
 void SaveDLL(ResFile f1){
-	word i='LLD.';
+	int i='LLD.';
 	RBlockWrite(f1,&i,4);
 	i=4+200;
 	RBlockWrite(f1,&i,4);
@@ -1597,7 +1597,7 @@ extern int RM_LandType;
 extern int RM_Resstart;
 extern int RM_Restot;
 void SaveAIParam(ResFile f1){
-	word i='AIIA';
+	int i='AIIA';
 	RBlockWrite(f1,&i,4);
 	i=4+12;
 	RBlockWrite(f1,&i,4);
@@ -1611,7 +1611,7 @@ void LoadAIParam(ResFile f1){
 	RBlockRead(f1,&RM_Restot,4);
 };
 void CloseMap(ResFile f1){
-	word i='MDNE';
+	int i='MDNE';
 	RBlockWrite(f1,&i,4);
 	RClose(f1);
 };
@@ -1641,7 +1641,7 @@ bool GetPreviewName(char* Name,char* ccc){
 void SavePreview(ResFile f1){
 	byte* Preview=znew(byte,PREVIEWLX*PREVIEWLY);
 	CreateMapPreview(Preview,PREVIEWLX,PREVIEWLY);
-	word i='1EIV';
+	int i='1EIV';
 	RBlockWrite(f1,&i,4);
 	i=4+PREVIEWLX*PREVIEWLY;
 	RBlockWrite(f1,&i,4);
@@ -1688,7 +1688,7 @@ extern int PeaceTimeStage;
 int GetPixDataToSave(byte** ptr);
 void SetPixDataFromSave(byte* ptr);
 void SavePixData(ResFile f1){
-	word i='PIXD';
+	int i='PIXD';
 	RBlockWrite(f1,&i,4);
 	byte* ptr;
 	int sz=GetPixDataToSave(&ptr);
@@ -1710,7 +1710,7 @@ void LoadPixData(ResFile f1){
 int SavePointTexInfo(ResFile F);
 void LoadPointTexInfo(ResFile F);
 void SaveGroundData(ResFile F){
-	word i='GROU';
+	int i='GROU';
 	RBlockWrite(F,&i,4);
 	SavePointTexInfo(F);
 };
@@ -1719,7 +1719,7 @@ void LoadGroundData(ResFile F){
 };
 void SavePeaceTimeInfo(ResFile f1){
 	if(NatDeals){
-		word i='PEAC';
+		int i='PEAC';
 		RBlockWrite(f1,&i,4);
 		int sz=4+NATLX*NATLX+4+8+3;
 		RBlockWrite(f1,&sz,4);
@@ -1738,7 +1738,7 @@ void SavePeaceTimeInfo(ResFile f1){
 extern int RivNX;
 extern byte* RivVol;
 void SaveRivers(ResFile f1){
-	word i='1VIR';
+	int i='1VIR';
 	RBlockWrite(f1,&i,4);
 	i=RivNX*RivNX*2+4;
 	RBlockWrite(f1,&i,4);

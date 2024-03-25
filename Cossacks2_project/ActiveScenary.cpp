@@ -5005,7 +5005,7 @@ void MissPack::LoadMissions(){
 				SM->MapName=znew(char,strlen(MapName)+1);
 				strcpy(SM->MapName,MapName);
 				SM->Description=znew(char,strlen(MissDesc)+1);
-				strcpy(SM->Description,MissDesc);
+                strcpy(SM->Description,MissDesc);
 				MissLoad=true;
 				ReadWinString(F,MissDesc,256);
 				int z=sscanf(MissDesc,"%d",&SM->NIntro);
@@ -5288,53 +5288,53 @@ WarPack::WarPack(){
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->ID=znew(char,strlen(ccc)+1);
-			strcpy(BTL->ID,ccc);	
+			strcpy(BTL->ID,ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->Map=znew(char,strlen(ccc)+1);
-			strcpy(BTL->Map,ccc);
+            strcpy(BTL->Map,ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->Text=znew(char,strlen(ccc)+1);
-			strcpy(BTL->Text,ccc);
+            strcpy(BTL->Text,ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->Brief=znew(char,strlen(ccc)+1);
-			strcpy(BTL->Brief,ccc);
+            strcpy(BTL->Brief,ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->BigMap=znew(char,strlen(ccc)+1);
-			strcpy(BTL->BigMap,ccc);
+            strcpy(BTL->BigMap,ccc);
 
 			z=Gscanf(f,"%s",ccc);
 			if(z!=1)InvBatt();
 			BTL->MiniMap=znew(char,strlen(ccc)+1);
-			strcpy(BTL->MiniMap,ccc);
+            strcpy(BTL->MiniMap,ccc);
 
 			NLine(f);
 			ReadWinString(f,ccc,200);
 			BTL->BigHeader=znew(char,strlen(ccc)+1);
-			strcpy(BTL->BigHeader,ccc);
+            strcpy(BTL->BigHeader,ccc);
 
 			ReadWinString(f,ccc,200);
 			BTL->Date=znew(char,strlen(ccc)+1);
-			strcpy(BTL->Date,ccc);
+            strcpy(BTL->Date,ccc);
 
 			ReadWinString(f,ccc,200);
 			BTL->SmallHeader=znew(char,strlen(ccc)+1);
-			strcpy(BTL->SmallHeader,ccc);
+            strcpy(BTL->SmallHeader,ccc);
 			
 			ReadWinString(f,ccc,200);
 			BTL->RedUnits=znew(char,strlen(ccc)+1);
-			strcpy(BTL->RedUnits,ccc);
+            strcpy(BTL->RedUnits,ccc);
 
 			ReadWinString(f,ccc,200);
 			BTL->BlueUnits=znew(char,strlen(ccc)+1);
-			strcpy(BTL->BlueUnits,ccc);
+            strcpy(BTL->BlueUnits,ccc);
 
 			z=Gscanf(f,"%d",&Battles[i].NHints);
 			if(z!=1)InvBatt();

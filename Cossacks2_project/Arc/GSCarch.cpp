@@ -149,7 +149,7 @@ LPGSCfile CGSCarch::GetFileHandle(LPCSTR lpcsFileName)
 
 	DWORD HASH=isiCalcHash(sUpFileName);
 
-	for(int i=0;i<m_Header->m_Entries;i++){
+	for( i=0;i<m_Header->m_Entries;i++){
 		pFAT=(TGSCarchFAT*)(LPBYTE(m_FAT)+i*sizeof(TGSCarchFAT));
 		if(pFAT->m_Hash==HASH)
 			if(!strcmp(LPCSTR(pFAT->m_FileName),sUpFileName)){
@@ -236,7 +236,7 @@ LPGSCFindData CGSCarch::FindFile(LPCSTR lpcsMask)
 	strcpy(pFindData->m_Mask,sUpMask);
 	pFindData->m_Found=-1;
 
-	for(int i=0;i<m_Header->m_Entries;i++){
+	for( i=0;i<m_Header->m_Entries;i++){
 		pFAT=(TGSCarchFAT*)(LPBYTE(m_FAT)+i*sizeof(TGSCarchFAT));
 		if(isiMatchesMask(LPSTR(pFAT->m_FileName),sUpMask)){
 			lpsDelim=strrchr(LPSTR(pFAT->m_FileName),'\\');

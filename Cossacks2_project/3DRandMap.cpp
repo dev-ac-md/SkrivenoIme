@@ -1467,7 +1467,7 @@ void CreateMapByName(char* Name){
 			do{
 				z=Gscanf(F,"%d%d%s",&n1,&n2,ccc);
 				if(z==3){
-					if(n1==ADDSH&&n2==Mount)strcpy(CurTerrName,ccc);
+                    if(n1==ADDSH&&n2==Mount)strcpy(CurTerrName,ccc);
 				};
 			}while(z==3);
 			Gclose(F);
@@ -2191,7 +2191,7 @@ void RM_SaveObj(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 			int y=(OB->RealY>>5)-OB->RZ;
 			if(x>x0&&y>y0&&x<x0+Lx&&y<y0+Ly){
 				memset(ONAME,0,31);
-				strcpy(ONAME,OB->Ref.General->MonsterID);
+                strcpy(ONAME,OB->Ref.General->MonsterID);
 				int xx=(OB->RealX>>4)-xc;
 				RBlockWrite(F,&xx,4);
 				xx=(OB->RealY>>4)-yc;
@@ -2296,7 +2296,7 @@ void RM_SaveZonesAndGroups(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 		};
 	};
 	if(NAG||NAZ){
-		word i='ENOZ';
+		int i='ENOZ';
 		RBlockWrite(F,&i,4);
 		i=0;
 		RBlockWrite(F,&i,4);
@@ -2472,7 +2472,7 @@ void RM_SaveLock(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 			NU++;
 		};
 	};
-	word i='KCOL';
+	int i='KCOL';
 	RBlockWrite(F,&i,4);
 	i=16+2*(NU+NL);
 	RBlockWrite(F,&i,4);
@@ -2607,7 +2607,7 @@ void RM_Save(char* Name,int x0,int y0,int x1,int y1){
 	if(F!=INVALID_HANDLE_VALUE){
 		int kx=-1000;
 		int ky;
-		word i='PMAS';
+		int i='PMAS';
 		RBlockWrite(F,&i,4);
 		RM_SaveVertices(F,x0,y0,x1-x0,y1-y0,&kx,&ky);
 		if(kx!=-1000){
@@ -2938,7 +2938,7 @@ void ProcessRM_LoadEx(int x,int y,char* Name){
 	TexPieceMode=false;
 
 	ImmVis=true;
-	strcpy(RN_FName,Name);
+    strcpy(RN_FName,Name);
 	DelExt();
 	char cc[128];
 	sprintf(cc,"UserPieces\\%s.smp",RN_FName);
@@ -3102,7 +3102,7 @@ void GenerateByStyle(char* Style,bool LIMIT){
 								Names=(char**)realloc(Names,MaxNames<<2);
 							};
 							Names[NNames]=znew(char,strlen(cc1)+1);
-							strcpy(Names[NNames],cc1);
+                            strcpy(Names[NNames],cc1);
 							NNames++;
 						};
 					}while(q==1);
@@ -3147,7 +3147,7 @@ void GenerateInPoints(char* Piece,int* ObjX,int* ObjY,int NObj,int NATT){
 					Names=(char**)realloc(Names,MaxNames<<2);
 				};
 				Names[NNamesXX]=znew(char,strlen(cc1)+1);
-				strcpy(Names[NNamesXX],cc1);
+                strcpy(Names[NNamesXX],cc1);
 				NNamesXX++;
 			};
 		}while(q==1);
@@ -3669,12 +3669,12 @@ int LastStageTime;
 //SQPicture GPANEL;
 void SetupInfMessage(char* Header){
 	//if(!GPANEL.PicPtr)GPANEL.LoadPicture("y288x128.bpx");
-	strcpy(InfMessage,Header);
+    strcpy(InfMessage,Header);
 	InitInfTime=GetTickCount();
 };
 
 void SetNextInfStage(char* Message){
-	strcpy(CurMessage,Message);
+    strcpy(CurMessage,Message);
 	LastStageTime=GetTickCount();
 };
 extern int RealLx;
@@ -4095,7 +4095,7 @@ void PieceList::Load(char* Name){
 					Names=(char**)realloc(Names,MaxNames<<2);
 				};
 				Names[NNames]=znew(char,strlen(cc1)+1);
-				strcpy(Names[NNames],cc1);
+                strcpy(Names[NNames],cc1);
 				NNames++;
 			};
 		}while(q==1);
@@ -4626,7 +4626,7 @@ void RandomMapDesc::Load(char* name){
 			if(z!=4)ERRMP(name,"MINES");
 			char* ust=GetTextByID(cc);
 			MINES[p].Name=znew(char,strlen(ust)+1);
-			strcpy(MINES[p].Name,ust);
+            strcpy(MINES[p].Name,ust);
 			MINES[p].Ng=n1;
 			MINES[p].Ni=n2;
 			MINES[p].Nc=n3;
@@ -4641,7 +4641,7 @@ void RandomMapDesc::Load(char* name){
 			if(z!=2)ERRMP(name,"STARTRES");
 			memset(RES[p].RES,0,sizeof RES[p].RES);
 			RES[p].Name=znew(char,strlen(ust)+1);
-			strcpy(RES[p].Name,ust);
+            strcpy(RES[p].Name,ust);
 			for(int q=0;q<Nr;q++){
 				int n1;
 				z=Gscanf(F,"%d",&n1);
@@ -4658,7 +4658,7 @@ void RandomMapDesc::Load(char* name){
 			//normstr(cc);
 			if(z!=1)ERRMP(name,"RELIEF");
 			Relief[p]=znew(char,strlen(ust)+1);
-			strcpy(Relief[p],ust);
+            strcpy(Relief[p],ust);
 		};
 		z=Gscanf(F,"%d%d",&NSTY,&STY_DEF);
 		if(z!=2)ERRMP(name,"STYLES");
@@ -4674,10 +4674,10 @@ void RandomMapDesc::Load(char* name){
 			};
 			char* ust=GetTextByID(cc);
 			SR->Name=znew(char,strlen(ust)+1);
-			strcpy(SR->Name,ust);
+            strcpy(SR->Name,ust);
 			Gscanf(F,"%s",cc);
 			SR->Style=znew(char,strlen(cc)+1);
-			strcpy(SR->Style,cc);
+            strcpy(SR->Style,cc);
 			z=Gscanf(F,"%d",&SR->NPl);
 			SR->Players=new PlRec[SR->NPl];
 			SR->AI_Style=aitp;
@@ -4685,7 +4685,7 @@ void RandomMapDesc::Load(char* name){
 				int n1;
 				Gscanf(F,"%d%s",&n1,cc);
 				SR->Players[q].name=znew(char,strlen(cc)+1);
-				strcpy(SR->Players[q].name,cc);
+                strcpy(SR->Players[q].name,cc);
 				SR->Players[q].NPlayers=n1;
 			};
 		};
@@ -5395,8 +5395,8 @@ void SamplesSet::NewSet(char* name){
 	for(int i=0;i<NSmp;i++)if(!_stricmp(SSET[i].Name,name))return;
 	SSET=(SampleSrc*)realloc(SSET,(NSmp+1)*sizeof SampleSrc);
 	SampleSrc* SS=SSET+NSmp;
-	strcpy(SS->Name,name);
-	strcpy(CurrentSet,name);
+    strcpy(SS->Name,name);
+    strcpy(CurrentSet,name);
 	SS->NRoots=0;
 	SS->ROOT=NULL;
 	SS->Npt=0;
@@ -5406,7 +5406,7 @@ void SamplesSet::NewSet(char* name){
 };
 void SamplesSet::SetActiveSet(char* name){
 	//for(int i=0;i<NSmp;i++)if(!_stricmp(SSET[i].Name,name))return;
-	strcpy(CurrentSet,name);
+    strcpy(CurrentSet,name);
 };
 SamplesSet SAMSET;
 bool SamSetMode=0;
@@ -5539,7 +5539,7 @@ void SaveSMSInMap(ResFile F){
 		SampleSrc* SS=SAMSET.SSET+i;
 		sz+=32+4+4+4*SS->Npt+SS->NRoots*sizeof(SampleRoot);
 	};
-	word i='SMSP';
+	int i='SMSP';
 	RBlockWrite(F,&i,4);
 	RBlockWrite(F,&sz,4);
 	RBlockWrite(F,&SAMSET.NSmp,4);
@@ -6192,7 +6192,7 @@ void LinkSys::AddStamp(char* Name,int x,int y){
 		return;
 	};
 	STM=(SampleStamp*)realloc(STM,(NStm+1)*sizeof SampleStamp);
-	strcpy(STM[NStm].Name,Name);
+    strcpy(STM[NStm].Name,Name);
 	STM[NStm].Coor=znew(int,8*32);
 	STM[NStm].NS=1;
 	STM[NStm].maxS=32;
