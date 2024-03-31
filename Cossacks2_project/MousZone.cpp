@@ -33,7 +33,7 @@ void InitZones(){
 	};
 };
 int CreateRZone(int x,int y,int lx,int ly,HandlePro* HPro,HandlePro* RHPro,int Index,char* Hint){
-	int i = 0;
+	int i;
 	for(i=0;i<NZones;i++){
 		if(Zones[i].Index==-1)break;
 	};
@@ -59,7 +59,7 @@ int CreateRZone(int x,int y,int lx,int ly,HandlePro* HPro,HandlePro* RHPro,int I
 	return -1;
 };
 int CreateRZone(int x,int y,int lx,int ly,HandlePro* HPro,HandlePro* RHPro,int Index,char* Hint,char* HintLo){
-	int i = 0;
+	int i;
 	for(i=0;i<NZones;i++){
 		if(Zones[i].Index==-1)break;
 	};
@@ -97,7 +97,7 @@ int CreateRZone(int x,int y,int lx,int ly,HandlePro* HPro,HandlePro* RHPro,int I
 	return -1;
 };
 int CreateZone(int x,int y,int lx,int ly,HandlePro* HPro,int Index,char* Hint){
-	int i = 0;
+	int i;
 	for(i=0;i<NZones;i++){
 		if(Zones[i].Index==-1)break;
 	};
@@ -134,7 +134,7 @@ void AssignKeys(int i,byte Scan,byte State){
 	};
 };
 int CreateZone(int x,int y,int lx,int ly,HandlePro* HPro,int Index,char* Hint,char* HintLo){
-	int i = 0;
+	int i;
 	for(i=0;i<NZones;i++){
 		if(Zones[i].Index==-1)break;
 	};
@@ -235,14 +235,14 @@ bool CheckSpritePressed(int sp){
 void ControlZones(){
 	MouseOverZone=0;
 	if(LockMouse)return;
-	int i=0;
+	int i;
 	MouseZone* Z;
 	if(!Lpressed)
-		for(int i=0;i<NZones;i++)Zones[i].Pressed=CheckZonePressed(i);
-	for(int i=0;i<NZones;i++){
-		Z=&(Zones[i]);
-		if((Z->Index!=-1&&mouseX>=Z->x&&mouseX<=Z->x1&&
-			mouseY>=Z->y&&mouseY<=Z->y1)||Z->Pressed)break;
+		for( i=0;i<NZones;i++)Zones[i].Pressed=CheckZonePressed(i);
+	    for( i=0;i<NZones;i++){
+		    Z=&(Zones[i]);
+		    if((Z->Index!=-1&&mouseX>=Z->x&&mouseX<=Z->x1&&
+			    mouseY>=Z->y&&mouseY<=Z->y1)||Z->Pressed)break;
 	};
 	if(i<NZones){
 		MouseOverZone=1;
@@ -263,7 +263,7 @@ void ControlZones(){
 			if(Z->Pressed==2)Z->Pressed=0;
 		};
 	};
-	for(int i=0;i<NZones;i++)Zones[i].Pressed=0;
+	for( i=0;i<NZones;i++)Zones[i].Pressed=0;
 	memset(ScanPressed,0,256);
 };
 void DeleteZone(int i){

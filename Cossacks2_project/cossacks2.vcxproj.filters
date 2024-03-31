@@ -1048,6 +1048,12 @@
     <Library Include="..\bin\IntExplorer.lib">
       <Filter>LIB</Filter>
     </Library>
+    <Library Include="..\bin\gMotor.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="..\bin\LF_Server.lib">
+      <Filter>LIB</Filter>
+    </Library>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bat\all.bat">

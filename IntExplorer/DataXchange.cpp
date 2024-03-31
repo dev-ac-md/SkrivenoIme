@@ -654,7 +654,7 @@ void exec_LW_file(int Np,char** par){
 						OSW->Result=(char*)realloc(OSW->Result,siz+sz+1);
 						if(siz)memcpy(OSW->Result,Data,siz);
 						if(Data)free(Data);
-						memcpy(OSW->Result+siz,NEWST,sz);
+                        memcpy(OSW->Result + siz, NEWST, sz);
 						OSW->Result[sz+siz]=0;
 						strcpy(OSW->WinID,win);
 						OSW->EXP=SXP;
@@ -785,7 +785,7 @@ void exec_LW_mupdate(int Np,char** par,int* size){
 		sprintf(ccc,"Internet\\Cash\\%s.date",BIGMAP.Title);
 		FILE* F=fopen(ccc,"r");
 		if(F){
-			fscanf_s(F,"%u",&BIGMAP.UpdateData);
+			fscanf(F,"%u",&BIGMAP.UpdateData);
 			fclose(F);
 			sprintf(ccc,"GW|mupdate&%s\\00&%d\\00",BIGMAP.Title,BIGMAP.UpdateData);
 			SendSmartRequest(SXP,ccc);

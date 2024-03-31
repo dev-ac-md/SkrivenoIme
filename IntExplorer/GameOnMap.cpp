@@ -522,7 +522,8 @@ void OneMap::UpdateMapData(byte* Date){
 	//FILE* F1=fopen("Internet\\Cash\\map.log","a");
 	//fprintf(F1,"UPDATE: %d->%d (TOTAL: pts: %d  upd: %d)\n",StartDate,CurrentDate,NPT,NUP);
 	if(UpdateData==StartDate){
-		char ccc[256], i=0;
+		char ccc[256];
+        int i = 0;
 		sprintf(ccc,"Internet\\Cash\\%s.date",Title);
 		FILE* F=fopen(ccc,"w");
 		if(F){

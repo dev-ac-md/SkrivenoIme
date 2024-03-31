@@ -47,7 +47,7 @@ void CreateGamesList(ListBox* LB, ListBox* DT){
 	WIN32_FIND_DATA FD;
 	const int NList = 100;
 	WIN32_FIND_DATA FDL[NList];
-	int i,j=0;
+    int i = 0 , j = 0;
 	HANDLE HF=FindFirstFile("Save\\*.sav",&FD);
 	if(HF!=INVALID_HANDLE_VALUE){
 		i=0;

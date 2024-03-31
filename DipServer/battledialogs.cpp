@@ -64,13 +64,13 @@ void HandleBattleCml(char* com,char** params,int npr,ParsedRQ* Result){
 			bool find=false;
 			for(int u=0;u<UT->NUpg;u++)if(UT->Upg[u]==Data[2]){
 				find=true;
-				itoa(u,buf,10);
+				_itoa(u,buf,10);
 				STR.Replace0("<UID>",buf);
 				if(*check) STR.Replace0("<STATE>","1");
 					else STR.Replace0("<STATE>","0");
 			}
 			if(find){
-				itoa(t,buf,10);
+				_itoa(t,buf,10);
 				STR.Replace0("<TYPE>",buf);
 				STR.WriteToFile("Battle\\tm2.cml");
 				ActivateDipDialog("LW_file&Battle/timer.cml");
@@ -126,7 +126,7 @@ int CBattle::ShowTimer(){
 		return false;
 	}else{
 		char newval[100];
-		itoa(val/1000,newval,10);
+		_itoa(val/1000,newval,10);
 		//SXP_SetVar(1,var,newval);
 	}
 	return val;
@@ -463,13 +463,13 @@ void CBattle::MakeDialog(bool frame){
 		byte CurColor=GetPlayerColor(i);
 		DString TMP=PLR.str;
 		 
-		itoa(i,buf,10);
+		_itoa(i,buf,10);
 		TMP.Replace0("<ID>",buf);
 
-		itoa(CurColor,buf,10);
+		_itoa(CurColor,buf,10);
 		TMP.Replace0("<COLOR>",buf);
 
-		itoa(ply+i*ph,buf,10);
+		_itoa(ply+i*ph,buf,10);
 		TMP.Replace0("<YCOOR>",buf);
 		
 		CNation* PNat=Nat+CurColor;
@@ -524,14 +524,14 @@ void CBattle::MakeDialog(bool frame){
 
 				sprintf(buf,"_WD_%d",wk);
 				TMP.Replace0("<ID>",buf);
-				itoa(GetWeaponIcon(wk),buf,10);
+				_itoa(GetWeaponIcon(wk),buf,10);
 				TMP.Replace0("<Icon>",buf);
-				itoa(md,buf,10);
+				_itoa(md,buf,10);
 				TMP.Replace0("<Dam>",buf);
 				
-				itoa(x0+x+n*xx,buf,10);
+				_itoa(x0+x+n*xx,buf,10);
 				TMP.Replace0("<XCOOR>",buf);
-				itoa(y0,buf,10);
+				_itoa(y0,buf,10);
 				TMP.Replace0("<YCOOR>",buf);
 
 				CML+=TMP;
@@ -541,14 +541,14 @@ void CBattle::MakeDialog(bool frame){
 
 				sprintf(buf,"_WR_%d",wk);
 				TMP.Replace0("<ID>",buf);
-				itoa(24,buf,10);
+				_itoa(24,buf,10);
 				TMP.Replace0("<Icon>",buf);
-				itoa(UT->CurR2[i],buf,10);
+				_itoa(UT->CurR2[i],buf,10);
 				TMP.Replace0("<Dam>",buf);
 				
-				itoa(x0+x+n*xx,buf,10);
+				_itoa(x0+x+n*xx,buf,10);
 				TMP.Replace0("<XCOOR>",buf);
-				itoa(y0+dy,buf,10);
+				_itoa(y0+dy,buf,10);
 				TMP.Replace0("<YCOOR>",buf);
 				
 				CML+=TMP;
@@ -558,14 +558,14 @@ void CBattle::MakeDialog(bool frame){
 
 				sprintf(buf,"_WD_%d",wk);
 				TMP.Replace0("<ID>",buf);
-				itoa(23,buf,10);
+				_itoa(23,buf,10);
 				TMP.Replace0("<Icon>",buf);
-				itoa(UT->CurAPause[i],buf,10);
+				_itoa(UT->CurAPause[i],buf,10);
 				TMP.Replace0("<Dam>",buf);
 				
-				itoa(x0+x+n*xx,buf,10);
+				_itoa(x0+x+n*xx,buf,10);
 				TMP.Replace0("<XCOOR>",buf);
-				itoa(y0+2*dy,buf,10);
+				_itoa(y0+2*dy,buf,10);
 				TMP.Replace0("<YCOOR>",buf);
 				
 				CML+=TMP;
@@ -593,14 +593,14 @@ void CBattle::MakeDialog(bool frame){
 			DString TMP(VAL.str);
 
 			TMP.Replace0("<ID>","_AL_");
-			itoa(13,buf,10);
+			_itoa(13,buf,10);
 			TMP.Replace0("<Icon>",buf);
-			itoa(sh,buf,10);
+			_itoa(sh,buf,10);
 			TMP.Replace0("<Dam>",buf);
 			
-			itoa(x0+x+n*xx,buf,10);
+			_itoa(x0+x+n*xx,buf,10);
 			TMP.Replace0("<XCOOR>",buf);
-			itoa(y0,buf,10);
+			_itoa(y0,buf,10);
 			TMP.Replace0("<YCOOR>",buf);
 
 			n++;
@@ -612,9 +612,9 @@ void CBattle::MakeDialog(bool frame){
 		DString TMP=CTXT.str;				
 		TMP.Replace0("<BOX>","%IBX");
 		TMP.Replace0("<XCOOR>","45");
-		itoa(y-5,buf,10);
+		_itoa(y-5,buf,10);
 		TMP.Replace0("<YCOOR>",buf);
-		itoa(UT->CurLife,buf,10);
+		_itoa(UT->CurLife,buf,10);
 		TMP.Replace0("<Text>",buf);
 		CML+=TMP;
 
@@ -635,14 +635,14 @@ void CBattle::MakeDialog(bool frame){
 
 				sprintf(buf,"_PR_%d",wk);
 				TMP.Replace0("<ID>",buf);
-				itoa(GetProtectIcon(wk),buf,10);
+				_itoa(GetProtectIcon(wk),buf,10);
 				TMP.Replace0("<Icon>",buf);
-				itoa(pr+sh,buf,10);
+				_itoa(pr+sh,buf,10);
 				TMP.Replace0("<Dam>",buf);
 				
-				itoa(x+(nn>>1)*xx,buf,10);
+				_itoa(x+(nn>>1)*xx,buf,10);
 				TMP.Replace0("<XCOOR>",buf);
-				itoa(yp+(nn&1)*dy,buf,10);
+				_itoa(yp+(nn&1)*dy,buf,10);
 				TMP.Replace0("<YCOOR>",buf);
 				nn++;
 
@@ -681,23 +681,23 @@ void CBattle::MakeDialog(bool frame){
 		
 		{
 			TMP=UTP.str;
-			itoa(t,buf,10); TMP.Replace0("<ID>",buf);
-			itoa(yt,buf,10); TMP.Replace0("<YCOOR>",buf);
+			_itoa(t,buf,10); TMP.Replace0("<ID>",buf);
+			_itoa(yt,buf,10); TMP.Replace0("<YCOOR>",buf);
 			char* Mess=GetUnitMessage(NIndex);
 			if(Mess){
 				TMP.Replace0("<UTInfo>",Mess);
 				TMP.Replace0("<HINT>",Mess);
 			}
-			itoa(GetUnitIcon(NIndex),buf,10); TMP.Replace0("<UTIcon>",buf);
+			_itoa(GetUnitIcon(NIndex),buf,10); TMP.Replace0("<UTIcon>",buf);
 			CML+=TMP;		
 		}
 		if(t==PInfo->SelUT){
 			TMP=UTS.str;
-			itoa(yt,buf,10); TMP.Replace0("<YCOOR>",buf);
+			_itoa(yt,buf,10); TMP.Replace0("<YCOOR>",buf);
 			CML+=TMP;
 
 			TMP=UTA.str;
-			itoa(t,buf,10); TMP.Replace0("<ID>",buf);
+			_itoa(t,buf,10); TMP.Replace0("<ID>",buf);
 			char* Mess=GetUnitMessage(NIndex);
 			if(Mess) TMP.Replace0("<HINT>",Mess);
 
@@ -706,15 +706,15 @@ void CBattle::MakeDialog(bool frame){
 			if(file){
 				bool can=DetCannon(UT->NIndex);
 				sprintf(buf,"%s",file); TMP.Replace0("<FILE>",buf);
-				itoa(xc+35,buf,10); TMP.Replace0("<X>",buf);
-				itoa(can?yc+93:yc+70,buf,10); TMP.Replace0("<Y>",buf);						
-				itoa(can?120:80,buf,10); TMP.Replace0("<W>",buf);
+				_itoa(xc+35,buf,10); TMP.Replace0("<X>",buf);
+				_itoa(can?yc+93:yc+70,buf,10); TMP.Replace0("<Y>",buf);						
+				_itoa(can?120:80,buf,10); TMP.Replace0("<W>",buf);
 			}
 
-			itoa(2,buf,10); TMP.Replace0("<STR>",buf);
-			itoa(2,buf,10); TMP.Replace0("<END>",buf);
-			itoa(2,buf,10); TMP.Replace0("<ASTR>",buf);
-			itoa(2,buf,10); TMP.Replace0("<AEND>",buf);
+			_itoa(2,buf,10); TMP.Replace0("<STR>",buf);
+			_itoa(2,buf,10); TMP.Replace0("<END>",buf);
+			_itoa(2,buf,10); TMP.Replace0("<ASTR>",buf);
+			_itoa(2,buf,10); TMP.Replace0("<AEND>",buf);
 			CML+=TMP;		
 			//yt+=h;
 		}
@@ -748,22 +748,22 @@ void CBattle::MakeDialog(bool frame){
 					TMP.Replace0("<CHECK>","0");
 				}
 				
-				itoa(t,buf,10);
+				_itoa(t,buf,10);
 				TMP.Replace0("<TYPE>",buf);
-				itoa(NUpg,buf,10);
+				_itoa(NUpg,buf,10);
 				TMP.Replace0("<UID>",buf);
-				itoa(UIndex,buf,10);
+				_itoa(UIndex,buf,10);
 				TMP.Replace0("<GUID>",buf);
 				
 				GetUpgHint(NI,UIndex,buf);				
 				TMP.Replace0("<HINT>",buf);
 				
-				itoa(x+n*w,buf,10);
+				_itoa(x+n*w,buf,10);
 				TMP.Replace0("<XCOOR>",buf);
-				itoa(y,buf,10);
+				_itoa(y,buf,10);
 				TMP.Replace0("<YCOOR>",buf);
 
-				itoa(GetUpgradeIcon(UIndex),buf,10);
+				_itoa(GetUpgradeIcon(UIndex),buf,10);
 				TMP.Replace0("<UIcon>",buf);
 								
 				buf[0]=GetUpgLevel(UIndex);
@@ -792,7 +792,7 @@ void CBattle::MakeDialog(bool frame){
 				TMP=TXT.str;				
 				TMP.Replace0("<BOX>","%EBX");
 				TMP.Replace0("<XCOOR>","0");
-				itoa(y,buf,10);
+				_itoa(y,buf,10);
 				TMP.Replace0("<YCOOR>",buf);
 				TMP.Replace0("<Text>",ctg->Message);
 				CML+=TMP;
@@ -881,22 +881,22 @@ void CBattle::AddUpgToCml(DString& CML, char* ups, word UIndex, word NUpg, int x
 	}
 	
 	char buf[256];
-	itoa(PInfo->SelUT,buf,10);
+	_itoa(PInfo->SelUT,buf,10);
 	TMP.Replace0("<TYPE>",buf);
-	itoa(UIndex/*NUpg*/,buf,10);
+	_itoa(UIndex/*NUpg*/,buf,10);
 	TMP.Replace0("<UID>",buf);
-	itoa(UIndex,buf,10);
+	_itoa(UIndex,buf,10);
 	TMP.Replace0("<GUID>",buf);
 	
 	GetUpgHint(NI,UIndex,buf);				
 	TMP.Replace0("<HINT>",buf);
 	
-	itoa(x,buf,10);
+	_itoa(x,buf,10);
 	TMP.Replace0("<XCOOR>",buf);
-	itoa(y,buf,10);
+	_itoa(y,buf,10);
 	TMP.Replace0("<YCOOR>",buf);
 
-	itoa(GetUpgradeIcon(UIndex),buf,10);
+	_itoa(GetUpgradeIcon(UIndex),buf,10);
 	TMP.Replace0("<UIcon>",buf);
 					
 	buf[0]=GetUpgLevel(UIndex);

@@ -393,14 +393,14 @@ void ClipCursorToWindowArea()
 
     if (!InGame && !InEditor)
     {//Reset mouse locking in menues
-        ClipCursor(nullptr);
+        ClipCursor(NULL);
         return;
     }
 
     //Determine absolute coordinates of window client area
     RECT client_coords;
     GetClientRect(hwnd, &client_coords);
-    MapWindowPoints(hwnd, nullptr, (LPPOINT)&client_coords, 2);
+    MapWindowPoints(hwnd, NULL, (LPPOINT)&client_coords, 2);
 
     //Necessary for correct cursor capture
     //Using exact ClientRect causes cursor to freeze short of
@@ -644,9 +644,10 @@ void SaveBMP8(char* Name,int lx,int ly,byte* Data){
 	byte PAL[1024];
 	memset(PAL,0,1024);
 	char ccc[128];
+    int i = 0;
 	sprintf(ccc,"%d\\agew_1.pal",CurPalette);
 	ResFile f=RReset(ccc);
-	for(int i=0;i<256;i++){
+	for(i =0;i<256;i++){
 		int ofs=i<<2;
 		RBlockRead(f,PAL+ofs+2,1);
 		RBlockRead(f,PAL+ofs+1,1);
@@ -654,7 +655,7 @@ void SaveBMP8(char* Name,int lx,int ly,byte* Data){
 	};
 	RClose(f);
 	f=RRewrite(Name);
-	int i=0x4D42;
+	i=0x4D42;
 	RBlockWrite(f,&i,2);
 	i=lx*ly+1080;
 	RBlockWrite(f,&i,4);
@@ -678,7 +679,7 @@ void SaveBMP8(char* Name,int lx,int ly,byte* Data){
 	RBlockWrite(f,&i,4);
 	RBlockWrite(f,&i,4);
 	RBlockWrite(f,PAL,1024);
-	for(int i=0;i<LY;i++){
+	for( i=0;i<LY;i++){
 		char* pos=(char*)(int(Data)+(ly-i-1)*lx);
 		RBlockWrite(f,pos,lx);
 	};

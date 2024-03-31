@@ -1272,7 +1272,7 @@ void LoadObjects(SaveBuf* SB){
 	};
 };
 void SaveSelection(SaveBuf* SB){
-	word i='SELI';
+	int i='SELI';
 	xBlockWrite(SB,&i,4);
 	SAVMES(SB," SELECTINFO");
 	for(int i=0;i<80;i++){
@@ -1325,7 +1325,7 @@ void LoadSelection(SaveBuf* SB){
 	};
 };
 void SaveWalls(SaveBuf* SB){
-    word i='LLAW';
+    int i='LLAW';
 	xBlockWrite(SB,&i,4);
 	SAVMES(SB," WALLSINFO");
 	xBlockWrite(SB,&WSys.NClusters,4);
@@ -1419,14 +1419,14 @@ void LoadWalls(SaveBuf* SB){
 //extern Nation WEP;
 #define MaxExpl 8192
 void SaveAnmObj(SaveBuf* SB){
-	word i='OMNA';
+	int i='OMNA';
 	xBlockWrite(SB,&i,4);
 	int NExplosions=0;
-	for(int i=0;i<MaxExpl;i++){
+	for( i=0;i<MaxExpl;i++){
 		if(EUsage[i])NExplosions++;
 	};
 	xBlockWrite(SB,&NExplosions,4);
-	for(int i=0;i<MaxExpl;i++){
+	for( i=0;i<MaxExpl;i++){
 		if(EUsage[i]){
 			xBlockWrite(SB,&i,2);
 			AnmObject NANI=*(GAnm[i]);
@@ -1460,13 +1460,13 @@ void LoadAnmObj(SaveBuf* SB){
 };
 extern int MAXSPR;
 void SaveSprites(SaveBuf* SB){
-	word i='IRPS';
+	int i='IRPS';
 	xBlockWrite(SB,&i,4);
 	int NSprt=0;
 	xBlockWrite(SB,&MAXSPR,4);
-	for(int i=0;i<MaxSprt;i++)if(Sprites[i].Enabled)NSprt++;
+	for( i=0;i<MaxSprt;i++)if(Sprites[i].Enabled)NSprt++;
 	xBlockWrite(SB,&NSprt,4);
-	for(int i=0;i<MaxSprt;i++){
+	for( i=0;i<MaxSprt;i++){
 		if(Sprites[i].Enabled){
 			xBlockWrite(SB,&i,4);
 			OneSprite OS=Sprites[i];
@@ -1491,9 +1491,9 @@ void SaveSprites(SaveBuf* SB){
 	};
 	//sprite references
 	NSprt=0;
-	for(int i=0;i<VAL_SPRSIZE;i++)if(NSpri[i])NSprt++;
+	for( i=0;i<VAL_SPRSIZE;i++)if(NSpri[i])NSprt++;
 	xBlockWrite(SB,&NSprt,4);
-	for(int i=0;i<VAL_SPRSIZE;i++)if(NSpri[i]){
+	for( i=0;i<VAL_SPRSIZE;i++)if(NSpri[i]){
 		xBlockWrite(SB,&i,4);
 		xBlockWrite(SB,&NSpri[i],1);
 		xBlockWrite(SB,SpRefs[i],int(NSpri[i])<<2);
@@ -1566,13 +1566,13 @@ void LoadSprites(SaveBuf* SB){
 	};
 };
 void Save3DBars(SaveBuf* SB){
-	word i='RAB3';
+	int i='RAB3';
 	xBlockWrite(SB,&i,4);
 	xBlockWrite(SB,&NBars,4);
 	int NB=0;
-	for(int i=0;i<NBars;i++)if(OBARS[i])NB++;
+	for( i=0;i<NBars;i++)if(OBARS[i])NB++;
 	xBlockWrite(SB,&NB,2);
-	for(int i=0;i<NBars;i++){
+	for( i=0;i<NBars;i++){
 		OneBar* ONB=OBARS[i];
 		if(ONB){
 			xBlockWrite(SB,&i,2);
@@ -1580,9 +1580,9 @@ void Save3DBars(SaveBuf* SB){
 		};
 	};
 	NB=0;
-	for(int i=0;i<B3SZ;i++)if(NObj3[i])NB++;
+	for( i=0;i<B3SZ;i++)if(NObj3[i])NB++;
 	xBlockWrite(SB,&NB,4);
-	for(int i=0;i<B3SZ;i++)if(NObj3[i]){
+	for( i=0;i<B3SZ;i++)if(NObj3[i]){
 		xBlockWrite(SB,&i,4);
 		xBlockWrite(SB,&NObj3[i],2);
 		xBlockWrite(SB,Obj3Map[i],NObj3[i]<<1);

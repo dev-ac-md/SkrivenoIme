@@ -392,7 +392,7 @@ void LockSurface(void)
 #ifdef COPYSCR
 	if ((dderr=lpDDSPrimary->Lock(NULL,&ddsd,
 							    DDLOCK_SURFACEMEMORYPTR|
-								DDLOCK_WAIT,NULL))!=DD_OK) DDError=true;//true ;
+								DDLOCK_WAIT,NULL))!=DD_OK) DDError=0;//true ;
 	DDLog("lpDDSPrimary->Lock:%d\n",dderr);
 	DDLog("Lock result:%d\n",dderr);
 	DDLog("ptr:%d pitch=%d ly=%d\n",ddsd.lpSurface,ddsd.lPitch,ddsd.dwHeight);
@@ -933,15 +933,15 @@ SDMOD:;
 }
 
 /*   Direct Draw palette loading*/
-/*int clrRed;
+int clrRed;
 int clrGreen;
 int clrBlue;
-int clrYello;*/
+int clrYello;
 
 void LoadPalette(LPCSTR lpFileName)
 {
 	if(!lpDD)return;
-	//AFile((char*)lpFileName);
+	AFile((char*)lpFileName);
 	if (window_mode) return;
 	if (DDError) return;
 	ResFile pf=RReset(lpFileName);
@@ -1015,10 +1015,10 @@ void LoadPalette(LPCSTR lpFileName)
 			
 		};
 	}
-	/*clrRed = 0xD0;
+	clrRed = 0xD0;
 	clrGreen=GetPaletteColor(0,255,0);
 	clrBlue=GetPaletteColor(0,0,255);
-	clrYello=GetPaletteColor(255,255,0);*/
+	clrYello=GetPaletteColor(255,255,0);
 }
 void CBar(int x,int y,int Lx,int Ly,byte c);
 void Susp(char* str){
@@ -1157,10 +1157,10 @@ void SlowLoadPalette(LPCSTR lpFileName)
 			}while(mul!=255);
 		};
 	}
-	/*clrRed = 0xD0;
+	clrRed = 0xD0;
 	clrGreen=GetPaletteColor(0,255,0);
 	clrBlue=GetPaletteColor(0,0,255);
-	clrYello=GetPaletteColor(255,255,0);*/
+	clrYello=GetPaletteColor(255,255,0);
 }
 CEXPORT
 void SlowUnLoadPalette(LPCSTR lpFileName)

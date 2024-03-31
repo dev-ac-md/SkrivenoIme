@@ -86,7 +86,7 @@ void UnlockSurface(void);
 /*
  * Getting then DC of the active (invisible) area of the screen
  */
-//HDC GetSDC(void);
+HDC GetSDC(void);
 //Sttting the palette
 CEXPORT
 void LoadPalette(LPCSTR lpFileName);

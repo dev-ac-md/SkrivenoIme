@@ -3976,7 +3976,7 @@ void SprGroup::LoadSprites(char* fname){
 		if(z!=2)IncPar(fname,0,"?");
 		NSpr=nl;
 		Items=xnew(nl,word);
-		for(int i=0;i<nl;i++)Items[i]=i;
+		for( i=0;i<nl;i++)Items[i]=i;
 		Dx=xnew(nl,short);
 		Dy=xnew(nl,short);				
 		Radius=xnew(nl,short);				
@@ -4047,7 +4047,7 @@ void SprGroup::LoadSprites(char* fname){
     		FileID=nr;
 			int spidx=0;
 			int gpidx=0;
-	    	for(int i=0;i<nl;i++){
+	    	for( i=0;i<nl;i++){
                 z=Gscanf(f1,"%s",gx);
                 if(gx[0]!=0&&gx[0]!='/'){
 					if(gx[0]=='#'){
@@ -4145,7 +4145,7 @@ void SprGroup::LoadSprites(char* fname){
 										ObjChar=(ObjCharacter*)realloc(ObjChar,nnew*sizeof ObjCharacter);
 										memset(ObjChar+NSpr,0,(nnew-NSpr)*sizeof ObjCharacter);
 										NSpr=nnew;
-										for(int i=N1;i<=N2;i++){
+										for( i=N1;i<=N2;i++){
 											Dx[spidx]=dx;
 		        							Dy[spidx]=dy;
 		    	    						Radius[spidx]=rr;
@@ -4472,7 +4472,7 @@ void SprGroup::LoadSprites(char* fname){
 						if(z!=1)IncPar(fn,0,"[AUTOBORN]");
 						ObjChar[z1].NBorn=parm1;
 						ObjChar[z1].BREF=xnew(parm1,BornRef);
-						for(int i=0;i<parm1;i++){
+						for( i=0;i<parm1;i++){
 							int dx,dy;
 							z=Gscanf(f1,"%s%d%d",gy,&dx,&dy);
 							if(z==3){
@@ -4497,7 +4497,7 @@ void SprGroup::LoadSprites(char* fname){
 						z=Gscanf(f1,"%d",&parm1);
 						if(z!=1)IncPar(fn,0,"[ANIMATE]");
 						nl=z1;
-						for(int i=0;i<parm1;i++){
+						for( i=0;i<parm1;i++){
 							z=Gscanf(f1,"%s",gy);
 							if(z==1){
 								int z2=GetIndexByName(gy);
@@ -7496,7 +7496,7 @@ void SmartTryToMove(OneObject* OB,byte NewDir,bool Dirc){
 		NewMonster* NMN=OB->newMons;
 		int mrot=NMN->MinRotator;
 		bool NeedToPush=false;
-		char dirr;
+		char dirr=0;
 		switch(OB->MoveStage){
 		case 0:
 			dirr=BestDir;
@@ -7597,7 +7597,7 @@ __forceinline void MotionHandler1(OneObject* OB){
 			int mrot=NMN->MinRotator;
 			bool NeedToPush=false;
 			if(abs(ddir)<=mrot){
-				byte dirr;
+				char dirr=0;
 				switch(OB->MoveStage){
 				case 0:
 					dirr=BestDir;
@@ -7761,7 +7761,7 @@ void MotionHandler5(OneObject* OB){
 			int mrot=NMN->MinRotator;
 			bool NeedToPush=false;
 			if(abs(ddir)<=mrot){
-				char dirr;
+				char dirr=0;
 				switch(OB->MoveStage){
 				case 0:
 					dirr=BestDir;
