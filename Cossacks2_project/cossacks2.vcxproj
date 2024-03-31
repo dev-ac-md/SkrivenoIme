@@ -112,7 +112,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>Default</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_MBCS;GSI_UNICODE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ShowIncludes>false</ShowIncludes>
@@ -123,8 +123,8 @@
       <ResourceOutputFileName>$(IntDir)%Script1.res</ResourceOutputFileName>
     </ResourceCompile>
     <Link>
-      <AdditionalOptions>/FIXED:NO /MAPINFO:EXPORTS /FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>msvcrt.lib;libcmtd.lib;dmcr.lib;commcore.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;oldnames.lib;dsound.lib;dxguid.lib;dplayx.lib;strmiids.lib;ddraw.lib;ichat.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;DipServer.lib;iChat.lib;IntExplorer.lib;LF_Server.lib;gMotor.lib;libcmt.lib;peerc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/FIXED:NO /MAPINFO:EXPORTS /ignore:4217 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>msvcrt.lib;libcmtd.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;oldnames.lib;dsound.lib;dxguid.lib;dplayx.lib;strmiids.lib;ddraw.lib;ichat.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;libcmt.lib;LF_Server.lib;gMotor.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\bin\dmcr.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>../lib;../../lib;../bin;../../bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -145,7 +145,8 @@
       <OutputFile>.\../_release/cossacks2.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>..\bat\all.bat</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_CII_test|Win32'">
@@ -321,6 +322,7 @@
     <ClInclude Include="BrigadeAI.h" />
     <ClInclude Include="Cdirsnd.h" />
     <ClInclude Include="CEngine\goaceng.h" />
+    <ClInclude Include="Chat\chat.h" />
     <ClInclude Include="CommCore.h" />
     <ClInclude Include="ConstStr.h" />
     <ClInclude Include="CTables.h" />
@@ -388,10 +390,9 @@
     <ClInclude Include="G17\bz2\bzlib.h" />
     <ClInclude Include="G17\bz2\bzlib_private.h" />
     <ClInclude Include="G17\FCompressor.h" />
-    <ClInclude Include="GameSpy\GameSpy\Chat\chat.h" />
-    <ClInclude Include="GameSpy\GameSpy\Peer\peer.h" />
+    <ClInclude Include="GameSpy\Nonport.h" />
     <ClInclude Include="GameSpy\Peer.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="gFile.h" />
     <ClInclude Include="GP_Draw.h" />
@@ -403,8 +404,17 @@
     <ClInclude Include="Http\HttpComm.h" />
     <ClInclude Include="Icons.h" />
     <ClInclude Include="IconTool.h" />
+    <ClInclude Include="InetRaiting\darray.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="InetRaiting\gp.h" />
+    <ClInclude Include="InetRaiting\hashtable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="InetRaiting\md5.h" />
+    <ClInclude Include="InetRaiting\nonport.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="InetRaiting\stats\gbucket.h" />
     <ClInclude Include="InetRaiting\stats\gpersist.h" />
     <ClInclude Include="InetRaiting\stats\gstats.h" />
@@ -434,6 +444,7 @@
     <ClInclude Include="NewUpgrade.h" />
     <ClInclude Include="Nucl.h" />
     <ClInclude Include="Path.h" />
+    <ClInclude Include="peer.h" />
     <ClInclude Include="PeerClass.h" />
     <ClInclude Include="Pinger.h" />
     <ClInclude Include="Process.h" />
@@ -552,8 +563,17 @@
     <ClCompile Include="Hint.cpp" />
     <ClCompile Include="Http\HttpComm.cpp" />
     <ClCompile Include="IconTool.cpp" />
+    <ClCompile Include="InetRaiting\darray.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\hashtable.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="InetRaiting\IR_Main.cpp" />
     <ClCompile Include="InetRaiting\md5c.c" />
+    <ClCompile Include="InetRaiting\nonport.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="InetRaiting\stats\gbucket.c" />
     <ClCompile Include="InetRaiting\stats\gstats.c" />
     <ClCompile Include="InteractiveScenario.cpp" />
@@ -657,7 +677,9 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release3d|Win32'">MaxSpeed</Optimization>
       <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Release3d|Win32'">Speed</FavorSizeOrSpeed>
     </ClCompile>
-    <ClCompile Include="PeerClass.cpp" />
+    <ClCompile Include="PeerClass.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="PiroObjects.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release3d|Win32'">Disabled</Optimization>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release3d|Win32'">EditAndContinue</DebugInformationFormat>
@@ -750,12 +772,40 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="Bink\binkw32.lib" />
-    <Library Include="InetRaiting\GP.lib" />
-    <Library Include="Pinger.lib" />
-    <Library Include="ProTest.lib" />
-    <Library Include="Winmm.lib" />
-    <Library Include="wintab\Wintab32.lib" />
+    <Library Include="..\bin\CommCore.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\bin\DipServer.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\bin\IChat.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\bin\IntExplorer.lib" />
+    <Library Include="Bink\binkw32.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="InetRaiting\GP.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="Peer.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="peerc.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
+    <Library Include="Pinger.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="ProTest.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="Winmm.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="wintab\Wintab32.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bat\all.bat" />

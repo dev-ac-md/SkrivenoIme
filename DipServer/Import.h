@@ -20,6 +20,7 @@ struct GAMEOBJ{
 	int  Type;
 }; 
 //-------------External functions---------------//
+
 DLLIMPORT int GetMaxAttRadius(int Index);
 DLLIMPORT
 void AssignNation(byte Src,byte Dst);

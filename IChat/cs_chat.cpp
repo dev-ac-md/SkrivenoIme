@@ -1,9 +1,9 @@
 #include "..\common.h"
 #pragma pack(4)
-#include "..\Cossacks2_project\GameSpy\GameSpy\Chat\chat.h"
+#include "Chat\chat.h"
 #pragma pack(1)
 #include "cs_chat.h"
-#include "StdAfx.h"
+//#include "StdAfx.h"
 
 #define current_time GetTickCount
 char* GetCUserInfo(char* Nick);

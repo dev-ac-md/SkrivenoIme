@@ -1163,8 +1163,7 @@ void DIP_SimpleBuilding::Free(){
 	if(DIPPAR)free(DIPPAR);
 	Init();
 };
-CEXPORT
-void CheckDipBuilding(byte NI,int Index){
+CEXPORT void CheckDipBuilding(byte NI,int Index){
 	for(int i=0;i<DIPS.NDIPS;i++)if(DIPS.DIPS[i]->Owner==NI){
 		OneUnit OU;
 		if(GetUnitInfo(&DIPS.DIPS[i]->CentralGroup,0,&OU)&&OU.Index==Index){

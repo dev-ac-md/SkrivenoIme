@@ -74,6 +74,9 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Chat\chat.h">
+      <Filter>Chat\Chat Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Chat\chatCallbacks.h">
       <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
@@ -101,11 +104,11 @@
     <ClInclude Include="nonport.h">
       <Filter>Chat\Chat Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Chat\chat.h">
-      <Filter>Chat\Chat Headers</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\bin\dmcr.lib" />
   </ItemGroup>
 </Project>

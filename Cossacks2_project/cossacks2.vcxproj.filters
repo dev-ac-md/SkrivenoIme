@@ -266,18 +266,6 @@
     <ClInclude Include="GameSpy\Peer.h">
       <Filter>Internet Rating&amp;Profiles</Filter>
     </ClInclude>
-    <ClInclude Include="InetRaiting\stats\gbucket.h">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="InetRaiting\stats\gpersist.h">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="InetRaiting\stats\gstats.h">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="InetRaiting\md5.h">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClInclude>
     <ClInclude Include="Dialogs\AllDialogs.h">
       <Filter>Dialogs</Filter>
     </ClInclude>
@@ -491,9 +479,6 @@
     <ClInclude Include="SquareObject.h">
       <Filter>Effects</Filter>
     </ClInclude>
-    <ClInclude Include="GameSpy\GameSpy\Peer\peer.h">
-      <Filter>Internet Rating&amp;Profiles</Filter>
-    </ClInclude>
     <ClInclude Include="ArchTool.h">
       <Filter>Graphic\Graphic Headers</Filter>
     </ClInclude>
@@ -587,8 +572,35 @@
     <ClInclude Include="WeaponID.h">
       <Filter>Engine\Engine Headers</Filter>
     </ClInclude>
-    <ClInclude Include="GameSpy\GameSpy\Chat\chat.h">
+    <ClInclude Include="Chat\chat.h">
       <Filter>GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="peer.h">
+      <Filter>GameSpy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSpy\Nonport.h">
+      <Filter>Internet Rating&amp;Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\darray.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\hashtable.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\nonport.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\md5.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\stats\gstats.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\stats\gbucket.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="InetRaiting\stats\gpersist.h">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -838,15 +850,6 @@
     <ClCompile Include="InetRaiting\IR_Main.cpp">
       <Filter>Internet Rating&amp;Profiles</Filter>
     </ClCompile>
-    <ClCompile Include="InetRaiting\stats\gbucket.c">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClCompile>
-    <ClCompile Include="InetRaiting\stats\gstats.c">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClCompile>
-    <ClCompile Include="InetRaiting\md5c.c">
-      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
-    </ClCompile>
     <ClCompile Include="Interface.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
@@ -989,6 +992,24 @@
     <ClCompile Include="MPlayer.cpp">
       <Filter>GameSpy</Filter>
     </ClCompile>
+    <ClCompile Include="InetRaiting\darray.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\hashtable.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\nonport.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\md5c.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\stats\gstats.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="InetRaiting\stats\gbucket.c">
+      <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Bink\binkw32.lib">
@@ -1008,6 +1029,24 @@
     </Library>
     <Library Include="InetRaiting\GP.lib">
       <Filter>Internet Rating&amp;Profiles</Filter>
+    </Library>
+    <Library Include="Peer.lib">
+      <Filter>GameSpy</Filter>
+    </Library>
+    <Library Include="peerc.lib">
+      <Filter>GameSpy</Filter>
+    </Library>
+    <Library Include="..\bin\CommCore.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="..\bin\DipServer.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="..\bin\IChat.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="..\bin\IntExplorer.lib">
+      <Filter>LIB</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>

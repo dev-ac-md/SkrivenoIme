@@ -20,7 +20,7 @@
 #include "Recorder.h"
 #include "Graphs.h"
 #include "Protest.h"
-#include "Gamespy\GameSpy\Peer\peer.h"
+#include "peer.h"
 #include "PeerClass.h"
 #include "Graphs.h"
 #include "Fonts.h"
@@ -1259,10 +1259,6 @@ CIMPORT
 void SendVictoryState(int ID,byte State);
 bool ProcessMessages();
 void CmdEndGame(byte NI,byte state,byte cause){
-	if(TPEN.Connected){
-		//peerMessagePlayer(TPEN.Peer,"spybot","\\launched\\0\\gamename\\cossacks\\");
-		TPEN.Disconnect();
-	};
 	SCMD;
 	ExBuf[EBPos]=92;
 	ExBuf[EBPos+1]=NI;
@@ -1794,10 +1790,7 @@ void __EndGame(byte NI,byte state){
 		for(int i=0;i<NPlayers;i++)if(EBufs[i].Enabled)EBufs[i].Enabled=PINFO[i].ColorID!=NI;
 	};
 	Lobby=0;
-	if(TPEN.Connected){
-		//peerMessagePlayer(TPEN.Peer,"spybot","\\launched\\0\\gamename\\cossacks\\");
-		TPEN.Disconnect();
-	};
+
 	WinnerControl(true);
 	MI_Mode=1;
 	CUR_TOOL_MODE=0;

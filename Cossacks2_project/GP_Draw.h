@@ -64,7 +64,7 @@ public:
 };
 extern GP_API UNIFONTS UFONTS;
 #define NO_PACK ((byte*)0xFFFFFFFF)
-void ErrM(char* s);
+CEXPORT void ErrM(char* s);
 typedef GP_GlobalHeader* lpGP_GlobalHeader;
 
 #ifndef _USE3D

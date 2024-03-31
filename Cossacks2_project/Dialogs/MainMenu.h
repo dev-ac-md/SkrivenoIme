@@ -8,6 +8,13 @@ int processMultiMenu(DialogsSystem *Menu);
 
 CIMPORT void CloseBattle();
 
+extern int screen_height;
+extern int screen_width;
+extern int menu_x_off;
+extern int menu_y_off;
+int menu_hint_x;
+int menu_hint_y;
+
 int processMainMenu(){
 #ifdef AMERICANDEMO
 	GlobalAI.NAi=2;
@@ -16,6 +23,19 @@ int processMainMenu(){
 	//MPL_WaitingGame(1,1);
 	//processMultiplayer();
 	//return mcmExit;
+    InGame = false;
+    InEditor = false;
+    if (window_mode)
+    {//Adjust to default menu size after exiting game
+        ResizeAndCenterWindow();
+    }
+    if (!window_mode)
+    {//Calculate offsets for centering menu in fullscreen mode
+        menu_x_off = (screen_width - 1024) / 2;
+        menu_y_off = (screen_height - 768) / 2;
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
 	
 	SetRLCWindow(0,0,RealLx,RSCRSizeY,SCRSizeX);
 	CBar(0,0,RealLx,RSCRSizeY,0);
@@ -46,8 +66,8 @@ int processMainMenu(){
 
 	// Hint
 	MMenu.HintFont=&SmallWhiteFont;
-	MMenu.HintY=701;
-	MMenu.HintX=18;	
+	MMenu.HintY= menu_hint_y;
+	MMenu.HintX= menu_hint_x;
 
 	// Main menu pictures
 	int MX = 510;	
@@ -307,7 +327,6 @@ loop1:
 	ItemChoose=-1;
 	
 	StTime=GetTickCount();
-	CloseLogin();
 	LastKey=0;
 	KeyPressed=0;
 

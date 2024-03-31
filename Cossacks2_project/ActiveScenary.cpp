@@ -2492,10 +2492,6 @@ void ShowVictory(){
 	LockPause=1;
 	ShowStat=0;
 	if(SCENINF.StandartVictory)CmdEndGame(MyNation,2,100);
-	if(TPEN.Connected){
-		//peerMessagePlayer(TPEN.Peer,"spybot","\\launched\\0\\gamename\\cossacks\\");
-		TPEN.Disconnect();
-	};
 	if(CurrentMission!=-1)ShowPostScreen=1;
 };
 
@@ -2508,10 +2504,6 @@ void LooseGame(){
 	LockPause=1;
 	ShowStat=0;
 	if(SCENINF.hLib)SCENINF.StandartVictory=0;
-	if(TPEN.Connected){
-		//peerMessagePlayer(TPEN.Peer,"spybot","\\launched\\0\\gamename\\cossacks\\");
-		TPEN.Disconnect();
-	};
 };
 
 DLLEXPORT
@@ -4942,7 +4934,7 @@ void SetDefenseState(byte State){
 //-----------------------------------------------------------------------//
 void DosToWin(char* Str);
 
-bool ReadWinString(GFILE* F,char* STR,int Max){
+CEXPORT bool ReadWinString(GFILE* F,char* STR,int Max){
 	STR[0]=0;
 	int cc=0;
 	//int z1=0;

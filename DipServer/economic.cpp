@@ -16,10 +16,10 @@ void ActivateDipDialog(char* request);
 CIMPORT
 void SendDipCommand(char* Data,int size);
 
-void ErrM(char* s)
+CIMPORT void ErrM(char* s);/*
 {
 	MessageBox(NULL,s,"LOADING FAILED...",MB_ICONWARNING|MB_OK);
-};
+};*/
 //-------------------------------------------//
 Economic::Economic()
 {

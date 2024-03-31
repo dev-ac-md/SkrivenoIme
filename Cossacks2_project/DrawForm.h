@@ -7,9 +7,9 @@ struct TempWindow{
 	int WindY1; 
 	int ScrWidth;
 };
-void PushWindow(TempWindow* W);
-void PopWindow(TempWindow* W);
-void IntersectWindows(int x0,int y0,int x1,int y1);
+CEXPORT void PushWindow(TempWindow* W);
+CEXPORT void PopWindow(TempWindow* W);
+CEXPORT void IntersectWindows(int x0,int y0,int x1,int y1);
 struct Corners{
 	int CLU,CRU,CLD,CRD;
 	int LL,LR,LU,LD;

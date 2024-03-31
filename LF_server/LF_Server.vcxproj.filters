@@ -33,4 +33,7 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\bin\dmcr.lib" />
+  </ItemGroup>
 </Project>

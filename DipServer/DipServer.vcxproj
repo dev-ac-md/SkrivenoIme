@@ -140,7 +140,7 @@ copy ..\_debug\DipServer\$(ProjectName).lib ..\lib\$(ProjectName).lib
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;DIPSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;AC_ADDON;_CRT_SECURE_NO_WARNINGS;_MBCS;_USRDLL;DIPSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -167,7 +167,7 @@ copy ..\_debug\DipServer\$(ProjectName).lib ..\lib\$(ProjectName).lib
       <DataExecutionPrevention />
       <ImportLibrary>.\../_release/DipServer.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>Ws2_32.lib;dmcr.lib;ichat.lib;DipServer.lib;intExplorer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
     <Bscmake>
@@ -229,7 +229,9 @@ copy ..\_debug\DipServer\$(ProjectName).lib ..\lib\$(ProjectName).lib
     <ClCompile Include="..\IntExplorer\ParseRQ.cpp" />
     <ClCompile Include="BasicDiploRelation.cpp" />
     <ClCompile Include="BattleDialogs.cpp" />
-    <ClCompile Include="DipInit.cpp" />
+    <ClCompile Include="DipInit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="DiplomacySystem.cpp" />
     <ClCompile Include="DipMain.cpp" />
     <ClCompile Include="DipServer.cpp" />
@@ -279,6 +281,14 @@ copy ..\_debug\DipServer\$(ProjectName).lib ..\lib\$(ProjectName).lib
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\bin\dmcr.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </Library>
+    <Library Include="..\bin\IntExplorer.lib">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </Library>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

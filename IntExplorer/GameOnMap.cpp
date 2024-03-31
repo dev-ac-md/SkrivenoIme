@@ -9,7 +9,7 @@ OneMap::OneMap(){
 	memset(this,0,sizeof *this);
 };
 
-void PushWindow(TempWindow* W){
+/* void PushWindow(TempWindow* W); {
 	W->ScrWidth=ScrWidth;
 #ifndef _COSSACKS2
 	W->WindLx=WindLx;
@@ -23,8 +23,8 @@ void PushWindow(TempWindow* W){
 	W->WindLx	= W->WindX1 - W->WindX + 1;
 	W->WindLy	= W->WindY1 - W->WindY + 1;
 #endif
-};
-void PopWindow(TempWindow* W){
+};*/
+/* void PopWindow(TempWindow* W);  {
 	ScrWidth=W->ScrWidth;
 #ifndef _COSSACKS2
 	WindLx=W->WindLx;
@@ -37,8 +37,8 @@ void PopWindow(TempWindow* W){
 	g_SetWindParam( W->WindX, W->WindY, W->WindLx, W->WindLy );
 #endif
 	
-};
-void IntersectWindows(int x0,int y0,int x1,int y1){
+};*/
+/* void IntersectWindows(int x0, int y0, int x1, int y1);{
 #ifndef _COSSACKS2
 	if(x0>WindX)WindX=x0;
 	if(y0>WindY)WindY=y0;
@@ -77,7 +77,7 @@ void IntersectWindows(int x0,int y0,int x1,int y1){
 	WindLy=WindY1-WindY+1;
 	g_SetWindParam( WindX, WindY, WindX1, WindY1 );
 #endif // _COSSACKS2
-};
+};*/
 
 CIMPORT byte GetPaletteColor(int r,int g,int b);
 CIMPORT void GetPalColor(byte idx,byte* r,byte* g,byte* b);

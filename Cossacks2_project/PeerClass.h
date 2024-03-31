@@ -1,4 +1,4 @@
-#include "Gamespy\GameSpy\Peer\peer.h"
+#include "peer.h"
 #pragma pack(1)
 struct TPE_Player{
 	char Name[64];

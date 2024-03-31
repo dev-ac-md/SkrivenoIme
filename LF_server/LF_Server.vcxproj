@@ -214,7 +214,7 @@ copy ..\_debug\LF_Server\$(ProjectName).lib ..\lib\$(ProjectName).lib
       <DataExecutionPrevention />
       <ImportLibrary>.\../_release/LF_Server.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>Ws2_32.lib;dmcr.lib;ichat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
     </Link>
     <Bscmake>
@@ -243,6 +243,9 @@ copy ..\_debug\LF_Server\$(ProjectName).lib ..\lib\$(ProjectName).lib
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\bin\dmcr.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

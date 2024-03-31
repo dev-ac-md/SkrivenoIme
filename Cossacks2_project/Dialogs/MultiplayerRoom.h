@@ -4,42 +4,28 @@ char ROOMOPT[256]="";
 CEXPORT void SetRoomOptions(char* s){
 	strcpy(ROOMOPT,s);
 };
-CEXPORT
-void AddToGChat(char* Nick,char* Message){
-	TPEN.GlobalChat.Add(Nick,Message);
-};
-CEXPORT
-void ClearGChat(){
-	TPEN.GlobalChat.Clear();
-};
 CIMPORT
 void SendPrivateMessage(char* Nick,char* MESSAGE);
-bool CheckForPersonalChat(char* STR){
-	if(STR[0]=='-'&&STR[1]=='-'&&STR[2]=='>'){
-		char* SS=strchr(STR,':');
-		if(SS){
-			int L=SS-STR-3;
-			if(L>0){
-				char SS3[256];
-				memcpy(SS3,STR+3,L);
-				SS3[L]=0;
-				if(UseGSC_Login){
-					SendPrivateMessage(SS3,SS+1);
-				}else
-				if(TPEN.Peer&&TPEN.Connected){
-					peerMessagePlayer(TPEN.Peer,SS3,SS+1);
-					char ccc[128];
-					sprintf(ccc,"%s-->%s",TPEN.MyNick,SS3);
-					TPEN.GlobalChat.Add(ccc,SS+1);
-					return true;
-				};
-			};
-		};
-	};
+CEXPORT bool CheckForPersonalChat(char* STR){
+    if (STR[0] == '-' && STR[1] == '-' && STR[2] == '>')
+    {
+        char* SS = strchr(STR, ':');
+        if (SS)
+        {
+            int L = SS - STR - 3;
+            if (L > 0)
+            {
+                char SS3[256];
+                memcpy(SS3, STR + 3, L);
+                SS3[L] = 0;
+                SendPrivateMessage(SS3, SS + 1);
+            }
+        }
+    }
 	return false;
 };
 extern char LASTCLICKCHATNAME[128];
-bool CheckPersonality(char* MESSAGE){
+CEXPORT bool CheckPersonality(char* MESSAGE){
 	if(LASTCLICKCHATNAME[0]){
 		char CC4[512];
 		CC4[0]=0;
@@ -778,13 +764,6 @@ ffe2:;
 	int CancelX = 959;
 	int ButY = 706;
 	
-	if(TPEN.Connected||UseGSC_Login){ // Iternet game
-		MENU.addGPPicture(NULL,672,689,CGR.GPID,7);
-		GP_Button* ENC=MENU.addGP_Button(NULL,BInChatX,ButY,GmBtn.GPID,5,6);
-		ENC->UserParam=99;
-		ENC->OnUserClick=&MMItemChoose;
-		ENC->Hint=GetTextByID("BACKINCHAT");
-	};
 	GP_Button* OkBtn=MENU.addGP_Button(NULL,OkX,ButY,GmBtn.GPID,1,0);
 	GP_Button* CancelBtn=MENU.addGP_Button(NULL,CancelX,ButY,GmBtn.GPID,3,4);	
 	
@@ -1077,19 +1056,7 @@ ffe2:;
 				};
 				KeyPressed=0;
 				LastKey=0;
-			}else
-			if(TPEN.GlobalChat.NCStr>NCS0){
-				for(int j=NCS0;j<TPEN.GlobalChat.NCStr;j++){
-					if(strstr(TPEN.GlobalChat.CStr[j].PlName,ONLY)){
-						AddChatString(
-							TPEN.GlobalChat.CStr[j].PlName,
-							TPEN.GlobalChat.CStr[j].Message,375,
-								&WhiteFont,ChatMess,ChatSender,NCHATS,MAXCHATS);
-						AddChat=1;
-					};
-				};
-				NCS0=TPEN.GlobalChat.NCStr;
-			};
+			}
 			if(CHATSTRING[0]){
 				if(CHATSTRING[0]=='@'&&CHATSTRING[1]=='@'&&CHATSTRING[2]=='@'&&CHATSTRING[3]==127){
 					DWORD ID;
@@ -1610,9 +1577,6 @@ ffe2:;
 					//if(!SINGLE)NameBack[i]->Visible=1;
 					MNAME[i]->Visible=1;
 					MNAME[i]->Enabled=0;//1;
-					if(strstr(TPEN.HostMessage,"0017")&&!SINGLE){
-						MNAME[i]->Enabled=0;
-					};
 					if(KICK[i]){
 						KICK[i]->Visible=0;
 						KICK[i]->Enabled=0;
@@ -2095,9 +2059,6 @@ ffe2:;
 			};
 			OkBtn->Enabled=GMREADY;
 			//OkBtn->Visible=GMREADY;
-			if(TPEN.MyRoom&&TPEN.MyRoom->RoomConnected){
-				TPEN.CreateMyRoomInfoString(TPEN.HostMessage);
-			};
 		}else{
 			OkBtn->Enabled=!MyOldVers;
 			//OkBtn->Visible=!MyOldVers;

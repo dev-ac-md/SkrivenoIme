@@ -15,6 +15,8 @@
 #define FASTDRAW_API __declspec(dllimport)
 #endif
 
+#define SIGNBYTE ''
+
 #ifndef _USE3D
 extern FASTDRAW_API int WindX; 
 extern FASTDRAW_API int WindY;
@@ -85,11 +87,14 @@ public:
 #endif //_USE3D
 };
 typedef RLCFont* lpRLCFont;
-CEXPORT void SetRLCWindow(int x,int y,int lx,int ly,int slx);
+
 void SetScreenPtr(void);
-int GetRLCWidth(RLCTable lpr,byte n);
-CEXPORT
-int GetRLCHeight(RLCTable lpr,byte n);
+
+int GetRLCWidth(RLCTable lpr, byte n);
+
+CEXPORT void SetRLCWindow(int x,int y,int lx,int ly,int slx);
+
+CEXPORT int GetRLCHeight(RLCTable lpr,byte n);
 /*      Showing the RLC picture
  * 
  *  This procedure needs window parameters to be initializated.
@@ -110,7 +115,6 @@ FASTDRAW_API void SetWind(int x,int y,int Lx,int Ly);
 FASTDRAW_API int GetRLCStrWidth(char* str,lpRLCFont lpf);
 FASTDRAW_API void CheckFontColor(lpRLCFont lpf);
 FASTDRAW_API void LoadOptionalTable(int n,char* Name);
-#define SIGNBYTE ''
 FASTDRAW_API int GetRLCWidthUNICODE(RLCTable lpr,byte* strptr,int* L);
 /*
  *                   Graphics routine

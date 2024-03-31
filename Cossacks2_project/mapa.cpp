@@ -2984,7 +2984,7 @@ void ShowBrigPosition(){
 
 }
 
-CIMPORT void CheckDipBuilding(byte NI,int Index);
+CEXPORT void CheckDipBuilding(byte NI, int Index);
 CEXPORT
 void SetCurPtr(int v);
 extern byte* DIP_Data[64];

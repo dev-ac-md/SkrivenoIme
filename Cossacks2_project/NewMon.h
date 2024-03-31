@@ -30,7 +30,7 @@ ggg3:	add		ecx,eax
 	return result;
 };
 #else
-inline int Norma(int x,int y){
+CEXPORT inline int Norma(int x, int y) {
 	__asm{
 		mov		eax,x
 		cmp		eax,0

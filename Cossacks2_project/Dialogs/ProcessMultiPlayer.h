@@ -84,7 +84,7 @@ RetryConn:;
 	if(crs==mcmCancel)return 0;
 	
 	if(CurProtocol==3){
-		if(!InternetGameLogin())return false;
+		if(!ProcessNewInternetLogin())return false;
 REINCONN:;
 		int r=ProcessInternetConnection(1);
 		if(!r)return 0;
@@ -166,15 +166,9 @@ REINCONN:;
 		break;
 	case 11://Inet Host(Deathmatch)
 		PlayerMenuMode=1;
-		if(UseGSC_Login){
-			int OPT=0;
-			if(GlobalRIF.GameID[0]=='H'&&GlobalRIF.GameID[1]=='B'){
-				OPT=1;
-				strcpy(GlobalRIF.GameID,GlobalRIF.GameID+2);
-			};
-			if(CreateSession(GlobalRIF.Name,GlobalRIF.Nick,OPT,DoNewInet,GlobalRIF.MaxPlayers)){
+			if(CreateSession(GlobalRIF.Name,GlobalRIF.Nick, 0,DoNewInet,GlobalRIF.MaxPlayers)){
 				NeedToPerformGSC_Report=1;
-				WaitingHostGame(OPT);
+				WaitingHostGame(0);
 				NeedToPerformGSC_Report=0;
 				if(PlayerMenuMode==1){
 					//need to leave the room there
@@ -203,94 +197,14 @@ REINCONN:;
 				LeaveGSCRoom();
 				goto REINCONN;
 			};
-		}else{
-			if(TPEN.MyRoom&&CreateSession(TPEN.MyRoom->Name,PlName,0,DoNewInet,GMMAXPL)){
-				do{
-					ProcessMessages();
-				}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-				if(TPEN.MyRoom)WaitingHostGame(0);
-				else{
-					WaitWithMessage(GetTextByID("ICUNCR"));
-					CloseMPL();
-				};
-
-			}else{
-				WaitWithMessage(GetTextByID("ICUNCR"));
-				goto REINCONN;
-			};
-			if(PlayerMenuMode==1){
-				NoWaitWithMessage(GetTextByID("ICDISG"));
-				do{
-					ProcessMessages();
-				}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-				if(TPEN.MyRoom)TPEN.LeaveMyRoom();
-				goto REINCONN;
-			}else{
-				do{
-					ProcessMessages();
-				}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-				//if(TPEN.Connected&&TPEN.MyRoom){
-					//TPEN.MyRoom->RStart=1;
-					//peerStateChanged(TPEN.Peer);
-				//};
-				if(TPEN.MyRoom&&TPEN.MyRoom->RoomConnected){
-					//char GCHAT[512]="";
-					//sprintf(GCHAT,"[~ADMI@START~]%s",TPEN.MyRoom->Name);
-					//TPEN.CreateMyRoomInfoString(GCHAT);
-					//if(TPEN.HostMessage[0])TPEN.SendGlobalChat(TPEN.HostMessage);
-				};
-				//TPEN.Disconnect();
-				TPEN.StartGame(true);
-			};
-		};
 		break;
 	case 13:
-		PlayerMenuMode=1;
-		if(TPEN.MyRoom&&CreateSession(TPEN.MyRoom->Name,PlName,1,DoNewInet,2)){
-			do{
-				ProcessMessages();
-			}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-			if(TPEN.MyRoom)WaitingHostGame(1);
-			else{
-				WaitWithMessage(GetTextByID("ICUNCR"));
-				CloseMPL();
-			};
-		}else{
-			WaitWithMessage(GetTextByID("ICUNCR"));
-			do{
-				ProcessMessages();
-			}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-			if(TPEN.MyRoom)TPEN.LeaveMyRoom();
-			goto REINCONN;
-		};
-		if(PlayerMenuMode==1){
-			NoWaitWithMessage(GetTextByID("ICDISG"));
-			do{
-				ProcessMessages();
-			}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-			if(TPEN.MyRoom)TPEN.LeaveMyRoom();
-			goto REINCONN;
-		}else{
-			do{
-				ProcessMessages();
-			}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-			//TPEN.Disconnect();
-			TPEN.StartGame(false);
-			//if(TPEN.Connected&&TPEN.MyRoom){
-				//TPEN.MyRoom->RStart=1;
-				//peerStateChanged(TPEN.Peer);
-			//};
-		};
-		break;
+        PlayerMenuMode = 1;
+        goto REINCONN;
+        break;
 	case 10://Inet Join(Deathmatch)
-		if(UseGSC_Login){
 			PlayerMenuMode=1;
 			strcpy(IPADDR,GlobalRIF.RoomIP);
-			int OPT=0;
-			if(GlobalRIF.GameID[0]=='H'&&GlobalRIF.GameID[1]=='B'){
-				OPT=1;
-				strcpy(GlobalRIF.GameID,GlobalRIF.GameID+2);
-			};
 			if(!FindSessionAndJoin(ROOMNAMETOCONNECT,GlobalRIF.Nick,DoNewInet)){
 				LeaveGSCRoom();
 				WaitWithMessage(GetTextByID("ICUNJ"));
@@ -319,40 +233,6 @@ REINCONN:;
 				NeedToReportInGameStats=1;
 				LastTimeReport_tmtmt=0;
 			};
-		}else{
-			PlayerMenuMode=1;
-			if(!FindSessionAndJoin(ROOMNAMETOCONNECT,TPEN.MyNick,DoNewInet)){
-				WaitWithMessage(GetTextByID("ICUNJ"));
-				do{
-					ProcessMessages();
-				}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-				if(TPEN.MyRoom)TPEN.LeaveMyRoom();
-				goto REINCONN;
-			}else{
-				/*
-				do{
-					ProcessMessages();
-				}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-				*/
-				WaitingJoinGame(GMTYPE);
-				/*
-				if(TPEN.MyRoom)WaitingJoinGame(GMTYPE);
-				else{
-					WaitWithMessage(GetTextByID("ICUNJ"));
-					CloseMPL();
-				};
-				*/
-			};	
-			if(PlayerMenuMode==1){
-				NoWaitWithMessage(GetTextByID("ICDISG"));
-				do{
-					ProcessMessages();
-				}while(TPEN.MyRoom&&!TPEN.MyRoom->RoomConnected);
-				if(TPEN.MyRoom)TPEN.LeaveMyRoom();
-				goto REINCONN;
-			}else TPEN.StartGame(false);
-				//TPEN.Disconnect();
-		};
 		break;
 	};
 	return 1;

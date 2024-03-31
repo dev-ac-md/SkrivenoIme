@@ -1,5 +1,6 @@
 #include "CommonDip.h"
 
+/*
 bool ReadWinString(GFILE* F,char* STR,int Max){
 	STR[0]=0;
 	int cc=0;
@@ -17,4 +18,4 @@ bool ReadWinString(GFILE* F,char* STR,int Max){
 	return (cc!=EOF)||STR[0];
 	//DosToWin(STR);
 };
-
+*/

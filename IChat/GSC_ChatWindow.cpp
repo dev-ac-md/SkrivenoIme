@@ -1,12 +1,12 @@
 #include "..\common.h"
+//#include "Chat\chat.h"
 #include "Chat\chat.h"
-#include "..\Cossacks2_project\GameSpy\GameSpy\Chat\chat.h"
 #include "cs_chat.h"
 #include "..\IntExplorer\ParseRQ.h"
-#include "StdAfx.h"
+//#include "StdAfx.h"
 //#include <stdio.h>
 #include <stdarg.h>
-bool ReadWinString(GFILE* F,char* STR,int Max);
+CIMPORT bool ReadWinString(GFILE* F,char* STR,int Max);
 class CNamesCash{
 public:
 	char** Name;
@@ -76,7 +76,7 @@ public:
 };
 CNamesCash NMCASH;
 
-__declspec(dllimport) void LoadPalette(char const* lpFileName);
+__declspec(dllimport) void LoadPalette(LPCSTR lpFileName);
 //#include <varargs.h>
 void ReportIt(char* s,...){
 	return;
@@ -99,7 +99,7 @@ __declspec(dllimport) void PlayEffect(int n,int pan,int vol);
 void PlayStart(){
 	PlayEffect(GetSound("START"),0,0);
 };
-bool ReadWinString(GFILE* F,char* STR,int Max){
+/*bool ReadWinString(GFILE* F, char* STR, int Max) {
 	STR[0]=0;
 	int cc=0;
 	//int z1=0;
@@ -115,7 +115,7 @@ bool ReadWinString(GFILE* F,char* STR,int Max){
 	STR[nn]=0;
 	return (cc!=EOF)||STR[0];
 	//DosToWin(STR);
-};
+};*/
 
 class IniFile{
 	char** Vars;
@@ -196,9 +196,9 @@ int NCHATS[3]={0,0,0};
 int MAXCHATS[3]={0,0,0};
 char** ChatMess[3]={NULL,NULL,NULL};
 char** ChatSender[3]={NULL,NULL,NULL};
-void AddPrimitiveChat(char* Nick,char* str,
-				  char** &ChatMess,char** &ChatSender,
-				  int &NCHATS,int &MAXCHATS){
+CIMPORT void AddPrimitiveChat(char* Nick, char* str,
+    char**& ChatMess, char**& ChatSender,
+    int& NCHATS, int& MAXCHATS);/*{
 	if(NCHATS>=MAXCHATS){
 		MAXCHATS+=32;
 		ChatMess=(char**)realloc(ChatMess,4*MAXCHATS);
@@ -216,10 +216,10 @@ void AddPrimitiveChat(char* Nick,char* str,
 	ChatSender[NCHATS]=new char[strlen(Nick)+1];
 	strcpy(ChatSender[NCHATS],Nick);
 	NCHATS++;
-};
-void AddChatString(char* Nick,char* str,int MaxLx,lpRLCFont FONT,
-				  char** &ChatMess,char** &ChatSender,
-				  int &NCHATS,int &MAXCHATS){
+};*/
+CIMPORT void AddChatString(char* Nick, char* str, int MaxLx, lpRLCFont FONT,
+    char**& ChatMess, char**& ChatSender,
+    int& NCHATS, int& MAXCHATS);/*{
 	bool FLine=1;
 	char ACCAMULATOR[256];
 	int pp=0;
@@ -257,6 +257,7 @@ void AddChatString(char* Nick,char* str,int MaxLx,lpRLCFont FONT,
 		};
 	};
 };
+*/
 struct TempWindow{
 	int WindX; 
 	int WindY;
@@ -266,7 +267,7 @@ struct TempWindow{
 	int WindY1; 
 	int ScrWidth;
 };
-void PushWindow(TempWindow* W){
+CIMPORT void PushWindow(TempWindow* W);/* {
 	W->ScrWidth=ScrWidth;
 #ifndef _COSSACKS2
 	W->WindLx=WindLx;
@@ -280,8 +281,8 @@ void PushWindow(TempWindow* W){
 	W->WindLx	= W->WindX1 - W->WindX + 1;
 	W->WindLy	= W->WindY1 - W->WindY + 1;
 #endif
-};
-void PopWindow(TempWindow* W){
+};*/
+CIMPORT void PopWindow(TempWindow* W);/* {
 	ScrWidth=W->ScrWidth;
 #ifndef _COSSACKS2
 	WindLx=W->WindLx;
@@ -294,8 +295,8 @@ void PopWindow(TempWindow* W){
 	g_SetWindParam( W->WindX, W->WindY, W->WindLx, W->WindLy );
 #endif
 	
-};
-void IntersectWindows(int x0,int y0,int x1,int y1){
+};*/
+CIMPORT void IntersectWindows(int x0, int y0, int x1, int y1);/* {
 #ifndef _COSSACKS2
 	if(x0>WindX)WindX=x0;
 	if(y0>WindY)WindY=y0;
@@ -334,7 +335,7 @@ void IntersectWindows(int x0,int y0,int x1,int y1){
 	WindLy=WindY1-WindY+1;
 	g_SetWindParam( WindX, WindY, WindX1, WindY1 );
 #endif // _COSSACKS2
-};
+};*/
 CIMPORT
 void ShowClanString(int x,int y,char* s,byte State,RLCFont* Fn,RLCFont* Fn1,int DY);
 CustomBorder* CUBM;
@@ -424,11 +425,12 @@ void Draw_PLIST(int x,int y,int Lx,int Ly,int Index,byte Active,int param){
 };
 CIMPORT
 void DrawStdBar2(int x0,int y0,int x1,int y1,int GP);
-void DRAWBOX(int x,int y,int Lx,int Ly,int Idx,byte Active,int param){
+CIMPORT void DRAWBOX(int x, int y, int Lx, int Ly, int Idx, byte Active, int param);/* {
 	DrawStdBar2(x,y,x+Lx-1,y+Ly-1,param);
-}
+}*/
 CIMPORT char LASTCLICKCHATNAME[128];
-bool CheckForPersonalChat(char* STR){
+CIMPORT bool CheckForPersonalChat(char* STR);
+/* {
 	if(STR[0]=='-'&&STR[1]=='-'&&STR[2]=='>'){
 		char* SS=strchr(STR,':');
 		if(SS){
@@ -449,8 +451,8 @@ bool CheckForPersonalChat(char* STR){
 		};
 	};
 	return false;
-};
-bool CheckPersonality(char* MESSAGE){
+};*/
+CIMPORT bool CheckPersonality(char* MESSAGE);/* {
 	if(LASTCLICKCHATNAME[0]){
 		char CC4[512];
 		CC4[0]=0;
@@ -467,20 +469,20 @@ bool CheckPersonality(char* MESSAGE){
 		return true;
 	};
 	return false;
-};
+};*/
 
 extern CIMPORT bool GameInProgress;
 CIMPORT
 void DarkScreen();
 CIMPORT void SendPings();
 CIMPORT bool EnumPlr();
-void MemScreenPart(int x,int y,int lx,int ly,byte* Ptr){
+CIMPORT void MemScreenPart(int x, int y, int lx, int ly, byte* Ptr);/* {
 	for(int yy=0;yy<ly;yy++){
 		int ofs=x+(y+yy)*ScrWidth;
 		memcpy(Ptr,((byte*)ScreenPtr)+ofs,lx);
 		Ptr+=lx;
 	};
-};
+};*/
 void EnterPersonalMessage(char* Nick,bool Active){
 	byte* ptr=(byte*)malloc(RealLx*RealLy);
 	MemScreenPart(0,0,RealLx,RealLy,ptr);
@@ -555,8 +557,9 @@ void SendPrivateMessage(char* Nick,char* MESSAGE){
 		CSYS.Private.Add(ccc,MESSAGE);
 	};
 };
-int LoadGP=0;
+
 void ShowCentralMessage2C(char* Message,int GPIDX){
+    int LoadGP = 0;
 	if(!LoadGP){
 		LoadGP=GPS.PreLoadGPImage("Interface\\_Loading");
 		if(LoadGP>0)GPS.LoadGP(LoadGP);
@@ -614,7 +617,7 @@ void SetChatWState(int ID,int State){
 		break;
 	};
 };
-void RunHTTPC(){
+void RunHTTPC();/* {
 	STARTUPINFO			StartUpInfo;
 	PROCESS_INFORMATION		ProcessInformation;
 	memset(&StartUpInfo,0x00,sizeof(STARTUPINFO));
@@ -632,7 +635,7 @@ void RunHTTPC(){
 				NULL,
 				&StartUpInfo,
 				&ProcessInformation);
-};
+};*/
 CIMPORT void ClearGChat();
 CIMPORT void SetCurPtr(int v);
 bool RunHomePageAnyway=0;

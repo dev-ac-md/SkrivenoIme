@@ -4854,7 +4854,7 @@ void DialogsSystem::RefreshView(){
 		curptr=MouseNext[curptr];
 		PrevCHhange=T0;
 	};
-	if(!DDDebug){
+	if(!window_mode){
 		
 		//if(InGame)SERROR1();
 		ShowTMT();
@@ -4889,11 +4889,15 @@ void DialogsSystem::RefreshView(){
 		//FlipPages();
 		//if(InGame)SERROR1();
 	}else{
-		if(DDDebug)RSCRSizeX=SCRSizeX;
-		RedrawOffScreenMouse();
-		PostRedrawMouse();
-		//LockMouse=false;
-		FlipPages();
+        if (window_mode)
+        {
+            RSCRSizeX = SCRSizeX;
+        }
+            RedrawOffScreenMouse();
+            PostRedrawMouse();
+            //LockMouse=false;
+            FlipPages();
+        
 	};
 };
 void DialogsSystem::CloseDialogs(){

@@ -11,6 +11,7 @@
 //#define WIN32_LEAN_AND_MEAN
 #include "ddini.h"
 
+bool window_mode;
 int screen_width;
 int screen_height;
 double screen_ratio;
@@ -112,10 +113,14 @@ extern int ShowGameScreen;
 extern byte ScanPressed[256];
 extern bool AttGrMode;
 
+//Last used display resolutions for both modes
+int exRealLx, exRealLy;
+int ex_other_RealLx, ex_other_RealLy;//Necessary for saving settings
+
 void InitFishMap();
 void LoadMessages();
-int exRealLx;
-int exRealLy;
+/*int exRealLx;
+int exRealLy;*/
 int exFMode=1;
 extern bool FullScreenMode;
 extern bool GameNeedToDraw;
@@ -180,6 +185,8 @@ extern bool realLpressed;
 extern bool realRpressed;
 extern int MaxAllowedComputerAI;
 extern bool GetCoord;
+extern bool InGame;
+extern bool InEditor;
 extern int FogMode;
 extern CDirSound* CDS;
 extern int RealPause;
@@ -367,36 +374,6 @@ void MemReport(char* str){
 };
 char* GetTextByID(char* ID);
 void LoadBorders();
-UINT64 GETFREE(char* lpszPath){
-	void* pGetDiskFreeSpaceEx;
-	pGetDiskFreeSpaceEx=GetProcAddress(
-	GetModuleHandle("kernel32.dll"),
-		"GetDiskFreeSpaceExA");
-	if (pGetDiskFreeSpaceEx){
-		CHAR szTemp[4];
-		ULARGE_INTEGER ForCaller,Total;
-		ZeroMemory(szTemp,4);
-		strncpy(szTemp,lpszPath,3);
-  		GetDiskFreeSpaceEx(szTemp,&ForCaller,&Total,NULL);
-		return (UINT64)ForCaller.QuadPart;
-	}else{
-		DWORD
-			dwSectPerClust, 
-            dwBytesPerSect,
-            dwFreeClusters, 
-            dwTotalClusters;
-
-		CHAR szTemp[4];
-		ZeroMemory(szTemp,4);
-		strncpy(szTemp,lpszPath,2);
-		GetDiskFreeSpace (szTemp, 
-            &dwSectPerClust, 
-            &dwBytesPerSect,
-            &dwFreeClusters, 
-            &dwTotalClusters);
-		return (UINT64)(dwSectPerClust*dwBytesPerSect*dwFreeClusters);
-	};
-};
 extern int ddd;
 void SetupArrays();
 extern byte* RivDir;
@@ -405,6 +382,71 @@ void ReadClanData();
 void ReadMoraleData();
 void LoadCTG();
 void ReadChainObjectsDesc();
+
+//Calculates window coordinates and locks cursor inside client area
+void ClipCursorToWindowArea()
+{
+    if (!window_mode)
+    {//Just in case
+        return;
+    }
+
+    if (!InGame && !InEditor)
+    {//Reset mouse locking in menues
+        ClipCursor(nullptr);
+        return;
+    }
+
+    //Determine absolute coordinates of window client area
+    RECT client_coords;
+    GetClientRect(hwnd, &client_coords);
+    MapWindowPoints(hwnd, nullptr, (LPPOINT)&client_coords, 2);
+
+    //Necessary for correct cursor capture
+    //Using exact ClientRect causes cursor to freeze short of
+    //right or bottom border when moving fast
+    client_coords.right--;
+    client_coords.bottom--;
+
+    ClipCursor(&client_coords);
+}
+
+void ResizeAndCenterWindow()
+{
+    if (!window_mode)
+    {//Just in case
+        return;
+    }
+
+    RECT window_size;
+    window_size.top = 0;
+    window_size.left = 0;
+    window_size.right = RealLx;
+    window_size.bottom = RealLy;
+    AdjustWindowRect(&window_size, window_style, FALSE);
+
+    int width = window_size.right - window_size.left;
+    int height = window_size.bottom - window_size.top;
+
+    int x = screen_width / 2 - width / 2;
+    int y = screen_height / 2 - height / 2;
+
+    if (x < 0)
+    {
+        x = 0;
+    }
+    if (y < 0)
+    {
+        y = 0;
+    }
+
+    MoveWindow(hwnd, x, y, width, height, TRUE);
+
+    ClipCursorToWindowArea();
+
+    SetCursorPos(screen_width / 2, screen_height / 2);
+}
+
 bool Loading()
 {
 	LoadCTG();
@@ -427,21 +469,12 @@ bool Loading()
 	//							&NumberOfFreeClusters,
 	//							&TotalNumberOfClusters);
 	bool waserror=0;
-	if(GETFREE(CRDIR)<500000000){
-		waserror=1;
-		if(MessageBox( hwnd,"This program requires at least 500M\n of free space on your drive where Windows is installed", "LOADING ERROR...", MB_RETRYCANCEL )==IDCANCEL)
-			return 0;
-	};
 	GetCurrentDirectory(200,CRDIR);
 	CRDIR[3]=0;
 	//GetDiskFreeSpace(CRDIR,&SectorsPerCluster,
 	//							&BytesPerSector, 
 	//							&NumberOfFreeClusters,
 	//							&TotalNumberOfClusters);
-	if(GETFREE(CRDIR)<500000000&&!waserror){
-		if(MessageBox( hwnd,"This program requires at least 500M\n of free space on drive with this game", "LOADING ERROR...", MB_RETRYCANCEL)==IDCANCEL)
-			return 0;
-	};
 	InitDeathList();
 	MemReport("InitDeathList");
 	InitNewMonstersSystem();
@@ -994,6 +1027,24 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
 	case WM_LBUTTONDBLCLK:
 		//SpecCmd=241;
 		break;
+
+    case WM_EXITSIZEMOVE:
+        //Adjust cursor zone after window was moved
+        ClipCursorToWindowArea();
+        break;
+
+    case WM_SIZE:
+        if (SIZE_RESTORED == wParam)
+        {//Restore cursor zone after window was minimized
+            ClipCursorToWindowArea();
+        }
+        break;
+
+    case WM_SETFOCUS:
+        //Restore cursor zone after alt-tab
+        ClipCursorToWindowArea();
+        break;
+
     case WM_ACTIVATEAPP:
         bActive = wParam;
 		if(bActive){
@@ -2447,18 +2498,52 @@ static BOOL doInit( HINSTANCE hInstance, int nCmdShow )
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hInstance = hInstance;
-    wc.hIcon = NULL;//LoadIcon( hInstance, IDR_MAINFRAME );
-    wc.hCursor = NULL;//LoadCursor( NULL, IDC_ARROW );
+    wc.hIcon = LoadIcon(hInstance, IDI_APPLICATION);
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = NULL;
     wc.lpszMenuName = NULL;
     wc.lpszClassName = NAME;
     RegisterClass( &wc );
     
+    if (window_mode)
+    {
+        hwnd = CreateWindow(
+            NAME,
+            TITLE,
+            window_style,
+            50, 50,
+            RealLx,
+            RealLy,
+            NULL,
+            NULL,
+            hInstance,
+            NULL
+        );
+        ResizeAndCenterWindow();
+    }
+    else
+    {
+        hwnd = CreateWindowEx(
+            WS_EX_APPWINDOW,
+            NAME,
+            TITLE,
+            WS_POPUP,
+            0, 0,
+            screen_width,
+            screen_height,
+            NULL,
+            NULL,
+            hInstance,
+            NULL
+        );
+    }
+
     /*
      * create a window
      */
+    /*
     hwnd = CreateWindowEx(
-        WS_EX_APPWINDOW/*TOPMOST*/,
+        WS_EX_APPWINDOW /*TOPMOST
         NAME,
         TITLE,
         WS_POPUP,
@@ -2469,7 +2554,7 @@ static BOOL doInit( HINSTANCE hInstance, int nCmdShow )
         NULL,
         hInstance,
         NULL );
-		
+	*/
     if( !hwnd )
     {
         return FALSE;
@@ -2542,6 +2627,20 @@ static BOOL doInit( HINSTANCE hInstance, int nCmdShow )
 	xLockMouse=false;
 	FreeDDObjects();*/
 	KeyPressed=false;
+
+    //Fullscreen? Prepare for small not stretched menu
+    if (!window_mode)
+    {//Set initial window resolution to native screen resolution
+        if (1920 < screen_width)
+        {//Limit max resolution for menu screen to fullhd
+            //Also necessary for correct offsets in stats screen
+            screen_width = 1920;
+            screen_height = 1080;
+        }
+        RealLx = screen_width;
+        RealLy = screen_height;
+    }
+
 	CreateDDObjects(hwnd); 
 	MemReport("CreateDDObjects");
 	//LoadPalette("darkw.pal");
@@ -3393,10 +3492,17 @@ bool RunSMD(){
 			WorkSound=0;
 			OrderSound=0;
 			MidiSound=0;
+            int ex_window_x, ex_window_y, ex_x, ex_y;
+            int dummy;
 			if(fff){
-				Gscanf(fff,"%d%d%d%d%d%d%d%d%d%d",&exRealLx,&exRealLy,&WarSound,&OrderSound,&OrderSound,&MidiSound,&FPSTime,&ScrollSpeed,&exFMode,&PlayMode);
-				SetCDVolume(MidiSound);
+				//Gscanf(fff,"%d%d%d%d%d%d%d%d%d%d",&exRealLx,&exRealLy,&WarSound,&OrderSound,&OrderSound,&MidiSound,&FPSTime,&ScrollSpeed,&exFMode,&PlayMode);
+                Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d%d",
+                    &ex_window_x, &ex_window_y, &ex_x, &ex_y,
+                    &WarSound, &OrderSound, &OrderSound, &MidiSound,
+                    &dummy, &ScrollSpeed, &exFMode, &PlayMode, &FPSTime);
+                SetCDVolume(MidiSound);
 				Gclose(fff);
+                
 			};
 			int cr=0;
 			for(int j=0;j<NModes;j++)if(ModeLX[j]==exRealLx&&ModeLY[j]==exRealLy)cr=j;
@@ -3407,8 +3513,12 @@ bool RunSMD(){
 					exRealLy=ModeLY[cr];
 					GFILE* fff=Gopen("mode.dat","wt");
 					if(fff){
-						Gprintf(fff,"%d %d %d %d %d %d %d %d %d %d",exRealLx,exRealLy,WarSound,OrderSound,OrderSound,MidiSound,FPSTime,ScrollSpeed,exFMode,PlayMode);
-						SetCDVolume(MidiSound);
+						//Gprintf(fff,"%d %d %d %d %d %d %d %d %d %d",exRealLx,exRealLy,WarSound,OrderSound,OrderSound,MidiSound,FPSTime,ScrollSpeed,exFMode,PlayMode);
+                        Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d %d",
+                            ex_window_x, ex_window_y, ex_x, ex_y,
+                            WarSound, OrderSound, OrderSound,
+                            MidiSound, 0, ScrollSpeed, exFMode, PlayMode, FPSTime);
+                        SetCDVolume(MidiSound);
 						Gclose(fff);
 					};
 					rs=1;
@@ -3477,7 +3587,7 @@ void TestHash();
 void CheckIntegrity();
 extern bool TOTALEXIT;
 int GetRankByScore(int Score);
-extern char LobbyVersion[32];
+CEXPORT char LobbyVersion[32] = "1.50";
 void InitWinTab();
 void StartTest();
 void FinExplorer();
@@ -3524,6 +3634,21 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			strcpy(USERMISSPATH,ss+9);
 		};
 	};
+    if (strstr(lpCmdLine, "/window"))
+    {
+        window_mode = true;
+    }
+    else
+    {
+        window_mode = false;
+    }
+
+    if (strstr(lpCmdLine, "/borderless"))
+    {
+        window_mode = true;
+        window_style = WS_POPUP;
+    }
+
 #ifndef CDVERSION
 	CDGINIT_EnCD();
 	CDGINIT_INIT3();
@@ -3583,8 +3708,34 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	AText("mode.dat");
 	ScrollSpeed=5;
 	if(fff){
-		Gscanf(fff,"%d%d%d%d%d%d%d%d%d%d",&exRealLx,&exRealLy,&WarSound,&OrderSound,&OrderSound,&MidiSound,&FPSTime,&ScrollSpeed,&exFMode,&PlayMode);
-		Gclose(fff);
+		/*Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, 
+        &MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
+		Gclose(fff);*/
+        //Distinguish between last window adn fullscreen resolutions
+        int ex_window_x, ex_window_y, ex_x, ex_y;
+        int dummy;
+        //7th value was FPSTime
+        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d%d",
+            &ex_window_x, &ex_window_y, &ex_x, &ex_y,
+            &WarSound, &OrderSound, &OrderSound, &MidiSound,
+            &dummy, &ScrollSpeed, &exFMode, &PlayMode, &FPSTime);
+        Gclose(fff);
+
+        //Set last 'global resolution' according to current mode
+        if (window_mode)
+        {
+            exRealLx = ex_window_x;
+            exRealLy = ex_window_y;
+            ex_other_RealLx = ex_x;
+            ex_other_RealLy = ex_y;
+        }
+        else
+        {
+            exRealLx = ex_x;
+            exRealLy = ex_y;
+            ex_other_RealLx = ex_window_x;
+            ex_other_RealLy = ex_window_y;
+        }
 	};
 	
 #ifndef MAKE_PTC
@@ -3599,6 +3750,13 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		exRealLx=1024;
 		exRealLy=768;
 	};
+
+    screen_width = GetSystemMetrics(SM_CXSCREEN);
+    screen_height = GetSystemMetrics(SM_CYSCREEN);
+
+    double scale = 0.01;
+    screen_ratio = (double)screen_width / screen_height;
+    screen_ratio = (int)(screen_ratio / scale) * scale;
 
 #ifndef _USE3D
 	WindX=0;
@@ -3627,12 +3785,12 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	MemReport("SetupGates");
 
 	// debug
-	NoDebugMode();
+	//NoDebugMode();
 	//SetDebugMode();
 #if defined(VITAL_DEBUG)
-	SetDebugMode();
+	//SetDebugMode();
 #elif defined(VITAL_NO_DEBUG)
-	NoDebugMode();
+	//NoDebugMode();
 #endif
 
 	// -- Inserted by Silver ---21.04.2003
@@ -3640,7 +3798,7 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	FILE* fp = fopen( "c:\\dumps\\file_you_do_not_have_on_your_computer.txt", "rt" );
 	if (fp)
 	{
-		SetDebugMode();
+		//SetDebugMode();
 	}
 	// -- end of change -- 21.04.2003
 
@@ -3746,10 +3904,34 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			//for(int i=0;i<30000000;i++)if(BLOBA[i]!=0x41)assert(false);
 			//free(BLOBA);
 			SaveAllFiles();
+            //Distinguish between last window adn fullscreen resolutions
+            int ex_window_x, ex_window_y, ex_x, ex_y;
+
+            //Set last 'global resolution' according to current mode
+            if (window_mode)
+            {
+                ex_window_x = exRealLx;
+                ex_window_y = exRealLy;
+                ex_x = ex_other_RealLx;
+                ex_y = ex_other_RealLy;
+            }
+            else
+            {
+                ex_x = exRealLx;
+                ex_y = exRealLy;
+                ex_window_x = ex_other_RealLx;
+                ex_window_y = ex_other_RealLy;
+            }
+
 			GFILE* fff=Gopen("mode.dat","wt");
 			if(fff){
-				Gprintf(fff,"%d %d %d %d %d %d %d %d %d %d",exRealLx,exRealLy,WarSound,OrderSound,OrderSound,MidiSound,FPSTime,ScrollSpeed,exFMode,PlayMode);
-				Gclose(fff);
+				/*Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, FPSTime, ScrollSpeed, exFMode, PlayMode);
+				Gclose(fff);*/
+                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d %d",
+                    ex_window_x, ex_window_y, ex_x, ex_y,
+                    WarSound, OrderSound, OrderSound,
+                    MidiSound, 0, ScrollSpeed, exFMode, PlayMode, FPSTime);
+                Gclose(fff);
 			};
 			//CDS->~CDirSound();
 			FilesExit();

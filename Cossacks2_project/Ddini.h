@@ -49,7 +49,7 @@ extern BOOL                    CurrentSurface; //=FALSE if backbuffer
 extern BOOL                    DDError;        //=FALSE if Direct Draw works normally 
 extern DDSURFACEDESC   ddsd;
 extern HWND hwnd;
-extern BOOL DDDebug;
+extern bool window_mode;
 /*  Create Direct Draw object
  * 
  * This procedure creadtes Direct Draw object with primary surface and 
@@ -86,11 +86,12 @@ void UnlockSurface(void);
 /*
  * Getting then DC of the active (invisible) area of the screen
  */
-HDC GetSDC(void);
+//HDC GetSDC(void);
 //Sttting the palette
-CEXPORT void LoadPalette(LPCSTR lpFileName);
-void SetDebugMode();
-void NoDebugMode();
+CEXPORT
+void LoadPalette(LPCSTR lpFileName);
+//void SetDebugMode();
+//void NoDebugMode();
 //#endif
 
 // Define own DirectDrawCreate helper function which loads mdraw.dll at runtime

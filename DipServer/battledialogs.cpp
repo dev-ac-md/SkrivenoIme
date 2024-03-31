@@ -120,14 +120,14 @@ void RunStartTimer(){
 
 int CBattle::ShowTimer(){
 	char* var=TimerVarName;
-	char* oldval=SXP_GetVar(1,var);
+	//char* oldval=SXP_GetVar(1,var);
 	long val=(long)StartTimer-(long)GetTickCount();//atoi(oldval);
 	if(val<0){
 		return false;
 	}else{
 		char newval[100];
 		itoa(val/1000,newval,10);
-		SXP_SetVar(1,var,newval);
+		//SXP_SetVar(1,var,newval);
 	}
 	return val;
 }

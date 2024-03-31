@@ -144,7 +144,7 @@ void DiplomacySystem::PerformCommand(char* Data,int size){
 };
 
 #pragma warning(disable : 4035)
-int Norma(int x,int y){
+CIMPORT int Norma(int x, int y);/* {
 	__asm{
 		mov		eax,x
 		cmp		eax,0
@@ -163,7 +163,7 @@ ggg3:	add		ecx,eax
 		shr		ecx,1
 		mov		eax,ecx
 	};
-};
+};*/
 #pragma warning(default : 4035)
 
 void SetZone(GAMEOBJ* Zone, int X, int Y, int R){

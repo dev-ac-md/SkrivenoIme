@@ -1165,9 +1165,7 @@ HRESULT JoinSession(LPDIRECTPLAY3A lpDirectPlay3A,
 					LPGUID lpguidSessionInstance, LPSTR lpszPlayerName,
 					LPDPLAYINFO lpDPInfo);
 extern char IPADDR[128];
-bool NormName(char* cc);
 void NORMNICK1(char* Nick){
-	NormName(Nick);
 	int L=strlen(Nick);
 	if(L>3){
 		if(Nick[L-1]=='}'&&Nick[L-3]=='{')Nick[L-3]=0;
@@ -1931,7 +1929,6 @@ bool StartIGame(bool SINGLE){
 	for(int j=0;j<NPlayers;j++)if(PINFO[j].PlayerID==MyDPID){
 		//NeedCurrentTime=StartTime[PINFO[j].ColorID];
 		NeedCurrentTime=StartTime[j];//!!!CHANGED!!!
-		STARTIGAME(TPEN.HostMessage,CurrentMap,PINFO[j].name,PINFO[j].Game_GUID);
 	};
 	DWORD BUF[48+8+8+1];
 	memset(BUF,0,sizeof BUF);
@@ -2051,11 +2048,9 @@ void AnalyseMessages(){
 						
 						};
 						for(int i=0;i<NPlayers;i++)if(PINFO[i].PlayerID==MyDPID){
-							//NeedCurrentTime=StartTime[PINFO[i].ColorID];
-							//STARTIGAME(TPEN.HostMessage,CurrentMap,PINFO[i].name,PINFO[i].Game_GUID);
+
 							NeedCurrentTime=StartTime[i];
-							STARTIGAME(TPEN.HostMessage,CurrentMap,PINFO[i].name,PINFO[i].Game_GUID);
-							//!!!CHANGED!!!
+
 						};
 						PLNAT[0]=lp[1];
 						//DWORD Ready=0x773F2945;
@@ -3660,12 +3655,7 @@ void CreateAnswerString(char* s){
 		}else
 		if(GameInProgress){
 			strcpy(s,"@@@GMINPROGR");
-		}else
-		if(SessPassword[0]){
-			sprintf(s,"@@@PASREX %d %d %s %d #%s",CalcPassHash(SessPassword),0,TPEN.MyIP,dwVersion,TPEN.HostMessage);
-		}else{
-			sprintf(s,"@@@WELCOMX %d %s %d #%s",0,TPEN.MyIP,dwVersion,TPEN.HostMessage);
-		};
+		}
 	}else
 	if(DoNewInet&&IPCORE_INIT&&IPCORE.IsClient()){
 		char SERV[32];
@@ -3675,11 +3665,6 @@ void CreateAnswerString(char* s){
 		}else
 		if(GameInProgress){
 			strcpy(s,"@@@GMINPROGR");
-		}else
-		if(SessPassword[0]){
-			sprintf(s,"@@@PASREX %d %d %s %d #%s",CalcPassHash(SessPassword),0,SERV,dwVersion,TPEN.HostMessage);
-		}else{
-			sprintf(s,"@@@WELCOMX %d %s %d #%s",0,SERV,dwVersion,TPEN.HostMessage);
-		};
+		}
 	}else sprintf(s,"@@@NORCRT");
 };

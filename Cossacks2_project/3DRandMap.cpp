@@ -2084,7 +2084,8 @@ void RM_SaveSprites(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 	int sign='TRPS';
 	RBlockWrite(F,&sign,4);
 	int ns=0;
-	for(int i=0;i<MaxSprt;i++){
+    int i = 0;
+	for( i=0;i<MaxSprt;i++){
 		OneSprite* OS=Sprites+i;
 		if(OS->Enabled){
 			int x=OS->x;
@@ -2092,12 +2093,12 @@ void RM_SaveSprites(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 			if(x>x0&&y>y0&&x<x0+Lx&&y<y0+Ly)ns++;
 		};
 	};
-	int i=(ns*12)+12;
+	 i=(ns*12)+12;
 	RBlockWrite(F,&i,4);
 	RBlockWrite(F,&ns,4);
 
 	word j='GA';
-	for(int i=0;i<MaxSprt;i++){
+	for( i=0;i<MaxSprt;i++){
 		OneSprite* OS=&Sprites[i];
 		if(OS->Enabled){
 			int x=OS->x;
@@ -2171,7 +2172,8 @@ void RM_SaveObj(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 	int sign='SJBO';
 	RBlockWrite(F,&sign,4);
 	int ns=0;
-	for(int i=0;i<MAXOBJECT;i++){
+    int i = 0;
+	for( i=0;i<MAXOBJECT;i++){
 		OneObject* OB=Group[i];
 		if(OB&&!OB->Sdoxlo){
 			int x=OB->RealX>>4;
@@ -2180,10 +2182,10 @@ void RM_SaveObj(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 		};
 	};
 	char ONAME[31];
-	int i=ns*(32+4+4)+12;
+	 i=ns*(32+4+4)+12;
 	RBlockWrite(F,&i,4);
 	RBlockWrite(F,&ns,4);
-	for(int i=0;i<MAXOBJECT;i++){
+	for( i=0;i<MAXOBJECT;i++){
 		OneSprite* OS=&Sprites[i];
 		OneObject* OB=Group[i];
 		if(OB&&!OB->Sdoxlo){
@@ -2269,14 +2271,15 @@ ttt:;
 };
 void RM_SaveZonesAndGroups(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 	int NAZ=0;
-	for(int i=0;i<NAZones;i++){
+    int i = 0;
+	for( i=0;i<NAZones;i++){
 		int x=AZones[i].x;
 		int y=AZones[i].y;
 		y=(y>>1)-GetHeight(x,y);
 		if(x>=x0&&y>=y0&&x<x0+Lx&&y<y0+Ly)NAZ++;
 	};
 	int NAG=0;
-	for(int i=0;i<NAGroups;i++){
+	for( i=0;i<NAGroups;i++){
 		int N=AGroups[i].N;
 		word* IDS=AGroups[i].Units;
 		word* SNS=AGroups[i].Serials;
@@ -2296,14 +2299,14 @@ void RM_SaveZonesAndGroups(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 		};
 	};
 	if(NAG||NAZ){
-		int i='ENOZ';
+		 i='ENOZ';
 		RBlockWrite(F,&i,4);
 		i=0;
 		RBlockWrite(F,&i,4);
 		RBlockWrite(F,&NAZ,4);
 		RBlockWrite(F,&NAG,4);
 		NAZ=0;
-		for(int i=0;i<NAZones;i++){
+		for( i=0;i<NAZones;i++){
 			int x=AZones[i].x;
 			int y=AZones[i].y;
 			y=(y>>1)-GetHeight(x,y);
@@ -2322,7 +2325,7 @@ void RM_SaveZonesAndGroups(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 				RBlockWrite(F,AZones[i].Name,L);
 			};
 		};
-		for(int i=0;i<NAGroups;i++){
+		for( i=0;i<NAGroups;i++){
 			int N=AGroups[i].N;
 			word* IDS=AGroups[i].Units;
 			word* SNS=AGroups[i].Serials;
@@ -2458,27 +2461,28 @@ extern BlockBars UnLockBars;
 void RM_SaveLock(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 	int NL=0;
 	int NU=0;
-	for(int i=0;i<LockBars.NBars;i++){
+    int i = 0;
+	for( i=0;i<LockBars.NBars;i++){
 		int x=(int(LockBars.BC[i].x)<<6)+32;
 		int y=(int(LockBars.BC[i].y)<<5)+16;
 		if(x>x0&&y>y0&&x<x0+Lx&&y<y0+Ly){
 			NL++;
 		};
 	};
-	for(int i=0;i<UnLockBars.NBars;i++){
+	for( i=0;i<UnLockBars.NBars;i++){
 		int x=(int(UnLockBars.BC[i].x)<<6)+32;
 		int y=(int(UnLockBars.BC[i].y)<<5)+16;
 		if(x>x0&&y>y0&&x<x0+Lx&&y<y0+Ly){
 			NU++;
 		};
 	};
-	int i='KCOL';
+	 i='KCOL';
 	RBlockWrite(F,&i,4);
 	i=16+2*(NU+NL);
 	RBlockWrite(F,&i,4);
 	RBlockWrite(F,&NL,4);
 	RBlockWrite(F,&NU,4);
-	for(int i=0;i<LockBars.NBars;i++){
+	for( i=0;i<LockBars.NBars;i++){
 		int xb=LockBars.BC[i].x;
 		int yb=LockBars.BC[i].y;
 		int x=(int(xb)<<6)+32;
@@ -2490,7 +2494,7 @@ void RM_SaveLock(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 			RBlockWrite(F,&yb,2);
 		};
 	};
-	for(int i=0;i<UnLockBars.NBars;i++){
+	for( i=0;i<UnLockBars.NBars;i++){
 		int xb=UnLockBars.BC[i].x;
 		int yb=UnLockBars.BC[i].y;
 		int x=(int(xb)<<6)+32;
@@ -4615,12 +4619,13 @@ char* GetTextByID(char* ID);
 void RandomMapDesc::Load(char* name){
 	Close();
 	GFILE* F=Gopen(name,"r");
+    int p = 0;
 	if(F){
 		char cc[128];
 		int z=Gscanf(F,"%d%d",&NMINES,&MINES_DEF);
 		if(z!=2)ERRMP(name,"MINES");
 		MINES=new MineRec[NMINES];
-		for(int p=0;p<NMINES;p++){	
+		for( p=0;p<NMINES;p++){	
 			int n1,n2,n3;
 			z=Gscanf(F,"%s%d%d%d",cc,&n1,&n2,&n3);
 			if(z!=4)ERRMP(name,"MINES");
@@ -4634,7 +4639,7 @@ void RandomMapDesc::Load(char* name){
 		z=Gscanf(F,"%d%d",&NRES,&RES_DEF);
 		if(z!=2)ERRMP(name,"STARTRES");
 		RES=new ResRec[NRES];
-		for(int p=0;p<NRES;p++){
+		for( p=0;p<NRES;p++){
 			int Nr;
 			z=Gscanf(F,"%s%d",cc,&Nr);
 			char* ust=GetTextByID(cc);
@@ -4663,7 +4668,7 @@ void RandomMapDesc::Load(char* name){
 		z=Gscanf(F,"%d%d",&NSTY,&STY_DEF);
 		if(z!=2)ERRMP(name,"STYLES");
 		STY=new StyleRec[NSTY];
-		for(int p=0;p<NSTY;p++){
+		for( p=0;p<NSTY;p++){
 			StyleRec* SR=STY+p;
 			Gscanf(F,"%s",cc);
 			//normstr(cc);
@@ -5477,7 +5482,8 @@ void DrawSMS(){
 void SaveSMSInPieces(ResFile F,int keyX,int keyY,int x0,int y0,int x1,int y1){
 	int Nsq=0;
 	int Nrt=0;
-	for(int i=0;i<SAMSET.NSmp;i++){
+    int i = 0;
+	for( i=0;i<SAMSET.NSmp;i++){
 		SampleSrc* SS=SAMSET.SSET+i;
 		for(int j=0;j<SS->Npt;j++){
 			int xx=(SS->xi[j]<<8)+128;
@@ -5494,7 +5500,7 @@ void SaveSMSInPieces(ResFile F,int keyX,int keyY,int x0,int y0,int x1,int y1){
 			};
 		};
 	};
-	word i='SMSP';
+	 i='SMSP';
 	RBlockWrite(F,&i,4);
 	int sz=4+4+4+Nsq*2+Nrt*sizeof(SampleRoot);
 	RBlockWrite(F,&sz,4);
@@ -5506,7 +5512,7 @@ void SaveSMSInPieces(ResFile F,int keyX,int keyY,int x0,int y0,int x1,int y1){
 	RBlockWrite(F,&dy,2);
 	keyX=(keyX-dx)>>8;
 	keyY=(keyY-dy)>>8;
-	for(int i=0;i<SAMSET.NSmp;i++){
+	for( i=0;i<SAMSET.NSmp;i++){
 		SampleSrc* SS=SAMSET.SSET+i;
 		for(int j=0;j<SS->Npt;j++){
 			int xx=(SS->xi[j]<<8)+128;
@@ -5519,7 +5525,7 @@ void SaveSMSInPieces(ResFile F,int keyX,int keyY,int x0,int y0,int x1,int y1){
 			};
 		};
 	};
-	for(int i=0;i<SAMSET.NSmp;i++){
+	for( i=0;i<SAMSET.NSmp;i++){
 		SampleSrc* SS=SAMSET.SSET+i;
 		for(int j=0;j<SS->NRoots;j++){
 			int xx=(SS->ROOT[j].x<<8)+128;
@@ -5535,15 +5541,16 @@ void SaveSMSInPieces(ResFile F,int keyX,int keyY,int x0,int y0,int x1,int y1){
 };
 void SaveSMSInMap(ResFile F){
 	int sz=4+4;
-	for(int i=0;i<SAMSET.NSmp;i++){
+    int i = 0;
+	for( i=0;i<SAMSET.NSmp;i++){
 		SampleSrc* SS=SAMSET.SSET+i;
 		sz+=32+4+4+4*SS->Npt+SS->NRoots*sizeof(SampleRoot);
 	};
-	int i='SMSP';
+	 i='SMSP';
 	RBlockWrite(F,&i,4);
 	RBlockWrite(F,&sz,4);
 	RBlockWrite(F,&SAMSET.NSmp,4);
-	for(int i=0;i<SAMSET.NSmp;i++){
+	for( i=0;i<SAMSET.NSmp;i++){
 		RBlockWrite(F,SAMSET.SSET[i].Name,32);
 		RBlockWrite(F,&SAMSET.SSET[i].Npt,4);
 		RBlockWrite(F,&SAMSET.SSET[i].NRoots,4);

@@ -6,6 +6,7 @@
 #include "DiplomacySystem.h"
 #include "DString.h"
 #include "BattleDialogs.h"
+CIMPORT
 bool ReadWinString(GFILE* F,char* STR,int Max);
 CIMPORT
 void ActivateDipDialog(char* request);

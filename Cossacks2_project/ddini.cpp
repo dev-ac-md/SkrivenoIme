@@ -79,7 +79,7 @@ BOOL                    DDError;        //=FALSE if Direct Draw works normally
 DDSURFACEDESC           ddsd;
 PALETTEENTRY            GPal[256];
 LPDIRECTDRAWPALETTE     lpDDPal;
-BOOL					DDDebug;
+
 extern bool PalDone;
 extern word PlayerMenuMode;
 typedef struct zzz{			
@@ -105,6 +105,7 @@ void* offScreenPtr;
 /*
  * Flipping Pages
  */
+
 //extern int BestBPP;
 extern int SCRSZY;
 void ClearRGB(){
@@ -201,12 +202,12 @@ void FlipPages(void)
 #endif // _USE3D
 
 	if(!bActive)return;
-	if (DDDebug){
+	if (window_mode){
 		if(PlayerMenuMode!=1){
 		//	ProcessFog();
 		//	ShowFoggedBattle();
 		};
-		HDC WH=GetWindowDC(hwnd);
+        HDC WH = GetDC(hwnd);
 		//memcpy(xxt.XPal,&GPal[1],sizeof xxt.XPal);
 		for(int i=0;i<256;i++){
 			xxt.bmp.bmiColors[i].rgbRed=GPal[i].peRed;
@@ -220,8 +221,14 @@ void FlipPages(void)
 		xxt.bmp.bmiHeader.biBitCount=8;
 		xxt.bmp.bmiHeader.biCompression=BI_RGB;
 		xxt.bmp.bmiHeader.biSizeImage=0;
-		int z=StretchDIBits(WH,0,0,COPYSizeX,RSCRSizeY,
-			0,MaxSizeY-RSCRSizeY,COPYSizeX,RSCRSizeY,RealScreenPtr,&xxt.bmp,
+
+		int z=StretchDIBits(WH,
+            0,0,
+            COPYSizeX,RSCRSizeY,
+			0,MaxSizeY-RSCRSizeY,
+            COPYSizeX,RSCRSizeY,
+            RealScreenPtr,
+            &xxt.bmp,
 			DIB_RGB_COLORS,SRCCOPY);
 		ReleaseDC(hwnd,WH);
 
@@ -371,7 +378,7 @@ void LockSurface(void)
 	FILE* LR=fopen("lock.report","w");
 	if(LR)fprintf(LR,"DDError:%d\n",DDError);
 	long dderr=0;
-	if (DDDebug)
+	if (window_mode)
 	{
 		ScreenPtr=(void*)(int(offScreenPtr)+MaxSizeX*32);
 		ddsd.lpSurface=ScreenPtr;
@@ -385,7 +392,7 @@ void LockSurface(void)
 #ifdef COPYSCR
 	if ((dderr=lpDDSPrimary->Lock(NULL,&ddsd,
 							    DDLOCK_SURFACEMEMORYPTR|
-								DDLOCK_WAIT,NULL))!=DD_OK) DDError=0;//true ;
+								DDLOCK_WAIT,NULL))!=DD_OK) DDError=true;//true ;
 	DDLog("lpDDSPrimary->Lock:%d\n",dderr);
 	DDLog("Lock result:%d\n",dderr);
 	DDLog("ptr:%d pitch=%d ly=%d\n",ddsd.lpSurface,ddsd.lPitch,ddsd.dwHeight);
@@ -421,7 +428,7 @@ void LockSurface(void)
  */
 void UnlockSurface(void)
 {
-	if(DDDebug) return;
+	if(window_mode) return;
 	if (DDError)  return;
 	//Back Buffer is active
 #ifdef COPYSCR
@@ -436,7 +443,7 @@ void UnlockSurface(void)
  */
 HDC GetSDC(void)
 {
-	if(DDDebug) return 0;
+	if(window_mode) return 0;
 	HDC hdc;
 	if (DDError) return 0;
 	if (CurrentSurface)
@@ -584,7 +591,7 @@ bool CreateDDObjects(HWND hwnd)
 	char    buf[256];
 	DDError=false;
 	CurrentSurface=true;
-	if (DDDebug)
+	if (window_mode)
 	{
 	
         SVSC.SetSize(RealLx, RealLy);
@@ -752,7 +759,7 @@ BOOL CreateRGBDDObjects(HWND hwnd)
 	char    buf[256];
 	DDError=false;
 	CurrentSurface=true;
-	if (DDDebug)
+	if (window_mode)
 	{
 		
 		DDError=false;
@@ -839,7 +846,7 @@ BOOL CreateRGB640DDObjects(HWND hwnd)
 	char    buf[256];
 	DDError=false;
 	CurrentSurface=true;
-	if (DDDebug)
+	if (window_mode)
 	{
 		
 		DDError=false;
@@ -926,16 +933,16 @@ SDMOD:;
 }
 
 /*   Direct Draw palette loading*/
-int clrRed;
+/*int clrRed;
 int clrGreen;
 int clrBlue;
-int clrYello;
-CEXPORT
-void LoadPalette(char const* lpFileName)
+int clrYello;*/
+
+void LoadPalette(LPCSTR lpFileName)
 {
 	if(!lpDD)return;
-	AFile((char*)lpFileName);
-	if (DDDebug) return;
+	//AFile((char*)lpFileName);
+	if (window_mode) return;
 	if (DDError) return;
 	ResFile pf=RReset(lpFileName);
 	memset(&GPal,0,1024);
@@ -992,7 +999,7 @@ void LoadPalette(char const* lpFileName)
 			for(int i=0;i<256;i++)RBlockWrite(pf,&GPal[i],3);
 			RClose(pf);
 		};
-		if(!DDDebug){
+		if(!window_mode){
 #ifndef _USE3D
 			if(!PalDone){
 				lpDD->CreatePalette(DDPCAPS_8BIT,&GPal[0],&lpDDPal,NULL);
@@ -1008,15 +1015,15 @@ void LoadPalette(char const* lpFileName)
 			
 		};
 	}
-	clrRed=0xD0;
+	/*clrRed = 0xD0;
 	clrGreen=GetPaletteColor(0,255,0);
 	clrBlue=GetPaletteColor(0,0,255);
-	clrYello=GetPaletteColor(255,255,0);
+	clrYello=GetPaletteColor(255,255,0);*/
 }
 void CBar(int x,int y,int Lx,int Ly,byte c);
 void Susp(char* str){
 	return;
-	if(!DDDebug){
+	if(!window_mode){
 		void* oldsof=ScreenPtr;
 		ScreenPtr=RealScreenPtr;
 		int ScLx=ScrWidth;
@@ -1049,7 +1056,7 @@ void SetDarkPalette(){
 	if (DDError) return;
 	ChangeColorFF();
 	memset(&GPal,0,1024);
-	if(!DDDebug){
+	if(!window_mode){
 		if(!PalDone){
 			lpDD->CreatePalette(DDPCAPS_8BIT,&GPal[0],&lpDDPal,NULL);
 			PalDone=true;
@@ -1127,7 +1134,7 @@ void SlowLoadPalette(LPCSTR lpFileName)
 			RClose(pf);
 		};
 		
-		if(!DDDebug){
+		if(!window_mode){
 			byte* pal=(byte*)NPal;
 			byte* pal0=(byte*) GPal;
 			int mul=0;
@@ -1150,10 +1157,10 @@ void SlowLoadPalette(LPCSTR lpFileName)
 			}while(mul!=255);
 		};
 	}
-	clrRed=0xD0;
+	/*clrRed = 0xD0;
 	clrGreen=GetPaletteColor(0,255,0);
 	clrBlue=GetPaletteColor(0,0,255);
-	clrYello=GetPaletteColor(255,255,0);
+	clrYello=GetPaletteColor(255,255,0);*/
 }
 CEXPORT
 void SlowUnLoadPalette(LPCSTR lpFileName)
@@ -1170,7 +1177,7 @@ void SlowUnLoadPalette(LPCSTR lpFileName)
 		//	//RBlockRead(pf,&xx.bmp.bmiColors[i],3);
 		//};
 		//RClose(pf);
-		if(!DDDebug){
+		if(!window_mode){
 			byte* pal=(byte*)NPal;
 			byte* pal0=(byte*) GPal;
 			int mul=0;
@@ -1203,7 +1210,7 @@ void FreeDDObjects( void )
 {
 	free(offScreenPtr);
 	offScreenPtr=NULL;
-	if (DDDebug)
+	if (window_mode)
 	{
 		//free(offScreenPtr);
 		return;
@@ -1225,14 +1232,14 @@ void FreeDDObjects( void )
         lpDD = NULL;
     }
 }
-void SetDebugMode()
+/*void SetDebugMode()
 {
     DDDebug =true;
 }
 void NoDebugMode()
 {
     DDDebug =false;
-}
+}*/
 
 CEXPORT
 void GetPalColor(byte idx,byte* r,byte* g,byte* b){
