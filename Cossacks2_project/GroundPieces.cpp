@@ -179,7 +179,7 @@ void AddGPiece(int x,int y,word Type){
 	int yc=yr>>6;
 	int yyy0=yr&63;
 	int xxx0=x&127;
-	int i = 0;
+	int i;
 	if(xc>=0&&xc<VAL_MAXCX-1&&yc>=0&&yc<VAL_MAXCX-1){
 		int cell=xc+(yc<<VAL_SHFCX);
 		int N=NInGPMAP[cell];
@@ -480,7 +480,7 @@ int PackIntoBuf(byte* Pix,byte* Buf){
 void UnpackFromBuf(byte* Pix,byte* ptr){
 	int ofs=0;
 	bool FreeMode=1;
-	int i = 0;
+	int i;
 	do{
 		byte L=ptr[0];
 		ptr++;

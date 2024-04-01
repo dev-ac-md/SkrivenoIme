@@ -7496,7 +7496,7 @@ void SmartTryToMove(OneObject* OB,byte NewDir,bool Dirc){
 		NewMonster* NMN=OB->newMons;
 		int mrot=NMN->MinRotator;
 		bool NeedToPush=false;
-		char dirr=0;
+		char dirr;
 		switch(OB->MoveStage){
 		case 0:
 			dirr=BestDir;
@@ -7761,7 +7761,7 @@ void MotionHandler5(OneObject* OB){
 			int mrot=NMN->MinRotator;
 			bool NeedToPush=false;
 			if(abs(ddir)<=mrot){
-				char dirr=0;
+				char dirr;
 				switch(OB->MoveStage){
 				case 0:
 					dirr=BestDir;
@@ -9720,7 +9720,7 @@ int Nation::CreateNewMonsterAt(int rx,int ry,int n,bool Anyway){
 	if(!NM->LockType)mLx=1;
 #endif
 	//if(!CheckTerra(x,y,mLx))return -1;
-	int i=0;
+	int i;
 	for(i=0;i<MaxObj&&int(Group[i]);i++);
 	if(i>=MaxObj)return -1;
 	rando();
@@ -9907,7 +9907,7 @@ int Nation::CreateNewMonsterAt(int rx,int ry,int n,bool Anyway){
 		if(NM->NBLockPt){
 			int x0=(x+PicSX)>>8;
 			int y0=(y+PicSY)>>8;
-			for(int i=0;i<NM->NBLockPt;i++){
+			for(i=0;i<NM->NBLockPt;i++){
 				int xx=x0+NM->BLockX[i];
 				int yy=y0+NM->BLockY[i];
 				BSetPt(xx,yy);
@@ -9944,7 +9944,7 @@ int Nation::CreateNewMonsterAt(int rx,int ry,int n,bool Anyway){
 		int bx0=(G->RealX>>4)+NM->PicDx;
 		int by0=(G->RealY>>4)+(NM->PicDy<<1);
 		int N=NM->NBars;
-		for(int i=0;i<N;i++){
+		for(i=0;i<N;i++){
 			int pp=i*5;
 			int XB0=NM->Bars3D[pp]+bx0;
 			int YB0=(NM->Bars3D[pp+1]<<1)+by0;
@@ -13674,6 +13674,7 @@ void CreateFields(byte NI,int x,int y,int n);
 void InvitePeasant(OneObject* Mine);
 extern bool EditMapMode;
 void OneObject::NextStage(){
+    int i;
 	if(!NewBuilding||Life==MaxLife)return;
 	NewMonster* NM=newMons;
 	AdvCharacter* ACR=Ref.General->MoreCharacter;
@@ -13688,10 +13689,10 @@ void OneObject::NextStage(){
 			if(NM->NBLockPt){
 				int xx,yy;
 				this->GetCornerXY(&xx,&yy);
-				for(int i=0;i<NM->NBLockPt;i++){
+				for(i=0;i<NM->NBLockPt;i++){
 					BClrPt(xx+NM->BLockX[i],yy+NM->BLockY[i]);
 				};
-				for(int i=0;i<NM->NLockPt;i++){
+				for(i=0;i<NM->NLockPt;i++){
 					BSetPt(xx+NM->LockX[i],yy+NM->LockY[i]);
 				};
 			};
@@ -15556,7 +15557,7 @@ bool BlockBars::FastAdd(word x,word y){
 	return true;
 };
 bool BlockBars::Delete(word x,word y){
-	int i = 0;
+	int i;
 	if(NBars){
 		DWORD DT=x+(y<<16);
 		DWORD* SDAT=(DWORD*)BC;
@@ -15835,7 +15836,7 @@ int FindSuperSmartBestPosition(OneObject* OB,int* cx,int* cy,int dx,int dy,word 
 	//if(OB) MF=MFIELDS+OB->LockType;
 	MF=MFIELDS+LTP;
 
-	int i = 0;
+	int i;
 	int LDX=-2;
 	int LLX=4;
 	if(OB&&OB->LockType){
@@ -15887,7 +15888,7 @@ NextSm1:;
 		if(Prolong){
 			x0=xx;
 			y0=yy;
-			for(int i=0;i<5;i++){
+			for(i=0;i<5;i++){
 				x0+=DX;
 				y0+=DY;
 				int tx=x0>>(8+6);
@@ -16654,7 +16655,7 @@ int GetPtDamageInSector(WeaponInSector* WS,byte Angle,int dx,int dy){
 	return DAM*(100-dang*(100-WS->AnglFactor)/WS->Angle)/100;
 };
 void ActInSector(int x,int y,WeaponInSector* WS,byte Angle,AnglActor* ANGA,int param){
-	int iy = 0;
+	int iy;
 	int MAX=WS->RMax;
 	if(MAX>1600)MAX=1600;
 	int RM=(MAX+256)>>7;

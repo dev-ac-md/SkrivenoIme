@@ -286,9 +286,6 @@ copy ..\_debug\DipServer\$(ProjectName).lib ..\lib\$(ProjectName).lib
     <Library Include="..\bin\dmcr.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </Library>
-    <Library Include="..\bin\IntExplorer.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </Library>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

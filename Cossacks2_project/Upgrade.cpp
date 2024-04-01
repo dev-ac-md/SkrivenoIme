@@ -17,6 +17,7 @@ Upgrade::Upgrade(){
 void PerformUpgradeLink(OneObject* OBJ);
 void WriteUpgradeAction(byte NI,NewUpgrade* NU);
 void OneObject::PerformUpgrade(word NewU,word MakerID){
+    int i;
 	if(CheckOrderAbility())return;
 	if(UnlimitedMotion)return;
 	if(Nat->NUpgrades<=NewU||!Ready)return;
@@ -30,7 +31,7 @@ void OneObject::PerformUpgrade(word NewU,word MakerID){
 	if(NU->StageMask){
 		byte m=NU->StageMask;
 		word st=StageState;
-		for(int i=0;i<5;i++){
+		for(i=0;i<5;i++){
 			if(m&1){
 				byte cs=st&7;
 				if(cs!=2)return;
@@ -39,7 +40,7 @@ void OneObject::PerformUpgrade(word NewU,word MakerID){
 			st>>=3;
 		};
 	};
-	for(int i=0;i<8;i++){
+	for(i=0;i<8;i++){
 		if(XRESRC(NNUM,i)<NU->Cost[i])return;
 	};
 	if(NU->Individual){
@@ -52,7 +53,7 @@ void OneObject::PerformUpgrade(word NewU,word MakerID){
 	};
 #endif
 	int Use=newMons->Usage;
-	for(int i=0;i<8;i++){
+	for(i=0;i<8;i++){
 		AddXRESRC(NNUM,i,-NU->Cost[i]);
 		Nat->ControlProduce(NU->Branch,i,-NU->Cost[i]);
 		if(Use==MineID)Nat->ResOnMines[i]+=NU->Cost[i];

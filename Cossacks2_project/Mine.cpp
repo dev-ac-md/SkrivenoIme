@@ -724,7 +724,7 @@ bool CreateInsideList(IconSet* IS,byte NI){
 					StroiDescription* SDS=GO->OFCR->SDES+((OFCRStage-1)&255);
 					int DD=OFCRStage>>8;
 					bool AtLeastOne=0;
-					int p=0;
+					int p;
 					for(int j=0;j<SDS->NUnits;j++){
 						int NNear=EnumUnitsInRound(OB->RealX,OB->RealY,MobilR*16,SDS->Units[j],NatRefTBL[MyNation]);
 						for(p=0;p<SDS->NAmount&&SDS->Amount[p]<=NNear;p++);

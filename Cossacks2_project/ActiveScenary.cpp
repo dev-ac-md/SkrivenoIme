@@ -4465,7 +4465,7 @@ void AssignAmountOfMineUpgrades(int MU){
 };
 DLLEXPORT
 bool AssignMineUpgrade(word U,char* Str,word val){
-	int k = 0;
+	int k;
 	if(AiIsRunNow){
 		if(U<CNAT->UGRP_MINEUP.N){
 			NewUpgrade** NUG=CNAT->UPGRADE;
@@ -4491,7 +4491,7 @@ bool AssignMineUpgrade(word U,char* Str,word val){
 	return 1;
 };
 int GETUID(char* Name){
-	int k = 0;
+	int k;
 	GeneralObject** GOG=NATIONS[CurAINation].Mon;
 	int N=NATIONS[CurAINation].NMon;
 	for(k =0;k<N&&strcmp(GOG[k]->MonsterID,Name);k++);
@@ -5355,7 +5355,7 @@ WarPack::WarPack(){
 	f=Gopen("History_battl\\Wars.txt","r");
 	if(f){
 		int z=Gscanf(f,"%d",&NWars);
-		int k = 0;
+		int k;
 		if(z!=1)InvWar();
 		Wars=new OneWar[NWars];
 		NLine(f);

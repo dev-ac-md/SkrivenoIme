@@ -69,12 +69,12 @@ int Menu::GetAmount(){
 	int j=0;
 	int	i;
 	if(!int(items)) return 0;
-	for(int i=0;items[i]!=0;i++)if(items[i]=='|')j++;
+	for(i=0;items[i]!=0;i++)if(items[i]=='|')j++;
 	return j+1;
 };
 LPCSTR Menu::GetNstr(int n){
 	int j=0;
-	int i=0,k=0;
+	int i,k;
 	tmpstr[0]=0;
 	if(!int(items))return LPCSTR(&tmpstr);
 	for(i=0;j<n&&items[i]!=0;i++)

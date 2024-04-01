@@ -962,7 +962,7 @@ void ComRotateBrigade(byte NI,word BrigID,byte Dir){
 	};
 };
 void ComRotateFormations(byte NI,byte Dir){
-	int NBR=0, j=0;
+	int NBR=0, j;
 	word BRIDS[16];
 	word* SMon=Selm[NI];
 	word* SNS=SerN[NI];
@@ -3488,10 +3488,11 @@ void CreateGatesFromSelected(byte NI){
 };
 void SelectAllBuildings(byte NI){
 	int N=NSL[NI];
+    int i;
 	if(N){
 		word* SMN=Selm[NI];
 		word* SRN=SerN[NI];
-		for(int i=0;i<N;i++){
+		for(i=0;i<N;i++){
 			word MID=SMN[i];
 			if(MID!=0xFFFF){
 				OneObject* OB=Group[MID];
@@ -3509,7 +3510,7 @@ void SelectAllBuildings(byte NI){
 	};
 	NSL[NI]=0;
 	N=0;
-	for(int i=0;i<MAXOBJECT;i++){
+	for(i=0;i<MAXOBJECT;i++){
 		OneObject* OB=Group[i];
 		if(OB&&OB->NNUM==NatRefTBL[NI]&&OB->NewBuilding)N++;
 	};
@@ -3519,7 +3520,7 @@ void SelectAllBuildings(byte NI){
 	N=0;
 	word* SMN=Selm[NI];
 	word* SRN=SerN[NI];
-	for(int i=0;i<MAXOBJECT;i++){
+	for(i=0;i<MAXOBJECT;i++){
 		OneObject* OB=Group[i];
 		if(OB&&OB->NNUM==NatRefTBL[NI]&&OB->NewBuilding){
 			SMN[N]=OB->Index;
@@ -3573,6 +3574,7 @@ void ImSelectAllBuildings(byte NI){
 	};
 };
 void SelectAllUnits(byte NI,bool Re){
+    int i;
 	word* lpN;
 	word** UNI;
 	word** USN;
@@ -3589,7 +3591,7 @@ void SelectAllUnits(byte NI,bool Re){
 	if(N){
 		word* SMN=*UNI;
 		word* SRN=*USN;
-		for(int i=0;i<N;i++){
+		for(i=0;i<N;i++){
 			word MID=SMN[i];
 			if(MID!=0xFFFF){
 				OneObject* OB=Group[MID];
@@ -3610,7 +3612,7 @@ void SelectAllUnits(byte NI,bool Re){
 	};
 	lpN[0]=0;
 	N=0;
-	for(int i=0;i<MAXOBJECT;i++){
+	for(i=0;i<MAXOBJECT;i++){
 		OneObject* OB=Group[i];
 		if(OB&&OB->NNUM==NatRefTBL[NI]&&!(OB->LockType==1||OB->NewBuilding||OB->Sdoxlo||OB->Wall||OB->UnlimitedMotion||OB->Guard!=0xFFFF||OB->UnlimitedMotion))N++;
 	};
@@ -3620,7 +3622,7 @@ void SelectAllUnits(byte NI,bool Re){
 	N=0;
 	word* SMN=UNI[0];
 	word* SRN=USN[0];
-	for(int i=0;i<MAXOBJECT;i++){
+	for(i=0;i<MAXOBJECT;i++){
 		OneObject* OB=Group[i];
 		if(OB&&OB->NNUM==NatRefTBL[NI]&&!(OB->LockType==1||OB->NewBuilding||OB->Sdoxlo||OB->Wall||OB->UnlimitedMotion||OB->Guard!=0xFFFF||OB->UnlimitedMotion)){
 			SMN[N]=OB->Index;
@@ -4312,7 +4314,7 @@ void SelUnloadAll(byte Nat){
 void CancelStandGround(Brigade* BR);
 void MakeReformation(byte NI,word BrigadeID,byte FormType){
 	Brigade* BR=CITY[NatRefTBL[NI]].Brigs+BrigadeID;
-	int j = 0;
+	int j;
 	if(BR->Enabled&&BR->WarType){
 		int RealNM=0;
 		for(int i=NBPERSONAL;i<BR->NMemb;i++){
@@ -5551,16 +5553,16 @@ void SmartSelectionCorrector(byte NI,word* M0,word* SN0,int N0){
 	word NSUB=0;
 	word SUBM[2048];
 	word ADDM[2048];
-
+    int i;
 	int N1=ImNSL[NI];
-	for(int i=0;i<N0;i++){
+	for( i=0;i<N0;i++){
 		word MID=M0[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
 			if(OB&&!OB->Sdoxlo)OB->NNUM|=32;
 		};
 	};
-	for(int i=0;i<N1;i++){
+	for( i=0;i<N1;i++){
 		word MID=M1[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -5573,7 +5575,7 @@ void SmartSelectionCorrector(byte NI,word* M0,word* SN0,int N0){
 			};
 		};
 	};
-	for(int i=0;i<N0;i++){
+	for( i=0;i<N0;i++){
 		word MID=M0[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -5596,14 +5598,14 @@ void SmartSelectionCorrector(byte NI,word* M0,word* SN0,int N0){
 	};
 	//if(NADD>COUNTER)COUNTER=NADD;
 	//if(NSUB>COUNTER)COUNTER=NSUB;
-	for(int i=0;i<N0;i++){
+	for( i=0;i<N0;i++){
 		word MID=M0[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
 			if(OB&&!OB->Sdoxlo)OB->NNUM&=15;
 		};
 	};
-	for(int i=0;i<N1;i++){
+	for( i=0;i<N1;i++){
 		word MID=M1[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];

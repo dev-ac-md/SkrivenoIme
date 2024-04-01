@@ -345,7 +345,7 @@ void addSprite(int x,int y,SprGroup* SG,word id,int PrefRadius){
 	if(OC->NLockPt){
 		AddLockPts(OSP->x-SG->Dx[id],(OSP->y>>1)-SG->Dy[id],OC->NLockPt,OC->LockX,OC->LockY,1);
 	};
-	for(int i=0;i<nb;i++){
+	for(i=0;i<nb;i++){
 		addSpriteAnyway(x+SG->ObjChar[id].BREF[i].BDx,y+SG->ObjChar[id].BREF[i].BDy,SG,SG->ObjChar[id].BREF[i].BornID);
 	};
 #ifdef _USE3D

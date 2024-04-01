@@ -804,8 +804,9 @@ DWORD LOADNATMASK=0;
 bool ProcessMessages();
 extern char** NatNames;
 void ListAllUnits(){
+    int i;
 	FILE* f=fopen("unitslist.dat","w");
-	for(int i=0;i<NNations;i++){
+	for(i=0;i<NNations;i++){
 		int N=NATIONS->NUnits[i];
 		fprintf(f,"%s %d\n",NatNames[i],N);
 		for(int j=0;j<N;j++){
@@ -815,7 +816,7 @@ void ListAllUnits(){
 	};
 	fclose(f);
 	f=fopen("upglist.dat","w");
-	for(int i=0;i<NATIONS->NUpgrades;i++){
+	for(i=0;i<NATIONS->NUpgrades;i++){
 		fprintf(f,"%s %s %s\n",NatNames[NATIONS->UPGRADE[i]->NatID],NATIONS->UPGRADE[i]->Name,NATIONS->UPGRADE[i]->Message);
 	};
 	fclose(f);
@@ -1494,7 +1495,7 @@ void LoadNation(char* fn,byte msk,byte NIndex,byte NatID){
 						SDI->LocalID=znew(word,na);
 					};
 					for(int p=0;p<na;p++){
-						int am, t=0;
+						int am, t;
 						char cc1[128];
 						z=Gscanf(f1,"%s",cc1);
 						for(t=0;t<NEOrders&&strcmp(ElementaryOrders[t].ID,cc1);t++);
@@ -1706,7 +1707,7 @@ void LoadNation(char* fn,byte msk,byte NIndex,byte NatID){
 	Gclose(f1);
 }
 int Get_UID(Nation* NT,char* gg,char* fn,int line){
-	int N=NT->NMon, k=0;
+	int N=NT->NMon, k;
 	char gx[128];
 	GeneralObject** GOG=NT->Mon;
 	for(k=0;k<N&&strcmp(GOG[k]->MonsterID,gg);k++);
@@ -1824,10 +1825,10 @@ void LoadAI(char* fn,Nation* NT){
 								dkind=16;
 								Gscanf(f1,"%s",gg);
 							};
-							int kind=0, k=0;
+							int kind=0, k;
 							int N=NT->NMon;
 							GeneralObject** GOG=NT->Mon;
-							for(int k=0;k<N&&strcmp(GOG[k]->MonsterID,gg);k++);
+							for(k=0;k<N&&strcmp(GOG[k]->MonsterID,gg);k++);
 							if(k>=N){
 								NewUpgrade** NUG=NT->UPGRADE;
 								N=NT->NUpgrades;
@@ -1917,10 +1918,10 @@ void LoadAI(char* fn,Nation* NT){
 								NLine(f1);
 								line++;
 							}else{
-								int kind=0, k=0;
+								int kind=0, k;
 								int N=NT->NMon;
 								GeneralObject** GOG=NT->Mon;
-								for(int k=0;k<N&&strcmp(GOG[k]->MonsterID,gg);k++);
+								for(k=0;k<N&&strcmp(GOG[k]->MonsterID,gg);k++);
 								if(k>=N){
 									NewUpgrade** NUG=NT->UPGRADE;
 									N=NT->NUpgrades;

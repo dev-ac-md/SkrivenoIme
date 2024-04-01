@@ -272,7 +272,7 @@ int GetResID(char*);
 EventsTag Events[maxTask];
 void CmdSetSpeed(byte Speed);
 int RegisterEventHandler(EventHandPro* pro,int Type,void* param){
-	int i = 0;
+	int i;
 	for(i=0;int(Events[i].Pro)&&i<maxTask;i++);
 	if(i>=maxTask)return -1;
 	Events[i].Pro=pro;

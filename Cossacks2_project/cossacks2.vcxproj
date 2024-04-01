@@ -124,7 +124,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/FIXED:NO /MAPINFO:EXPORTS /ignore:4217 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>msvcrt.lib;libcmtd.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;oldnames.lib;dsound.lib;dxguid.lib;dplayx.lib;strmiids.lib;ddraw.lib;ichat.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;libcmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msvcrt.lib;libcmtd.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;oldnames.lib;dsound.lib;dxguid.lib;dplayx.lib;strmiids.lib;ddraw.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;libcmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\bin\dmcr.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>../lib;../../lib;../bin;../../bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -678,7 +678,7 @@
       <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Release3d|Win32'">Speed</FavorSizeOrSpeed>
     </ClCompile>
     <ClCompile Include="PeerClass.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="PiroObjects.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release3d|Win32'">Disabled</Optimization>

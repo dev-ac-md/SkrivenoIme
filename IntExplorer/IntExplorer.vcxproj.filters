@@ -71,6 +71,5 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\bin\dmcr.lib" />
-    <Library Include="..\bin\IChat.lib" />
   </ItemGroup>
 </Project>

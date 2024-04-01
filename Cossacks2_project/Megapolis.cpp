@@ -996,6 +996,7 @@ void City::AddUpgr(byte NI,word UIN,word prod,word per){
 void GetUnitCost(byte NI,word NIndex,int* Cost,int x,int y);
 void City::EnumProp(){
 	NProp=0;
+    int j;
 	//enumerating monsters could be produced 
 	int PC;
 	//int* RESU=&RESRC[Nat->NNUM][0];
@@ -1006,7 +1007,7 @@ void City::EnumProp(){
 			if(GOA[i]->newMons->Usage==PeasantID)PC=Nat->PACount[i];
 			else PC=0;
 		};
-		for(int j=0;j<PC;j++){
+		for(j=0;j<PC;j++){
 			word s=Nat->PAble[i][j];
 			//проверить возможность производства
 			GeneralObject* GO=Nat->Mon[s];
@@ -1041,7 +1042,7 @@ void City::EnumProp(){
 		GeneralObject* GO=GOA[i];
 		if(UnBusyAmount[i]) PC=GO->NUpgrades;
 		else PC=0;
-		for(int j=0;j<PC;j++){
+		for(j=0;j<PC;j++){
 			word s=GO->Upg[j];
 			//проверить возможность производства
 			NewUpgrade* NU=Nat->UPGRADE[s];
@@ -1073,7 +1074,6 @@ void City::EnumProp(){
 			if(POB->InFire&&NU->CtgUpgrade>=24&&NU->CtgUpgrade<=28)OKK=false;
 			if(OKK){
 				word* COST=NU->Cost;
-				int j = 0;
 				for(j=0;j<8&&COST[j]<=XRESRC(Nat->NNUM,j);j++);
 				if(j==8){
 					int maxper=Nat->GENERAL.GetUpgradeCostPercent(NI,s);
@@ -1714,7 +1714,7 @@ void CHKS();
 void CreateFields(byte NI,int x,int y,int n);
 void City::MakeZasev(){
 	int FieldR=FieldR1;
-	int i = 0;
+	int i;
 	if(Nat->NGidot>200){
 		//FieldR+=2;
 		BestOnField=120;
@@ -1760,7 +1760,7 @@ word FIELDID=0xFFFF;
 void SlowCreateFields(byte NI,int x,int y,int n);
 void City::MakeSlowZasev(){
 	int FieldR=FieldR1;
-	int i = 0;
+	int i;
 	//search for the field GO
 	int N=Nat->NMon;
 	if(FIELDID==0xFFFF){
@@ -2670,7 +2670,7 @@ void TakeNewMineBrain(Idea* ID){
 	
 BeginMine:
 	IDI=-1;
-	int MinDist=1000000, i=0;
+	int MinDist=1000000, i;
 	for(i=0;i<NMines;i++){
 		int SID=TD->Mines[i];
 		if(SID<MaxSprt){
@@ -6179,6 +6179,7 @@ void DeleteFromGroups(byte NI,word ID){
 void UnGroupSelectedUnits(byte NI){
 	word FormsIDS[256];
 	int NForms=0;
+    int i;
 	int N=NSL[NI];
 	word* SID=Selm[NI];
 	word* SNS=SerN[NI];
@@ -6197,11 +6198,12 @@ void UnGroupSelectedUnits(byte NI){
 			};
 		};
 	};
-	for(int i=0;i<NForms;i++)DeleteFromGroups(NI,FormsIDS[i]);
+	for(i=0;i<NForms;i++)DeleteFromGroups(NI,FormsIDS[i]);
 };
 void GroupSelectedFormations(byte NI){
 	word FormsIDS[256];
 	int NForms=0;
+    int i;
 	int N=NSL[NI];
 	word* SID=Selm[NI];
 	word* SNS=SerN[NI];
@@ -6220,7 +6222,7 @@ void GroupSelectedFormations(byte NI){
 			};
 		};
 	};
-	for(int i=0;i<NForms;i++)DeleteFromGroups(NI,FormsIDS[i]);
+	for(i=0;i<NForms;i++)DeleteFromGroups(NI,FormsIDS[i]);
 	if(NForms){
 		CT->GroupsSet=(word**)realloc(CT->GroupsSet,CT->NGroups*4+4);
 		CT->NGroupsInSet=(word*)realloc(CT->NGroupsInSet,CT->NGroups*2+2);
@@ -6234,11 +6236,12 @@ void ImSelBrigade(byte NI,byte Type,int ID);
 void CorrectImSelectionInGroups(byte NI){
 	word FormsIDS[256];
 	int NForms=0;
+    int i;
 	int N=ImNSL[NI];
 	word* SID=ImSelm[NI];
 	word* SNS=ImSerN[NI];
 	City* CT=CITY+NatRefTBL[NI];
-	for(int i=0;i<N;i++){
+	for(i=0;i<N;i++){
 		word MID=SID[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -6253,7 +6256,7 @@ void CorrectImSelectionInGroups(byte NI){
 		};
 	};
 	int N3=NForms;
-	for(int i=0;i<N3;i++){
+	for(i=0;i<N3;i++){
 		word ID=FormsIDS[i];
 		for(int j=0;j<CT->NGroups;j++){
 			int N1=CT->NGroupsInSet[j];
@@ -6270,7 +6273,7 @@ void CorrectImSelectionInGroups(byte NI){
 			};
 		};
 	};
-	for(int i=0;i<NForms;i++)ImSelBrigade(NI,1,FormsIDS[i]);
+	for(i=0;i<NForms;i++)ImSelBrigade(NI,1,FormsIDS[i]);
 };
 bool CheckGroupPossibility(byte NI){
 	word* SID=ImSelm[NI];
@@ -6290,17 +6293,18 @@ bool CheckGroupPossibility(byte NI){
 bool CheckUnGroupPossibility(byte NI){
 	word FormsIDS[256];
 	int NForms=0;
+    int i,p;
 	int N=ImNSL[NI];
 	word* SID=ImSelm[NI];
 	word* SNS=ImSerN[NI];
 	City* CT=CITY+NatRefTBL[NI];
-	for(int i=0;i<N;i++){
+	for(i=0;i<N;i++){
 		word MID=SID[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
 			if(OB&&OB->Serial==SNS[i]&&OB->BrigadeID!=0xFFFF&&!OB->Sdoxlo){
 				word BID=OB->BrigadeID;
-				for(int p=0;p<NForms;p++)if(FormsIDS[p]==BID)BID=0xFFFF;
+				for(p=0;p<NForms;p++)if(FormsIDS[p]==BID)BID=0xFFFF;
 				if(BID!=0xFFFF&&NForms<256){
 					FormsIDS[NForms]=BID;
 					NForms++;
@@ -6308,14 +6312,14 @@ bool CheckUnGroupPossibility(byte NI){
 			};
 		};
 	};
-	for(int i=0;i<CT->NGroups;i++)if(NForms==CT->NGroupsInSet[i]){
+	for(i=0;i<CT->NGroups;i++)if(NForms==CT->NGroupsInSet[i]){
 		bool FOUND=1;
 		for(int j=0;j<NForms;j++){
 			word ID=FormsIDS[j];
 			word* CIDS=CT->GroupsSet[i];
 			int N2=CT->NGroupsInSet[i];
 			bool OK=false;
-			for(int p=0;p<N2;p++)if(CIDS[p]==ID)OK=true;
+			for(p=0;p<N2;p++)if(CIDS[p]==ID)OK=true;
 			if(!OK)FOUND=0;
 		};
 		if(FOUND)return true;

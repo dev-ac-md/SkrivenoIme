@@ -428,8 +428,8 @@ bool CorrectPositions(int* pos,word N){
 };
 int Brigade::SelectPeasants(byte NI){
 	SelCenter[NI]=0;
-	int np=0;
-	for(int i=0;i<NMemb;i++){
+	int np=0, i;
+	for( i=0;i<NMemb;i++){
 		OneObject* OB=Group[Memb[i]];
 		if(OB&&OB->Serial==MembSN[i]){
 			if(OB->newMons->Peasant&&!(OB->Sdoxlo||OB->Hidden))np++;
@@ -437,7 +437,7 @@ int Brigade::SelectPeasants(byte NI){
 	};
 	if(NSL[NI]){
 		int N=NSL[NI];
-		for(int i=0;i<N;i++){
+		for( i=0;i<N;i++){
 			word MID=Selm[NI][i];
 			if(MID!=0xFFFF){
 				OneObject* OB=Group[MID];
@@ -453,7 +453,7 @@ int Brigade::SelectPeasants(byte NI){
 	Selm[NI]=znew(word,np);
 	SerN[NI]=znew(word,np);
 	np=0;
-	for(int i=0;i<NMemb;i++){
+	for( i=0;i<NMemb;i++){
 		OneObject* OB=Group[Memb[i]];
 		if(OB&&OB->Serial==MembSN[i]){
 			if(OB->newMons->Peasant&&!(OB->Sdoxlo||OB->Hidden)){
