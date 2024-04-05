@@ -31,7 +31,7 @@ void CreateMapLocking();
 extern char MapScenaryDLL[200];
 //------------Saving&Loading 3D map & textures--------
 void SaveHeader(ResFile f1){
-	word i='PMD3'+ADDSH-1;
+	int i='PMD3'+ADDSH-1;
 	RBlockWrite(f1,&i,4);
 	i=VertInLine;
 	RBlockWrite(f1,&i,4);
@@ -142,7 +142,7 @@ void LoadTiles(ResFile f1){
 extern byte* TexMapEx;
 extern byte* WTexMapEx;
 void SaveTilesEx(ResFile f1){
-	word i='2LIT';
+	int i='2LIT';
 	RBlockWrite(f1,&i,4);
 	i=4+(MaxTH+1)*MaxTH*2;
 	RBlockWrite(f1,&i,4);
@@ -176,7 +176,7 @@ extern byte* FactureMap;
 extern byte* FactureWeight;
 void SaveFactures(ResFile f1){
 	if(FactureMap){
-		word i='PAMF';
+		int i='PAMF';
 		RBlockWrite(f1,&i,4);
 		int sz=VertInLine*MaxTH;
 		i=4+2*sz;
@@ -196,17 +196,18 @@ void LoadFactures(ResFile f1){
 extern SprGroup SPECIAL;
 void SaveSprites(ResFile f1){
 	//FILE* F1=fopen("SPR.DAT","w");
+    int i;
 	int ns=0;
 	for(int i=0;i<MaxSprt;i++){
 		if(Sprites[i].Enabled)ns++;
 	};
-	int i='1ERT';
+	i='1ERT';
 	RBlockWrite(f1,&i,4);
 	i=(ns*14)+8;
-	int j='GA';
+	word j='GA';
 	RBlockWrite(f1,&i,4);
 	RBlockWrite(f1,&ns,4);
-	for(int i=0;i<MaxSprt;i++){
+	for( i=0;i<MaxSprt;i++){
 		OneSprite* OS=&Sprites[i];
 		if(OS->Enabled){
 			j=0;
@@ -973,7 +974,7 @@ void SaveWaterCost(ResFile f1){
 	};
 };
 void LoadWaterCost(ResFile f1){
-	int i=0,Lx,Ly;
+	int i,Lx,Ly;
 	RBlockRead(f1,&Lx,4);
 	RBlockRead(f1,&Ly,4);
 	int dsx=(MaxWX);
@@ -1333,10 +1334,10 @@ void SaveFormationsNew(ResFile f1){
 };
 void SaveFormationsNewC2(ResFile f1){
 #ifdef COSSACKS2
-	word i='2ROF';
+	int i='2ROF';
 	RBlockWrite(f1,&i,4);
 	int sz=4+4;
-	int NB=0, k=0;
+	int NB=0, k;
 	for(int i=0;i<8;i++){
 		Brigade* BR=CITY[i].Brigs;
 		for(int j=0;j<MaxBrig;j++){

@@ -1692,7 +1692,7 @@ typedef void tpSetSaveData(byte* Data, int size, byte AiNat);
 
 void SaveAI(SaveBuf* SB){
 	//assert(_CrtCheckMemory());
-	int N=0, j=0;
+	int N=0, j, k;
 	int chk=654321;
 	//for(int i=0;i<8;i++)if(NATIONS[i].AI_Enabled)N++;
 	xBlockWrite(SB,&chk,4);
@@ -1934,7 +1934,7 @@ void SaveAI(SaveBuf* SB){
 			for(int j=0;j<i;j++)if(GNFO.EINF[i]==GNFO.EINF[j])j=i+1;
 			if(j==i){
 				for(int k=0;k<8;k++)if(GNFO.EINF[i]==GNFO.EINF[k])xBlockWrite(SB,&k,1);
-				int k=255;
+				k=255;
 				xBlockWrite(SB,&k,1);
 				//essential part
 				EnemyInfo* EINF=GNFO.EINF[i];

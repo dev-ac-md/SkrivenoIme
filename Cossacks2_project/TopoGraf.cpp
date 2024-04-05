@@ -179,7 +179,7 @@ void CreateAreas(){
 	int i;
 
 #ifdef HASH_TOP
-	for(int i=0;i<NMFIELDS;i++){
+	for( i=0;i<NMFIELDS;i++){
 		HashTable[i].CreateAreas();
 	}
 	return;
@@ -225,7 +225,7 @@ void CreateAreas(){
 	int N1=0;
 	PreCreateTopLinks();
 	//assert(_CrtCheckMemory());
-	for(int i=0;i<MAXSPR;i++){
+	for( i=0;i<MAXSPR;i++){
 		OneSprite* OS=&Sprites[i];
 		if(OS->Enabled){
 			SprGroup* SG=OS->SG;
@@ -234,7 +234,7 @@ void CreateAreas(){
 		};
 	};
 	/*
-	for(int i=0;i<MAXSPR;i++){
+	for( i=0;i<MAXSPR;i++){
 		OneSprite* OS=&Sprites[i];
 		if(OS->Enabled){
 			SprGroup* SG=OS->SG;
@@ -263,7 +263,7 @@ void CreateAreas(){
 	//assert(_CrtCheckMemory());
 	//creating linking between areas
 	int NA=GetNAreas();
-	for(int i=0;i<NA;i++){
+	for( i=0;i<NA;i++){
 		Area* AR=GetTopMap(i);
 		TopRef[AR->x+int(AR->y)*TopLx]=i;
 	}
@@ -325,7 +325,7 @@ void CreateAreas(){
 	};
 	ProcessMessages();
 	//creating resource references
-	for(int i=0;i<MAXSPR;i++){
+	for( i=0;i<MAXSPR;i++){
 		OneSprite* OS=&Sprites[i];
 		SprGroup* SG=OS->SG;
 		ObjCharacter* OC=&SG->ObjChar[OS->SGIndex];
@@ -346,14 +346,14 @@ void CreateAreas(){
 			};
 		};
 	};
-	for(int i=0;i<NA;i++){
+	for( i=0;i<NA;i++){
 		Area* AR=GetTopMap(i);
 		if(AR->NMines){
 			AR->MinesIdx=znew(word,AR->NMines);
 			AR->NMines=0;
 		}
 	};
-	for(int i=0;i<MAXSPR;i++){
+	for( i=0;i<MAXSPR;i++){
 		OneSprite* OS=&Sprites[i];
 		SprGroup* SG=OS->SG;
 		ObjCharacter* OC=&SG->ObjChar[OS->SGIndex];

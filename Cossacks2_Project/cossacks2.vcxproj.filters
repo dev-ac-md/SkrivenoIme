@@ -101,9 +101,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ddini.h">
-      <Filter>Dump</Filter>
-    </ClInclude>
     <ClInclude Include="Dplay.h">
       <Filter>Dump</Filter>
     </ClInclude>
@@ -601,6 +598,9 @@
     </ClInclude>
     <ClInclude Include="InetRaiting\stats\gpersist.h">
       <Filter>Internet Rating&amp;Profiles\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="Ddini.h">
+      <Filter>Graphic\Graphic Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

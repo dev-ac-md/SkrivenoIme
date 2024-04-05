@@ -1168,7 +1168,7 @@ int EnemyInfo::GetMaxForceOnTheWay(int TopStart,int FinalTop){
 };
 void EnemyInfo::ResearchShipsGroups(){
 	NSGRP=0;
-	int j = 0;
+	int j;
 	for(int i=0;i<NHSHIPS;i++){
 		if(!NSGRP){
 			HShipsGroup* SGR=SGRP;

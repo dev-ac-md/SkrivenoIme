@@ -651,6 +651,7 @@ void CreateMapPreview(byte* Data,int Lx,int Ly){
 	int PX1[480<<3];
 	int PM1[480<<3];
 	IMGMAX=240<<ADDSH;
+    int i;
 	for(int i=0;i<IMGMAX;i++){
 		PX1[i]=(i*Lx)/IMGMAX;
 		PM1[i]=Lx*((i*Ly)/IMGMAX);
@@ -680,7 +681,7 @@ void CreateMapPreview(byte* Data,int Lx,int Ly){
 			PutMPPoint(ix,dy+5,c);
 		};
 	};
-	for(int i=0;i<MaxSprt;i++){
+	for( i=0;i<MaxSprt;i++){
 		if(Sprites[i].Enabled){
 			int x=Sprites[i].x;
 			int y=Sprites[i].y;
@@ -690,7 +691,7 @@ void CreateMapPreview(byte* Data,int Lx,int Ly){
 		};
 	};
 	int stp1=stp<<1;
-	for(int i=0;i<msx;i+=stp)
+	for( i=0;i<msx;i+=stp)
 		for(int j=0;j<msy;j+=stp1){
 			int wd=WaterDeep[i+j*MaxWX];
 			byte cc=0;
@@ -705,7 +706,7 @@ void CreateMapPreview(byte* Data,int Lx,int Ly){
 				PutMPPoint(i+1,j+1,cc);
 			};
 		};
-	for(int i=0;i<MAXOBJECT;i++){
+	for( i=0;i<MAXOBJECT;i++){
 		OneObject* OB=Group[i];
 		if(OB&&!OB->Sdoxlo){
 			int xx=OB->RealX>>9;
@@ -724,6 +725,7 @@ void CreateMiniMap(){
 	int msx2=msx>>ADDSH;
 	int msy2=msy>>ADDSH;
 	MiniMade=true;
+    int i;
 	if(TriUnit==16){
 		for(int ix=0;ix<msx2;ix++)
 			for(int iy=0;iy<msy2;iy++){
@@ -758,7 +760,7 @@ void CreateMiniMap(){
 			};
 		};
 			
-	for(int i=0;i<MaxSprt;i++){
+	for( i=0;i<MaxSprt;i++){
 		if(Sprites[i].Enabled){
 			int x=Sprites[i].x>>(5+ADDSH);
 			int y=Sprites[i].y>>(5+ADDSH);
@@ -1048,6 +1050,7 @@ bool AddLockPts(int x0,int y0,int NPT,short* xi,short* yi,byte add);
 void CreateLandLocking(int TAlp,bool ForVision){
 	int mxx=msx>>1;
 	int myy=msy>>1;
+    int i, ix;
 	for(int ix=0;ix<mxx;ix++){
 		int ZLmin=1000000;
 		int ZRmin=1000000;	
@@ -1102,19 +1105,19 @@ void CreateLandLocking(int TAlp,bool ForVision){
 	};
 	int N=UnLockBars.NBars;
 	BlockCell* BC=UnLockBars.BC;
-	for(int i=0;i<N;i++){
+	for( i=0;i<N;i++){
 		BClrBar(int(BC[i].x)<<2,int(BC[i].y)<<2,4);
 	};
 	N=LockBars.NBars;
 	BC=LockBars.BC;
-	for(int i=0;i<N;i++){
+	for( i=0;i<N;i++){
 		BSetBar(int(BC[i].x)<<2,int(BC[i].y)<<2,4);
 	};
 	if(ForVision){
 		ClearTrianglesSystem();
 		CreateTrianglesSystem();
 	};
-	for(int ix=1;ix<mxx;ix++)
+	for( ix=1;ix<mxx;ix++)
 		for(int iy=1;iy<myy;iy++){
 			int ppx=ix<<2;
 			int ppy=iy<<2;
@@ -1133,7 +1136,7 @@ void CreateLandLocking(int TAlp,bool ForVision){
 	//memcpy(TMF->MapH,MFIELDS->MapH,MAPSY*BMSX);
 	memcpy(TMF->MapV,MFIELDS->MapV,MAPSY*BMSX);
 	
-	for(int ix=1;ix<mxx;ix++)
+	for( ix=1;ix<mxx;ix++)
 		for(int iy=1;iy<myy;iy++){
 			int ppx=ix<<2;
 			int ppy=iy<<2;
@@ -1168,7 +1171,7 @@ void CreateLandLocking(int TAlp,bool ForVision){
 	//memcpy(TMF,MFIELDS,sizeof MotionField);
 	//memcpy(TMF->MapH,MFIELDS->MapH,MAPSY*BMSX);
 	memcpy(TMF->MapV,MFIELDS->MapV,MAPSY*BMSX);
-	for(int ix=1;ix<mxx;ix++)
+	for( ix=1;ix<mxx;ix++)
 		for(int iy=1;iy<myy;iy++){
 			int ppx=ix<<2;
 			int ppy=iy<<2;
@@ -1277,6 +1280,7 @@ void CreateMapLocking(){
 	};
 };
 void CreateUnitsLocking(){
+    int i;
 	for(int i=0;i<MAXOBJECT;i++){
 		OneObject* OB=Group[i];
 		if(OB&&OB->NewBuilding){
@@ -1298,7 +1302,7 @@ void CreateUnitsLocking(){
 			for(int i=0;i<nn;i++)BSetPt(xx+LockX[i],yy+LockY[i]);
 		};
 	};
-	for(int i=0;i<WSys.NClusters;i++){
+	for( i=0;i<WSys.NClusters;i++){
 		WallCluster* WCL=WSys.WCL[i];
 		if(WCL){
 			int ncl=WCL->NCells;
