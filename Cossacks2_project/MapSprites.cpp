@@ -2107,6 +2107,10 @@ void TimeReq::Handle(){
         byte Kind=Kinds[i];
         if(!Kind){
             OneSprite* OS=&Sprites[ID];
+            if (nullptr == OS->OC)//BUGFIX: access violation
+            {
+                continue;
+            }
             ObjCharacter* OC=OS->OC;
             SprGroup* SG=OS->SG;
             OS->TimePassed+=FrmDec;

@@ -36,7 +36,7 @@
  #define DLL3(x,y,z,t) x(y,z,t)
 #endif
 
-
+CIMPORT void CheckDipBuilding(byte NI, int Index);
 //#ifndef __ddini_cpp_
 extern LPDIRECTDRAW            lpDD;			   // DirectDraw object
 extern LPDIRECTDRAWSURFACE     lpDDSPrimary;   // DirectDraw primary surface

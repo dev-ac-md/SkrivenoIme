@@ -3825,14 +3825,19 @@ extern City CITY[8];
 void SelBrigade(byte NI,byte Type,int ID);
 void ImSelBrigade(byte NI,byte Type,int ID);
 void CorrectBrigadesSelection(byte NT){
+    if (sizeof(NSL) <= NT)//BUGFIX: NT > 7 can cause access violation
+    {//Call stack: ExecuteBuffer() -> RememSelection()
+        return;
+    }
 	int BrigsID[512];
 	byte BFlags[128];
+    int i;
 	memset(BFlags,0,sizeof BFlags);
 	int NBR=0;
 	int N=NSL[NT];
 	word* mon=Selm[NT];
 	City* CT=CITY+NatRefTBL[NT];
-	for(int i=0;i<N;i++){
+	for( i=0;i<N;i++){
 		word MID=mon[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -3852,7 +3857,7 @@ void CorrectBrigadesSelection(byte NT){
 			};
 		};
 	};
-	for(int i=0;i<NBR;i++){
+	for( i=0;i<NBR;i++){
 		SelBrigade(NT,1,BrigsID[i]);
 	};
 };
@@ -3860,12 +3865,13 @@ void CorrectImSelectionInGroups(byte NI);
 void ImCorrectBrigadesSelection(byte NT){
 	int BrigsID[512];
 	byte BFlags[128];
+    int i;
 	memset(BFlags,0,sizeof BFlags);
 	int NBR=0;
 	int N=ImNSL[NT];
 	word* mon=ImSelm[NT];
 	City* CT=CITY+NatRefTBL[NT];
-	for(int i=0;i<N;i++){
+	for( i=0;i<N;i++){
 		word MID=mon[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -3885,7 +3891,7 @@ void ImCorrectBrigadesSelection(byte NT){
 			};
 		};
 	};
-	for(int i=0;i<NBR;i++){
+	for( i=0;i<NBR;i++){
 		ImSelBrigade(NT,1,BrigsID[i]);
 	};
 	CorrectImSelectionInGroups(NT);

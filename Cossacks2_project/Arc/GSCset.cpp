@@ -81,6 +81,10 @@ LPGSCfile CGSCset::gOpenFile(LPCSTR lpcsFileName,bool Only)
 
 VOID CGSCset::gCloseFile(LPGSCfile gFile)
 {
+    if (nullptr == gFile)//BUGFIX: Exception when closing game via Alt+F4
+    {
+        return;
+    }
 	if((gFile->m_Flags)&0x80){
 		gFile->m_Arch->CloseFileHandle(gFile);
 	}else{

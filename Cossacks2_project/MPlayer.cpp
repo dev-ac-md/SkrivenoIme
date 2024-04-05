@@ -1952,7 +1952,8 @@ bool StartIGame(bool SINGLE){
 	BUFB=(byte*)(BUF+10+8+32-8);
 	int HostID=0;
 	for(int i=0;i<NPlayers;i++)if(PINFO[i].Host)HostID=i;
-	memcpy(BUFB,PINFO[HostID].MapName+44+16,16);
+	//memcpy(BUFB,PINFO[HostID].MapName+44+16,16);
+    memcpy(BUFB, PINFO[HostID].COMPINFO, 16);//BUGFIX: Dependence on PlayerInfo memory alignment
 	memcpy(COMPSTART,BUFB,16);
 	BUFB=(byte*)(BUF+10+8+32-4);
 	for(int p=0;p<8;p++){

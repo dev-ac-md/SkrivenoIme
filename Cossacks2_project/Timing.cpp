@@ -130,7 +130,7 @@ int GetDADDT(int DT){
 	return 20;
 };
 int GetRealTime(){
-	//return GetTickCount();
+	return GetTickCount();
 	/*
 	LARGE_INTEGER FREQ;
 	if(!QueryPerformanceFrequency(&FREQ))return GetTickCount();
@@ -138,7 +138,7 @@ int GetRealTime(){
 	QueryPerformanceCounter(&DD);
 	double Freq=double(FREQ.LowPart)+double(FREQ.HighPart)*double(0x100000000);
 	double Time=double(DD.LowPart)+double(DD.HighPart)*double(0x100000000);
-	*/
+	
 	int T=GetTickCount();//GetTicksEx();
 	//T+=T>>10;
 	if(PREVT){
@@ -155,6 +155,7 @@ int GetRealTime(){
 		};
 	}else PREVT=T;
 	return T+(AddTime>>7);
+    */
 };
 int GetAbsoluteRealTime(){
 	//return GetTickCount();

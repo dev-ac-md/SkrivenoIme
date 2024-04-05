@@ -990,7 +990,14 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
 		SetMPtr(LOWORD(lParam),HIWORD(lParam),wParam);
 		AddMouseEvent(mouseX,mouseY,Lpressed,Rpressed);
 		//HandleMouse(mouseX,mouseY);
-		if((abs(mouseX-LastUMX)+abs(mouseY-LastUMY))<16&&GetTickCount()-LastUTime<600)SpecCmd=241;
+        if (!BuildMode//BUGFIX: Prevent unit selection while placing buildings
+            && (abs(mouseX - LastUMX) + abs(mouseY - LastUMY)) < 16
+            && GetTickCount() - LastUTime < 600)
+        {
+            //Select all units of selected type on screen
+            SpecCmd = 241;
+        }
+		//if((abs(mouseX-LastUMX)+abs(mouseY-LastUMY))<16&&GetTickCount()-LastUTime<600)SpecCmd=241;
 		LastUMX=mouseX;
 		LastUMY=mouseY;
 		LastUTime=GetTickCount();
@@ -3592,6 +3599,7 @@ CEXPORT char LobbyVersion[32] = "1.50";
 void InitWinTab();
 void StartTest();
 void FinExplorer();
+void StartExplorer();
 char AI_Log[256]="";
 char CurrentGameLogDir[256]="";
 void ClearMessages();
@@ -3669,18 +3677,26 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		return 0;
 	};
 	FilesInit();
+
 	EraseRND();
+    
+
+    ScreenPtr = NULL;
+
+    ChangeNation = false;
+    MultiTvar = false;
+    MEditMode = false;
+    WaterEditMode = false;
+
 	Shifter=5;
 	Multip=0;
-	ScreenPtr=NULL;
+    AutoTime = 0;
+    BlobMode = 0;
+    CostThickness = 4;
+    EditMedia = 0;
+
 	SetupRenderStack();
-	ChangeNation=false;
-	MultiTvar=false;
-	AutoTime=0;
-	BlobMode=0;
-	MEditMode=false;
-	CostThickness=4;
-	EditMedia=0;
+
 	CreateRadio();
 	//LoadMediaFile();
 	SpecCmd=0;
@@ -3691,13 +3707,16 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	RealLy=768;
 	exRealLx=1024;
 	exRealLy=768;
+
 	WarSound=0;
 	WorkSound=0;
 	OrderSound=0;
 	MidiSound=0;
-	WaterEditMode=false;
+	
 	InitObjs3();
+
 	FPSTime=50;
+
 	GFILE* FF1=Gopen("Lobby.txt","r");
 	if(FF1){
 		int vv=dwVersion;
@@ -3709,9 +3728,9 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	AText("mode.dat");
 	ScrollSpeed=5;
 	if(fff){
-		/*Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, 
-        &MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
-		Gclose(fff);*/
+		//Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, 
+        //&MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
+		//Gclose(fff);
         //Distinguish between last window adn fullscreen resolutions
         int ex_window_x, ex_window_y, ex_x, ex_y;
         int dummy;
@@ -3771,15 +3790,19 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #endif
 
 	//CreateRandomHMap();
-	HealthMode=false;				
-	tima=0;
-	PlayerMask=1;
-	Flips=0;
-	tmtim=0;
-	InfoMode=true;
+	
     MSG         msg;
-	DeathMode=false;
-	AttackMode=false;
+
+    tima = 0;
+    PlayerMask = 1;
+    Flips = 0;
+    tmtim = 0;
+
+    HealthMode = false;
+    InfoMode = true;
+    DeathMode = false;
+    AttackMode = false;
+	
 	InitFishMap();
 	MemReport("InitFishMap");
 	SetupGates();
@@ -3840,7 +3863,7 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if( !doInit( hInstance, nCmdShow ) )
     {
         return FALSE;
-    };
+    }
 
 #ifdef _USE3D
 	extern IRenderSystem* IRS;
@@ -3852,7 +3875,7 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	SetCDVolume(MidiSound);
 	//mpl_Play("mp3\\co_Green01.mp3");
-	InitWinTab();
+	//InitWinTab();
 	LoadFog(2);
 	LoadPalette("1\\agew_1.pal");
 	MemReport("doInit");
@@ -3866,12 +3889,12 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	REALTIME=0;
 	//processMainMenu();
 	KeyPressed=false;
-	SetCursorPos(512,300);
-	mouseX=0;
-	mouseY=0;
-	SetMPtr(512,300,0);
-	mouseX=512;
-	mouseY=300;
+	//SetCursorPos(512,300);
+	//mouseX=0;
+	//mouseY=0;
+	//SetMPtr(512,300,0);
+	//mouseX=512;
+	//mouseY=300;
 	OnMouseMoveRedraw(); 
 #ifdef _USE3D
 	void LoadAllGModels();
@@ -3895,7 +3918,8 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		if(bActive){
 			//int Ticki=GetRealTime();	
 			//while(GetRealTime()-Ticki<MsPerFrame);
-			StartTest();
+			//StartTest();
+            StartExplorer();
 			InVideo=0;
 			AllGame();
 			ClearScreen();
@@ -3926,8 +3950,8 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 			GFILE* fff=Gopen("mode.dat","wt");
 			if(fff){
-				/*Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, FPSTime, ScrollSpeed, exFMode, PlayMode);
-				Gclose(fff);*/
+				//Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, FPSTime, ScrollSpeed, exFMode, PlayMode);
+				//Gclose(fff);
                 Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d %d",
                     ex_window_x, ex_window_y, ex_x, ex_y,
                     WarSound, OrderSound, OrderSound,

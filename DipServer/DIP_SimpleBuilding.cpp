@@ -1,4 +1,6 @@
 #include "CommonDip.h"
+#include "..\common.h"
+
 
 void DIP_SimpleBuilding::InitThisTribe2(char* FileID, char* Dip, char* GDance, char* ZDance){
 	InitThisTribe("",Dip,FileID);	

@@ -120,10 +120,10 @@ void Graph::Clear(){
 };
 void xLine(int x,int y,int x1,int y1,byte c);
 void Graph::Draw(int x0,int y0,int Lx,int Ly){
-	int MaxT=-2147483648;
-	int MinT=2147483647;
-	int MaxV=-2147483648;
-	int MinV=2147483647;
+    int MaxT = -2147483647; //BUGFIX: -2147483648 causes C4146
+    int MinT = 2147483647;
+    int MaxV = -2147483647;
+    int MinV = 2147483647;
 	for(int i=0;i<16;i++){
 		OneGraph* OG=GRP+i;
 		if(OG->N){

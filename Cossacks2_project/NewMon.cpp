@@ -199,7 +199,7 @@ void DosToWin(char* Str){
 };
 extern int CurPalette;
 extern bool PalDone;
-void ErrM(char* s)
+CEXPORT void ErrM(char* s)
 {
 	if(PalDone){
 		char pal[128];
@@ -207,7 +207,7 @@ void ErrM(char* s)
 		LoadPalette(pal);
 	};
 	MessageBox(hwnd,s,"LOADING FAILED...",MB_ICONWARNING|MB_OK);
-	assert(false);
+	//assert(false);
 };
 void NEPar(char* name,int line,char* Sect,int Need){
 	char gx[128];
@@ -7597,7 +7597,7 @@ __forceinline void MotionHandler1(OneObject* OB){
 			int mrot=NMN->MinRotator;
 			bool NeedToPush=false;
 			if(abs(ddir)<=mrot){
-				char dirr=0;
+				byte dirr=0;
 				switch(OB->MoveStage){
 				case 0:
 					dirr=BestDir;
@@ -13674,7 +13674,7 @@ void CreateFields(byte NI,int x,int y,int n);
 void InvitePeasant(OneObject* Mine);
 extern bool EditMapMode;
 void OneObject::NextStage(){
-    int i;
+    int i=0;
 	if(!NewBuilding||Life==MaxLife)return;
 	NewMonster* NM=newMons;
 	AdvCharacter* ACR=Ref.General->MoreCharacter;

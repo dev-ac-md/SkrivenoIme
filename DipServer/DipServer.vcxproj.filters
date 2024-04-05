@@ -149,5 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\bin\dmcr.lib" />
+    <Library Include="..\bin\IntExplorer.lib" />
   </ItemGroup>
 </Project>

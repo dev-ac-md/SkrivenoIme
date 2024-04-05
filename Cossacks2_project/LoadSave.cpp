@@ -3468,9 +3468,20 @@ void EnemyInfo::FREE(){
 
 word GetNMSL(int i){
 	int v=i>>6;
-	int idx=MRef[v];
+	/*int idx = MRef[v];
 	if(idx!=0xFFFF)return MCash[(idx<<6)+(i&63)];
-	else return 0;
+	else return 0;*/
+    if (v < VAL_MAXCIOFS)//BUGFIX: prevent access violation in MRef[v] when v > 128^2
+    {
+        int idx = MRef[v];
+
+        if (idx != 0xFFFF)
+        {
+            return MCash[(idx << 6) + (i & 63)];
+        }
+    }
+
+    return 0;
 };
 void SetNMSL(int i,word W){
 	int v=i>>6;

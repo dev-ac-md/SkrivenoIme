@@ -203,10 +203,10 @@ void FlipPages(void)
 
 	if(!bActive)return;
 	if (window_mode){
-		if(PlayerMenuMode!=1){
+		//if(PlayerMenuMode!=1){
 		//	ProcessFog();
 		//	ShowFoggedBattle();
-		};
+		//};
         HDC WH = GetDC(hwnd);
 		//memcpy(xxt.XPal,&GPal[1],sizeof xxt.XPal);
 		for(int i=0;i<256;i++){
@@ -443,7 +443,7 @@ void UnlockSurface(void)
  */
 HDC GetSDC(void)
 {
-	if(window_mode) return 0;
+	//if(window_mode) return 0;
 	HDC hdc;
 	if (DDError) return 0;
 	if (CurrentSurface)
@@ -678,7 +678,7 @@ SDMOD:;
         {
 			//Rept("SetCoopLevel: DD_OK\n");
 #ifndef _USE3D
-		ShowCursor(false);
+		//ShowCursor(false);
 #endif // !_USE3D
 
 			//Rept("SetDisplayMode(%d,%d)\n",RealLx,RealLy);

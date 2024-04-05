@@ -78,7 +78,7 @@ void StartPlayRandomMP3(bool CheckAnyway){
 		do{
 			int v=(((GetTickCount()+rand())&255)*NFILES)>>8;
 			sprintf(NAME,"Music\\%s",FILES[v]);
-			strupr(NAME);
+			_strupr(NAME);
 			found=1;
 			for(int j=0;j<5&&j<NFILES-1;j++)if(!strcmp(NAME,FileSet[j]))found=0;
 			NATTM++;

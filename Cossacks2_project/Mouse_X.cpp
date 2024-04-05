@@ -368,6 +368,10 @@ void RedrawScreenMouse(){
 #endif //_USE3D
 	if(!bActive)return;
 	if(xLockMouse)return;
+    if (!bActive || window_mode)//BUGFIX: Cursor shadow trail while showing ingame menues
+    {
+        return;
+    }
 try{
 	RestoreMData(RealScreenPtr,(void*)buf1o,(void*)buf2o,OldMX,OldMY,RSCRSizeX,RSCRSizeY);
 	GetMData((void*)buf1o,RealScreenPtr,MX,MY,RSCRSizeX,RSCRSizeY);

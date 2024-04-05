@@ -246,8 +246,9 @@ void Economic::ResearchMap()
 				{
 					if(!strcmp(UDi->Type,"VILLAGE"))
 					{
-						Village* V = new Village();
-						V->FillParams(&(*UDi),U.Index);
+						Village* V = new Village(); 
+                        UnitDescription* ptrToUnit = &(*UDi);
+						V->FillParams(ptrToUnit,U.Index);
 						V->NP=&(NP[U.NI]);
 						V->AddNewIndex(U.Index,V);
 						VillageList.push_back(V);
@@ -258,7 +259,8 @@ void Economic::ResearchMap()
 					if(!strcmp(UDi->Type,"TRANSPORT"))
 					{
 						Transport* T = new Transport();
-						T->FillParams(&(*UDi),U.Index);
+                        UnitDescription* ptrToUnit = &(*UDi);
+						T->FillParams(ptrToUnit,U.Index);
 						T->NP=&(NP[U.NI]);
 						TransportList.push_back(T);
 					}
@@ -266,7 +268,8 @@ void Economic::ResearchMap()
 					if(!strcmp(UDi->Type,"TAXCOLLECTOR"))
 					{
 						TaxCollector* C = new TaxCollector();
-						C->FillParams(&(*UDi),U.Index);
+                        UnitDescription* ptrToUnit = &(*UDi);
+						C->FillParams(ptrToUnit,U.Index);
 						C->NP=&(NP[U.NI]);
 						TaxCollectorList.push_back(C);
 					}
@@ -274,7 +277,8 @@ void Economic::ResearchMap()
 					if(!strcmp(UDi->Type,"WAREHOUSE"))
 					{
 						Warehouse* W = new Warehouse();
-						W->FillParams(&(*UDi),U.Index);
+                        UnitDescription* ptrToUnit = &(*UDi);
+						W->FillParams(ptrToUnit,U.Index);
 						W->NP=&(NP[U.NI]);
 						WarehouseList.push_back(W);
 					}
@@ -282,7 +286,8 @@ void Economic::ResearchMap()
 					if(!strcmp(UDi->Type,"MANAFACTURE"))
 					{
 						Manufacture* M = new Manufacture();
-						M->FillParams(&(*UDi), U.Index);
+                        UnitDescription* ptrToUnit = &(*UDi);
+						M->FillParams(ptrToUnit, U.Index);
 						M->NP=&(NP[U.NI]);
 						ManufactureList.push_back(M);
 					}
@@ -290,7 +295,8 @@ void Economic::ResearchMap()
 					if(!strcmp(UDi->Type,"MARKET"))
 					{
 						Market* M = new Market();
-						M->FillParams(&(*UDi), U.Index);
+                        UnitDescription* ptrToUnit = &(*UDi);
+						M->FillParams(ptrToUnit, U.Index);
 						M->NP=&(NP[U.NI]);
 						MarketList.push_back(M);
 					}
@@ -298,7 +304,8 @@ void Economic::ResearchMap()
 					if(!strcmp(UDi->Type,"BARRACK"))
 					{
 						Barrack* B = new Barrack();
-						B->FillParams(&(*UDi), U.Index);
+                        UnitDescription* ptrToUnit = &(*UDi);
+						B->FillParams(ptrToUnit, U.Index);
 						B->NP=&(NP[U.NI]);
 						BarrackList.push_back(B);
 					}
@@ -382,7 +389,7 @@ void Economic::EconomicDipComm(char* com,char** params,int npr,ParsedRQ* Result)
 		DString DST;
 		DST.ReadFromFile("Eco\\cml\\test.cml");
 		char c[16];
-		itoa(++gggg,c,10);
+		_itoa(++gggg,c,10);
 		DST.Replace("$COUNT$",c);
 		DST.WriteToFile("Eco\\cml\\tmp.cml");
 		Result->Clear();

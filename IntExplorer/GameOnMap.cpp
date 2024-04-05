@@ -78,7 +78,9 @@ OneMap::OneMap(){
 	g_SetWindParam( WindX, WindY, WindX1, WindY1 );
 #endif // _COSSACKS2
 };*/
-
+CIMPORT void PushWindow(TempWindow* W);
+CIMPORT void PopWindow(TempWindow* W);
+CIMPORT void IntersectWindows(int x0, int y0, int x1, int y1);
 CIMPORT byte GetPaletteColor(int r,int g,int b);
 CIMPORT void GetPalColor(byte idx,byte* r,byte* g,byte* b);
 void SendSmartRequest(sicExplorer* SXP,char* Str);
@@ -102,7 +104,7 @@ bool ReadWinStringF(FILE* F,char* STR,int Max){
 void OneMap::LoadMapData(sicExplorer* SXP){
 	//loading colors
 	char ccc[64];
-	int i = 0;
+	int i;
 	sprintf(ccc,"Internet\\Cash\\%s.colors",Title);
 	FILE* F=fopen(ccc,"r");
 	if(F){
@@ -519,11 +521,11 @@ void OneMap::UpdateMapData(byte* Date){
 	Date+=4;
 	DWORD CurrentDate=*((DWORD*)Date);
 	Date+=4;
+    int i;
 	//FILE* F1=fopen("Internet\\Cash\\map.log","a");
 	//fprintf(F1,"UPDATE: %d->%d (TOTAL: pts: %d  upd: %d)\n",StartDate,CurrentDate,NPT,NUP);
 	if(UpdateData==StartDate){
-		char ccc[256];
-        int i = 0;
+		char ccc[256];   
 		sprintf(ccc,"Internet\\Cash\\%s.date",Title);
 		FILE* F=fopen(ccc,"w");
 		if(F){

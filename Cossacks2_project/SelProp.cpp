@@ -461,7 +461,7 @@ void ShowProp(){
 	OneObject* OBJ;
 	GeneralObject* GO;
 	MonInf* MI;
-	int i,j=0,k;
+	int i,j,k;
 	//ResFon(PrpX,PrpY,PrpNx*IconLx,PrpNy*IconLy);
 	word Nsel=ImNSL[MyNation];
 	word* SMon=ImSelm[MyNation];
@@ -516,7 +516,7 @@ void ShowProp(){
 		//RunPF(22);
 		int ST=Nsel/100;
 		if(!ST)ST=1;
-		for(int i=0;i<Nsel;i++){
+		for(i=0;i<Nsel;i++){
 			MID=SMon[i];
 			if(MID!=0xFFFF){
 				OBJ=Group[MID];
@@ -574,7 +574,7 @@ void ShowProp(){
 							NARMINF++;
 						};
 					}else{
-						for(int j=0;j<NINF;j++){
+						for( j=0;j<NINF;j++){
 								if(GO==MList[j].RF)break;
 						};
 						MI=&(MList[j]);
@@ -624,7 +624,7 @@ void ShowProp(){
 		int y1=PrpY;
 		OneSlide* OC;
 		char str[32];
-		for(int i=0;i<NINF;i++){
+		for( i=0;i<NINF;i++){
 			MI=&(MList[i]);
 			OBJ=Group[MI->Last];
 			NewMonster* NM=OBJ->newMons;
@@ -658,7 +658,7 @@ void ShowProp(){
 				};
 			};
 		};
-		for(int i=0;i<NARMINF;i++){
+		for( i=0;i<NARMINF;i++){
 			int bid=ArmList[i];
 			if(bid!=0xFFFF){
 				City* CT=NATIONS[NatRefTBL[MyNation]].CITY;
@@ -769,7 +769,7 @@ void ShowProp(){
 				y1=PanelY+Zone1Y+IconLx+10+9+DYY-2;
 				x1=Zone1X+4;
 				NN=0;
-				for(int i=0;i<16;i++){
+				for( i=0;i<16;i++){
 					if(ADC->Protection[i]&&NN<6){
 						int ix=x1+(NN>>1)*IC_DISTX;
 						int iy=y1+(NN&1)*IC_DISTY;
@@ -796,7 +796,7 @@ void ShowProp(){
 					FEAR_TXT[5]=GetTextByID("FEAR_TXT5");
 				};
 				FFY0+=5;
-				for(int i=0;i<NFEARSUBJ;i++){
+				for( i=0;i<NFEARSUBJ;i++){
 					int F=GetPanicProbability(OBJ,i)*1000/32768;
 					int V=GetFScaled(F);
 					int DLX=77;
@@ -1110,7 +1110,7 @@ void ShowProp(){
 	int N=BrigNx*(BrigNy-1);
 	int P=0;
 	Brigade* BR0=CITY[NatRefTBL[MyNation]].Brigs;
-	for(int j=0;j<N;j++){
+	for( j=0;j<N;j++){
 		if(BR0[j].Enabled)P++;
 	};
 	if(P){
@@ -1915,6 +1915,8 @@ extern NewMonster* LASTNM;
 
 void CmdChangeNPID(byte,word);
 extern bool RejectInterface;
+
+/// THIS SHOWS ABILITES OF BUIDLINGS AND UNITS LEFT BOTTOM WINDOW
 void ShowAbility(){
 	LASTNM=NULL;
 	PAGE1PRESENT=0;
@@ -1932,7 +1934,7 @@ void ShowAbility(){
 	AblInf* MI;
 	Nation* NT;
 	word s;
-	int i,j=0,k,p,q,r;
+	int i,j,k,p,q,r;
 	//if(NINF)ResFon(AblX,AblY,AblNx*IconLx,AblNy*IconLy);
 	if(!NINF){
 		//ResFon(AblX,AblY,AblNx*IconLx,AblNy*IconLy);
@@ -1973,7 +1975,7 @@ void ShowAbility(){
 	if(NATID[0]){
 		CANDO1=strstr(OBJ->Ref.General->MonsterID,NATID);
 	};
-	for(int i=0;i<NINF;i++){
+	for( i=0;i<NINF;i++){
 		OBJ=Group[MList[i].Last];
 		bool OKK=1;
 		if(OBJ&&OBJ->newMons->Peasant&&!(EditMapMode||PlayGameMode)){
@@ -2011,7 +2013,7 @@ void ShowAbility(){
 						};
 					};
 					if(okk){
-						for(int j=0;j<NABL;j++){
+						for( j=0;j<NABL;j++){
 							if(AList[j].OInd==s)break;
 						};
 						AList[j].OInd=s;
@@ -2026,7 +2028,7 @@ void ShowAbility(){
 		};
 	};
 	//calculate upgrades
-	for(int i=0;i<NINF&&CANDO1;i++){
+	for( i=0;i<NINF&&CANDO1;i++){
 		OBJ=Group[MList[i].Last];
 		if(OBJ->Ready){
 			NT=OBJ->Nat;
@@ -2061,7 +2063,7 @@ void ShowAbility(){
 							st>>=3;
 						};
 					};
-					for(int j=0;j<NABL;j++){
+					for( j=0;j<NABL;j++){
 						if(AList[j].Kind==1&&AList[j].OInd==s)break;
 					};
 					if(OKK){
@@ -2094,7 +2096,7 @@ void ShowAbility(){
 	bool P3Present=0;
 
 	//RunPF(30);
-	for(int i=0;i<NABL&&CANDO1;i++){
+	for( i=0;i<NABL&&CANDO1;i++){
 		MI=&(AList[i]);
 		switch(MI->Kind){
 		case 0:

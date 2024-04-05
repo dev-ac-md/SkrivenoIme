@@ -1,0 +1,9 @@
+REGEDIT4
+[HKEY_LOCAL_MACHINE\Software\Microsoft\DirectPlay]
+[HKEY_LOCAL_MACHINE\Software\Microsoft\DirectPlay\Applications]
+[HKEY_LOCAL_MACHINE\Software\Microsoft\DirectPlay\Applications\Cossacks]
+"CommandLine"=""
+"CurrentDirectory"="D:\\American_conques_source\\AC\\AC\\Cossacks2_Project"
+"File"="dmcr.exe"
+"Guid"="{5BFDB060-06A4-11d0-9C4F-00A0C705475f}"
+"Path"="D:\\American_conques_source\\AC\\AC\\Cossacks2_Project"

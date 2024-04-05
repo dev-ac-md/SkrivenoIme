@@ -2512,7 +2512,7 @@ void ShowCharUNICODE(int x,int y,byte* strptr,lpRLCFont lpr){
 							GPID=UT->USET[j].GPID;
 							if(lpr->ShadowGP!=-1){
 								GPS.ImageType[lpr->ShadowGP]=1;
-								//GPS.ShowGP(x+UT->USET[j].DX+lpr->ShadowDx,y+UT->USET[j].DY+lpr->ShadowDy,GPID,v,0);
+								GPS.ShowGP(x+UT->USET[j].DX+lpr->ShadowDx,y+UT->USET[j].DY+lpr->ShadowDy,GPID,v,0);
 							};
 							if(UT->USET[j].UseColor)GPS.ImageType[GPID]=(GPS.ImageType[GPID]&7)|lpr->Options;
 							else GPS.ImageType[GPID]=1;

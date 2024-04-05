@@ -1353,11 +1353,12 @@ extern int NNations;
 void CreateNationalMaskForRandomMap(char* Name){
 	LOADNATMASK=0xFFFFFFFF;
 	return;
-	char cc1[128];
+	//char cc1[128];
 	char cc2[32]="00000000";
 	word NatUnit[8]={0,0,0,0,0,0,0,0};
-	int x1,x2;
-	sscanf(Name,"%s%x%x%s",cc1,&x1,&x2,cc2);
+	//int x1,x2;
+	//sscanf(Name,"%s%x%x%s",cc1,&x1,&x2,cc2);
+    sscanf(Name, "%*s %*s %*s %s", cc2);
 	LOADNATMASK=0;
 	for(int i=0;i<8;i++){
 		char c=cc2[7-i];
@@ -1396,7 +1397,7 @@ void CreateMapByName(char* Name){
 	for(int i=0;i<8;i++){
 		char c=cc2[7-i];
 		int id=0;
-		int k = 0;
+		
 		if(c>='0'&&c<='9')id=c-'0';
 		else if(c>='A'&&c<='Z')id=c-'A'+10;
 		if(id){
@@ -1404,6 +1405,7 @@ void CreateMapByName(char* Name){
 			char* pname=GlobalAI.Ai[id].Peasant_ID;
 			int nu=NATIONS[i].NMon;
 			GeneralObject** GOS=NATIONS[i].Mon; 
+            int k;
 			for(k=0;k<nu&&strcmp(GOS[k]->MonsterID,pname);k++);
 			if(k<nu)NatUnit[i]=k;
 			else{
@@ -2084,7 +2086,7 @@ void RM_SaveSprites(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 	int sign='TRPS';
 	RBlockWrite(F,&sign,4);
 	int ns=0;
-    int i = 0;
+    int i;
 	for( i=0;i<MaxSprt;i++){
 		OneSprite* OS=Sprites+i;
 		if(OS->Enabled){
@@ -2172,7 +2174,7 @@ void RM_SaveObj(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 	int sign='SJBO';
 	RBlockWrite(F,&sign,4);
 	int ns=0;
-    int i = 0;
+    int i;
 	for( i=0;i<MAXOBJECT;i++){
 		OneObject* OB=Group[i];
 		if(OB&&!OB->Sdoxlo){
@@ -2271,7 +2273,7 @@ ttt:;
 };
 void RM_SaveZonesAndGroups(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 	int NAZ=0;
-    int i = 0;
+    int i;
 	for( i=0;i<NAZones;i++){
 		int x=AZones[i].x;
 		int y=AZones[i].y;
@@ -2392,6 +2394,7 @@ void FAST_RM_LoadZonesAndGroups(SaveBuf* SB,int xc,int yc){
 	CUR_ZG_ID++;
 	xBlockRead(SB,&NAZ,4);
 	xBlockRead(SB,&NAG,4);
+    int i;
 	for(int i=0;i<NAZ;i++){
 		int x,y,R;
 		byte Dir;
@@ -2409,7 +2412,7 @@ void FAST_RM_LoadZonesAndGroups(SaveBuf* SB,int xc,int yc){
 		else sprintf(STR+strlen(STR),"~%X",CUR_ZG_ID);
 		CreateNewZone(STR,xc+x,yc+y,R);
 	};
-	for(int i=0;i<NAG;i++){
+	for( i=0;i<NAG;i++){
 		word L;
 		char STR[1024];
 		int NUN=0;
@@ -2461,7 +2464,7 @@ extern BlockBars UnLockBars;
 void RM_SaveLock(ResFile F,int x0,int y0,int Lx,int Ly,int xc,int yc){
 	int NL=0;
 	int NU=0;
-    int i = 0;
+    int i;
 	for( i=0;i<LockBars.NBars;i++){
 		int x=(int(LockBars.BC[i].x)<<6)+32;
 		int y=(int(LockBars.BC[i].y)<<5)+16;
@@ -2511,6 +2514,7 @@ void RM_LoadLock(ResFile F,int xc,int yc){
 	int NL,NU;
 	RBlockRead(F,&NL,4);
 	RBlockRead(F,&NU,4);
+    int i;
 	for(int i=0;i<NL;i++){
 		short x,y;
 		RBlockRead(F,&x,2);
@@ -2519,7 +2523,7 @@ void RM_LoadLock(ResFile F,int xc,int yc){
 		y+=yc;
 		if(!AllowUndo)AddLockBar(x,y);
 	};
-	for(int i=0;i<NU;i++){
+	for( i=0;i<NU;i++){
 		short x,y;
 		RBlockRead(F,&x,2);
 		RBlockRead(F,&y,2);
@@ -2532,6 +2536,7 @@ void RM_LoadLockEmpty(ResFile F,int xc,int yc){
 	int NL,NU;
 	RBlockRead(F,&NL,4);
 	RBlockRead(F,&NU,4);
+    int i;
 	for(int i=0;i<NL;i++){
 		short x,y;
 		RBlockRead(F,&x,2);
@@ -2539,7 +2544,7 @@ void RM_LoadLockEmpty(ResFile F,int xc,int yc){
 		x+=xc;
 		y+=yc;
 	};
-	for(int i=0;i<NU;i++){
+	for( i=0;i<NU;i++){
 		short x,y;
 		RBlockRead(F,&x,2);
 		RBlockRead(F,&y,2);
@@ -4619,7 +4624,7 @@ char* GetTextByID(char* ID);
 void RandomMapDesc::Load(char* name){
 	Close();
 	GFILE* F=Gopen(name,"r");
-    int p = 0;
+    int p;
 	if(F){
 		char cc[128];
 		int z=Gscanf(F,"%d%d",&NMINES,&MINES_DEF);
@@ -5428,8 +5433,8 @@ void HandleSMSChat(char* Mess){
 	if(!_stricmp(Mess,"::pass")){
 		SAMSET.Passive=!SAMSET.Passive;
 	}else{
-		char cmd[256];
-		char par[256];
+        char* cmd = new char[128];
+        char* par = new char[128];
 		int z=sscanf(Mess,"%s%s",cmd,par);
 		if(z==2){
 			if(!_stricmp(cmd,"::goto")){
@@ -5439,13 +5444,15 @@ void HandleSMSChat(char* Mess){
 				SAMSET.NewSet(par);
 			};
 		};
+        delete[] cmd;
+        delete[] par;
 	};
 };
 void HandlwSMSMouse(){
 	if(SAMSET.Passive)return;
 	if(SamSetMode){
-		int xx=((mapx<<5)+(mouseX<<(5-Shifter)))>>8;
-		int yy=((mapy<<4)+(mouseY<<(5-Shifter)))>>7;
+        int xx = ((mapx * 32) + mouseX) / 256;
+        int yy = ((mapy * 16) + mouseY) / 128;
 		if(SAMSET.CurrentSet[0]){
 			if(Lpressed){
 				if(EditRoot){
@@ -5467,8 +5474,8 @@ void AutoSMSSet(){
 		int N=(MaxTH+1)*MaxTH;
 		for(int i=0;i<N;i++){
 			if(TexMap[i]){
-				int x=GetTriX(i)>>8;
-				int y=GetTriY(i)>>8;
+                int x = GetTriX(i) / 256;
+                int y = GetTriY(i) / 256;
 				SAMSET.AddSquare(x,y);
 			};
 		};
@@ -5482,25 +5489,24 @@ void DrawSMS(){
 void SaveSMSInPieces(ResFile F,int keyX,int keyY,int x0,int y0,int x1,int y1){
 	int Nsq=0;
 	int Nrt=0;
-    int i = 0;
-	for( i=0;i<SAMSET.NSmp;i++){
+	for(int i=0;i<SAMSET.NSmp;i++){
 		SampleSrc* SS=SAMSET.SSET+i;
 		for(int j=0;j<SS->Npt;j++){
-			int xx=(SS->xi[j]<<8)+128;
-			int yy=(SS->yi[j]<<7)+64;
+            int xx = (SS->xi[j] * 256) + 128;
+            int yy = (SS->yi[j] * 128) + 64;
 			if(xx>x0&&yy>y0&&xx<x1&&yy<y1){
 				Nsq++;
 			};
 		};
 		for(int j=0;j<SS->NRoots;j++){
-			int xx=(SS->ROOT[j].x<<8)+128;
-			int yy=(SS->ROOT[j].y<<7)+64;
+            int xx = (SS->ROOT[j].x * 256) + 128;
+            int yy = (SS->ROOT[j].y * 128) + 64;
 			if(xx>x0&&yy>y0&&xx<x1&&yy<y1){
 				Nrt++;
 			};
 		};
 	};
-	 i='SMSP';
+	int i='SMSP';
 	RBlockWrite(F,&i,4);
 	int sz=4+4+4+Nsq*2+Nrt*sizeof(SampleRoot);
 	RBlockWrite(F,&sz,4);
@@ -5512,7 +5518,7 @@ void SaveSMSInPieces(ResFile F,int keyX,int keyY,int x0,int y0,int x1,int y1){
 	RBlockWrite(F,&dy,2);
 	keyX=(keyX-dx)>>8;
 	keyY=(keyY-dy)>>8;
-	for( i=0;i<SAMSET.NSmp;i++){
+	for(int i=0;i<SAMSET.NSmp;i++){
 		SampleSrc* SS=SAMSET.SSET+i;
 		for(int j=0;j<SS->Npt;j++){
 			int xx=(SS->xi[j]<<8)+128;
@@ -5525,7 +5531,7 @@ void SaveSMSInPieces(ResFile F,int keyX,int keyY,int x0,int y0,int x1,int y1){
 			};
 		};
 	};
-	for( i=0;i<SAMSET.NSmp;i++){
+	for(int i=0;i<SAMSET.NSmp;i++){
 		SampleSrc* SS=SAMSET.SSET+i;
 		for(int j=0;j<SS->NRoots;j++){
 			int xx=(SS->ROOT[j].x<<8)+128;
@@ -5541,12 +5547,11 @@ void SaveSMSInPieces(ResFile F,int keyX,int keyY,int x0,int y0,int x1,int y1){
 };
 void SaveSMSInMap(ResFile F){
 	int sz=4+4;
-    int i = 0;
-	for( i=0;i<SAMSET.NSmp;i++){
+	for(int i=0;i<SAMSET.NSmp;i++){
 		SampleSrc* SS=SAMSET.SSET+i;
 		sz+=32+4+4+4*SS->Npt+SS->NRoots*sizeof(SampleRoot);
 	};
-	 i='SMSP';
+	int i='SMSP';
 	RBlockWrite(F,&i,4);
 	RBlockWrite(F,&sz,4);
 	RBlockWrite(F,&SAMSET.NSmp,4);
@@ -6807,7 +6812,7 @@ void GlobalProgress::SetCurrentPosition(int Pos){
 	if(CurPosition<0)CurPosition=0;
 };
 int GlobalProgress::GetCurProgress(){
-	int S=0, i=0;
+	int S=0, i;
 	for(i=0;i<CurStage;i++)S+=StageWeight[i];
 	S+=(CurPosition*StageWeight[i])/StagePositions[i];
 	if(MaxPosition)return (S*100)/MaxPosition;

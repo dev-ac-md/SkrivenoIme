@@ -29,6 +29,11 @@ int processMainMenu(){
     {//Adjust to default menu size after exiting game
         ResizeAndCenterWindow();
     }
+    
+	
+	SetRLCWindow(0,0,RealLx,RSCRSizeY,SCRSizeX);
+	CBar(0,0,RealLx,RSCRSizeY,0);
+
     if (!window_mode)
     {//Calculate offsets for centering menu in fullscreen mode
         menu_x_off = (screen_width - 1024) / 2;
@@ -36,9 +41,6 @@ int processMainMenu(){
         menu_hint_x = 18 + menu_x_off;
         menu_hint_y = 701 + menu_y_off;
     }
-	
-	SetRLCWindow(0,0,RealLx,RSCRSizeY,SCRSizeX);
-	CBar(0,0,RealLx,RSCRSizeY,0);
 	
 	LoadFog(1);
 	LoadPalette("1\\agew_1.pal");

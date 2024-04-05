@@ -1141,6 +1141,7 @@ void EraseUnitsInPoint(int x,int y){
 	};
 };
 void UnConstructBuilduing(OneObject* OB);
+void TurnFogOff();
 void PerformNewUpgrade(Nation* NT,int UIndex,OneObject* OB){
 	//assert(UIndex<=NT->NUpgrades);
 	NewUpgrade* NU=NT->UPGRADE[UIndex];
@@ -1199,6 +1200,10 @@ void PerformNewUpgrade(Nation* NT,int UIndex,OneObject* OB){
 		ApplyToUnits(NT,NU,&UpgradeRazbros,OB);
 		break;
 	case 18://SHAR
+        if (MyNation == NT->CITY->NI)
+        {//Prevent from firing when other players do their upgrades
+            TurnFogOff();//BUGFIX: Set FogMode = 0 as soon as the update is through
+        }
 		ApplyToUnits(NT,NU,&UpgradeShar,OB);
 		break;
 	case 19://EFFECT_FOOD

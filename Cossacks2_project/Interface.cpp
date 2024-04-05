@@ -46,7 +46,7 @@
 //#include "InetRaiting\stats\gstats.h"
 //#include "InetRaiting\stats\gpersist.h"
 //#include "InetRaiting\gp.h"
-//#pragma pack(1)
+#pragma pack(1)
 #include "IR.H"
 #include "bmptool.h"
 #include "diplomacy.h"
@@ -450,7 +450,11 @@ bool ProcessMessages(){
 	};
     BOOL ret = FALSE;
 	MSG         msg;
-	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)){
+	while (FALSE != (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))){
+        if (-1 == ret)
+        {
+            continue;
+        }
 		if (msg.message == WM_QUIT)
 		{
 			//FreeDDObjects();
@@ -681,13 +685,14 @@ void SetGameDisplayModeAnyway(int SizeX,int SizeY){
 	//FreeDDObjects();
 	InitScreen();
 	GSSetup800();
-	SetCursorPos(512,300);
-	SetMPtr(512,300,0);
+	//SetCursorPos(512,300);
+	//SetMPtr(512,300,0);
+    DrawAllScreen();
     if (window_mode)
     {
         ResizeAndCenterWindow();
     }
-	//DrawAllScreen();
+	
 #ifdef _USE3D
 
 	RSCRSizeX = SizeX;
@@ -723,13 +728,13 @@ bool SetGameDisplayMode(int SizeX,int SizeY){
 	InitScreen();
 	GSSetup800();
 	DrawAllScreen();
-	SetCursorPos(512,300);
-	SetMPtr(512,300,0);
+	//SetCursorPos(512,300);
+	//SetMPtr(512,300,0);
     if (window_mode)
     {
         ResizeAndCenterWindow();
     }
-	if(CheckMode())return true;
+	/*if (CheckMode())return true;
 	else{
 		RealLx=OldSizeX;
 		RealLy=OldSizeY;
@@ -738,7 +743,7 @@ bool SetGameDisplayMode(int SizeX,int SizeY){
 		GSSetup800();
 		DrawAllScreen();
 		return false;
-	};
+	};*/
 	return false;
 };
 extern int ScrollSpeed;
@@ -952,7 +957,7 @@ int ProcessResEdit(){
 			if(i==1) resid=3;
 				else if(i==3) resid=1;
 			RESRID[NRes]=resid;
-			itoa(RES[MyNation][resid],ResST[i],10);
+			_itoa(RES[MyNation][resid],ResST[i],10);
 			RESLOC[resid]=RES[MyNation][resid];
 			NRes++;
 		};
@@ -1210,7 +1215,7 @@ int LoadGP=0;
 void ShowCentralMessage(char* Message,int GPIDX){
 	char cc[256];
 	strcpy(cc,GPS.GPName(GPIDX));
-	strupr(cc);
+	_strupr(cc);
 	if(!strcmp(cc,"INTERFACE\\BOR2")){
 		if(!LoadGP){
 			LoadGP=GPS.PreLoadGPImage("Interface\\_Loading");
@@ -3052,16 +3057,18 @@ void GMiniShow();
 void GlobalHandleMouse();
 void DRAW_MAP_TMP();
 void DrawAllScreen(){
-	if(NeedLoadGamePalette){
-		if(IgnoreSlow){
-			LoadPalette("0\\agew_1.pal");
-			LoadFog(0);
-		}else{
-			SlowLoadPalette("0\\agew_1.pal");
-			LoadFog(0);
-		};
-		CreateMiniMap();
-	};
+
+    if (NeedLoadGamePalette) {
+        if (IgnoreSlow) {
+            LoadPalette("0\\agew_1.pal");
+            LoadFog(0);
+        }
+        else {
+            SlowLoadPalette("0\\agew_1.pal");
+            LoadFog(0);
+        };
+        CreateMiniMap();
+    };
 	NeedLoadGamePalette=false;
 	//COUNTER++;
 	GFieldShow();
@@ -3080,7 +3087,7 @@ void DrawAllScreen(){
 	CopyToScreen(0,0,RealLx,RSCRSizeY);
 	GlobalHandleMouse();//mouseX,mouseY);
 	MFix();
-	
+    
 };
 void GlobalHandleMouse();
 void FastScreenProcess(){
@@ -3305,7 +3312,7 @@ resgame:;
 	//SlowUnLoadPalette("0\\agew_1.pal");
 	int ExRX=RealLx;
 	int ExRY=RealLy;
-	if(RealLx!=1024||RealLy!=768)SetGameDisplayModeAnyway(1024,768);
+	//if(RealLx!=1024||RealLy!=768)SetGameDisplayModeAnyway(1024,768);
 	if(ShowStat){
 		if(!ShowStatistics()){
 			GameExit=false;
@@ -3753,7 +3760,7 @@ int GetRndVid(int N){
 void PlayVideo();
 //#ifdef MAKE_PTC
 
-void AllGame(){
+/*void AllGame() {
 	if(CheckLobby()){
 		EditMapMode=0;
 		Lobby=1;
@@ -3774,7 +3781,30 @@ stgame:
 		UnLoading();
 		goto stgame;
 	}else goto stgame;
-};
+};*/
+void AllGame()
+{
+    int menuChoice;
+    do
+    {
+        menuChoice = processMainMenu();
+        if (menuChoice == mcmSingle)
+        {
+            if (EditMapMode)
+            {
+                //Map editor loop
+                EditGame();
+            }
+            else
+            {
+                //Game loop
+                PlayGame();
+            }
+            //Zero variables and pointers
+            UnLoading();
+        }
+    } while (mcmExit != menuChoice);
+}
 
 //#else
 /*
@@ -5133,7 +5163,7 @@ extern byte CaptState;
 extern byte SaveState;
 void GetOptionsFromMap(char* Name){
 	if(Name[0]=='R'&&Name[1]=='N'&&Name[3]==' '){
-		int v1,v2,v3,ADD_PARAM;
+		int v1, v2, v3, ADD_PARAM;
 		char ccc[32];
 		int z=sscanf(Name,"%s%x%x%x%d",ccc,&v1,&v2,&v3,&ADD_PARAM);
 		if(z==5){
@@ -5143,6 +5173,21 @@ void GetOptionsFromMap(char* Name){
 			CaptState=(ADD_PARAM/100000)%10;
 			SaveState=(ADD_PARAM/1000000)%10;
 		};
+        /*int options = 0;
+        int z = sscanf(Name, "%*s %*s %*s %*s %d", &options);//BUGFIX: proper parsing
+        if (1 == z)
+        {
+            //Decode 7-digit number into game settings
+            int option_values[11] = { 0 };
+
+            DecodeOptionsFromNumber(options, option_values);
+
+            BaloonState = option_values[0];
+            CannonState = option_values[1];
+            XVIIIState = option_values[2];
+            CaptState = option_values[3];
+            SaveState = option_values[4];
+        }*/
 	};
 };
 extern char AI_Log[256];

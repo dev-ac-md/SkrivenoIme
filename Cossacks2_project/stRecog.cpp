@@ -1476,7 +1476,7 @@ void LoadNation(char* fn,byte msk,byte NIndex,byte NatID){
 				};
 				for(int j=0;j<ns;j++){
 					//StroiDescription* SDI=GO->OFCR->SDES+j;
-					int na;
+					/*int na;
 					z=Gscanf(f1,"%s%d",gy,&na);
 					for(int z=0;z<NOClasses&&strcmp(gy,OrderDesc[z].ID);z++);
 					if(z<NOClasses){
@@ -1530,7 +1530,82 @@ void LoadNation(char* fn,byte msk,byte NIndex,byte NatID){
 							StroiDescription* SDI=nat[cp].Mon[zz1]->OFCR->SDES+j;
 							SDI->Units[p]=ui;
 						};
-					};
+					};*/
+                    int na;
+                    z = Gscanf(f1, "%s%d", gy, &na);
+
+                    int z2 = 0;
+                    for (z2 = 0; z2 < NOClasses && strcmp(gy, OrderDesc[z2].ID); z2++);//BUGFIX: s/z/z2/
+                    //FUNNY: wtf officer formation buttons logic all fucked up
+                    //WHY U NAME variables like z or z2 and mix them up?
+
+                    if (z2 < NOClasses)
+                    {
+                        for (cp = 0; cp < 8; cp++)
+                        {
+                            StroiDescription* SDI = nat[cp].Mon[zz1]->OFCR->SDES + j;
+                            SDI->ID = z2;
+                        }
+                    }
+                    else
+                    {
+                        sprintf(gz, "( %s ) %d :Unknown order ID for[OFFICERS]:%s", fn, line, gy);
+                        Errx(gz);
+                    }
+
+                    for (cp = 0; cp < 8; cp++)
+                    {
+                        StroiDescription* SDI = nat[cp].Mon[zz1]->OFCR->SDES + j;
+                        SDI->NAmount = na;
+                        SDI->Amount = new word[na];
+                        SDI->LocalID = new word[na];
+                    }
+
+                    for (int p = 0; p < na; p++)
+                    {
+                        char cc1[128];
+                        z2 = Gscanf(f1, "%s", cc1);
+                        int t;
+                        for (t = 0; t < NEOrders && strcmp(ElementaryOrders[t].ID, cc1); t++);
+                        if (t >= NEOrders)
+                        {
+                            sprintf(gz, "( %s ) %d :[OFFICERS]->%s->%s Invalid oder ID: %s.", fn, line, gg, gy, cc1);
+                            Errx(gz);
+                        }
+                        for (cp = 0; cp < 8; cp++)
+                        {
+                            StroiDescription* SDI = nat[cp].Mon[zz1]->OFCR->SDES + j;
+                            SDI->Amount[p] = ElementaryOrders[t].NUnits;
+                            SDI->LocalID[p] = t;
+                        }
+                    }
+                    z2 = Gscanf(f1, "%d", &na);
+                    if (z2 != 1)
+                    {
+                        sprintf(gz, "( %s ) %d :[OFFICERS]->%s->%s Invalid value.", fn, line, gg, gy);
+                        Errx(gz);
+                    }
+                    for (cp = 0; cp < 8; cp++)
+                    {
+                        StroiDescription* SDI = nat[cp].Mon[zz1]->OFCR->SDES + j;
+                        SDI->NUnits = na;
+                        SDI->Units = new word[na];
+                    }
+                    for (int p = 0; p < na; p++)
+                    {
+                        z2 = Gscanf(f1, "%s", gx);
+                        int ui = mnm.SearchString(gx);
+                        if (ui == -1)
+                        {
+                            sprintf(gz, "( %s ) %d :Undefined monster : %s", fn, line, gx);
+                            Errx(gz);
+                        }
+                        for (cp = 0; cp < 8; cp++)
+                        {
+                            StroiDescription* SDI = nat[cp].Mon[zz1]->OFCR->SDES + j;
+                            SDI->Units[p] = ui;
+                        }
+                    }
 					NLine(f1);
 					line++;
 				};

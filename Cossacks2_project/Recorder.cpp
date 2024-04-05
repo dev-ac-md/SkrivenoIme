@@ -612,7 +612,9 @@ void RecordGame::TryToFlushNetworkStream(bool Final){
 	if(Size-LastSentPos>500||Final){
 		if(SendRecBuffer){
 			if(!LastSentPos){
-				byte TMPB[4096];
+				//byte TMPB[4096];
+                const int buf_size = 16384;// 4096; //BUGFIX: increase buffer size to prevent overflows
+                byte TMPB[buf_size];
 				int SIGN=']CER';
 				memcpy(TMPB,&SIGN,4);
 				memcpy(TMPB+4,MapName,64);
@@ -622,6 +624,10 @@ void RecordGame::TryToFlushNetworkStream(bool Final){
 				memcpy(TMPB+4+64+1+4,&RunDataSize,4);
 				memcpy(TMPB+4+64+1+4+4,&RunData,RunDataSize);
 				RunSize0=4+64+1+4+4+RunDataSize;
+                if (Size >= buf_size - RunSize0)
+                {
+                    Size = buf_size - RunSize0 - 1;//BUGFIX: prevent buffer overflow and cut the stream short
+                }
 				memcpy(TMPB+RunSize0,Stream,Size);
 				SendRecBuffer(TMPB,Size+RunSize0,Final);
 			}else{

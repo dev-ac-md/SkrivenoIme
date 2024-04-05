@@ -193,7 +193,7 @@ LONG __stdcall FEX_CrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
 
 						// - если начало строки совпало с системным каталогом, 
 						// то это - системная либа
-						if(memicmp(sysdir, str2, len) == 0)
+						if(_memicmp(sysdir, str2, len) == 0)
 						{
 							str2 = me32.szModule;
 							len = strlen(str2)+2+4;
@@ -537,7 +537,7 @@ void FEX_Install(void)
 	FEX_VideoName = FEX_GetDisplayName();
 	FEX_AudioName = FEX_GetAudioName();
 
-   GetWindowsDirectory(FEX_RootFolder, _MAX_PATH+1);
+    GetWindowsDirectory(FEX_RootFolder, _MAX_PATH+1);
 	FEX_WinDrive = tolower(FEX_RootFolder[0]) - 'a';
 	GetCurrentDirectory(_MAX_PATH+1, FEX_RootFolder);
 	FEX_CurDrive = tolower(FEX_RootFolder[0]) - 'a';

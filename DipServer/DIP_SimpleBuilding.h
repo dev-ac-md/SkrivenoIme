@@ -25,6 +25,10 @@ public:
 	GAMEOBJ Defenders;
 	GAMEOBJ ComeInside;
 #ifdef AC_ADDON
+
+
+
+
 	//addon
 	GAMEOBJ Friends;
 	bool EasyTalk;		// no need diplomats (need anyone unit)

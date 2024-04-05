@@ -48,7 +48,7 @@ DWORD isiCalcHash(LPSTR lpszFileName)
 	char	szFileName[64];
 
 	ZeroMemory(szFileName,64);
-	strcpy(szFileName,strupr(lpszFileName));
+	strcpy(szFileName,_strupr(lpszFileName));
 
 _asm
 	{
@@ -79,8 +79,8 @@ BOOL isiMatchesMask(LPSTR lpszFile, LPSTR lpszMask)
 	char	szFile[255];
 	char	szMask[255];
 
-	strcpy(szFile,strupr(lpszFile));
-	strcpy(szMask,strupr(lpszMask));
+	strcpy(szFile,_strupr(lpszFile));
+	strcpy(szMask,_strupr(lpszMask));
 
 _asm
 	{

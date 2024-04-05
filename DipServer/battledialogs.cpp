@@ -120,7 +120,7 @@ void RunStartTimer(){
 
 int CBattle::ShowTimer(){
 	char* var=TimerVarName;
-	//char* oldval=SXP_GetVar(1,var);
+    //char* oldval=SXP_GetVar(1,var);
 	long val=(long)StartTimer-(long)GetTickCount();//atoi(oldval);
 	if(val<0){
 		return false;
@@ -917,7 +917,7 @@ void CPlayerInfo::AddNewMon(byte NI, word NIndex){
 	NewUT->NIndex=NIndex;
 
 	// создать список апгрейдов
-	const int MaxUpg=50;
+	const word MaxUpg=50;
 	word Upg[MaxUpg];
 	//memset(Upg,0xFF,sizeof(Upg));
 	int NUpg=0;
@@ -1128,7 +1128,7 @@ CEXPORT void RunProtectUpg(byte NI, int Level){
 	
 	for(int i=0;i<NMon;i++)if(NIndex[i]){
 		// создать список апгрейдов
-		const int MaxUpg=50;
+		const word MaxUpg=50;
 		word Upg[MaxUpg];
 		int NUpg=0;
 
@@ -1162,7 +1162,8 @@ CUpgCategory::CUpgCategory( word _Index, char* _Message, word* UList, int NUList
 	Message=_Message;
 
 	VWord Link;
-	for(int i=0;i<NUList;i++){
+    int i, j;
+	for( i=0;i<NUList;i++){
 		word NUID=UList[i];
 		if(NUID!=0xFFFF){
 			Link.clear();		
@@ -1171,7 +1172,7 @@ CUpgCategory::CUpgCategory( word _Index, char* _Message, word* UList, int NUList
 				Link.push_back(NUID);
 				UList[i]=0xFFFF;
 				// добавляем хобот
-				for(int j=i+1;j<NUList;j++)if(UList[j]!=0xFFFF){
+				for( j=i+1;j<NUList;j++)if(UList[j]!=0xFFFF){
 					NU=GetNewUpg(0,UList[j]);
 					if((NU->CtgUpgrade==Index||Index==0xFFFF)&&NU->NAutoEnable&&NU->AutoEnable[0]==NUID){
 						NUID=UList[j];
@@ -1190,7 +1191,7 @@ CUpgCategory::CUpgCategory( word _Index, char* _Message, word* UList, int NUList
 
 				// добавляем хвост
 				NUID=NewLink->back();
-				for(int j=i+1;j<NUList;j++)if(UList[j]!=0xFFFF){
+				for( j=i+1;j<NUList;j++)if(UList[j]!=0xFFFF){
 					NU=GetNewUpg(0,NUID);
 					if((NU->CtgUpgrade==Index||Index==0xFFFF)&&NU->NAutoEnable&&NU->AutoEnable[0]==UList[j]){
 						NUID=UList[j];

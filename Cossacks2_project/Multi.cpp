@@ -5553,16 +5553,15 @@ void SmartSelectionCorrector(byte NI,word* M0,word* SN0,int N0){
 	word NSUB=0;
 	word SUBM[2048];
 	word ADDM[2048];
-    int i;
 	int N1=ImNSL[NI];
-	for( i=0;i<N0;i++){
+	for(int i=0;i<N0;i++){
 		word MID=M0[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
 			if(OB&&!OB->Sdoxlo)OB->NNUM|=32;
 		};
 	};
-	for( i=0;i<N1;i++){
+	for(int i=0;i<N1;i++){
 		word MID=M1[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -5575,7 +5574,7 @@ void SmartSelectionCorrector(byte NI,word* M0,word* SN0,int N0){
 			};
 		};
 	};
-	for( i=0;i<N0;i++){
+	for(int i=0;i<N0;i++){
 		word MID=M0[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -5598,14 +5597,14 @@ void SmartSelectionCorrector(byte NI,word* M0,word* SN0,int N0){
 	};
 	//if(NADD>COUNTER)COUNTER=NADD;
 	//if(NSUB>COUNTER)COUNTER=NSUB;
-	for( i=0;i<N0;i++){
+	for(int i=0;i<N0;i++){
 		word MID=M0[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
 			if(OB&&!OB->Sdoxlo)OB->NNUM&=15;
 		};
 	};
-	for( i=0;i<N1;i++){
+	for(int i=0;i<N1;i++){
 		word MID=M1[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];

@@ -118,7 +118,7 @@
       <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0419</Culture>
       <ResourceOutputFileName>$(IntDir)%Script1.res</ResourceOutputFileName>
     </ResourceCompile>
@@ -678,7 +678,7 @@
       <FavorSizeOrSpeed Condition="'$(Configuration)|$(Platform)'=='Release3d|Win32'">Speed</FavorSizeOrSpeed>
     </ClCompile>
     <ClCompile Include="PeerClass.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="PiroObjects.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release3d|Win32'">Disabled</Optimization>

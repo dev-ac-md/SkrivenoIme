@@ -476,8 +476,8 @@ bool ManualFogCheck(int xx,int yy,int dx){
 void AssignHint1(char* s,int time);
 //Получить блок для InLineCom
 char* GetAsmBlock(){
-	int i= 0;
 	if(LastAsmRequest>=MaxAsmCount)LastAsmRequest=0;
+    int i;
 	for(i=LastAsmRequest;i<MaxAsmCount&&AsmUsage[i];i++);
 	if(i<MaxAsmCount){
 		LastAsmRequest=i+1;
@@ -521,7 +521,7 @@ Order1* GetOrdBlock(){
 	Order1* OR1=new Order1;
 	memset(OR1,0,sizeof Order1);
 	return OR1;
-	int i = 0;
+	int i;
 	//ChkOrdSum();
 	if(LastOrdRequest>=MaxOrdCount)LastOrdRequest=0;
 	for(i=LastOrdRequest;i<MaxOrdCount&&OrdUsage[i];i++);
@@ -2984,7 +2984,7 @@ void ShowBrigPosition(){
 
 }
 
-CEXPORT void CheckDipBuilding(byte NI, int Index);
+void CheckDipBuilding(byte NI, int Index);
 CEXPORT
 void SetCurPtr(int v);
 extern byte* DIP_Data[64];
@@ -3286,7 +3286,12 @@ void HandleMouse(int x,int y)
 	//if(SpecCmd==13)CmdCreateGoodKindSelection(MyNation,0,0,msx<<5,mul3(msy)<<3,5);
 	//On screen
 	//if(SpecCmd==14)CmdCreateGoodKindSelection(MyNation,mapx<<5,mapy<<5,mul3(mapx+smaplx-1)<<5,(mapy+smaply-1)<<3,5);
-	if(SpecCmd==200)CmdDie(MyNation);
+	if(SpecCmd==200) {//DEL key pressed
+        if (!RESMODE)
+        {//BUGFIX: Don't kill if player is in resource transfer dialog
+            CmdDie(MyNation);
+        }
+    }
 	if(SpecCmd==201)CmdSelAllShips(MyNation);
 	if(SpecCmd==111)GoToCurSelPosition();
 	if(SpecCmd==112){
@@ -3327,7 +3332,7 @@ void HandleMouse(int x,int y)
 			word MID=ImSelm[MyNation][0];
 			if(MID!=0xFFFF){
 				OneObject* OB=Group[MID];
-				if(OB)CmdCreateGoodTypeSelection(MyNation+16,mapx<<5,mapy<<4,(mapx+smaplx-1)<<5,(mapy+smaply-1)<<4,OB->NIndex);
+				if(OB)CmdCreateGoodTypeSelection(MyNation,mapx<<5,mapy<<4,(mapx+smaplx-1)<<5,(mapy+smaply-1)<<4,OB->NIndex);
 			};
 		};
 	};

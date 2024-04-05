@@ -469,7 +469,7 @@ int BattleTopScore(){
 		
 		MMenu.addTextButton(NULL,xname,y,Name[best],fnt,fnt,fnt,0);
 		
-		itoa(Score[best],buf,10);
+		_itoa(Score[best],buf,10);
 		MMenu.addTextButton(NULL,xpoint,y,buf,fnt,fnt,fnt,1);
 
 		Score[best]=-1;

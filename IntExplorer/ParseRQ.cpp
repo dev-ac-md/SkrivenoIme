@@ -14,10 +14,10 @@ ParsedRQ::~ParsedRQ(){
 };
 void ParsedRQ::AddComm(char* Name){
 	char NAME[18];
-	strncpy_s(NAME,Name,16);
+	strncpy(NAME,Name,16);
 	NAME[15]=0;
 	Comm=(OneComm*)realloc(Comm,(NComm+1)*sizeof OneComm);
-	strcpy_s(Comm[NComm].ComID,NAME);
+	strcpy(Comm[NComm].ComID,NAME);
 	Comm[NComm].NParams=0;
 	Comm[NComm].Params=NULL;
 	Comm[NComm].ParamSize=NULL;
@@ -178,16 +178,16 @@ int ParsedRQ::UnParse(char* dst,int size){
 		};
 	};
 	if(size<sz&&!dst)return sz+1;
-	strcpy_s(dst, sizeof dst, DevName);
+	strcpy(dst, DevName);
 	sz=strlen(DevName);
 	for(int i=0;i<NComm;i++){
-		strcat_s(dst, sizeof dst,"|");
+		strcat(dst, "|");
 		sz++;
-		strcat_s(dst, sizeof dst, Comm[i].ComID);
+		strcat(dst, Comm[i].ComID);
 		sz+=strlen(Comm[i].ComID);
 		int np=Comm[i].NParams;
 		for(int j=0;j<np;j++){
-			strcat_s(dst, sizeof dst,"&");
+			strcat(dst,"&");
 			sz++;
 			char* data=Comm[i].Params[j];
 			int L=Comm[i].ParamSize[j];

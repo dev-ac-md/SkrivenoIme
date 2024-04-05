@@ -1318,6 +1318,8 @@ void UnitLight(OneObject* OB){
 		FogSpot(xx-4*128,yy-4*128);
 		break;
 	case 8:
+        //Ukrainian peasant line of view
+        FogSpot(xx, yy);//BUGFIX: Make peasants visible immediately at game start
 		FogSpot(xx+7*128,yy);
 		FogSpot(xx-7*128,yy);
 		FogSpot(xx,yy+7*128);

@@ -6236,12 +6236,11 @@ void ImSelBrigade(byte NI,byte Type,int ID);
 void CorrectImSelectionInGroups(byte NI){
 	word FormsIDS[256];
 	int NForms=0;
-    int i;
 	int N=ImNSL[NI];
 	word* SID=ImSelm[NI];
 	word* SNS=ImSerN[NI];
 	City* CT=CITY+NatRefTBL[NI];
-	for(i=0;i<N;i++){
+	for(int i=0;i<N;i++){
 		word MID=SID[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -6256,7 +6255,7 @@ void CorrectImSelectionInGroups(byte NI){
 		};
 	};
 	int N3=NForms;
-	for(i=0;i<N3;i++){
+	for(int i=0;i<N3;i++){
 		word ID=FormsIDS[i];
 		for(int j=0;j<CT->NGroups;j++){
 			int N1=CT->NGroupsInSet[j];
@@ -6273,7 +6272,7 @@ void CorrectImSelectionInGroups(byte NI){
 			};
 		};
 	};
-	for(i=0;i<NForms;i++)ImSelBrigade(NI,1,FormsIDS[i]);
+	for(int i=0;i<NForms;i++)ImSelBrigade(NI,1,FormsIDS[i]);
 };
 bool CheckGroupPossibility(byte NI){
 	word* SID=ImSelm[NI];

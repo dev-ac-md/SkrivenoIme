@@ -132,15 +132,17 @@ void UnitInfo::Create(int ID){
 		};
 		RClose(F);
 	};
+    int i;
+    int j;
 	//CurATT
 	for(int i=0;i<NAttTypes;i++)if(NM->MaxDamage[i]&&CurATT[NM->WeaponKind[i]]<NM->MaxDamage[i])CurATT[NM->WeaponKind[i]]=NM->MaxDamage[i];
 	//CurSHL
-	for(int i=0;i<16;i++)if(NM->Protection[i])CurSHL[i+1]=NM->Protection[i];
+	for( i=0;i<16;i++)if(NM->Protection[i])CurSHL[i+1]=NM->Protection[i];
 	Shield=NM->Shield;
 	//ATTACK - search for upgrades
 	int NUP=0;
 	Nation* NT=NATIONS;
-	for(int i=0;i<NT->NUpgrades&&NUP<6;i++){
+	for( i=0;i<NT->NUpgrades&&NUP<6;i++){
 		NewUpgrade* NU=NT->UPGRADE[i];
 		if(NU->CtgUpgrade==12&&NU->UnitGroup==NULL&&NU->UnitType==0&&NU->UnitValue==ID&&NU->CtgGroup==NULL&&NU->CtgType==1){//Upgrade on attack
 			if(NU->Level==NUP+2){
@@ -149,10 +151,10 @@ void UnitInfo::Create(int ID){
 				memcpy(ATTACK[NUP].Cost,NU->Cost,2*6);
 				if(NUP){
 					for(int j=0;j<8;j++)ATTACK[NUP].AttValue[j]=ATTACK[NUP-1].AttValue[j]+ATTACK[NUP].AddValue[j];
-					for(int j=0;j<6;j++)ATTACK[NUP].CostTo[j]=ATTACK[NUP-1].CostTo[j]+NU->Cost[j];
+					for( j=0;j<6;j++)ATTACK[NUP].CostTo[j]=ATTACK[NUP-1].CostTo[j]+NU->Cost[j];
 				}else{
 					for(int j=0;j<8;j++)ATTACK[NUP].AttValue[j]=CurATT[j]+ATTACK[NUP].AddValue[j];
-					for(int j=0;j<6;j++)ATTACK[NUP].CostTo[j]=NU->Cost[j];
+					for( j=0;j<6;j++)ATTACK[NUP].CostTo[j]=NU->Cost[j];
 				};
 				NU->NatID+=32;
 				ATTACK[NUP].Name=NU->Message;
@@ -161,12 +163,13 @@ void UnitInfo::Create(int ID){
 		};
 	};
 	NATT=NUP;
-	for(int j=0;j<NATT;j++)
+    
+	for( j=0;j<NATT;j++)
 		for(int k=0;k<8;k++)if(ATTACK[j].AddValue[k])ATTMask|=1<<k;
 	//for(int j=0;j<8;j++)if(CurATT[j])ATTMask|=1<<j;
 	//SHIELD - search for upgrades
 	NUP=0;
-	for(int i=0;i<NT->NUpgrades&&NUP<6;i++){
+	for( i=0;i<NT->NUpgrades&&NUP<6;i++){
 		NewUpgrade* NU=NT->UPGRADE[i];
 		if(NU->CtgUpgrade==2&&NU->UnitGroup==NULL&&NU->UnitType==0&&NU->UnitValue==ID){//Upgrade on protection
 			if(NU->Level==NUP+2){
@@ -175,10 +178,10 @@ void UnitInfo::Create(int ID){
 				memcpy(SHIELD[NUP].Cost,NU->Cost,2*6);
 				if(NUP){
 					for(int j=0;j<8;j++)SHIELD[NUP].AttValue[j]=SHIELD[NUP-1].AttValue[j]+SHIELD[NUP].AddValue[j];
-					for(int j=0;j<6;j++)SHIELD[NUP].CostTo[j]=SHIELD[NUP-1].CostTo[j]+NU->Cost[j];
+					for( j=0;j<6;j++)SHIELD[NUP].CostTo[j]=SHIELD[NUP-1].CostTo[j]+NU->Cost[j];
 				}else{
 					for(int j=0;j<8;j++)SHIELD[NUP].AttValue[j]=CurSHL[j+1]+SHIELD[NUP].AddValue[j];
-					for(int j=0;j<6;j++)SHIELD[NUP].CostTo[j]=NU->Cost[j];
+					for( j=0;j<6;j++)SHIELD[NUP].CostTo[j]=NU->Cost[j];
 				};
 				NU->NatID+=32;
 				SHIELD[NUP].Name=NU->Message;
@@ -187,11 +190,11 @@ void UnitInfo::Create(int ID){
 		};
 	};
 	NSHL=NUP;
-	for(int j=0;j<NSHL;j++)
+	for( j=0;j<NSHL;j++)
 		for(int k=0;k<8;k++)if(SHIELD[j].AddValue[k])SHLMask|=1<<k;
 	//for(int j=0;j<8;j++)if(CurSHL[j])SHLMask|=1<<j;
 	//Other upgrades
-	for(int i=0;i<NT->NUpgrades;i++){
+	for( i=0;i<NT->NUpgrades;i++){
 		NewUpgrade* NU=NT->UPGRADE[i];
 		bool add=false;
 		if(NU->NatID<32){
@@ -220,7 +223,7 @@ void UnitInfo::Create(int ID){
 	if(NM->ResConsID==StoneID)StoneUpkeep=(int(NM->ResConsumer)*100)/800;
 	if(NM->ResConsID==TreeID)WoodUpkeep=(int(NM->ResConsumer)*100)/800;
 	if(NM->NShotRes){
-		for(int i=0;i<NM->NShotRes;i++){
+		for( i=0;i<NM->NShotRes;i++){
 			int r=NM->ShotRes[i+i];
 			if(r==IronID)IronUpkeep=NM->ShotRes[i+i+1];
 			if(r==CoalID)CoalUpkeep=NM->ShotRes[i+i+1];
@@ -360,6 +363,7 @@ int CreateUNITINF_UNIT(int ID,bool refresh){
 	UNITINF.BaseY=y0+31;
 	int dx=0;
 	int dy=0;
+    int i;
 	if(UINF.UnitType==3)dx=3;
 	//if(UINF.UnitType==1)dy=-5;
 	if(UINF.Picture)UNITINF.addBPXView(NULL,dx+1,dy-3,UINF.Lx,UINF.Ly,1,1,1,UINF.Picture,NULL);
@@ -539,7 +543,7 @@ int CreateUNITINF_UNIT(int ID,bool refresh){
 		yy+=DY+10;
 		SD=UNITINF.addGPPicture(NULL,xx,yy,BordGP,35);
 		UINF.AddSD(SD,0);
-		for(int i=0;i<6;i++)if(UINF.Cost[i]){
+		for( i=0;i<6;i++)if(UINF.Cost[i]){
 			sprintf(cc,"%d",UINF.Cost[i]);
 			SD=UNITINF.addTextButton(NULL,xx+17+34*i,yy+3,cc,FN5,FN5,FN5,1);
 			UINF.AddSD(SD,0);
@@ -619,7 +623,7 @@ int CreateUNITINF_UNIT(int ID,bool refresh){
 		yy+=24;
 		SD=UNITINF.addGPPicture(NULL,xx,yy,BordGP,35);
 		UINF.AddSD(SD,3);
-		for(int i=0;i<6;i++)if(UINF.Cost[i]){
+		for( i=0;i<6;i++)if(UINF.Cost[i]){
 			sprintf(cc,"%d",UINF.Cost[i]);
 			SD=UNITINF.addTextButton(NULL,xx+17+34*i,yy+3,cc,FN5,FN5,FN5,1);
 			UINF.AddSD(SD,3);
@@ -749,6 +753,7 @@ int CreateUNITINF_UNIT(int ID,bool refresh){
 		int ady=2;
 		if(UINF.NATT){
 			int NAL=0;
+            int j;
 			for(int j=0;j<8;j++)if(UINF.ATTMask&(1<<j))NAL++;
 			if(NAL){
 				//yy+=3;
@@ -759,7 +764,7 @@ int CreateUNITINF_UNIT(int ID,bool refresh){
 				UINF.AddSD(SD,2);
 				yy+=DY;
 				int CAL=0;
-				for(int j=0;j<8;j++)if(UINF.ATTMask&(1<<j)){
+				for( j=0;j<8;j++)if(UINF.ATTMask&(1<<j)){
 					if(CAL<NAL-1)SD=UNITINF.addGPPicture(NULL,xx,yy,BordGP,32);
 					else SD=UNITINF.addGPPicture(NULL,xx,yy,BordGP,31);
 					UINF.AddSD(SD,2);
@@ -804,6 +809,7 @@ int CreateUNITINF_UNIT(int ID,bool refresh){
 		};
 		if(UINF.NSHL){
 			int NAL=0;
+            int j;
 			for(int j=0;j<8;j++)if(UINF.SHLMask&(1<<j))NAL++;
 			if(NAL){
 				SD=UNITINF.addTextButton(NULL,xx,yy+ady,GetTextByID("UI_ShlUpg"),FN3,FN3,FN3,0);
@@ -813,7 +819,7 @@ int CreateUNITINF_UNIT(int ID,bool refresh){
 				UINF.AddSD(SD,2);
 				yy+=DY-1;
 				int CAL=0;
-				for(int j=0;j<8;j++)if(UINF.SHLMask&(1<<j)){
+				for( j=0;j<8;j++)if(UINF.SHLMask&(1<<j)){
 					if(CAL<NAL-1)SD=UNITINF.addGPPicture(NULL,xx,yy,BordGP,32);
 					else SD=UNITINF.addGPPicture(NULL,xx,yy,BordGP,31);
 					UINF.AddSD(SD,2);

@@ -486,7 +486,7 @@ void ChatSystem::SortPlayers(OneChatPlayer* PL,int N){
 	do{
 		change=0;
 		for(int i=1;i<N;i++){
-			int r=stricmp(PL[i].Nick,PL[i-1].Nick);
+			int r=_stricmp(PL[i].Nick,PL[i-1].Nick);
 			if(r<0){
 				byte PLX[sizeof OneChatPlayer];
 				memcpy(&PLX,PL+i,sizeof OneChatPlayer);

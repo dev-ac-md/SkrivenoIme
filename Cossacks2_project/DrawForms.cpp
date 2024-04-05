@@ -349,8 +349,10 @@ Corners DnTable3= {3,5,6,8,12,14,10,11};
 Corners HdrTbl=   {17,18,6,8,12,14,23,11};
 //Corners for the statistics panel
 Corners ST_Top=   {17,18,3,5,12,14,23,10};
-Corners ST_Middle={-1,-1,68,69,12,14,-1,70};
-Corners ST_Bottom={-1,-1,6,8,12,14,-1,11};
+//Corners ST_Middle={-1,-1,68,69,12,14,-1,70};
+//Corners ST_Bottom={-1,-1,6,8,12,14,-1,11};
+Corners ST_Middle = { 0,-1,68,69,12,14,-1,70 };//BUGFIX: -1 caused wrong coordinates
+Corners ST_Bottom = { 0,-1,6,8,12,14,-1,11 };
 Corners ST_Left  ={17,-1,6,-1,12,-1,23,11};
 Corners ST_Right ={23/*wrong!*/,18,7,8,13,14,23,11};
 //-----PALETTE 2---------//

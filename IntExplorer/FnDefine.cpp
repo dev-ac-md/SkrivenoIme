@@ -11,6 +11,9 @@
 //в тексте
 //|pix.gp,dx,dy,idx|-картинка
 //{текст}-активная текстовая ссылка
+CIMPORT void PushWindow(TempWindow* W);
+CIMPORT void PopWindow(TempWindow* W);
+CIMPORT void IntersectWindows(int x0, int y0, int x1, int y1);
 void Replace(char** str,char* src,char* dst,int& MaxL);
 extern char HXARR[16];
 void SendSmartRequest(sicExplorer* SXP,char* Str);
@@ -1162,7 +1165,7 @@ void Process_DBTBL(sicExplorer* SXP,void* PData,int size){
 				int r;
 				switch(srttp){
 				case 1://STR
-					r=stricmp(S1,S2);
+					r=_stricmp(S1,S2);
 					break;
 				case 3://PING-??
 					r=GETPING(atoi(S1))-GETPING(atoi(S2));
@@ -1950,7 +1953,7 @@ bool ADI_FBrowse(sicExplorer* SXP,DialogsSystem* DSS,int* x,int* y,int* x1,int* 
 		char DSK=VAR[0];
 		if(DSK>='a'&&DSK<='z')DSK+='A'-'a';
 		do{
-			strupr(cc);
+			_strupr(cc);
 			if(cc[0]&&cc[0]>='C'){
 				CBB->AddLine(cc);
 				if(DSK==cc[0]){

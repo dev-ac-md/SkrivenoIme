@@ -366,7 +366,7 @@ void ScenaryInterface::Load(char* Name,char* Text){
 	};
 	char cc3[200];
 	strcpy(cc3,Name);
-	strupr(cc3);
+	_strupr(cc3);
 	if(strstr(cc3,".CMS")){
 		FILE* F=fopen("UserMissions\\start.dat","w");
 		if(F){
@@ -5014,8 +5014,8 @@ void MissPack::LoadMissions(){
 		}while(MissLoad);
 		Gclose(F);
 	}else{
-		MessageBox(NULL,"Could not open Missions\\Missions.txt","Missions loading failed...",MB_TOPMOST);
-		assert(0);
+		//MessageBox(NULL,"Could not open Missions\\Missions.txt","Missions loading failed...",MB_TOPMOST);
+		//assert(0);
 	};
 	ProtectionMode=1;
 	F=Gopen("Missions\\SingleMiss.txt","r");
@@ -5039,8 +5039,8 @@ void MissPack::LoadMissions(){
 GG1:;
 		};
 	}else{
-		MessageBox(NULL,"Could not open Missions\\SingleMiss.txt","Missions loading failed...",MB_TOPMOST);
-		assert(0);
+		//MessageBox(NULL,"Could not open Missions\\SingleMiss.txt","Missions loading failed...",MB_TOPMOST);
+		//assert(0);
 	};
 };
 MissPack::MissPack(){
@@ -5117,7 +5117,7 @@ CampaginPack::CampaginPack(){
 				};
 			}else InvCamp();
 		};
-		Gclose(F);
+		Gclose(F);  
 		SavePlayerData("standart player info");
 	}else InvCamp();
 };

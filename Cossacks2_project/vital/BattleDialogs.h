@@ -39,7 +39,7 @@ CEXPORT
 void GetListOfUpgradesForMon_Old(byte NI,word NIndex,word* Upg,int MaxUpg,int& NUpg){
 	NUpg=0;
 	if(NI>7) return;
-
+    int i;
 	NewUpgrade** UPG=NATIONS[NI].UPGRADE;
 	int NUPG=NATIONS[NI].NUpgrades;
 
@@ -47,7 +47,7 @@ void GetListOfUpgradesForMon_Old(byte NI,word NIndex,word* Upg,int MaxUpg,int& N
 	NewMonster* NM=GO->newMons;
 
 	//ATTACK - search for upgrades		
-	for(int i=0;i<NUPG&&NUpg<MaxUpg;i++){
+	for( i=0;i<NUPG&&NUpg<MaxUpg;i++){
 		NewUpgrade* NU=UPG[i];
 		if(NU->CtgUpgrade==12&&NU->UnitGroup==NULL&&NU->UnitType==0&&NU->UnitValue==NIndex&&NU->CtgGroup==NULL&&NU->CtgType==1){//Upgrade on attack
 			NU->NatID+=32;
@@ -57,7 +57,7 @@ void GetListOfUpgradesForMon_Old(byte NI,word NIndex,word* Upg,int MaxUpg,int& N
 	};
 
 	//SHIELD - search for upgrades
-	for(int i=0;i<NUPG&&NUpg<MaxUpg;i++){
+	for( i=0;i<NUPG&&NUpg<MaxUpg;i++){
 		NewUpgrade* NU=UPG[i];
 		if(NU->CtgUpgrade==2&&NU->UnitGroup==NULL&&NU->UnitType==0&&NU->UnitValue==NIndex){//Upgrade on protection
 			NU->NatID+=32;
@@ -67,7 +67,7 @@ void GetListOfUpgradesForMon_Old(byte NI,word NIndex,word* Upg,int MaxUpg,int& N
 	};
 
 	//Other upgrades
-	for(int i=0;i<NUPG;i++){
+	for( i=0;i<NUPG;i++){
 		NewUpgrade* NU=UPG[i];
 		bool add=false;
 		if(NU->NatID<32){
