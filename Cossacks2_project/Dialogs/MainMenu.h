@@ -12,8 +12,9 @@ extern int screen_height;
 extern int screen_width;
 extern int menu_x_off;
 extern int menu_y_off;
-int menu_hint_x;
-int menu_hint_y;
+extern int menu_hint_x;
+extern int menu_hint_y;
+extern bool window_mode;
 
 int processMainMenu(){
 #ifdef AMERICANDEMO
@@ -69,7 +70,7 @@ int processMainMenu(){
 	// Hint
 	MMenu.HintFont=&SmallWhiteFont;
 	MMenu.HintY= menu_hint_y;
-	MMenu.HintX= menu_hint_x;
+	MMenu.HintX= menu_hint_x;   
 
 	// Main menu pictures
 	int MX = 510;	

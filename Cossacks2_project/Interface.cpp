@@ -705,7 +705,7 @@ void SetGameDisplayModeAnyway(int SizeX,int SizeY){
 	prop.width		 = SizeX;
 	prop.height		 = SizeY;
 	prop.colorFormat = cfBackBufferCompatible;
-	if (DDDebug)
+	if (window_mode)
 	{
 		prop.fullScreen  = false; 
 	}
@@ -812,6 +812,8 @@ bool JOINTOINETGAME(char* SNAME){
 bool ProcessOneBattle(int BtlID);
 CEXPORT int menu_x_off = 0;
 CEXPORT int menu_y_off = 0;
+int menu_hint_x = 18;
+int menu_hint_y = 701;
 
 //--------------------HOST THE SESSION---------------------//
 bool processHostGame(){
@@ -1725,7 +1727,7 @@ bool RunEnciclopia(SimpleDialog* SD){
 		WinExec(cc2,SW_MINIMIZE);
 		return 0;
 	};
-	for(word i='d';i<='z';i++){
+	for(int i='d';i<='z';i++){
 		char cd[2]="a";
 		char cc3[300];
 		cd[0]=i;
@@ -3760,7 +3762,7 @@ int GetRndVid(int N){
 void PlayVideo();
 //#ifdef MAKE_PTC
 
-/*void AllGame() {
+void AllGame() {
 	if(CheckLobby()){
 		EditMapMode=0;
 		Lobby=1;
@@ -3781,8 +3783,8 @@ stgame:
 		UnLoading();
 		goto stgame;
 	}else goto stgame;
-};*/
-void AllGame()
+};
+/*void AllGame()
 {
     int menuChoice;
     do
@@ -3804,7 +3806,7 @@ void AllGame()
             UnLoading();
         }
     } while (mcmExit != menuChoice);
-}
+}*/
 
 //#else
 /*

@@ -12,3 +12,5 @@ CIMPORT
 void ActivateDipDialog(char* request);
 CIMPORT
 void SendDipCommand(char* Data,int size);
+DLLIMPORT void SXP_SetVar(int Index, char* Name, char* value);
+DLLIMPORT char* SXP_GetVar(int Index, char* Name);

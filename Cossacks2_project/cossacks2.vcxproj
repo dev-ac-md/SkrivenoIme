@@ -109,10 +109,10 @@
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <LanguageStandard>Default</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CONQUEST;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ShowIncludes>false</ShowIncludes>
@@ -455,7 +455,9 @@
     <ClInclude Include="Resfile.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Safety.h" />
-    <ClInclude Include="Scape3D.h" />
+    <ClInclude Include="Scape3D.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Sort.h" />
     <ClInclude Include="SpraySystem.h" />
     <ClInclude Include="SquareObject.h" />
@@ -671,6 +673,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_CII_test|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="NewUpgrade.cpp" />
+    <ClCompile Include="New\MapOptionsEncoder.cpp" />
     <ClCompile Include="Nuclear.cpp" />
     <ClCompile Include="OnWater.cpp" />
     <ClCompile Include="path.cpp">

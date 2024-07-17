@@ -1,4 +1,8 @@
 //extern HRESULT mpl_GetStreamLength(DWORD &dwLength);
+
+extern int menu_hint_x;
+extern int menu_hint_y;
+
 bool ProcessSingleMission(int n,int Diff){
 	MaxPingTime=0;
 	SingleMission* SMS=MISSLIST.MISS+n;
@@ -100,8 +104,10 @@ bool ProcessSingleMission(int n,int Diff){
 		int HintY = 745;
 
 		MISS.HintFont=FHint;
-		MISS.HintX=HintX;
-		MISS.HintY=HintY;
+        MISS.HintX = menu_hint_x;
+        MISS.HintY = menu_hint_y;
+		//MISS.HintX=HintX;
+		//MISS.HintY=HintY;
 
 		// Buttons
 		int BInChatX = 839;

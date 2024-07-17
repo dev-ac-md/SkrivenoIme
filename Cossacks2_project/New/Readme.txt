@@ -1,0 +1,1 @@
+Some code is copied from cossacks revamp

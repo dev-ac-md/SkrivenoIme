@@ -1436,143 +1436,146 @@ void ProcessDataXchange();
 extern sicExplorer* REQSXP;
 extern char* GREQUEST;
 extern "C" __declspec(dllexport)
-void ProcessSXP(int Index,DialogsSystem* DSS){
-	ProcessMessages();
-	ProcessDataXchange();
-	if(Index>8)return;
-	sicExplorer* SXPR=SXP+Index;	
-	if(!SXPR->LastReparseTime){
-		SXPR->LastReparseTime=GetTickCount();
-	};
-	if(GetTickCount()-SXPR->LastReparseTime>3000){
-		SXPR->LastReparseTime=GetTickCount();
-		for(int i=0;i<SXPR->NDownl;i++){
-			byte* DNMASK=SXPR->DOWNL[i].ReqMask;
-			for(int i=0;i<128;i++)if(DNMASK[i]){
-				byte B=DNMASK[i];
-				int w=i<<3;
-				for(int j=0;j<8;j++)if(B&(1<<j)){
-					if(w<SXPR->NWindows&&SXPR->Windows[w]->Parsed){
-						SXPR->Windows[w]->ReParse();
-					};
-					w++;
-				};
-			};
-		};
-	};
-	{
-		int i=SXPR->CurWPosition;
-		if(i>=SXPR->NWindows)return;
-		SXPR->Windows[i]->Process();
-		for(int j=0;j<SXPR->Windows[i]->NBoxes;j++){
-			OneBox* OBX=&SXPR->Windows[i]->Boxes[j];
-			if(OBX->VS){
-				DialogsSystem* DSS=&SXPR->Windows[i]->Boxes[j].DSS;
-				int st=SXPR->Windows[i]->Boxes[j].StartScrollIndex;
-				int p0=SXPR->Windows[i]->Boxes[j].LastScrollPos;
-				int ymax=0;
-				for(int q=st;q<MAXDLG;q++)if(DSS->DSS[q]){
-					int y=p0+DSS->DSS[q]->y1;
-					if(y>ymax)ymax=y;
-				};
-				if(ymax>OBX->yi1){
-					OBX->VS->SMaxPos=ymax-OBX->yi1+10;
-					if(OBX->VS->SPos>OBX->VS->SMaxPos)OBX->VS->SPos=OBX->VS->SMaxPos;
-					OBX->VS->Visible=1;
-				}else{
-					OBX->VS->Visible=0;
-					OBX->VS->SPos=0;
-				};
-				if(OBX->VS->SPos!=OBX->LastScrollPos){
-					int dd=OBX->LastScrollPos-OBX->VS->SPos;
-					for(int q=st;q<MAXDLG;q++)if(DSS->DSS[q]){
-						DSS->DSS[q]->y+=dd;
-						DSS->DSS[q]->y1+=dd;
-					};
-					OBX->LastScrollPos=OBX->VS->SPos;
-				};
-				OBX->VS->OnesDy=8;
-				OBX->VS->ScrDy=OBX->y1-OBX->y-24;
-			};
-			OBX->DSS.ProcessDialogs();
+void ProcessSXP(int Index, DialogsSystem * DSS) {
+    ProcessMessages();
+    ProcessDataXchange();
+    if (Index > 8)return;
+    sicExplorer* SXPR = SXP + Index;
+    if (!SXPR->LastReparseTime) {
+        SXPR->LastReparseTime = GetTickCount();
+    };
+    if (GetTickCount() - SXPR->LastReparseTime > 3000) {
+        SXPR->LastReparseTime = GetTickCount();
+        for (int i = 0; i < SXPR->NDownl; i++) {
+            byte* DNMASK = SXPR->DOWNL[i].ReqMask;
+            for (int j = 0; j < 128; j++)if (DNMASK[j]) {
+                byte B = DNMASK[j];
+                int w = j << 3;
+                for (int h = 0; h < 8; j++)if (B & (1 << h)) {
+                    if (w < SXPR->NWindows && SXPR->Windows[w]->Parsed) {
+                        SXPR->Windows[w]->ReParse();
+                    };
+                    w++;
+                };
+            };
+        };
+    };
+    {
+    int i = SXPR->CurWPosition;
+        if (i >= SXPR->NWindows)return;
+        SXPR->Windows[i]->Process();
+        for (int j = 0; j < SXPR->Windows[i]->NBoxes; j++) {
+            OneBox* OBX = &SXPR->Windows[i]->Boxes[j];
+            if (OBX->VS) {
+                DialogsSystem* DSS = &SXPR->Windows[i]->Boxes[j].DSS;
+                int st = SXPR->Windows[i]->Boxes[j].StartScrollIndex;
+                int p0 = SXPR->Windows[i]->Boxes[j].LastScrollPos;
+                int ymax = 0;
+                for (int q = st; q < MAXDLG; q++)if (DSS->DSS[q]) {
+                    int y = p0 + DSS->DSS[q]->y1;
+                    if (y > ymax)ymax = y;
+                };
+                if (ymax > OBX->yi1) {
+                    OBX->VS->SMaxPos = ymax - OBX->yi1 + 10;
+                    if (OBX->VS->SPos > OBX->VS->SMaxPos)OBX->VS->SPos = OBX->VS->SMaxPos;
+                    OBX->VS->Visible = 1;
+                }
+                else {
+                    OBX->VS->Visible = 0;
+                    OBX->VS->SPos = 0;
+                };
+                if (OBX->VS->SPos != OBX->LastScrollPos) {
+                    int dd = OBX->LastScrollPos - OBX->VS->SPos;
+                    for (int q = st; q < MAXDLG; q++)if (DSS->DSS[q]) {
+                        DSS->DSS[q]->y += dd;
+                        DSS->DSS[q]->y1 += dd;
+                    };
+                    OBX->LastScrollPos = OBX->VS->SPos;
+                };
+                OBX->VS->OnesDy = 8;
+                OBX->VS->ScrDy = OBX->y1 - OBX->y - 24;
+            };
+            OBX->DSS.ProcessDialogs();
 #ifndef _COSSACKS2
-			WindX=0;
-			WindX1=RealLx-1;
-			WindY=0;
-			WindY1=RealLy-1;
-			WindLx=RealLx;
-			WindLy=RealLy;
+            WindX = 0;
+            WindX1 = RealLx - 1;
+            WindY = 0;
+            WindY1 = RealLy - 1;
+            WindLx = RealLx;
+            WindLy = RealLy;
 #else
-			g_SetWindParam( 0, 0, RealLx - 1, RealLy - 1 );
+            g_SetWindParam(0, 0, RealLx - 1, RealLy - 1);
 #endif // _COSSACKS2
-		};
-	};
-	ProcessMessages();
-	//check activity
-	bool BASEACTIVE=0;
-	if(DSS){
-		for(int i=0;i<MAXDLG;i++){
-			if(DSS->DSS[i]&&DSS->DSS[i]->Active)BASEACTIVE=1;
-		};
-	};
-	if(SXPR->CurWPosition<SXPR->NWindows){
-		if(BASEACTIVE&&!SXPR->BaseDialogActive){
-			OneSicWindow* OSW=SXPR->Windows[SXPR->CurWPosition];
-			for(int j=0;j<OSW->NBoxes;j++){
-				DialogsSystem* DSS=&OSW->Boxes[j].DSS;
-				if(DSS){
-					for(int p=0;p<MAXDLG;p++){
-						if(DSS->DSS[p])DSS->DSS[p]->Active=0;
-					};
-				};
-				OSW->Boxes[j].Active=0;
-				OSW->Boxes[j].WasActive=0;
-			};
-			SXPR->BaseDialogActive=1;
-		}else{
-			OneSicWindow* OSW=SXPR->Windows[SXPR->CurWPosition];
-			int ActiveIndex=-1;
-			for(int j=0;j<OSW->NBoxes;j++){
-				DialogsSystem* DSS=&OSW->Boxes[j].DSS;
-				if(DSS){
-					for(int p=0;p<MAXDLG;p++){
-						if(DSS->DSS[p]&&DSS->DSS[p]->Active){
-							if(!OSW->Boxes[j].WasActive)ActiveIndex=j;
-						};
-					};
-				};
-			};
-			if(ActiveIndex!=-1){
-				for(int j=0;j<OSW->NBoxes;j++)if(j!=ActiveIndex){
-					DialogsSystem* DSS=&OSW->Boxes[j].DSS;
-					if(DSS){
-						for(int p=0;p<MAXDLG;p++){
-							if(DSS->DSS[p])DSS->DSS[p]->Active=0;
-						};
-					};
-					OSW->Boxes[j].Active=0;
-					OSW->Boxes[j].WasActive=0;
-				}else{
-					OSW->Boxes[j].WasActive=1;
-					OSW->Boxes[j].Active=0;
-				};
-				if(DSS){
-					for(int p=0;p<MAXDLG;p++){
-						if(DSS->DSS[p])DSS->DSS[p]->Active=0;
-					};
-					SXPR->BaseDialogActive=0;
-				};
-			};
-		};
-	};
-	if(GREQUEST){
-		char* REQ=GREQUEST;
-		sicExplorer* RSXP=REQSXP;
-		REQSXP=0;
-		GREQUEST=NULL;
-		SendSmartRequest(RSXP,REQ);
-		free(REQ);
-	};
+        };
+    };
+    ProcessMessages();
+    //check activity
+    bool BASEACTIVE = 0;
+    if (DSS) {
+        for (int i = 0; i < MAXDLG; i++) {
+            if (DSS->DSS[i] && DSS->DSS[i]->Active)BASEACTIVE = 1;
+        };
+    };
+    if (SXPR->CurWPosition < SXPR->NWindows) {
+        if (BASEACTIVE && !SXPR->BaseDialogActive) {
+            OneSicWindow* OSW = SXPR->Windows[SXPR->CurWPosition];
+            for (int j = 0; j < OSW->NBoxes; j++) {
+                DialogsSystem* DSS = &OSW->Boxes[j].DSS;
+                if (DSS) {
+                    for (int p = 0; p < MAXDLG; p++) {
+                        if (DSS->DSS[p])DSS->DSS[p]->Active = 0;
+                    };
+                };
+                OSW->Boxes[j].Active = 0;
+                OSW->Boxes[j].WasActive = 0;
+            };
+            SXPR->BaseDialogActive = 1;
+        }
+        else {
+            OneSicWindow* OSW = SXPR->Windows[SXPR->CurWPosition];
+            int ActiveIndex = -1;
+            for (int j = 0; j < OSW->NBoxes; j++) {
+                DialogsSystem* DSS = &OSW->Boxes[j].DSS;
+                if (DSS) {
+                    for (int p = 0; p < MAXDLG; p++) {
+                        if (DSS->DSS[p] && DSS->DSS[p]->Active) {
+                            if (!OSW->Boxes[j].WasActive)ActiveIndex = j;
+                        };
+                    };
+                };
+            };
+            if (ActiveIndex != -1) {
+                for (int j = 0; j < OSW->NBoxes; j++)if (j != ActiveIndex) {
+                    DialogsSystem* DSS = &OSW->Boxes[j].DSS;
+                    if (DSS) {
+                        for (int p = 0; p < MAXDLG; p++) {
+                            if (DSS->DSS[p])DSS->DSS[p]->Active = 0;
+                        };
+                    };
+                    OSW->Boxes[j].Active = 0;
+                    OSW->Boxes[j].WasActive = 0;
+                }
+                else {
+                    OSW->Boxes[j].WasActive = 1;
+                    OSW->Boxes[j].Active = 0;
+                };
+                if (DSS) {
+                    for (int p = 0; p < MAXDLG; p++) {
+                        if (DSS->DSS[p])DSS->DSS[p]->Active = 0;
+                    };
+                    SXPR->BaseDialogActive = 0;
+                };
+            };
+        };
+    };
+    if (GREQUEST) {
+        char* REQ = GREQUEST;
+        sicExplorer* RSXP = REQSXP;
+        REQSXP = 0;
+        GREQUEST = NULL;
+        SendSmartRequest(RSXP, REQ);
+        free(REQ);
+    };
 };
 void EraseSXP(){
 	for(int i=0;i<8;i++){

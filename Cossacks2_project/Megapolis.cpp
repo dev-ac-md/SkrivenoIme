@@ -996,7 +996,6 @@ void City::AddUpgr(byte NI,word UIN,word prod,word per){
 void GetUnitCost(byte NI,word NIndex,int* Cost,int x,int y);
 void City::EnumProp(){
 	NProp=0;
-    int j;
 	//enumerating monsters could be produced 
 	int PC;
 	//int* RESU=&RESRC[Nat->NNUM][0];
@@ -1007,7 +1006,7 @@ void City::EnumProp(){
 			if(GOA[i]->newMons->Usage==PeasantID)PC=Nat->PACount[i];
 			else PC=0;
 		};
-		for(j=0;j<PC;j++){
+		for(int j=0;j<PC;j++){
 			word s=Nat->PAble[i][j];
 			//проверить возможность производства
 			GeneralObject* GO=Nat->Mon[s];
@@ -1031,7 +1030,8 @@ void City::EnumProp(){
 			if(GO->Enabled&&Able){
 				int COST[8];
 				GetUnitCost(Nat->NNUM,s,COST,-1,-1);
-				for(int j=0;j<8&&COST[j]<=XRESRC(Nat->NNUM,j);j++);
+                int j;
+				for( j=0;j<8&&COST[j]<=XRESRC(Nat->NNUM,j);j++);
 				if(j==8){
 					int maxper=Nat->GENERAL.GetMonsterCostPercent(NI,s);;
 					AddProp(NI,s,GO,Producer[i],maxper);
@@ -1042,7 +1042,7 @@ void City::EnumProp(){
 		GeneralObject* GO=GOA[i];
 		if(UnBusyAmount[i]) PC=GO->NUpgrades;
 		else PC=0;
-		for(j=0;j<PC;j++){
+		for(int j=0;j<PC;j++){
 			word s=GO->Upg[j];
 			//проверить возможность производства
 			NewUpgrade* NU=Nat->UPGRADE[s];
@@ -1074,6 +1074,7 @@ void City::EnumProp(){
 			if(POB->InFire&&NU->CtgUpgrade>=24&&NU->CtgUpgrade<=28)OKK=false;
 			if(OKK){
 				word* COST=NU->Cost;
+                int j;
 				for(j=0;j<8&&COST[j]<=XRESRC(Nat->NNUM,j);j++);
 				if(j==8){
 					int maxper=Nat->GENERAL.GetUpgradeCostPercent(NI,s);

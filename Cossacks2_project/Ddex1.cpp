@@ -3502,6 +3502,20 @@ bool RunSMD(){
 			MidiSound=0;
             int ex_window_x, ex_window_y, ex_x, ex_y;
             int dummy;
+            if (window_mode)
+            {
+                ex_window_x = exRealLx;
+                ex_window_y = exRealLy;
+                ex_x = ex_other_RealLx;
+                ex_y = ex_other_RealLy;
+            }
+            else
+            {
+                ex_x = exRealLx;
+                ex_y = exRealLy;
+                ex_window_x = ex_other_RealLx;
+                ex_window_y = ex_other_RealLy;
+            }
 			if(fff){
 				//Gscanf(fff,"%d%d%d%d%d%d%d%d%d%d",&exRealLx,&exRealLy,&WarSound,&OrderSound,&OrderSound,&MidiSound,&FPSTime,&ScrollSpeed,&exFMode,&PlayMode);
                 Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d%d",

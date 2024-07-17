@@ -428,16 +428,16 @@ bool CorrectPositions(int* pos,word N){
 };
 int Brigade::SelectPeasants(byte NI){
 	SelCenter[NI]=0;
-	int np=0, i;
-	for( i=0;i<NMemb;i++){
+	int np=0;
+	for(int i=0;i<NMemb;i++){
 		OneObject* OB=Group[Memb[i]];
 		if(OB&&OB->Serial==MembSN[i]){
 			if(OB->newMons->Peasant&&!(OB->Sdoxlo||OB->Hidden))np++;
 		};
-	};
+	}
 	if(NSL[NI]){
 		int N=NSL[NI];
-		for( i=0;i<N;i++){
+		for(int i=0;i<N;i++){
 			word MID=Selm[NI][i];
 			if(MID!=0xFFFF){
 				OneObject* OB=Group[MID];
@@ -453,7 +453,7 @@ int Brigade::SelectPeasants(byte NI){
 	Selm[NI]=znew(word,np);
 	SerN[NI]=znew(word,np);
 	np=0;
-	for( i=0;i<NMemb;i++){
+	for(int i=0;i<NMemb;i++){
 		OneObject* OB=Group[Memb[i]];
 		if(OB&&OB->Serial==MembSN[i]){
 			if(OB->newMons->Peasant&&!(OB->Sdoxlo||OB->Hidden)){
@@ -645,7 +645,7 @@ void B_LocalSendToLink(Brigade* BR){
 		CorrectPositions(pos,N);
 		int Nmx=BR->NMemb;
 		if(PosChanged){
-			for(int i=0;i<N&&i<Nmx;i++){
+			for( i=0;i<N&&i<Nmx;i++){
 				int ti=i+i+i;
 				OneObject* OB=Group[BR->Memb[i]];
 				if(OB)OB->NewMonsterSendTo(OR1->Position[ti]<<4,OR1->Position[ti+1]<<4,prio,0);
@@ -1738,17 +1738,17 @@ int FindUnits(int x,int y,int r,int Type,byte Nation,int Need,word* Dest){
 void MakeReformation(byte NI,word BrigadeID,byte FormType);
 void CancelStandGroundAnyway(Brigade* BR);
 /*
-word GetMyOfficerInf(byte NI,word UnitID,word WarType){
-	Nation* NAT=NATIONS+NI;
-	int N=NAT->NMon;
-	for(int i=0;i<N;i++)if(NAT->Mon[i]->OFCR){
-		OfficerRecord* OFCR=NAT->Mon[i]->OFCR;
-		for(int j=0;j<OFCR->NStroi;j++){
-			OFCR->SDES[j].ID==UnitID&&OFCR->SDES[j].
-		};
-	};
-};
-*/
+word GetMyOfficerInf(byte NI, word UnitID, word WarType) {
+    Nation* NAT = NATIONS + NI;
+    int N = NAT->NMon;
+    for (int i = 0; i < N; i++)if (NAT->Mon[i]->OFCR) {
+        OfficerRecord* OFCR = NAT->Mon[i]->OFCR;
+        for (int j = 0; j < OFCR->NStroi; j++) {
+            OFCR->SDES[j].ID == UnitID && OFCR->SDES[j];
+        };
+    };
+};*/
+
 void CheckBrigadeDUP(Brigade* BR){
 	//byte PRES[8192];
 	//memset(PRES,0,8192);
@@ -2191,7 +2191,7 @@ int FindCommandPlace(int* x,int* y,byte dir,OneObject* OB,int Indx,int Indx1,Ord
 	int idx=-1;
 	int rx=OB->RealX;
 	int ry=OB->RealY;
-	int bx,by;
+	int bx=0,by=0;
 	for(int i=0;i<N;i++){
 		if(i!=Indx&&i!=Indx1){
 			int xc=ODS->ComX[i];
@@ -2552,7 +2552,7 @@ void HumanEscapeLink(Brigade* BR){
 		}else
 		if(ODE->SymInv){
 			if(dd>64||dd<-64)ApplySwap(BR,ODE->SymInv);
-			BR->CreateSimpleOrderedPositions(x,y,Dir);
+			BR->CreateSimpleOrderedPositions(x,y,Dir);  
 			BR->Direction=Dir;
 		}else{
 			if(dd>0){
@@ -3831,13 +3831,12 @@ void CorrectBrigadesSelection(byte NT){
     }
 	int BrigsID[512];
 	byte BFlags[128];
-    int i;
 	memset(BFlags,0,sizeof BFlags);
 	int NBR=0;
 	int N=NSL[NT];
 	word* mon=Selm[NT];
 	City* CT=CITY+NatRefTBL[NT];
-	for( i=0;i<N;i++){
+	for(int i=0;i<N;i++){
 		word MID=mon[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -3857,7 +3856,7 @@ void CorrectBrigadesSelection(byte NT){
 			};
 		};
 	};
-	for( i=0;i<NBR;i++){
+	for(int i=0;i<NBR;i++){
 		SelBrigade(NT,1,BrigsID[i]);
 	};
 };
@@ -3865,13 +3864,12 @@ void CorrectImSelectionInGroups(byte NI);
 void ImCorrectBrigadesSelection(byte NT){
 	int BrigsID[512];
 	byte BFlags[128];
-    int i;
 	memset(BFlags,0,sizeof BFlags);
 	int NBR=0;
 	int N=ImNSL[NT];
 	word* mon=ImSelm[NT];
 	City* CT=CITY+NatRefTBL[NT];
-	for( i=0;i<N;i++){
+	for(int i=0;i<N;i++){
 		word MID=mon[i];
 		if(MID!=0xFFFF){
 			OneObject* OB=Group[MID];
@@ -3891,7 +3889,7 @@ void ImCorrectBrigadesSelection(byte NT){
 			};
 		};
 	};
-	for( i=0;i<NBR;i++){
+	for(int i=0;i<NBR;i++){
 		ImSelBrigade(NT,1,BrigsID[i]);
 	};
 	CorrectImSelectionInGroups(NT);
@@ -5171,7 +5169,6 @@ word DetermineWaterTopology(Brigade* BR){
 	int xc=0;
 	int yc=0;
 	int Nu=0;
-	int j = 0;
 	for(int i=0;i<BR->NMemb;i++){
 		word MID=BR->Memb[i];
 		if(MID!=0xFFFF){
@@ -5183,7 +5180,8 @@ word DetermineWaterTopology(Brigade* BR){
 				yc+=ty;
 				Nu++;
 				int Top=tx>=0&&ty>=0&&tx<TopLx&&ty<=TopLy?GetTopRef(tx+(ty<<TopSH),1):0xFFFF;
-				for(j=0;j<NTops&&Tops[j]!=Top;j++);
+                int j;
+                for(j=0;j<NTops&&Tops[j]!=Top;j++);
 				if(j>=NTops&&Top<0xFFFE){
 					Tops[NTops]=Top;
 					//NInTop[NTops]=1;

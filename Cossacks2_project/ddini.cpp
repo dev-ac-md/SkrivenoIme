@@ -550,7 +550,7 @@ bool CreateDDObjects(HWND hwnd)
 
 	IRS->Init( hwnd );
 
-	if (!DDDebug)
+	if (!window_mode)
 	{
 		ScreenProp sp = IRS->GetScreenProperties();
 		sp.fullScreen = true;

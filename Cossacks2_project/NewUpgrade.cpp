@@ -338,7 +338,7 @@ void GetCostValue(GFILE* f,NewUpgrade* NU,Nation* NT,char* Name,int Line){
 			};
 			int value,ValType;
 			if(!ReadValue(f,&value,&ValType)){
-                sprintf(gy,"%s, Line &d :%s: Invalid amount of resource %s.",Name,Line,Sect,gx);
+                sprintf(gy,"%s, Line &d :%s: Invalid amount of resource %d.",Name,Line,Sect,gx);
 				ErrM(gy);
 			};
 			NU->ValGroup[i]=((ValType+(p2<<3))<<26)+value;
@@ -351,7 +351,7 @@ void GetCostValue(GFILE* f,NewUpgrade* NU,Nation* NT,char* Name,int Line){
 		};
 		int value,ValType;
 		if(!ReadValue(f,&value,&ValType)){
-            sprintf(gy,"%s, Line &d :%s: Invalid amount of resource %s.",Name,Line,Sect,gx);
+            sprintf(gy,"%s, Line &d :%s: Invalid amount of resource %d.",Name,Line,Sect,gx);
 			ErrM(gy);
 		};
 		NU->Value=((ValType+(p2<<3))<<26)+value;
@@ -380,7 +380,7 @@ void GetUpgradeCost(GFILE* f,NewUpgrade* NU,Nation* NT,char* Name,int Line){
 		};
 		z=Gscanf(f,"%d",&p3);
 		if(z!=1){
-            sprintf(gy,"%s, Line &d :%s: Invalid amount of resource %s.",Name,Line,Sect,gx);
+            sprintf(gy,"%s, Line &d :%s: Invalid amount of resource %d.",Name,Line,Sect,gx);
 			ErrM(gy);
 		};
 		NU->Cost[p2]=p3;

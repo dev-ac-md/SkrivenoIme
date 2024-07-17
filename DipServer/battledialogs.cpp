@@ -117,7 +117,6 @@ void RunStartTimer(){
 	Data[1]=GetMyPlayerID();	// player color
 	SendDipCommand((char*)Data,sizeof Data);
 }
-
 int CBattle::ShowTimer(){
 	char* var=TimerVarName;
     //char* oldval=SXP_GetVar(1,var);
