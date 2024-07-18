@@ -12,8 +12,13 @@ How to compile exe. Dlls are dependednt on library of exe which is dependent on 
 
 
 Known issues for now:
+
 -Diplomacy with natives doesnt work properly
+
 -Windowed/Borderless not fully implemented
--Screen hooks top left because windowed implementation isnt done
+
+-Main menu top left because windowed implementation isnt done
+
 -Formations are stacked in perfect order instead of little variation in position of soldier
+
 -Produced units exit to wrong location
