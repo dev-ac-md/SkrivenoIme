@@ -22,3 +22,5 @@ Known issues for now:
 -Formations are stacked in perfect order instead of little variation in position of soldier
 
 -Produced units exit to wrong location
+
+-Online game crashes game since i had to remove gamespy and implementation of menu isnt fully done yet
