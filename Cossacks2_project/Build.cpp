@@ -506,7 +506,7 @@ void ProduceObjLink(OneObject* OBJ){
 		OneObject* OB=Group[ID];
 		NewMonster* NM1=OB->newMons;
 		{
-            int novo;
+            int novo=1;
 			OB->SetOrderedUnlimitedMotion(0);
 			if(NM1->BornSoundID!=-1)AddEffect(OB->RealX>>4,(OB->RealY>>5)-GetHeight(OB->RealX>>4,OB->RealY>>4),NM1->BornSoundID);
 			//OB->PrioryLevel=16;
