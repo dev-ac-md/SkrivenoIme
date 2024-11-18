@@ -973,7 +973,7 @@ int GetBestPlayer(){
 int SortPlayers(byte* Res,int* par){
 	CreateSumm();
 	int con=PINFO[0].VictCond;
-	int q = 0;
+	int q;
 	SortClass SC;
 	SC.CheckSize(8);
 	int np=0;
@@ -2019,7 +2019,7 @@ void GFieldShow(){
 			};
 			if(no/*&&NPlayers>1*/){
 				int y=miniy-22-4-no*14+DY;
-				int w = 0;
+				int w;
 				for(int q=0;q<no;q++){
 					byte ms=NATIONS[NatRefTBL[ord[q]]].NMask;
 					byte c=0xD0+4*NatRefTBL[ord[q]];

@@ -1774,7 +1774,7 @@ void InitGates(){
 };
 int AddGate(short x,short y,byte NI){
 	int curg=NGates;
-	int j = 0;
+	int j;
 	for(j=0;j<NGates&&Gates[j].NI!=0xFF;j++);
 	if(j<NGates)curg=j;
 	else{

@@ -644,7 +644,7 @@ void SaveBMP8(char* Name,int lx,int ly,byte* Data){
 	byte PAL[1024];
 	memset(PAL,0,1024);
 	char ccc[128];
-    int i = 0;
+    int i;
 	sprintf(ccc,"%d\\agew_1.pal",CurPalette);
 	ResFile f=RReset(ccc);
 	for(i =0;i<256;i++){
@@ -2746,7 +2746,7 @@ void CreateFields(byte NI);
 extern int LastWaterchange;
 extern int LastBrightspot;
 void RESEARCH_WAVES();
-void PreDrawGameProcess(){
+void PreDrawGameProcess() {
 	//RunPF(19);
 	if(EditMapMode){
 		if(LastWaterchange&&GetTickCount()-LastWaterchange>5000){

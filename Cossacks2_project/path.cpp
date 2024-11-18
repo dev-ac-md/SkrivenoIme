@@ -754,7 +754,7 @@ bool OneObject::CreatePrePath(int x1,int y1){
 	int yy1=y;
 	int rx=sx;
 	int ry=sy;
-	int uu = 0;
+	int uu;
 	if(dx>dy)ry=0;
 	if(dy>dx)rx=0;
 	int Angle0=GetLAngle(x1-x,y1-y,0);
@@ -1105,7 +1105,7 @@ loopsEnd:
 		};
 		//LLock[y][x]=true;
 		if(Rpp<MaxP-9){
-			int i = 0;
+			int i;
 			if(RightPrefer){
 				Pps=Rppm;
 				//search for direct vision point
@@ -1219,7 +1219,7 @@ bool OneObject::CreatePrePath2(int x1,int y1){
 	int yy1=y;
 	int rx=sx;
 	int ry=sy;
-	int uu = 0;
+	int uu;
 	if(dx>dy)ry=0;
 	if(dy>dx)rx=0;
 	int Angle0=GetLAngle(x1-x,y1-y,0);
@@ -1706,7 +1706,7 @@ bool OneObject::CreatePrePath4(int x1,int y1){
 	bool RvpLast=false;
 	int RvpDist=100000;
 	int LvpDist=100000;
-	int uu = 0;
+	int uu;
 	//if(PathX)free(PathX);
 	//if(PathY)free(PathY);
 	//PathX=NULL;
