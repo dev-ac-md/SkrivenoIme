@@ -31,17 +31,8 @@ int processMainMenu(){
         ResizeAndCenterWindow();
     }
     
-	
 	SetRLCWindow(0,0,RealLx,RSCRSizeY,SCRSizeX);
 	CBar(0,0,RealLx,RSCRSizeY,0);
-
-    if (!window_mode)
-    {//Calculate offsets for centering menu in fullscreen mode
-        menu_x_off = (screen_width - 1024) / 2;
-        menu_y_off = (screen_height - 768) / 2;
-        menu_hint_x = 18 + menu_x_off;
-        menu_hint_y = 701 + menu_y_off;
-    }
 	
 	LoadFog(1);
 	LoadPalette("1\\agew_1.pal");
@@ -60,7 +51,7 @@ int processMainMenu(){
 	RLCFont *FAMain = &fonG60w;
 
 	// Menu
-	DialogsSystem MMenu(0,0);
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 	
 	// Main Background
 	//SQPicture MnPanel("Interface\\Background_Main_Menu.bmp");
@@ -107,7 +98,7 @@ int processMainMenu(){
 	//Picture* MBackTemp=MMenu.addPicture(NULL,0,210,&MenuBack,&MenuBack,&MenuBack);
 
 
-	MMenu.addClipper(342,464,676,707); // Obrezka lishney chasti main menu
+    MMenu.addClipper(342+menu_x_off, 464+menu_y_off, 676+menu_x_off,707+menu_y_off); // Obrezka lishney chasti main menu //Cant Click anything when this is changed to offest but is correct behaviour 19.11.2024
 
 	// Main menu back
 	GPPicture* MBack[4];
