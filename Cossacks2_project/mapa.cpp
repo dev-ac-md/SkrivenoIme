@@ -2019,12 +2019,13 @@ void GFieldShow(){
 			};
 			if(no/*&&NPlayers>1*/){
 				int y=miniy-22-4-no*14+DY;
-				int w;
+				
 				for(int q=0;q<no;q++){
 					byte ms=NATIONS[NatRefTBL[ord[q]]].NMask;
 					byte c=0xD0+4*NatRefTBL[ord[q]];
 					if(!(ms&prevms)){
-						for(int w=q;w<no&&(NATIONS[NatRefTBL[ord[w]]].NMask&ms);w++);
+                        int w;
+						for(w=q;w<no&&(NATIONS[NatRefTBL[ord[w]]].NMask&ms);w++);
 						w-=q;
 						if(w>1){
 							int y0=y+1+2;
