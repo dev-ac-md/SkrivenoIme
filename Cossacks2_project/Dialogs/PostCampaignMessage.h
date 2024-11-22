@@ -20,16 +20,26 @@ bool PostCampaignMessage(int n){
 
 		// Dialog
 		SQPicture Back("Interf2\\Mission_Loading.bmp");
-		DialogsSystem MISS(0,0);
+		DialogsSystem MISS(menu_x_off, menu_y_off);
 		MISS.addPicture(NULL,0,0,&Back,&Back,&Back);
 
 		// Hint
-		int HintX = 470;
-		int HintY = 745;
+		//int HintX = menu_hint_x;
+		//int HintY = menu_hint_y;
+
+        if (!window_mode)
+        {
+            menu_hint_x = 470 + menu_x_off;
+            menu_hint_y = 745 + menu_y_off;
+        }
+        else {
+            menu_hint_x = 470;
+            menu_hint_y = 745;
+        }
 
 		MISS.HintFont=FHint;
-		MISS.HintX=HintX;
-		MISS.HintY=HintY;
+		MISS.HintX= menu_hint_x;
+		MISS.HintY= menu_hint_y;
 
 		// Picture
 		LocalGP PIC("Interf2\\MissPreview");

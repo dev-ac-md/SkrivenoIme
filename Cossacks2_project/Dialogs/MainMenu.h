@@ -30,7 +30,6 @@ int processMainMenu(){
     {//Adjust to default menu size after exiting game
         ResizeAndCenterWindow();
     }
-    
 	SetRLCWindow(0,0,RealLx,RSCRSizeY,SCRSizeX);
 	CBar(0,0,RealLx,RSCRSizeY,0);
 	
@@ -59,6 +58,15 @@ int processMainMenu(){
 	Picture* PIC=MMenu.addPicture(NULL,0,0,&MnPanel,&MnPanel,&MnPanel);
 
 	// Hint
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
 	MMenu.HintFont=&SmallWhiteFont;
 	MMenu.HintY= menu_hint_y;
 	MMenu.HintX= menu_hint_x;   
@@ -97,8 +105,15 @@ int processMainMenu(){
 	//SQPicture MenuBack("Interf2\\map_template.bmp");
 	//Picture* MBackTemp=MMenu.addPicture(NULL,0,210,&MenuBack,&MenuBack,&MenuBack);
 
-
-    MMenu.addClipper(342+menu_x_off, 464+menu_y_off, 676+menu_x_off,707+menu_y_off); // Obrezka lishney chasti main menu //Cant Click anything when this is changed to offest but is correct behaviour 19.11.2024
+    // Obrezka lishney chasti main menu 
+    // Cant Click anything when this is changed to offest but is correct behaviour 19.11.2024
+    // Made separate for windowed mode might help with getting it to work 22.11.2024
+    if (!window_mode) {
+        MMenu.addClipper(342 + menu_x_off, 464 + menu_y_off, 676 + menu_x_off, 707 + menu_y_off);
+    }
+    else {
+        MMenu.addClipper(342, 464, 676, 707);
+    }
 
 	// Main menu back
 	GPPicture* MBack[4];

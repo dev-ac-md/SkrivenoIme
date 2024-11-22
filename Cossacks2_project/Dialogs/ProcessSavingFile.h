@@ -22,9 +22,19 @@ bool ProcessSavingFile(char* Mask,char* DestName,int Header,bool clear){
 	RLCFont* FPBut = &fon18y5;
 	RLCFont* FText = &fon18y3;
 	
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
+
 	MMenu.HintFont=&hfnt;
-	MMenu.HintY=701;
-	MMenu.HintX=18;
+	MMenu.HintY= menu_hint_y;
+	MMenu.HintX= menu_hint_x;
 
 	int SaveDx = 0;
 	int SaveDy = 0;

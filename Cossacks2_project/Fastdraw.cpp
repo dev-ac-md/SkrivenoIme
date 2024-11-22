@@ -21,8 +21,7 @@ extern int RSCRSizeX;
 extern int RSCRSizeY;
 extern int COPYSizeX;
 extern int LOADED;
-CEXPORT
-void ShowCharUNICODE(int x,int y,byte* strptr,lpRLCFont lpr);
+
 byte PAL1[256];
 byte PAL2[256];
 byte PAL3[256];

@@ -22,14 +22,23 @@ int ProcessWars(){
 
 	RLCFont FontW(FONT.GPID);
 	FontW.SetWhiteColor();
-	DialogsSystem MMenu(0,0);
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 
 	LocalGP HFONT("rom10");
 	RLCFont hfnt(HFONT.GPID);
 	hfnt.SetWhiteColor();
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
 	MMenu.HintFont=&hfnt;
-	MMenu.HintY=701;
-	MMenu.HintX=18;
+	MMenu.HintY= menu_hint_y;
+	MMenu.HintX= menu_hint_x;
 
 	MMenu.addPicture(NULL,0,0,&Back,&Back,&Back);
 	VideoButton* ENC=MMenu.addVideoButton(NULL,862,468,ENC1.GPID,ENC2.GPID);
@@ -165,14 +174,23 @@ bool MPL_WaitingBattleGame(bool Host,int BattleID){
 	FontW.SetColorTable(4);
 	LoadOptionalTable(4,"2\\white.grd");
 
-	DialogsSystem MENU(0,0);
+	DialogsSystem MENU(menu_x_off, menu_y_off);
 	MENU.OkSound=GetSound("START");
 	LocalGP HFONT("rom10");
 	RLCFont hfnt(HFONT.GPID);
 	hfnt.SetWhiteColor();
 	MENU.HintFont=&hfnt;
-	MENU.HintY=701;
-	MENU.HintX=18;
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
+	MENU.HintY= menu_hint_y;
+    MENU.HintX = menu_hint_x;
 	Picture* GPPB=MENU.addPicture(NULL,0,0,&Back,&Back,&Back);
 	GPPicture*  NameBack[2];
 	GPPicture*  NationBack[2];

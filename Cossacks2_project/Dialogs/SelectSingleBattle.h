@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <time.h>
 
+extern int menu_x_off;
+extern int menu_y_off;
+extern int menu_hint_x;
+extern int menu_hint_y;
+
 struct OneSinBattle{
 	word GID;	// global index
 	SingleMission* SM;
@@ -240,7 +245,7 @@ int NSinBattle;
 int BattleTopScore(){
 	
 	SQPicture Back("Interf2\\Background_Battles.bmp");
-	DialogsSystem MMenu(0,0);
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 	MMenu.addPicture(NULL,0,0,&Back,&Back,&Back);
 
 	// Controls
@@ -256,8 +261,17 @@ int BattleTopScore(){
 
 	// Hint
 	MMenu.HintFont=FHint;
-	MMenu.HintX=513;
-	MMenu.HintY=745;
+    if (!window_mode)
+    {
+        menu_hint_x = 513 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 513;
+        menu_hint_y = 745;
+    }
+    MMenu.HintY = menu_hint_y;
+    MMenu.HintX = menu_hint_x;
 
 	// Text
 	TextButton* T0=MMenu.addTextButton(NULL,512,18,GetTextByID("INTF_SBATL_T0"),FScreen,FScreen,FScreen,1);
@@ -536,7 +550,7 @@ bool SelectSingleBattle(){
 	RLCFont* FMissText = &fon18y3;
 	RLCFont* FHint = &SmallYellowFont;
 
-	DialogsSystem MMenu(0,0);
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 	MMenu.addPicture(NULL,0,0,&Back,&Back,&Back);
 	
 	/*
@@ -559,12 +573,20 @@ bool SelectSingleBattle(){
 	RLCFont hfnt(HFONT.GPID);
 	hfnt.SetWhiteColor();
 
-	int HintX = 440;
-	int HintY = 745;
-
+	//int HintX = menu_hint_x;
+	//int HintY = menu_hint_y;
+    if (!window_mode)
+    {
+        menu_hint_x = 440 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 440;
+        menu_hint_y = 745;
+    }
 	MMenu.HintFont=FHint;
-	MMenu.HintX=-HintX;
-	MMenu.HintY=-HintY;
+	MMenu.HintX=menu_hint_x;
+	MMenu.HintY=menu_hint_y;
 
 	TextButton* HintTxt = MMenu.addTextButton(NULL,HintX,HintY,"                                                                                               ",FHint,FHint,FHint,1);
 

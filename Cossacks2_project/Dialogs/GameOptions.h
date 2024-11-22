@@ -1,4 +1,11 @@
 bool ProcessGameOptions(){
+    if (!window_mode)
+    {//Calculate offsets for centering menu in fullscreen mode
+        menu_x_off = (screen_width - 1024) / 2;
+        menu_y_off = (screen_height - 768) / 2;
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
 	// Graphics
 	LocalGP BTNS("Interf2\\G_Load_Game");	
 	LocalGP MGP("Interf2\\Options_for_Game");
@@ -15,8 +22,17 @@ bool ProcessGameOptions(){
 	int dy=-166+((RealLy-425)>>1);
 	DialogsSystem MMenu(dx,dy);
 	MMenu.HintFont=&hfnt;
-	MMenu.HintY=701;
-	MMenu.HintX=18;
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
+	MMenu.HintY= menu_hint_y;
+	MMenu.HintX= menu_hint_x;
 	
 	// Fonts
 	RLCFont* FWin = &fon16y5;

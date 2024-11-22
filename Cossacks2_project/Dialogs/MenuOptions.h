@@ -30,12 +30,20 @@ bool ProcessMenuOptions(){
 	*/
 
 	// Main menu	
-	DialogsSystem MMenu(0,0);	
-	
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
+    if (!window_mode)
+    {
+        menu_hint_x = 513 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 513;
+        menu_hint_y = 745;
+    }
 	// Hint
 	MMenu.HintFont=FHint;
-	MMenu.HintX=513;
-	MMenu.HintY=745;
+    MMenu.HintY = menu_hint_y;
+    MMenu.HintX = menu_hint_x;
 	
 	//int dx=((RealLx-GPS.GetGPWidth(BTNS.GPID,1))>>1)-85-125;
 	//int dy=(RealLy-GPS.GetGPHeight(BTNS.GPID,1))>>1;

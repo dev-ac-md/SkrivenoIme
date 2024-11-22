@@ -1,3 +1,8 @@
+extern int menu_x_off;
+extern int menu_y_off;
+extern int menu_hint_x;
+extern int menu_hint_y;
+
 bool MPL_WaitingBattleGame(bool Host,int BattleID){
 	ClearLPACK();
 	ReceiveAll();
@@ -52,19 +57,28 @@ bool MPL_WaitingBattleGame(bool Host,int BattleID){
 				    2,2,2,2,2, 3,3,3,3,3, 3,3,3,3,3};
 
 	
-	DialogsSystem MENU(0,0);
+	DialogsSystem MENU(menu_x_off, menu_y_off);
 	MENU.OkSound=GetSound("START");
 
 	SQPicture Back("Interf2\\Background_Historical_Create.bmp");
 	Picture* GPPB=MENU.addPicture(NULL,0,0,&Back,&Back,&Back);
 
 	// Hint
-	int HintX = 440;
-	int HintY = 745;
+	//int HintX = menu_hint_x;
+	//int HintY = menu_hint_y;
+    if (!window_mode)
+    {
+        menu_hint_x = 440 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 440;
+        menu_hint_y = 745;
+    }
 
 	MENU.HintFont=FHint;
-	MENU.HintX=HintX;
-	MENU.HintY=HintY;
+	MENU.HintX= menu_hint_x;
+	MENU.HintY= menu_hint_y;
 
 	GPPicture*  NameBack[2];
 	GPPicture*  NationBack[2];
@@ -749,14 +763,23 @@ bool ProcessOneBattle(int BtlID){
 
 	RLCFont FontW(FONT.GPID);
 	FontW.SetWhiteColor();
-	DialogsSystem MMenu(0,0);
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 
 	LocalGP HFONT("rom10");
 	RLCFont hfnt(HFONT.GPID);
 	hfnt.SetWhiteColor();
 	MMenu.HintFont=&hfnt;
-	MMenu.HintY=701;
-	MMenu.HintX=18;
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
+    MMenu.HintY = menu_hint_y;
+    MMenu.HintX = menu_hint_x;
 
 	MMenu.addPicture(NULL,0,0,&Back,&Back,&Back);
 	VideoButton* ENC=MMenu.addVideoButton(NULL,862,468,ENC1.GPID,ENC2.GPID);
@@ -832,14 +855,23 @@ int ProcessWars(){
 
 	RLCFont FontW(FONT.GPID);
 	FontW.SetWhiteColor();
-	DialogsSystem MMenu(0,0);
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 
 	LocalGP HFONT("rom10");
 	RLCFont hfnt(HFONT.GPID);
 	hfnt.SetWhiteColor();
 	MMenu.HintFont=&hfnt;
-	MMenu.HintY=701;
-	MMenu.HintX=18;
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
+	MMenu.HintY= menu_hint_y;
+	MMenu.HintX= menu_hint_x;
 
 	MMenu.addPicture(NULL,0,0,&Back,&Back,&Back);
 	VideoButton* ENC=MMenu.addVideoButton(NULL,862,468,ENC1.GPID,ENC2.GPID);

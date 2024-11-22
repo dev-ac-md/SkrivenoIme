@@ -202,13 +202,23 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 	RLCFont hfnt(HFONT.GPID);
 	hfnt.SetWhiteColor();
 	
-	DialogsSystem MENU(0,0);
+	DialogsSystem MENU(menu_x_off, menu_y_off);
 	
 	MENU.OkSound=GetSound("START");
 
+    if (!window_mode)
+    {
+        menu_hint_x = 440 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 440;
+        menu_hint_y = 745;
+    }
+
 	MENU.HintFont=FHint;
-	MENU.HintX=440;
-	MENU.HintY=745;
+	MENU.HintX= menu_hint_x;
+	MENU.HintY= menu_hint_y;
 
 	Picture* GPPB=MENU.addPicture(NULL,0,0,&Back,&Back,&Back);
 	
@@ -520,7 +530,7 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 	
 	int FAO=6; // First number of additional options
 
-	SimpleDialog* ListClip=MENU.addClipper(601,185,952,340);
+    SimpleDialog* ListClip = MENU.addClipper(601 + menu_x_off, 185 + menu_y_off, 952 + menu_x_off, 340 + menu_y_off);
 	//SimpleDialog* ListClip=MENU.addClipper(0,0,RealLx,RealLy);
 	
 	TGRP1[0] = MENU.addTextButton(NULL,Tx2,0,GetTextByID("INTF_CROOM_O0"),FYellow,FYellow,FYellow,0);
@@ -705,7 +715,7 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 	LBSav->FontDx -= 16;
 
 	//---------------  Options of the Current Game  --------------
-	GP_PageControl* GPP=MENU.addPageControl(NULL,11,-150,BTNS.GPID,0);
+    GP_PageControl* GPP = MENU.addPageControl(NULL, 11, -150, BTNS.GPID, 0);
 
 	int PageX = 602;
 	int PageW = 125;
@@ -724,10 +734,10 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 	Page2->FontDy -= 1;
 
 	GPP->Hint=GetTextByID("MOPAGES");
-
-	GPP->AddPage(495,128,495+88,128+22,22);
-	GPP->AddPage(495+88,128,495+197,128+22,23);
-	GPP->AddPage(495+197,128,495+292,128+22,24);
+    GPP->AddPage(495, 128, 495 + 88, 128 + 22, 22);
+    GPP->AddPage(495 + 88, 128, 495 + 197, 128 + 22, 23);
+    GPP->AddPage(495 + 197, 128, 495 + 292, 128 + 22, 24);
+	
 
 	GPP->CurPage=1;
 
@@ -974,7 +984,7 @@ ffe2:;
 		};
 		int a=AOScr->GetPos();
 		for(int i=0; i<NGRP1; i++){
-			int y = y2+(i-a)*26;
+			int y = y2+menu_y_off +(i-a)*26;
 			int y1 = y+CMGRP1[i]->y1-CMGRP1[i]->y;
 			if(CMGRP1[i]){
 				CMGRP1[i]->y=y;
@@ -1838,7 +1848,7 @@ ffe2:;
 					COMPS[i]->Visible=(i>=NPlayers);
 #endif
 					COMPS[i]->Enabled=COMPS[i]->Visible;
-					int j = 0;
+					int j;
 					//BCOMP[i]->Visible=0;
 					if(COMPS[i]->Visible&&COMPS[i]->CurLine){
 						if(!COMPPREV[i]){
@@ -2121,7 +2131,7 @@ FinCLC:;
 		};
 	};
 	if(Host&&PlayerMenuMode!=-1){
-		int i = 0;
+		int i;
 		for(i=0;i<8;i++)MPL_NatRefTBL[i]=0xFF;
 		int NN[8]={0,0,0,0,0,0,0,0};
 		for(i=NPlayers;i<7;i++)if(PINFO[HostID].COMPINFO[i]){

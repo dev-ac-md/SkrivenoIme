@@ -1,3 +1,8 @@
+extern int menu_x_off;
+extern int menu_y_off;
+extern int menu_hint_x;
+extern int menu_hint_y;
+
 bool MPL_JoinGame(int ID){
 	LocalGP BTNS("Interface\\Game_Select");
 	
@@ -9,7 +14,7 @@ bool MPL_JoinGame(int ID){
 	LoadFog(1);
 	SQPicture Back("Interf2\\Game_Select_Background.bmp");
 
-	DialogsSystem MENU(0,0);
+	DialogsSystem MENU(menu_x_off, menu_y_off);
 	MENU.addPicture(NULL,0,0,&Back,&Back,&Back);
 	
 	//int dx=((RealLx-GPS.GetGPWidth(BTNS.GPID,0))>>1)-85;

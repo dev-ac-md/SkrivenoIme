@@ -1,3 +1,6 @@
+extern int menu_x_off;
+extern int menu_y_off;
+
 bool SingleOptions(){
 	if(MPL_WaitingGame(1,1)){
 		StartIGame(1);
@@ -10,13 +13,22 @@ int MM_ProcessSinglePlayer(){
 	LocalGP BTNS("Interface\\Single_Player");	
 
 	SQPicture MnPanel("Interface\\Background_Single_Player.bmp");
-	DialogsSystem MMenu(0,0);
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 	LocalGP HFONT("rom10");
 	RLCFont hfnt(HFONT.GPID);
 	hfnt.SetWhiteColor();
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
 	MMenu.HintFont=&hfnt;
-	MMenu.HintY=701;
-	MMenu.HintX=18;
+	MMenu.HintY= menu_hint_y;
+	MMenu.HintX= menu_hint_x;
 	int Dy=27;
 	Picture* PIC=MMenu.addPicture(NULL,0,0,&MnPanel,&MnPanel,&MnPanel);
 	

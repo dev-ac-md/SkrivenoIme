@@ -48,7 +48,7 @@ bool ProcessSingleMission(int n,int Diff){
 		RLCFont* FHint = &SmallYellowFont;
 
 		SQPicture Back("Interf2\\Mission_Loading.bmp");
-		DialogsSystem MISS(0,0);
+		DialogsSystem MISS(menu_x_off, menu_y_off);
 		MISS.addPicture(NULL,0,0,&Back,&Back,&Back);
 
 		// Description
@@ -75,7 +75,13 @@ bool ProcessSingleMission(int n,int Diff){
 			RClose(f);
 			free(buf);
 		};
-		MISS.addClipper(0,465,RealLx,620/*597*/);
+        if (!window_mode) {
+            MISS.addClipper(0, 465 + menu_y_off, RealLx, 620 + menu_y_off/*597*/);
+        }
+        else {
+            MISS.addClipper(0, 465, RealLx, 620/*597*/);
+        }
+		
 		TextViewer* TV=MISS.addTextViewer(NULL,337,465+2,350,132,"tmp.txt",FMissText);
 
 		// mask
@@ -100,8 +106,17 @@ bool ProcessSingleMission(int n,int Diff){
 		int TextLy=TV->NLines*TV->SymSize-130;
 		
 		// Interface
-		int HintX = 470;
-		int HintY = 745;
+		//int HintX = menu_hint_x;
+		//int HintY = menu_hint_y;
+        if (!window_mode)
+        {
+            menu_hint_x = 470 + menu_x_off;
+            menu_hint_y = 745 + menu_y_off;
+        }
+        else {
+            menu_hint_x = 470;
+            menu_hint_y = 745;
+        }
 
 		MISS.HintFont=FHint;
         MISS.HintX = menu_hint_x;
@@ -235,7 +250,7 @@ bool ProcessSingleMission(int n,int Diff){
 		RLCFont hdrf(HDR.GPID);
 		//hdrf.SetColorTable(5);
 		SQPicture Back("Interface\\Background_Mission_Text.bmp");
-		DialogsSystem MISS(0,0);
+		DialogsSystem MISS(menu_x_off, menu_y_off);
 		MISS.addPicture(NULL,0,0,&Back,&Back,&Back);
 		MISS.addGPPicture(NULL,48,119,PIC.GPID,0);
 		//GPS.SetOptionalColor(PIC.GPID,5);

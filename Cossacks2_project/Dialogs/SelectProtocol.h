@@ -59,7 +59,7 @@ int MPL_ChooseConnection(){
 	SQPicture IBACK("Interface\\Background_Type_Connection_Crop.bmp");
 #endif
 	
-	DialogsSystem MENU(0,0);
+	DialogsSystem MENU(menu_x_off, menu_y_off);
 	//int dx=((RealLx-GPS.GetGPWidth(BTNS.GPID,0))>>1)-85;
 	//int dy=(RealLx-GPS.GetGPWidth(BTNS.GPID,0))>>1;
 	MENU.addPicture(NULL,0,0,&Back,&Back,&Back);
@@ -79,9 +79,18 @@ int MPL_ChooseConnection(){
 #endif
 
 	// Hint
+    if (!window_mode)
+    {
+        menu_hint_x = 513 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 513;
+        menu_hint_y = 745;
+    }
 	MENU.HintFont=FHint;
-	MENU.HintX=513;
-	MENU.HintY=745;
+	MENU.HintX= menu_hint_x;
+	MENU.HintY= menu_hint_y;
 
 	IPX=MENU.addUniversalButton(SPX,SPY,SPW,GetTextByID("INTF_PROT_B0"),TB3.GPID,Set3,0,0,0,FWhite,FWhite,FYellow);
 	TCP=MENU.addUniversalButton(SPX,SPY+26,SPW,GetTextByID("INTF_PROT_B1"),TB3.GPID,Set3,0,0,0,FWhite,FWhite,FYellow);

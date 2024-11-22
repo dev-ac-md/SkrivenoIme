@@ -47,7 +47,7 @@ void CreateGamesList(ListBox* LB, ListBox* DT){
 	WIN32_FIND_DATA FD;
 	const int NList = 100;
 	WIN32_FIND_DATA FDL[NList];
-    int i = 0 , j = 0;
+    int i , j;
 	HANDLE HF=FindFirstFile("Save\\*.sav",&FD);
 	if(HF!=INVALID_HANDLE_VALUE){
 		i=0;
@@ -140,12 +140,21 @@ void processMLoadGame(){
 	
 	LoadPointer("cur_mn.rlc");
 	SQPicture MnPanel("Interf2\\Background_Load_Game.bmp");
-	DialogsSystem MMenu(0,0);
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 	
 	// Hint
 	MMenu.HintFont=FHint;
-	MMenu.HintX=513;
-	MMenu.HintY=745;
+    if (!window_mode)
+    {
+        menu_hint_x = 513 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 513;
+        menu_hint_y = 745;
+    }
+	MMenu.HintX= menu_hint_x;
+	MMenu.HintY= menu_hint_y;
 
 	//int dx=((RealLx-GPS.GetGPWidth(BTNS.GPID,1))>>1)-85-125;
 	//int dy=(RealLy-GPS.GetGPHeight(BTNS.GPID,1))>>1;
