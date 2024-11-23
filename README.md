@@ -9,3 +9,13 @@ How to compile exe. Dlls are dependednt on library of exe which is dependent on 
 5. add back dmcr.lib which was excluded earlier
 6. change configuration type to dll
 7. build one after another (Commcore and gMotor arent DLL files they stay libraries)
+
+Known issues for now:
+
+-Diplomacy with natives doesnt work properly
+
+-Windowed/Borderless not fully implemented
+
+-Formations are stacked in perfect order instead of little variation in position of soldier
+
+-Online game crashes game since i had to remove gamespy and implementation of menu isnt fully done yet
