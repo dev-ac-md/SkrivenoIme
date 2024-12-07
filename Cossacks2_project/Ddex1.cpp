@@ -1,4 +1,4 @@
-/*==========================================================================
+ï»¿/*==========================================================================
  *
  *  Copyright (C) 1997-1998 Andrew(GSC). All Rights Reserved.
  *
@@ -10,6 +10,7 @@
 //#define VIEW_TOP
 //#define WIN32_LEAN_AND_MEAN
 #include "ddini.h"
+#include "./Steam/steam_api.h"
 
 bool window_mode;
 int screen_width;
@@ -200,7 +201,7 @@ HugeExplosion HE;
 bool FASTMODE;
 SFLB_DLLEXPORT InitDialogs();
 int processMainMenu();
-//+¨óðýø÷ð¡ø  ÿð¨ðûûõû¹ýþ òvÿþûý õüv¿ ÷ðôð¢
+//+Â¨Ã³Ä‘Ã½Å™Ã·Ä‘Ë‡Å™Â  Ë™Ä‘Â¨Ä‘Å±Å±Å‘Å±Ä…Ã½Å£ ÅˆvË™Å£Å±Ã½Â Å‘Ã¼vÅ¼ Ã·Ä‘Ã´Ä‘Ë˜
 typedef void EventHandPro(void*);
 void HandleMultiplayer();
 bool EgoFlag;
@@ -1090,27 +1091,62 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
 	
 	
     case WM_KEYDOWN:
-		//AddKey(wParam);
-		if(wParam<256)ScanPressed[wParam]=1;
-		LastKey=wParam;
-		KeyPressed=true;
-		if(LastKey==VK_F11){
-			SaveScreen();
-		};
-		if((!GameInProgress)&&LastKey=='R'&&GetKeyState(VK_CONTROL)&0x8000)RecordMode=!RecordMode;
-		{
-			int nVirtKey = (int) wParam;    // virtual-key code 
-			int lKeyData = lParam;    
-			byte PST[256];
-			GetKeyboardState(PST);
-			word res;
-			int s=ToAscii(nVirtKey,lKeyData,PST,&res,0);
-			if(s==1){
-				LastAsciiKey=res;
-			}else LastAsciiKey=0;
-			AddKey(wParam,LastAsciiKey);
-		};
-		break;
+        if (wParam < 256)
+        {
+            ScanPressed[wParam] = 1;
+        }
+
+        LastKey = wParam;
+        KeyPressed = true;
+
+        if (LastKey == VK_F11)
+        {
+            SaveScreen();
+        }
+
+        /*
+        //Can't see where it was supposed to work. Cut it out.
+        if (( !GameInProgress ) && LastKey == 'R' &&
+            GetKeyState( VK_CONTROL ) & 0x8000)
+        {
+            //RecordMode = !RecordMode;//BUGFIX: remove switching record mode in real time
+        }
+        */
+
+        {
+            int nVirtKey = (int)wParam;
+            int lKeyData = lParam;
+            byte PST[256];
+            GetKeyboardState(PST);
+
+            word ascii_key;
+            int result = ToAscii(nVirtKey, lKeyData, PST, &ascii_key, 0);
+
+            WCHAR u_buf[5] = {};
+            if (1 <= ToUnicode(nVirtKey, lKeyData, PST, u_buf, 4, 0))
+            {//Valid UTF character
+                wchar_t unicode_char = u_buf[0];
+                if (1040 <= unicode_char && 1103 >= unicode_char)
+                {//UTF code is in cyrillic range
+                    //Adjust ascii code to match sprite index in mainfont.gp file
+                    //Sprites 192 to 255 ('Ð' to 'Ñ')
+                    //(taken from russian cossacks version ALL.GSC)
+                    ascii_key = unicode_char - 848;
+                }
+            }
+
+            if (1 == result)
+            {
+                LastAsciiKey = ascii_key;
+            }
+            else
+            {
+                LastAsciiKey = 0;
+            }
+
+            AddKey(wParam, LastAsciiKey);
+        }
+        break;
     case WM_PAINT:
 		/*
         BeginPaint( hWnd, &ps );
@@ -2573,8 +2609,8 @@ static BOOL doInit( HINSTANCE hInstance, int nCmdShow )
     ShowWindow( hwnd, SW_SHOWNORMAL);//nCmdShow );
     UpdateWindow( hwnd );
 
-	void ov_Init(HWND hExtWnd);
-	ov_Init(hwnd);
+	//void ov_Init(HWND hExtWnd);
+	//ov_Init(hwnd);
 
 	CDIRSND.CreateDirSound(hwnd);
 	CDS=&CDIRSND;
@@ -3620,11 +3656,52 @@ void ClearMessages();
 extern MEMORYSTATUS FEX_MemStatus1;
 void DelLog();
 void DDLog (LPSTR sz,...);
+
+int Alert(const char* lpCaption, const char* lpText)
+{
+#ifndef _WIN32
+    fprintf(stderr, "Message: '%s', Detail: '%s'\n", lpCaption, lpText);
+    return 0;
+#else
+    return ::MessageBox(NULL, lpText, lpCaption, MB_OK);
+#endif
+}
+
+int SteamInitialisation() {
+    if (SteamAPI_RestartAppIfNecessary(k_uAppIdInvalid))
+    {
+        // if Steam is not running or the game wasn't started through Steam, SteamAPI_RestartAppIfNecessary starts the 
+        // local Steam client and also launches this game again.
+
+        // Once you get a public Steam AppID assigned for this game, you need to replace k_uAppIdInvalid with it and
+        // removed steam_appid.txt from the game depot.
+
+        return EXIT_FAILURE;
+    }
+    SteamErrMsg errMsg = { 0 };
+    if (SteamAPI_InitEx(&errMsg) != k_ESteamAPIInitResult_OK)
+    {
+        OutputDebugString("SteamAPI_Init() failed: ");
+        OutputDebugString(errMsg);
+        OutputDebugString("\n");
+
+        Alert("Fatal Error", "Steam must be running to play this game (SteamAPI_Init() failed).\n");
+        return EXIT_FAILURE;
+    }
+    if (!SteamUser()->BLoggedOn())
+    {
+        OutputDebugString("Steam user is not logged in\n");
+        Alert("Fatal Error", "Steam user must be logged in to play this game (SteamUser()->BLoggedOn() returned false).\n");
+        return EXIT_FAILURE;
+    }
+}
+
 int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                         LPSTR lpCmdLine, int nCmdShow)
 {
 	
 	//TestHash();
+    SteamInitialisation();
 	DelLog();
 	FEX_BEGIN();	
 	if(FEX_MemStatus1.dwTotalVirtual<1024*1024*700){
@@ -3975,6 +4052,7 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			//CDS->~CDirSound();
 			FilesExit();
 			StopPlayCD();
+            SteamAPI_Shutdown();
 			if(TOTALEXIT)
 				ShellExecute(NULL,"open","http://www.goa.com/goa/z-home.asp?gotogame=8247",NULL,NULL,SW_MAXIMIZE);
 #ifdef STARFORCE
