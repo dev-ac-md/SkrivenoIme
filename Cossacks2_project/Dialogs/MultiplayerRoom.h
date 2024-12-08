@@ -715,7 +715,7 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 	LBSav->FontDx -= 16;
 
 	//---------------  Options of the Current Game  --------------
-    GP_PageControl* GPP = MENU.addPageControl(NULL, 11, -150, BTNS.GPID, 0);
+    GP_PageControl* GPP = MENU.addPageControl(NULL, 11, -1500, BTNS.GPID, 0);
 
 	int PageX = 602;
 	int PageW = 125;
