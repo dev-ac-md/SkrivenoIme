@@ -445,7 +445,7 @@ HDC GetSDC(void)
 {
 	//if(window_mode) return 0;
 	HDC hdc;
-	if (DDError) return 0;
+	if (window_mode) return 0;
 	if (CurrentSurface)
 	{
 		//Back Buffer is active

@@ -41,7 +41,7 @@ void GPFont::Init( const char* fontName, int _fontHeight )
 	mesh.setIsQuadList( true );
 
 	mesh.setTexture( texID );
-	static int shaderID = RC::iRS->GetShaderID( "text3d" );
+	static WORD shaderID = RC::iRS->GetShaderID( "text3d" );
 	mesh.setShader( shaderID );
 }
 

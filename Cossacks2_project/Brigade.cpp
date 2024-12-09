@@ -2191,7 +2191,7 @@ int FindCommandPlace(int* x,int* y,byte dir,OneObject* OB,int Indx,int Indx1,Ord
 	int idx=-1;
 	int rx=OB->RealX;
 	int ry=OB->RealY;
-	int bx=0,by=0;
+	int bx,by;
 	for(int i=0;i<N;i++){
 		if(i!=Indx&&i!=Indx1){
 			int xc=ODS->ComX[i];

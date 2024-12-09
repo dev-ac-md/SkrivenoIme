@@ -150,6 +150,7 @@ public:
 	word GrenDelay;
 #endif
 #ifdef NEWMORALE
+    word NKills;
 	int Morale;
 	int MaxMorale;
 	int PrevMorale;

@@ -61,6 +61,8 @@ struct OneTopClient{
 	bool OLD_PLINF:1;
 	bool OLD_PARAM:1;
 
+    //int PLINF;
+    //GPGetInfoResponseArg* PLINF;
 };
 class Top100{
 public:

@@ -10,17 +10,17 @@ int SPdX = 12;
 
 bool MMChooseNameEx(SimpleDialog* SD){
 	int x1 = SPX+SPW;
-	IPX->x=SPX;
-	IPX->x1=x1;	
-	TCP->x=SPX;
-	TCP->x1=x1;
-	TCPDIRECT->x=SPX;
-	TCPDIRECT->x1=x1;
-	INET->x=SPX;
-	INET->x1=x1;
+	IPX->x=SPX+menu_x_off;
+	IPX->x1=x1 + menu_x_off;
+	TCP->x=SPX + menu_x_off;
+	TCP->x1=x1 + menu_x_off;
+	TCPDIRECT->x=SPX + menu_x_off;
+	TCPDIRECT->x1=x1 + menu_x_off;
+	INET->x=SPX + menu_x_off;
+	INET->x1=x1 + menu_x_off;
 
-	SD->x=SPX-SPdX;
-	SD->x1=SPX+SPW+SPdX;	
+	SD->x=SPX-SPdX + menu_x_off;
+	SD->x1=SPX+SPW+SPdX + menu_x_off;
 	
 	NameChoose=SD->UserParam;
 	Lpressed=false;
@@ -88,14 +88,15 @@ int MPL_ChooseConnection(){
         menu_hint_x = 513;
         menu_hint_y = 745;
     }
+
 	MENU.HintFont=FHint;
 	MENU.HintX= menu_hint_x;
 	MENU.HintY= menu_hint_y;
 
 	IPX=MENU.addUniversalButton(SPX,SPY,SPW,GetTextByID("INTF_PROT_B0"),TB3.GPID,Set3,0,0,0,FWhite,FWhite,FYellow);
 	TCP=MENU.addUniversalButton(SPX,SPY+26,SPW,GetTextByID("INTF_PROT_B1"),TB3.GPID,Set3,0,0,0,FWhite,FWhite,FYellow);
-	TCPDIRECT=MENU.addUniversalButton(SPX,SPY+26*2,SPW,GetTextByID("INTF_PROT_B2"),TB3.GPID,Set3,0,0,0,FWhite,FWhite,FYellow);	
-	INET=MENU.addUniversalButton(SPX,SPY+26*3,SPW,GetTextByID("INTF_PROT_B3"),TB3.GPID,Set3,0,0,0,FWhite,FWhite,FYellow);	
+	TCPDIRECT=MENU.addUniversalButton(SPX,SPY+26*2,SPW,GetTextByID("INTF_PROT_B2"),TB3.GPID,Set3,0,0,0,FWhite,FWhite,FYellow);
+	INET=MENU.addUniversalButton(SPX,SPY+26*3,SPW,GetTextByID("INTF_PROT_B3"),TB3.GPID,Set3,0,0,0,FWhite,FWhite,FYellow);
 
 	IPX->Hint=GetTextByID("INTF5_HINT20");
 	TCP->Hint=GetTextByID("INTF5_HINT20");
