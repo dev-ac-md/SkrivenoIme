@@ -2575,10 +2575,10 @@ void HumanEscapeLink(Brigade* BR){
 		};
 	};
 	BR->DeleteBOrder();
-	BR->KeepPositions(0,pri);
+	BR->KeepPositions(1,pri);
 #else
 	BR->DeleteBOrder();
-	BR->KeepPositions(1,pri);
+	BR->KeepPositions(0,pri);
 #endif
 };
 char* HLST_Message="[HumanLocalSendTo]";
@@ -3384,7 +3384,7 @@ void Brigade::HumanGlobalSendTo(int x,int y,short Dir,byte Prio,byte OrdType){
 
 	// TOP_HASH
 	byte LockType=0xFF;
-	for(int i=0;i<NMemb;i++){
+	for (int i = 0; i<NMemb; i++) {
 		if(Memb[i]!=0xFFFF){
 			OneObject* OB=Group[Memb[i]];
 			if(OB&&!OB->Sdoxlo) LockType=OB->LockType;
