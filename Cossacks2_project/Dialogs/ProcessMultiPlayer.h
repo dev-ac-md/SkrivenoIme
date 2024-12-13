@@ -87,6 +87,8 @@ int MM_ProcessMultiPlayer(){
 
 bool ProcessNewInternetLogin();
 
+extern char ACCESS[16];
+
 bool processMultiplayer(){
 	GoHomeAnyway();
 	byte AddrBuf[128];
@@ -183,6 +185,7 @@ REINCONN:;
 		PlayerMenuMode=1;
 			if(CreateSession(GlobalRIF.Name,GlobalRIF.Nick, 0,DoNewInet,GlobalRIF.MaxPlayers)){
 				NeedToPerformGSC_Report=1;
+                udp_hole_puncher.Init(GlobalRIF.udp_server, GlobalRIF.port, GlobalRIF.udp_interval,GlobalRIF.player_id, ACCESS);
 				WaitingHostGame(0);
 				NeedToPerformGSC_Report=0;
 				if(PlayerMenuMode==1){

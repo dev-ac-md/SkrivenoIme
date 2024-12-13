@@ -945,6 +945,7 @@ ffe2:;
 	int NL0=CMGRP1[0]->NLines;
 	do{
 		if(UseGSC_Login){
+            udp_hole_puncher.KeepAlive();
 			ChatProcess();
 			if(CheckPersonality(CHATMESSAGE)){
 				CHATBOX->CursPos=strlen(CHATMESSAGE);

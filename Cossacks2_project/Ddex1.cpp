@@ -3701,7 +3701,7 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
 	
 	//TestHash();
-    SteamInitialisation();
+    //SteamInitialisation();
 	DelLog();
 	FEX_BEGIN();	
 	if(FEX_MemStatus1.dwTotalVirtual<1024*1024*700){

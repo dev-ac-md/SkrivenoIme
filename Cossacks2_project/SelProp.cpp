@@ -2233,47 +2233,60 @@ void DosToWin(char*);
 void normstr(char* str);
 extern bool ProtectionMode;
 void LoadMessagesFromFile(char* Name){
-	if(!strstr(Name,".dat"))ProtectionMode=1;
-	GFILE* f=Gopen(Name,"r");
-	ProtectionMode=0;
-	AFile(Name);
-	if(!f)return;
-	int z,z1;
-	char IDN[128];
-	char STR[4096];
-	do{
-		z=Gscanf(f,"%s",IDN);
-		if(z==1){
-			if(NMess>=MaxMess){
-				MaxMess+=256;
-				GMessIDS=(lpCHAR*)realloc(GMessIDS,MaxMess*4);
-				GMessage=(lpCHAR*)realloc(GMessage,MaxMess*4);
-			};
-			Ggetch(f);
-			STR[0]=0;
-			int cc=0;
-			z1=0;
-			int nn=0;
-			while(!(cc==0x0A||cc==EOF)){
-				cc=Ggetch(f);
-				if(!(cc==0x0A||cc==EOF)){
-					STR[nn]=cc;
-					nn++;
-				}else{
-					//Ggetch(f);
-				};
-			};
-			STR[nn]=0;
-			//normstr(STR);
-			//DosToWin(STR);
-			GMessIDS[NMess]=znew(char,strlen(IDN)+1);
-			GMessage[NMess]=znew(char,strlen(STR)+1);
-			strcpy(GMessIDS[NMess],IDN);
-			strcpy(GMessage[NMess],STR);
-			NMess++;
-		};
-	}while(z==1);
-	Gclose(f);
+    if (!strstr(Name, ".dat"))
+    {
+        ProtectionMode = 1;
+    }
+    GFILE* f = Gopen(Name, "r");
+    ProtectionMode = 0;
+    if (!f)
+    {
+        return;
+    }
+
+    int z, z1;
+    char IDN[128];
+    char STR[4096];
+    do
+    {
+        z = Gscanf(f, "%s", IDN);
+        if (z == 1)
+        {
+            if (NMess >= MaxMess)
+            {
+                MaxMess += 256;
+                GMessIDS = (lpCHAR*)realloc(GMessIDS, MaxMess * 4);
+                GMessage = (lpCHAR*)realloc(GMessage, MaxMess * 4);
+            }
+
+            Ggetch(f);
+
+            STR[0] = 0;
+            int cc = 0;
+            z1 = 0;
+            int nn = 0;
+            while (!(cc == 0x0A || cc == EOF))
+            {
+                cc = Ggetch(f);
+                if (!(cc == 0x0A || cc == EOF))
+                {
+                    STR[nn] = cc;
+                    nn++;
+                }
+            }
+            STR[nn] = 0;
+
+            GMessIDS[NMess] = new char[strlen(IDN) + 1];
+            GMessage[NMess] = new char[strlen(STR) + 1];
+
+            strcpy(GMessIDS[NMess], IDN);
+            strcpy(GMessage[NMess], STR);
+
+            NMess++;
+        }
+    } while (z == 1);
+
+    Gclose(f);
 };
 void LoadMessages(){
 	LoadMessagesFromFile("Comment.txt");

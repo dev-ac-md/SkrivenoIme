@@ -1,3 +1,4 @@
+#include ".\New\UdpHolePuncher.h"
 #include "Limitations.h"
 #include "ddini.h"
 #include "ResFile.h"
@@ -66,6 +67,8 @@
 
 //#define INTF_AC
 #define INTF_AC_ADD
+
+UdpHolePuncher udp_hole_puncher;
 
 extern bool RUNMAPEDITOR;
 extern bool RUNUSERMISSION;
@@ -6123,6 +6126,17 @@ void GMiniShow();
 void GlobalHandleMouse();
 void DRAW_MAP_TMP();
 void DrawAllScreen(){
+    if (NeedLoadGamePalette) {
+        if (IgnoreSlow) {
+            LoadPalette("0\\agew_1.pal");
+            LoadFog(0);
+        }
+        else {
+            SlowLoadPalette("0\\agew_1.pal");
+            LoadFog(0);
+        };
+        CreateMiniMap();
+    };
 	NeedLoadGamePalette=false;
 	//COUNTER++;
 	GFieldShow();
@@ -6141,18 +6155,6 @@ void DrawAllScreen(){
 	CopyToScreen(0,0,RealLx,RSCRSizeY);
 	GlobalHandleMouse();//mouseX,mouseY);
 	MFix();
-    if (NeedLoadGamePalette) {
-        if (IgnoreSlow) {
-            LoadPalette("0\\agew_1.pal");
-            LoadFog(0);
-        }
-        else {
-            SlowLoadPalette("0\\agew_1.pal");
-            LoadFog(0);
-        };
-        CreateMiniMap();
-    };
-    
 };
 void GlobalHandleMouse();
 
@@ -6827,7 +6829,12 @@ int GetRndVid(int N){
 void PlayVideo();
 //#ifdef MAKE_PTC
 
-/*void AllGame() {
+void AllGame() {
+    if (!window_mode)
+    {//Calculate offsets for centering menu in fullscreen mode
+        menu_x_off = (screen_width - 1024) / 2;
+        menu_y_off = (screen_height - 768) / 2;
+    }
 	if(CheckLobby()){
 		EditMapMode=0;
 		Lobby=1;
@@ -6848,8 +6855,8 @@ stgame:
 		UnLoading();
 		goto stgame;
 	}else goto stgame;
-};*/
-void AllGame()
+};
+/*void AllGame()
 {
     int menuChoice;
     if (!window_mode)
@@ -6876,7 +6883,7 @@ void AllGame()
             UnLoading();
         }
     } while (mcmExit != menuChoice);
-}
+}*/
 
 //#else
 /*

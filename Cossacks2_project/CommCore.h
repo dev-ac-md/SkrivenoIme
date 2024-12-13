@@ -279,6 +279,8 @@ public:
 	BOOL	SetUserData(const LPBYTE lpcbUserData, u_short uUserDataSize);
 	BOOL	SendUserData();
 
+    BOOL	SendUdpHolePunch(sockaddr* server, char* content, const int content_len);
+
 	VOID	GetServerAddress(LPSTR lpszServerAddress);
 
 	BOOL	EnumPeers();

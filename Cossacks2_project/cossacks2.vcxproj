@@ -71,7 +71,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\bin\</OutDir>
     <IntDir>.\../_release\dmcr\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <TargetName>dmcr</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_CII_test|Win32'">
@@ -112,7 +112,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <LanguageStandard>Default</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;CONQUEST;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CONQUEST;COPYSCR;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ShowIncludes>false</ShowIncludes>
@@ -442,6 +442,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_CII_test|Win32'">true</ExcludedFromBuild>
     </CustomBuild>
     <ClInclude Include="NewUpgrade.h" />
+    <ClInclude Include="New\UdpHolePuncher.h" />
     <ClInclude Include="Nucl.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="peer.h" />
@@ -461,6 +462,51 @@
     <ClInclude Include="Sort.h" />
     <ClInclude Include="SpraySystem.h" />
     <ClInclude Include="SquareObject.h" />
+    <ClInclude Include="Steam\isteamapps.h" />
+    <ClInclude Include="Steam\isteamappticket.h" />
+    <ClInclude Include="Steam\isteamclient.h" />
+    <ClInclude Include="Steam\isteamcontroller.h" />
+    <ClInclude Include="Steam\isteamdualsense.h" />
+    <ClInclude Include="Steam\isteamfriends.h" />
+    <ClInclude Include="Steam\isteamgamecoordinator.h" />
+    <ClInclude Include="Steam\isteamgameserver.h" />
+    <ClInclude Include="Steam\isteamgameserverstats.h" />
+    <ClInclude Include="Steam\isteamhtmlsurface.h" />
+    <ClInclude Include="Steam\isteamhttp.h" />
+    <ClInclude Include="Steam\isteaminput.h" />
+    <ClInclude Include="Steam\isteaminventory.h" />
+    <ClInclude Include="Steam\isteammatchmaking.h" />
+    <ClInclude Include="Steam\isteammusic.h" />
+    <ClInclude Include="Steam\isteammusicremote.h" />
+    <ClInclude Include="Steam\isteamnetworking.h" />
+    <ClInclude Include="Steam\isteamnetworkingmessages.h" />
+    <ClInclude Include="Steam\isteamnetworkingsockets.h" />
+    <ClInclude Include="Steam\isteamnetworkingutils.h" />
+    <ClInclude Include="Steam\isteamparentalsettings.h" />
+    <ClInclude Include="Steam\isteamps3overlayrenderer.h" />
+    <ClInclude Include="Steam\isteamremoteplay.h" />
+    <ClInclude Include="Steam\isteamremotestorage.h" />
+    <ClInclude Include="Steam\isteamscreenshots.h" />
+    <ClInclude Include="Steam\isteamtimeline.h" />
+    <ClInclude Include="Steam\isteamugc.h" />
+    <ClInclude Include="Steam\isteamuser.h" />
+    <ClInclude Include="Steam\isteamuserstats.h" />
+    <ClInclude Include="Steam\isteamutils.h" />
+    <ClInclude Include="Steam\isteamvideo.h" />
+    <ClInclude Include="Steam\matchmakingtypes.h" />
+    <ClInclude Include="Steam\steamclientpublic.h" />
+    <ClInclude Include="Steam\steamencryptedappticket.h" />
+    <ClInclude Include="Steam\steamhttpenums.h" />
+    <ClInclude Include="Steam\steamnetworkingfakeip.h" />
+    <ClInclude Include="Steam\steamnetworkingtypes.h" />
+    <ClInclude Include="Steam\steamps3params.h" />
+    <ClInclude Include="Steam\steamtypes.h" />
+    <ClInclude Include="Steam\steamuniverse.h" />
+    <ClInclude Include="Steam\steam_api.h" />
+    <ClInclude Include="Steam\steam_api_common.h" />
+    <ClInclude Include="Steam\steam_api_flat.h" />
+    <ClInclude Include="Steam\steam_api_internal.h" />
+    <ClInclude Include="Steam\steam_gameserver.h" />
     <ClInclude Include="StrategyResearch.h" />
     <ClInclude Include="StringHash.h" />
     <ClInclude Include="TMixer.h" />
@@ -674,6 +720,7 @@
     </ClCompile>
     <ClCompile Include="NewUpgrade.cpp" />
     <ClCompile Include="New\MapOptionsEncoder.cpp" />
+    <ClCompile Include="New\UdpHolePuncher.cpp" />
     <ClCompile Include="Nuclear.cpp" />
     <ClCompile Include="OnWater.cpp" />
     <ClCompile Include="path.cpp">
@@ -787,6 +834,7 @@
     </Library>
     <Library Include="..\bin\IntExplorer.lib" />
     <Library Include="..\bin\LF_Server.lib" />
+    <Library Include="..\lib\steam_api.lib" />
     <Library Include="Bink\binkw32.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </Library>
@@ -814,7 +862,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bat\all.bat" />
+    <None Include="..\lib\steam_api.dll" />
     <None Include="mode.dat" />
+    <None Include="Steam\steam_api.json" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Script1.rc" />
