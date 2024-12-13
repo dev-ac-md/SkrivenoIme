@@ -170,13 +170,13 @@ void processMLoadGame(){
 	RVS->Visible=0;
 	
 	// Load game list
-	MMenu.addClipper(0,0,709,RealLy);
+	MMenu.addClipper(0,0,709 + menu_x_off,RealLy);
 	ListBox* LB=MMenu.addGP_ListBox(NULL,446,256+26,8,BTNS.GPID,0,26,FWhite,FYellow,VS);
 	MMenu.addClipper(0,0,RealLx,RealLy);
 	ListBox* DT=MMenu.addGP_ListBox(NULL,714,256+26,8,BTNS.GPID,-3,26,FWhite,FYellow,VS); // Data / Time
 
 	// Load demorec list
-	MMenu.addClipper(0,0,709,RealLy);
+	MMenu.addClipper(0,0,709 + menu_x_off,RealLy);
 	ListBox* RName=MMenu.addGP_ListBox(NULL,446,256+26,8,BTNS.GPID,0,26,FWhite,FYellow,RVS);
 	MMenu.addClipper(0,0,RealLx,RealLy);
 	ListBox* RDT=MMenu.addGP_ListBox(NULL,714,256+26,8,BTNS.GPID,-3,26,FWhite,FYellow,RVS); // Data / Time
