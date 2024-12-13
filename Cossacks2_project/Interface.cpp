@@ -8047,7 +8047,7 @@ bool WaitingGame(bool Host){
 	TextButton* MGRP   [8];
 	RLCFont     FontA(GETS("@MNMENUACTF"));
 	RLCFont     FontP(GETS("@MNMENUPASF"));
-	DialogsSystem MPLAY(0,0);
+	DialogsSystem MPLAY(menu_x_off, menu_y_off);
 	MPLAY.addPicture(NULL,0,0,&MPL,&MPL,&MPL);
 	char NAMY[16];
 	int NameX=GETV("MINAMEX");
@@ -9049,7 +9049,7 @@ int ShowStatScreen(bool Next,bool Prev,byte Kind){
 		int NGridY=(MaxPop/deal)+1;
 		MaxPop=NGridY*deal;
 
-		DialogsSystem STAT(0,0);
+		DialogsSystem STAT(menu_x_off, menu_y_off);
 		STAT.addPicture(NULL,0,0,&BACK,&BACK,&BACK);
 		int DDX=110;
 		//if(!ExStyle)DDX=0;
@@ -9152,10 +9152,10 @@ int ShowStatScreen(bool Next,bool Prev,byte Kind){
 			STAT.MarkToDraw();
 			STAT.ProcessDialogs();
 			//DrawStatTable(x,y-ODY,Lx,GrLy+ODY,OneLy,NNAT);
-			int gx0=GrpX+x;
-			int gx1=GrpX+x+GrpLx-1;
-			int gy0=GrpY+y;
-			int gy1=GrpY+y+GrpLy-1;
+			int gx0=GrpX+x+ menu_x_off;
+			int gx1=GrpX+x+GrpLx-1+ menu_x_off;
+			int gy0=GrpY+y+ menu_y_off;
+			int gy1=GrpY+y+GrpLy-1+ menu_y_off;
 			Xbar(gx0-1,gy0-1,gx1-gx0+4,gy1-gy0+4,0xEC);
 			//Xbar(gx0-2,gy0-2,gx1-gx0+5,gy1-gy0+5,0x3A);
 			//Xbar(gx0-3,gy0-3,gx1-gx0+7,gy1-gy0+7,0x39);
@@ -9164,11 +9164,11 @@ int ShowStatScreen(bool Next,bool Prev,byte Kind){
 			//Xbar(gx0-6,gy0-6,gx1-gx0+13,gy1-gy0+13,0xAE);
 			//drawing grids
 			for(int ix=0;ix<8;ix++){
-				int gx0=x+GrpX+((GrpLx*ix)>>3);
-				int gx1=x+GrpX+((GrpLx*(ix+1))>>3);
+				int gx0=x+GrpX+((GrpLx*ix)>>3)+ menu_x_off;
+				int gx1=x+GrpX+((GrpLx*(ix+1))>>3)+ menu_x_off;
 				for(int iy=0;iy<NGridY;iy++){
-					int gy0=y+GrpY+((GrpLy*iy)/NGridY);
-					int gy1=y+GrpY+((GrpLy*(iy+1))/NGridY);
+					int gy0=y+GrpY+((GrpLy*iy)/NGridY)+ menu_y_off;
+					int gy1=y+GrpY+((GrpLy*(iy+1))/NGridY)+ menu_y_off;
 					Xbar(gx0,gy0,gx1-gx0+1,gy1-gy0+1,0xEC);
 					//Xbar(gx0+1,gy0+1,gx1-gx0-1,gy1-gy0-1,0x3B);
 					//Xbar(gx0+2,gy0+2,gx1-gx0-3,gy1-gy0-3,0x3A);
@@ -9193,8 +9193,8 @@ int ShowStatScreen(bool Next,bool Prev,byte Kind){
 						X0=X1;
 						Y0=Y1;
 					};
-					X1=x+GrpX+((j<<8)*GrpLx)/MaxUpgTime;
-					Y1=y+GrpY+GrpLy-(VAL[j]*(GrpLy-10))/MaxPop;
+					X1=x+GrpX+((j<<8)*GrpLx)/MaxUpgTime+ menu_x_off;
+					Y1=y+GrpY+GrpLy-(VAL[j]*(GrpLy-10))/MaxPop+ menu_y_off;
 					if(j>0){
 						DrawLine(X0,Y0,X1,Y1,c);
 						DrawLine(X0+1,Y0,X1+1,Y1,c);
@@ -9230,7 +9230,7 @@ int ShowUserStat(bool Prev,bool Next){
 	LocalGP BTNS;
 	SQPicture BACK2("Interf2\\statistic_background.bmp");
 	BTNS.Load("Interf2\\stats");
-	DialogsSystem STAT(0,0);
+	DialogsSystem STAT(menu_x_off, menu_y_off);
 	STAT.addPicture(NULL,0,0,&BACK2,&BACK2,&BACK2);
 	int DDX=110;
 	//if(!ExStyle)DDX=0;
@@ -9303,13 +9303,13 @@ int ShowUserStat(bool Prev,bool Next){
 	char* PHDR=GetTextByID("ST_PROD");
 	int curnat=0;
 
-	int ux=230-30;
-	int uy=320;
+	int ux=230-30+ menu_x_off;
+	int uy=320+ menu_y_off;
 	int ulx=353;
 	int uly=373;
 	int kx=ux+ulx+45;
-	VScrollBar* PBR=STAT.addNewGP_VScrollBar(NULL,ux+ulx+11-15,uy+1+2,uly-2-2,1,0,3,0);
-	VScrollBar* KBR=STAT.addNewGP_VScrollBar(NULL,kx+ulx+11-15,uy+1+2,uly-2-2,1,0,3,0);
+	VScrollBar* PBR=STAT.addNewGP_VScrollBar(NULL,ux+ulx+11-15- menu_x_off,uy+1+2- menu_y_off,uly-2-2,1,0,3,0);
+	VScrollBar* KBR=STAT.addNewGP_VScrollBar(NULL,kx+ulx+11-15- menu_x_off,uy+1+2- menu_y_off,uly-2-2,1,0,3,0);
 	PBR->ScrDy=200;
 	KBR->ScrDy=200;
 	do{
@@ -9324,11 +9324,11 @@ int ShowUserStat(bool Prev,bool Next){
 		for(int i=0;i<LB->NItems;i++){
 			CBar(LB->x-15,LB->y+15+i*25,12,3,0xD0+NatRefTBL[NATS[i]]*4);
 		};
-		ShowString(512-GetRLCStrWidth(STHDR,&fon18y5)/2,26,STHDR,&fon18y5);
+		ShowString(512-GetRLCStrWidth(STHDR,&fon18y5)/2+ menu_x_off,26+ menu_y_off,STHDR,&fon18y5);
 		ShowString(ux+(ulx>>1)+7-(GetRLCStrWidth(PHDR,&YellowFont)>>1),uy-22,PHDR,Statfont);
 		ShowString(kx+(ulx>>1)+7-(GetRLCStrWidth(KHDR,&YellowFont)>>1),uy-22,KHDR,Statfont);
-		int rx=190;
-		int ry=y+48;
+		int rx=190+ menu_x_off;
+		int ry=y+48+ menu_y_off;
 		int rx1=rx+219+5;
 		int rxl=80;
 		for(int q=0;q<6;q++){
@@ -10349,7 +10349,7 @@ void ShowClanString(int x,int y,char* s,byte State,RLCFont* Fn,RLCFont* Fn1,int 
 	return;
 };
 //--------------DIPLOMACY IMPLEMENTATION-------------
-DialogsSystem DIP_DSS(0,0);
+DialogsSystem DIP_DSS(menu_x_off, menu_y_off);
 bool DIP_DSS_Init=0;
 bool DIP_DSS_Vis=0;
 char CUR_Request[256]="LF|LW_new|open&req1.txt";
