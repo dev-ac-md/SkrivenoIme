@@ -243,8 +243,8 @@ void UpConv(char* str){
 //RLCTable miniSRMImages[512];
 word RLCNSpr[MaxGPIdx];
 word NNewMon;
-NewMonster NewMon[350];
-char* MonNames[350];
+NewMonster NewMon[750];
+char* MonNames[750];
 //-----------------New weapon animation discription------------
 NewAnimation WNewAnm[768];
 char* WAnmNames[768];

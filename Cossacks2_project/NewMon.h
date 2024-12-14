@@ -1,6 +1,6 @@
 extern word NNewMon;
-extern NewMonster NewMon[350];
-extern char* MonNames[350];
+extern NewMonster NewMon[750];
+extern char* MonNames[750];
 int CheckPt(int x,int y);
 bool CheckBar(int x,int y,int Lx,int Ly);
 #pragma warning(disable : 4035)
