@@ -154,13 +154,24 @@ extern int WarSound;
 extern int WorkSound;
 extern int OrderSound;
 extern int MidiSound;
-extern int FPSTime;
+//extern int FPSTime;
 extern int NMyUnits;
 extern int NThemUnits;
 void LoadNewAimations();
 void MFix();
 void WinnerControl(bool);
 bool Fixed;
+
+//Timespan in ms after last LastCTRLPressTime which allows setting unit control groups
+const int kCtrlStickyTime = 50;
+
+//Minimal delay between two PostDrawGameProcess() returns, in ms
+const unsigned int kPostDrawInterval = 16;//~60 Hz
+
+//Time of the last PostDrawGameProcess() return
+unsigned long prev_postdraw_time = 0;
+
+
 bool MUSTDRAW;
 bool SHOWSLIDE=true;
 int  HISPEED=0;
@@ -1373,13 +1384,14 @@ void GameKeyCheck(){
 				case 46:
 					SpecCmd=200;
 					break;
+                /*
 				case 'D':
 					if(!(GetKeyState(VK_CONTROL)&0x8000)){
 						if(!(GetKeyState(VK_SHIFT)&0x8000)){
 							//FlipDipDialog();
 						}else
 						if(NPlayers<2){
-							if((GetKeyState(VK_SHIFT)&0x8000)/*&&PlayGameMode*/){
+							if((GetKeyState(VK_SHIFT)&0x8000)//&&PlayGameMode){
 								switch(HISPEED){
 								case 0:
 									HISPEED=1;
@@ -1401,6 +1413,7 @@ void GameKeyCheck(){
 						else CmdSetSpeed(128);
 					};
 					break;
+                */
 				case 'A':
 					if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=1;
 					else if(NSL[MyNation])GoAndAttackMode=1;
@@ -1433,6 +1446,24 @@ void GameKeyCheck(){
 					//RSCRSizeX--;
 					break;
 				case 'N':
+#ifdef EW
+
+                    //if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=3;
+                    //else SpecCmd=4;
+                    if (!(GetKeyState(VK_CONTROL) & 0x8000)) LockGrid++;
+                    if (LockGrid > NMFIELDS) LockGrid = 0;
+#ifdef VIEW_TOP					
+                    //if(LockGrid>NMFIELDS) LockGrid=0;
+                    if (GetKeyState(VK_CONTROL) & 0x8000) TopTypeMode++;
+                    if (TopTypeMode > NMFIELDS) TopTypeMode = 0;
+
+#else
+                    //if(LockGrid>1)LockGrid=0;					
+#endif //VIEW_TOP
+
+                    MiniActive = 0;
+                    Recreate = 1;
+#endif
 					//switch(RSCRSizeX){
 					//	case 800:RSCRSizeX=1024;
 					//			break;
@@ -1467,6 +1498,7 @@ void GameKeyCheck(){
 					//else SpecCmd=6;
 					break;
 				case 'Q':
+#ifdef EW
 					//if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=3;
 					//else SpecCmd=4;
 					if(!(GetKeyState(VK_CONTROL)&0x8000)) LockGrid++;
@@ -1482,6 +1514,7 @@ void GameKeyCheck(){
 					
 					MiniActive=0;
 					Recreate=1;
+#endif
 					break;
 				case 'B':
 					if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=9;
@@ -1963,10 +1996,11 @@ void EditorKeyCheck(){
 				case 46:
 					if(!DelCurrentAZone())SpecCmd=200;
 					break;
+                    /*
 				case 'D':
 					
 					if(!(GetKeyState(VK_CONTROL)&0x8000)){
-						if((GetKeyState(VK_SHIFT)&0x8000)/*&&PlayGameMode*/){
+						if((GetKeyState(VK_SHIFT)&0x8000)//&&PlayGameMode){
 							switch(HISPEED){
 							case 0:
 								HISPEED=1;
@@ -1989,6 +2023,7 @@ void EditorKeyCheck(){
 						else CmdSetSpeed(128);
 					};
 					break;
+                */
 				case 'A':
 					if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=1;
 					else if(NSL[MyNation])GoAndAttackMode=1;
@@ -2815,7 +2850,7 @@ void PreDrawGameProcess() {
 		if(CITY[g].Account<0)CITY[g].Account=0;
 	};
 	if(exFMode!=SpeedSh){
-		CmdSetSpeed(exFMode+128);
+		CmdSetSpeed(exFMode);
 	};
 	if((tmtmt&255)==32)EnumPopulation();
 	ProcessCostPoints();
@@ -3239,26 +3274,43 @@ void PostDrawGameProcess(){
 		};
 	    AutoTime=GetRealTime();
 	};
-	if(!PrevCheckTime)PrevCheckTime=GetRealTime();
-	if(GetRealTime()-PrevCheckTime>30000){
-		PrevCheckTime=GetRealTime();
-		//if(PeaceTimeLeft/60<PeaceTimeStage){
-			CmdChangePeaceTimeStage(PeaceTimeLeft/60);
-		//};
-	};
+    if (!PrevCheckTime)
+    {
+        PrevCheckTime = GetRealTime();
+    }
+
+    if (GetRealTime() - PrevCheckTime > 90000)
+    {
+        PrevCheckTime = GetRealTime();
+        if (PeaceTimeLeft / 60 < PeaceTimeStage)
+        {
+            CmdChangePeaceTimeStage(PeaceTimeLeft / 60);
+        }
+    }
 	/*
 	if(NPlayers>1&&MyDPID==ServerDPID&&SaveTime-GetRealTime()>60000*5){
 		CmdSaveNetworkGame(MyNation,GetRealTime(),"NETWORK SAVE");
 		SaveTime=GetRealTime();
 	};
 	*/
-	if(NPlayers<2){
-		do{
-			ProcessMessages(); 
-			if(PauseMode)GameKeyCheck();
-		}while((int(GetRealTime())-PrevTime<(FPSTime+FPSTime))||PauseMode);
-	};
-	PrevTime=GetRealTime();
+    if (0 == prev_postdraw_time)
+    {
+        prev_postdraw_time = GetRealTime();
+    }
+
+
+    unsigned long time_since_last_call = 0;
+    do
+    {
+        ProcessMessages();
+        if (PauseMode)
+        {
+            GameKeyCheck();
+        }
+        time_since_last_call = GetRealTime() - prev_postdraw_time;
+    } while (PauseMode || time_since_last_call < kPostDrawInterval);
+
+	prev_postdraw_time=GetRealTime();
 };
 
 /*
@@ -3554,10 +3606,10 @@ bool RunSMD(){
             }
 			if(fff){
 				//Gscanf(fff,"%d%d%d%d%d%d%d%d%d%d",&exRealLx,&exRealLy,&WarSound,&OrderSound,&OrderSound,&MidiSound,&FPSTime,&ScrollSpeed,&exFMode,&PlayMode);
-                Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d%d",
+                Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d",
                     &ex_window_x, &ex_window_y, &ex_x, &ex_y,
                     &WarSound, &OrderSound, &OrderSound, &MidiSound,
-                    &dummy, &ScrollSpeed, &exFMode, &PlayMode, &FPSTime);
+                    &dummy, &ScrollSpeed, &exFMode, &PlayMode);
                 SetCDVolume(MidiSound);
 				Gclose(fff);
                 
@@ -3572,10 +3624,10 @@ bool RunSMD(){
 					GFILE* fff=Gopen("mode.dat","wt");
 					if(fff){
 						//Gprintf(fff,"%d %d %d %d %d %d %d %d %d %d",exRealLx,exRealLy,WarSound,OrderSound,OrderSound,MidiSound,FPSTime,ScrollSpeed,exFMode,PlayMode);
-                        Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d %d",
+                         Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d",
                             ex_window_x, ex_window_y, ex_x, ex_y,
                             WarSound, OrderSound, OrderSound,
-                            MidiSound, 0, ScrollSpeed, exFMode, PlayMode, FPSTime);
+                            MidiSound, 0, ScrollSpeed, exFMode, PlayMode);
                         SetCDVolume(MidiSound);
 						Gclose(fff);
 					};
@@ -3806,7 +3858,7 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	
 	InitObjs3();
 
-	FPSTime=50;
+	//FPSTime=50;
 
 	GFILE* FF1=Gopen("Lobby.txt","r");
 	if(FF1){
@@ -3826,10 +3878,10 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
         int ex_window_x, ex_window_y, ex_x, ex_y;
         int dummy;
         //7th value was FPSTime
-        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d%d",
+        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d",
             &ex_window_x, &ex_window_y, &ex_x, &ex_y,
             &WarSound, &OrderSound, &OrderSound, &MidiSound,
-            &dummy, &ScrollSpeed, &exFMode, &PlayMode, &FPSTime);
+            &dummy, &ScrollSpeed, &exFMode, &PlayMode);
         Gclose(fff);
 
         //Set last 'global resolution' according to current mode
@@ -4043,16 +4095,16 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if(fff){
 				//Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, FPSTime, ScrollSpeed, exFMode, PlayMode);
 				//Gclose(fff);
-                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d %d",
+                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d",
                     ex_window_x, ex_window_y, ex_x, ex_y,
                     WarSound, OrderSound, OrderSound,
-                    MidiSound, 0, ScrollSpeed, exFMode, PlayMode, FPSTime);
+                    MidiSound, 0, ScrollSpeed, exFMode, PlayMode);
                 Gclose(fff);
 			};
 			//CDS->~CDirSound();
 			FilesExit();
 			StopPlayCD();
-            SteamAPI_Shutdown();
+            //SteamAPI_Shutdown();
 			if(TOTALEXIT)
 				ShellExecute(NULL,"open","http://www.goa.com/goa/z-home.asp?gotogame=8247",NULL,NULL,SW_MAXIMIZE);
 #ifdef STARFORCE

@@ -1161,7 +1161,6 @@ void ShowProp(){
 int GetRLCStrWidth(char* str,lpRLCFont lpf);
 extern byte PlayGameMode;
 char* ARTCAPS[8]={NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
-
 void ShowTextDiscription(){
 	if(PlayGameMode==1)return;
 	RunPF(4,"ShowTextDescription");
@@ -1186,7 +1185,6 @@ void ShowTextDiscription(){
 			AdvCharacter* ADC=OBJ->Ref.General->MoreCharacter;
 			NewMonster* NM=OBJ->newMons;
 			int NN=0;
-
 			int EFFICACY=1000;
 			if(NM->ShotPtZ){
 				int NS=0;
@@ -1978,14 +1976,17 @@ void ShowAbility(){
 	for( i=0;i<NINF;i++){
 		OBJ=Group[MList[i].Last];
 		bool OKK=1;
-		if(OBJ&&OBJ->newMons->Peasant&&!(EditMapMode||PlayGameMode)){
-			if(NPID==0xFFFF){
-				CITY[NatRefTBL[MyNation]].NationalPeasantID=OBJ->NIndex;
-				CmdChangeNPID(NatRefTBL[MyNation],OBJ->NIndex);
-			}else{
-				if(NPID!=OBJ->NIndex)OKK=0;
-			};
-		};
+#ifndef EW
+        if (OBJ && OBJ->newMons->Peasant && !(EditMapMode || PlayGameMode)) {
+            if (NPID == 0xFFFF) {
+                CITY[NatRefTBL[MyNation]].NationalPeasantID = OBJ->NIndex;
+                CmdChangeNPID(NatRefTBL[MyNation], OBJ->NIndex);
+            }
+            else {
+                if (NPID != OBJ->NIndex)OKK = 0;
+            };
+        };
+#endif // !EW
 		bool CANDO=1;
 		if(NATID[0]){
 			CANDO=CANDO1;

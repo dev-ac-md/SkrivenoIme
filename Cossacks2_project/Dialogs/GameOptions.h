@@ -47,8 +47,8 @@ bool ProcessGameOptions(){
 	//MMenu.addGPPicture(NULL,Dx,Dy,MGP.GPID,0);
 	//MMenu.addGPPicture(NULL,dx,dy,BTNS.GPID,1);
 
-	if(FPSTime>100)FPSTime=100;
-	if(FPSTime<0)FPSTime=0;
+	//if(FPSTime>100)FPSTime=100;
+	//if(FPSTime<0)FPSTime=0;
 	//game speed (#3)
 	if(ScrollSpeed<2)ScrollSpeed=2;
 
@@ -88,7 +88,7 @@ bool ProcessGameOptions(){
 	VScrollBar* SVL=MMenu.addGP_ScrollBarL(NULL,X0,ScrDy+1+ComY+3*DY,100,WarSound,SCR.GPID,0,LX,12,0,0);
 	VScrollBar* MVL=MMenu.addGP_ScrollBarL(NULL,X0,ScrDy+ComY+4*DY,100,MidiSound,SCR.GPID,0,LX,12,0,0);	
 	VScrollBar* SSP=MMenu.addGP_ScrollBarL(NULL,X0,ScrDy+1+ComY+7*DY,8,ScrollSpeed-2,SCR.GPID,0,LX,12,0,0);
-	VScrollBar* HB=MMenu.addGP_ScrollBarL(NULL,X0,ScrDy+ComY+8*DY,100,100-FPSTime,SCR.GPID,0,LX,12,0,0);
+	//VScrollBar* HB=MMenu.addGP_ScrollBarL(NULL,X0,ScrDy+ComY+8*DY,100,100-FPSTime,SCR.GPID,0,LX,12,0,0);
 
 	int ButY = Y+527;
 	GP_TextButton* OkBtn=MMenu.addGP_TextButton(NULL,X+476-337,ButY,GetTextByID("INTF_ACCEPT"),BTNS.GPID,1,FABut, FPBut);
@@ -193,7 +193,7 @@ bool ProcessGameOptions(){
 		//};
 	}while(ItemChoose==-1);
 	if(ItemChoose==mcmOk){
-		FPSTime=100-HB->SPos;
+		//FPSTime=100-HB->SPos;
 		ScrollSpeed=SSP->SPos+2;
 		exFMode=FMode->CurLine;
 		if(RealLx!=ModeLX[VMode->CurLine]||RealLy!=ModeLY[VMode->CurLine])SetGameDisplayModeAnyway(ModeLX[VMode->CurLine],ModeLY[VMode->CurLine]);

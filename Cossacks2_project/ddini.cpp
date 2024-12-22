@@ -337,7 +337,7 @@ yyy:
 	return;
 #else
 
-	if(DDDebug) return;
+	if(window_mode) return;
 	CurrentSurface=!CurrentSurface;
 	while( 1 )
     {

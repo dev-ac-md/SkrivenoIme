@@ -1788,7 +1788,7 @@ int GetMaxMorale(Brigade* BR,bool Act){
 	if(BR->WarType){
 		int STM=int(BR->CT->Nat->Mon[BR->MembID]->MoreCharacter->StartMorale)*MR_ONE;
 		STM+=(BR->NMemb-3)*MaxMorale_FormIncPerUnit;
-		STM+=int(BR->NKills)*MaxMorale_FormIncPerFrag;
+        //STM += NK * MaxMorale_FormIncPerFrag;
 		if(BR->Memb[0]!=0xFFFF)STM+=MaxMorale_FormIncOfficer;
 		if(BR->Memb[1]!=0xFFFF)STM+=MaxMorale_FormIncBaraban;
 		if(BR->Memb[2]!=0xFFFF)STM+=MaxMorale_FormIncFlag;
@@ -1797,6 +1797,17 @@ int GetMaxMorale(Brigade* BR,bool Act){
 			word* Mem=BR->Memb;
 			word* MSN=BR->MembSN;
 			int N=0;
+            int NK = 0;
+            for (int j = 0; j < NM; j++) {
+                word MID = Mem[j];
+                if (MID != 0xFFFF) {
+                    OneObject* OB = Group[MID];
+                    if (OB && OB->Serial == MSN[j]) {
+                        NK += OB->Kills;
+                    };
+                };
+            };
+            STM += NK * MaxMorale_FormIncPerFrag;
 			for(int i=NCOMM;i<NM;i++)if(Mem[i]!=0xFFFF)N++;
 			int per=(NM-N-NCOMM)*100/(NM-NCOMM);
 			if(per>MaxMorale_LostCriticalPercent){
