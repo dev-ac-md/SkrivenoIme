@@ -214,5 +214,4 @@ void OneObjectEx::SetInsideCamera( Camera& cam )
 	*/
 } // OneObjectEx::SetInsideCamera
 
-
 #endif //_USE3D

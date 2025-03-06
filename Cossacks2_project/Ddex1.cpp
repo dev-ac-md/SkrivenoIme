@@ -154,13 +154,17 @@ extern int WarSound;
 extern int WorkSound;
 extern int OrderSound;
 extern int MidiSound;
-//extern int FPSTime;
+#ifndef SPEEDFIX
+extern int FPSTime;
+#endif
 extern int NMyUnits;
 extern int NThemUnits;
 void LoadNewAimations();
 void MFix();
 void WinnerControl(bool);
 bool Fixed;
+
+#ifdef SPEEDFIX
 
 //Timespan in ms after last LastCTRLPressTime which allows setting unit control groups
 const int kCtrlStickyTime = 50;
@@ -171,6 +175,7 @@ const unsigned int kPostDrawInterval = 16;//~60 Hz
 //Time of the last PostDrawGameProcess() return
 unsigned long prev_postdraw_time = 0;
 
+#endif
 
 bool MUSTDRAW;
 bool SHOWSLIDE=true;
@@ -1395,7 +1400,7 @@ void GameKeyCheck(){
 				case 46:
 					SpecCmd=200;
 					break;
-                /*
+#ifndef SPEEDFIX
 				case 'D':
 					if(!(GetKeyState(VK_CONTROL)&0x8000)){
 						if(!(GetKeyState(VK_SHIFT)&0x8000)){
@@ -1424,7 +1429,7 @@ void GameKeyCheck(){
 						else CmdSetSpeed(128);
 					};
 					break;
-                */
+#endif
 				case 'A':
 					if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=1;
 					else if(NSL[MyNation])GoAndAttackMode=1;
@@ -2007,7 +2012,7 @@ void EditorKeyCheck(){
 				case 46:
 					if(!DelCurrentAZone())SpecCmd=200;
 					break;
-                    /*
+#ifndef SPEEDFIX
 				case 'D':
 					
 					if(!(GetKeyState(VK_CONTROL)&0x8000)){
@@ -2034,7 +2039,7 @@ void EditorKeyCheck(){
 						else CmdSetSpeed(128);
 					};
 					break;
-                */
+#endif
 				case 'A':
 					if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=1;
 					else if(NSL[MyNation])GoAndAttackMode=1;
@@ -2861,7 +2866,11 @@ void PreDrawGameProcess() {
 		if(CITY[g].Account<0)CITY[g].Account=0;
 	};
 	if(exFMode!=SpeedSh){
+#ifdef SPEEDFIX
 		CmdSetSpeed(exFMode);
+#else
+        CmdSetSpeed(exFMode + 128);
+#endif
 	};
 	if((tmtmt&255)==32)EnumPopulation();
 	ProcessCostPoints();
@@ -3289,6 +3298,7 @@ void PostDrawGameProcess(){
 		};
 	    AutoTime=GetRealTime();
 	};
+#ifdef SPEEDFIX
     if (!PrevCheckTime)
     {
         PrevCheckTime = GetRealTime();
@@ -3302,12 +3312,22 @@ void PostDrawGameProcess(){
             CmdChangePeaceTimeStage(PeaceTimeLeft / 60);
         }
     }
+#else
+    if (!PrevCheckTime)PrevCheckTime = GetRealTime();
+    if (GetRealTime() - PrevCheckTime > 30000) {
+        PrevCheckTime = GetRealTime();
+        //if(PeaceTimeLeft/60<PeaceTimeStage){
+        CmdChangePeaceTimeStage(PeaceTimeLeft / 60);
+        //};
+    };
+#endif
 	/*
 	if(NPlayers>1&&MyDPID==ServerDPID&&SaveTime-GetRealTime()>60000*5){
 		CmdSaveNetworkGame(MyNation,GetRealTime(),"NETWORK SAVE");
 		SaveTime=GetRealTime();
 	};
 	*/
+#ifdef SPEEDFIX
     if (0 == prev_postdraw_time)
     {
         prev_postdraw_time = GetRealTime();
@@ -3325,7 +3345,16 @@ void PostDrawGameProcess(){
         time_since_last_call = GetRealTime() - prev_postdraw_time;
     } while (PauseMode || time_since_last_call < kPostDrawInterval);
 
-	prev_postdraw_time=GetRealTime();
+    prev_postdraw_time = GetRealTime();
+#else
+    if (NPlayers < 2) {
+        do {
+            ProcessMessages();
+            if (PauseMode)GameKeyCheck();
+        } while ((int(GetRealTime()) - PrevTime < (FPSTime + FPSTime)) || PauseMode);
+};
+    PrevTime = GetRealTime();
+#endif
 };
 
 /*
@@ -3624,11 +3653,11 @@ bool RunSMD(){
                 ex_window_y = ex_other_RealLy;
             }
 			if(fff){
-				//Gscanf(fff,"%d%d%d%d%d%d%d%d%d%d",&exRealLx,&exRealLy,&WarSound,&OrderSound,&OrderSound,&MidiSound,&FPSTime,&ScrollSpeed,&exFMode,&PlayMode);
-                Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d",
-                    &ex_window_x, &ex_window_y, &ex_x, &ex_y,
-                    &WarSound, &OrderSound, &OrderSound, &MidiSound,
-                    &dummy, &ScrollSpeed, &exFMode, &PlayMode);
+#ifdef SPEEDFIX
+                Gscanf(fff, "%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &ScrollSpeed, &exFMode, &PlayMode);
+#else
+                Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
+#endif
                 SetCDVolume(MidiSound);
 				Gclose(fff);
                 
@@ -3642,11 +3671,11 @@ bool RunSMD(){
 					exRealLy=ModeLY[cr];
 					GFILE* fff=Gopen("mode.dat","wt");
 					if(fff){
-						//Gprintf(fff,"%d %d %d %d %d %d %d %d %d %d",exRealLx,exRealLy,WarSound,OrderSound,OrderSound,MidiSound,FPSTime,ScrollSpeed,exFMode,PlayMode);
-                         Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d",
-                            ex_window_x, ex_window_y, ex_x, ex_y,
-                            WarSound, OrderSound, OrderSound,
-                            MidiSound, 0, ScrollSpeed, exFMode, PlayMode);
+#ifdef SPEEDFIX
+                        Gprintf(fff, "%d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, ScrollSpeed, exFMode, PlayMode);
+#else
+                        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
+#endif
                         SetCDVolume(MidiSound);
 						Gclose(fff);
 					};
@@ -3878,7 +3907,9 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	
 	InitObjs3();
 
-	//FPSTime=50;
+#ifndef SPEEDFIX
+    FPSTime = 50;
+#endif
 
 	GFILE* FF1=Gopen("Lobby.txt","r");
 	if(FF1){
@@ -3891,17 +3922,15 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	AText("mode.dat");
 	ScrollSpeed=5;
 	if(fff){
-		//Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, 
-        //&MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
-		//Gclose(fff);
         //Distinguish between last window adn fullscreen resolutions
         int ex_window_x, ex_window_y, ex_x, ex_y;
         int dummy;
         //7th value was FPSTime
-        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d",
-            &ex_window_x, &ex_window_y, &ex_x, &ex_y,
-            &WarSound, &OrderSound, &OrderSound, &MidiSound,
-            &dummy, &ScrollSpeed, &exFMode, &PlayMode);
+#ifdef SPEEDFIX
+        Gscanf(fff, "%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &ScrollSpeed, &exFMode, &PlayMode);
+#else
+        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
+#endif
         Gclose(fff);
 
         //Set last 'global resolution' according to current mode
@@ -4115,10 +4144,11 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if(fff){
 				//Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, FPSTime, ScrollSpeed, exFMode, PlayMode);
 				//Gclose(fff);
-                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d",
-                    ex_window_x, ex_window_y, ex_x, ex_y,
-                    WarSound, OrderSound, OrderSound,
-                    MidiSound, 0, ScrollSpeed, exFMode, PlayMode);
+#ifdef SPEEDFIX
+                Gprintf(fff, "%d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, ScrollSpeed, exFMode, PlayMode);
+#else
+                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, FPSTime, ScrollSpeed, exFMode, PlayMode);
+#endif
                 Gclose(fff);
 			};
 			//CDS->~CDirSound();

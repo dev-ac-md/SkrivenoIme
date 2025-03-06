@@ -731,8 +731,10 @@ bool SetGameDisplayMode(int SizeX,int SizeY){
 	return false;
 };
 extern int ScrollSpeed;
-//CEXPORT
-//int FPSTime;
+#ifndef SPEEDFIX
+CEXPORT
+int FPSTime;
+#endif
 
 //-----------------Speed menu------------------//
 void ProcessSpeed(int x,int y){

@@ -2752,17 +2752,20 @@ void GlobalHandleMouse(){
 		CmdEndGame(ExitNI,1,0);
 		ExitNI=-1;
 	};
-	/*if (AutoSpeed) {
-		if(FrmDec==1){
-			if(Flips<22){
+#ifndef SPEEDFIX
+    if (AutoSpeed) {
+        if (FrmDec == 1) {
+            if (Flips < 22) {
 				CmdSetSpeed(1);
 			};
-		}else{
-			if(Flips>28){
+        }
+        else {
+            if (Flips > 28) {
 				CmdSetSpeed(0);
 			};
 		};
-	};*/
+    };
+#endif
 	if(SpecCmd==199){
 		CmdEndGame(MyNation,1,115);
 		SpecCmd=0;
