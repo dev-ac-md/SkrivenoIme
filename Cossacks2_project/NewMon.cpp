@@ -4556,6 +4556,7 @@ void SprGroup::LoadSprites(char* fname){
 							int a,b;
 							z=Gscanf(f1,"%d%d",&a,&b);
 							if(z!=2)IncPar(fn,0,"[SHOTSHIELD]");
+                            ObjChar[z1].ShieldRadius = a;
 							ObjChar[z1].ShieldProbability=b;
 							ObjChar[z1].ShieldRadius=a;
 						};
