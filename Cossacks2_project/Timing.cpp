@@ -129,8 +129,13 @@ int GetDADDT(int DT){
 	if(DT<1000)return 10;
 	return 20;
 };
-int GetRealTime(){
-	return GetTickCount();
+#ifndef SPEEDFIX
+int GetRealTime() {
+#else
+unsigned long GetRealTime() {
+    return GetTickCount();
+#endif
+
 	/*
 	LARGE_INTEGER FREQ;
 	if(!QueryPerformanceFrequency(&FREQ))return GetTickCount();
@@ -138,24 +143,25 @@ int GetRealTime(){
 	QueryPerformanceCounter(&DD);
 	double Freq=double(FREQ.LowPart)+double(FREQ.HighPart)*double(0x100000000);
 	double Time=double(DD.LowPart)+double(DD.HighPart)*double(0x100000000);
-	
-	int T=GetTickCount();//GetTicksEx();
-	//T+=T>>10;
-	if(PREVT){
-		if(T-PREVT>5){
-			if(NeedAddTime<AddTime){
-				AddTime-=GetDADDT(AddTime-NeedAddTime);
-				if(AddTime<NeedAddTime)AddTime=NeedAddTime;
-			};
-			if(NeedAddTime>AddTime){
-				AddTime+=GetDADDT(NeedAddTime-AddTime);
-				if(AddTime>NeedAddTime)AddTime=NeedAddTime;
-			};
-			PREVT=T;
-		};
-	}else PREVT=T;
-	return T+(AddTime>>7);
     */
+#ifndef SPEEDFIX
+    int T=GetTickCount();//GetTicksEx();
+    //T+=T>>10;
+    if(PREVT){
+        if(T-PREVT>5){
+            if(NeedAddTime<AddTime){
+                AddTime-=GetDADDT(AddTime-NeedAddTime);
+                if(AddTime<NeedAddTime)AddTime=NeedAddTime;
+            };
+            if(NeedAddTime>AddTime){
+                AddTime+=GetDADDT(NeedAddTime-AddTime);
+                if(AddTime>NeedAddTime)AddTime=NeedAddTime;
+            };
+            PREVT=T;
+        };
+    }else PREVT=T;
+    return T+(AddTime>>7);
+#endif
 };
 int GetAbsoluteRealTime(){
 	//return GetTickCount();

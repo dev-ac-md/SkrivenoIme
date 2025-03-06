@@ -558,7 +558,11 @@ int OldSizeX;
 int OldSizeY;
 int mul3(int);
 extern LPDIRECTDRAW            lpDD;
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 bool CheckMode(){
 	return true;
 	SQPicture Pan("pan17.bpx");

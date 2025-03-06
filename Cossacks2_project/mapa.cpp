@@ -1028,7 +1028,11 @@ bool NoWinner=0;
 bool ShowStat=0;
 extern bool NOPAUSE;
 void CmdEndGame(byte NI,byte state,byte cause);
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 extern int WaitState;
 extern bool EnterChatMode;
 extern int ShowGameScreen;

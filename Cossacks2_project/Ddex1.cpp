@@ -3114,7 +3114,11 @@ int RealPause=0;
 int RealStTime=0;
 int RealGameLength=0;
 int CurrentStepTime=80;
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 void MakePause(int dt){
 	int t0=GetRealTime();
 	do{
@@ -3542,7 +3546,11 @@ void FilesExit();
 void PlayCDTrack(int Id);
 void PlayRandomTrack();
 extern int PlayMode;
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 void CreateReg(){
 	char path [300];
 	char path1[350];

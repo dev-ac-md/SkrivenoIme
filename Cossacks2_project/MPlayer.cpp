@@ -44,7 +44,11 @@ bool InternetProto=0;
 //#define LOOSESIGNAL
 int GetAbsoluteRealTime();
 extern int NeedCurrentTime;
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 char* GetTextByID(char* ID);
 char* GetPName(int i);
 void AssignHint1(char* s,int time);
