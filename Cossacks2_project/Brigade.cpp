@@ -3337,7 +3337,11 @@ void B_HumanGlobalSendToLink(Brigade* BR){
 	};
 	if(NextNextTop!=0xFFFF){
 		//atttempt to optomise way
-		int MaxPre=5;
+#ifdef EW
+        int MaxPre = 10;
+#else
+        int MaxPre = 5;
+#endif
 		int cox=xc>>4;
 		int coy=yc>>4;
 		int NSteps=0;		

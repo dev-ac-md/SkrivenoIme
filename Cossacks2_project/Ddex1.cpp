@@ -10,7 +10,7 @@
 //#define VIEW_TOP
 //#define WIN32_LEAN_AND_MEAN
 #include "ddini.h"
-#include "./Steam/steam_api.h"
+//#include "./Steam/steam_api.h"
 
 bool window_mode;
 int screen_width;
@@ -920,6 +920,7 @@ extern bool PATROLMODE;
 extern byte NeedToPopUp;
 short WheelDelta=0;
 void IAmLeft();
+void ReverseLMode();
 void LOOSEANDEXITFAST();
 extern bool DoNewInet;
 bool ReadWinString(GFILE* F,char* STR,int Max);
@@ -927,6 +928,8 @@ extern bool RUNMAPEDITOR;
 extern bool RUNUSERMISSION;
 extern char USERMISSPATH[128];
 void OnWTPacket(WPARAM wSerial, LPARAM hCtx);
+
+//MOUSE HANDLING, HANDLING OF MOUSE, MOUSE BUTTONS
 long FAR PASCAL WindowProc( HWND hWnd, UINT message, 
                             WPARAM wParam, LPARAM lParam )
 {
@@ -1034,6 +1037,14 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
 		AddMouseEvent(mouseX,mouseY,Lpressed,Rpressed);
 		//HandleMouse(mouseX,mouseY);
 		break;
+    case WM_MBUTTONDOWN:
+        wParam = wParam | MK_MBUTTON;
+        //xLpressed=true;
+        ReverseLMode();
+        SetMPtr(LOWORD(lParam), HIWORD(lParam), wParam);
+        AddMouseEvent(mouseX, mouseY, Lpressed, Rpressed);
+        //HandleMouse(mouseX,mouseY);
+        break;
 	case WM_MOUSEMOVE:
 #ifndef _USE3D
 		if(ScreenPtr)
@@ -1498,7 +1509,7 @@ void GameKeyCheck(){
 					//else SpecCmd=6;
 					break;
 				case 'Q':
-#ifdef EW
+#ifndef EW
 					//if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=3;
 					//else SpecCmd=4;
 					if(!(GetKeyState(VK_CONTROL)&0x8000)) LockGrid++;
@@ -3727,6 +3738,7 @@ int Alert(const char* lpCaption, const char* lpText)
 #endif
 }
 
+/*
 int SteamInitialisation() {
     if (SteamAPI_RestartAppIfNecessary(k_uAppIdInvalid))
     {
@@ -3755,7 +3767,7 @@ int SteamInitialisation() {
         return EXIT_FAILURE;
     }
 }
-
+*/
 int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                         LPSTR lpCmdLine, int nCmdShow)
 {

@@ -20,6 +20,10 @@ int processMainMenu(){
 #ifdef AMERICANDEMO
 	GlobalAI.NAi=2;
 #endif 
+#ifdef EW
+    char* mainmenu = "specials\\001_01 maintheme.ogg";
+    PlayMP3File(mainmenu);
+#endif
 	//MPL_ChooseConnection();
 	//MPL_WaitingGame(1,1);
 	//processMultiplayer();

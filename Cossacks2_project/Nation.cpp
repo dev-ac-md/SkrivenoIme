@@ -1014,6 +1014,9 @@ int OneObject::MakeDamage(int Fundam,int Persist,OneObject* Sender,byte AttType,
 				};
 				dam+=adm;
 			};
+#ifdef EW
+            if (!(wf & 128)) {
+#endif
 			if(AddShield){
 				int adm=AddShield;
 				if(BrigadeID!=0xFFFF){
@@ -1027,6 +1030,9 @@ int OneObject::MakeDamage(int Fundam,int Persist,OneObject* Sender,byte AttType,
 				};
 				dam-=adm;
 			};
+#ifdef EW
+        }
+#endif
 			if(Act){
 				if(wf&16){
 					FiringStage=newMons->FireLimit+1;
