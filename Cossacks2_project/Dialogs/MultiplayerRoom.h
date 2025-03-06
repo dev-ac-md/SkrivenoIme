@@ -481,6 +481,7 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 #ifndef TUTORIAL_DEMOVERSION
 		MNATION[i]->AddLine(rtxt);
 #endif
+        MNATION[i]->CurLine = NG;
 		MNATION[i]->FontDx-=2;
 
 		//MNATION[i]->OneDx-=2;
@@ -1356,11 +1357,16 @@ ffe2:;
 				int PPP;
 				if(!SINGLE){
 					if((PPP=GetReadyPercent())<100){
-						sprintf(ReadyFlow[HostID]->Message,"%d%%",PPP);
-						ReadyFlow[HostID]->Visible=1;
-						MREADY[HostID]->Visible=0;
-						MREADY[HostID]->Enabled=0;
-						NOMREADY=HostID;
+                        //READY STATUS
+						//sprintf(ReadyFlow[HostID]->Message,"%d%%",PPP);
+						//ReadyFlow[HostID]->Visible=1;
+						//MREADY[HostID]->Visible=0;
+						//MREADY[HostID]->Enabled=0;
+						//NOMREADY=HostID;
+                        ReadyFlow[HostID]->Visible = 0;
+                        MREADY[HostID]->Visible = 1;
+                        MREADY[HostID]->Enabled = 1;
+                        NOMREADY = -1;;
 					}else{
 						ReadyFlow[HostID]->Visible=0;
 						MREADY[HostID]->Visible=1;
@@ -1866,7 +1872,7 @@ ffe2:;
 							};
 							if(defc==-1)defc=0;
 							ColorBack[i]->Nation=defc;
-							AliasBack[i]->Nation=7;
+							AliasBack[i]->Nation=0;
 						};
 
 						if(!SINGLE){
@@ -2002,7 +2008,7 @@ ffe2:;
 //#ifndef SINGLETESTNETWORK
 			if(!SINGLE){
 				if(NPlayers<2)GMREADY=false;
-				if(!CheckPingsReady())GMREADY=false;
+				//if(!CheckPingsReady())GMREADY=false;
 				byte bs=0;
 				for(int i=0;i<NPlayers;i++)bs|=1<<AliasBack[i]->Nation;
 				if(!(bs&1)){
@@ -2073,6 +2079,7 @@ ffe2:;
 		}else{
 			OkBtn->Enabled=!MyOldVers;
 			//OkBtn->Visible=!MyOldVers;
+            /* BUGFIX: Disable no direct connection check
 			if(!CheckExistConn()){
 				OkBtn->Enabled=0;
 				//OkBtn->Visible=0;
@@ -2080,7 +2087,7 @@ ffe2:;
 					strcpy(MENU.DefaultHint,NOCONN);
 					PrintBadConn(MENU.DefaultHint+strlen(MENU.DefaultHint));
 				};
-			};
+			};*/
 			if(P1E){
 				//OkBtn->Enabled=PREV->Visible;
 				//OkBtn->Visible=PREV->Visible;
