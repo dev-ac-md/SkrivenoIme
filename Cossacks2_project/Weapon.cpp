@@ -957,10 +957,10 @@ bool TraceObjectsInLine(int xs,int ys,int zs,int* xD,int* yD,int* zD,int damage,
 		int zz=zs+(dz*i)/N;
 		int H=GetBar3DHeight(xs+xx,ys+yy);
 		int H0=GetHeight(xs+xx,ys+yy);
-#ifdef COSSACKS2
+//#ifdef COSSACKS2
 		bool DetectSpriteInPoint(int x,int y);
 		if(i*Len/N>180&&DetectSpriteInPoint(xs+xx,ys+yy))return false;
-#endif //COSSACKS2
+//#endif //COSSACKS2
 		if(H+H0>zz&&H){
 			int ID=GetBar3DOwner(xs+xx,ys+yy);
 			if(ID>=0&&ID<0xFFFF&&ID!=NOID){
@@ -1292,10 +1292,10 @@ bool DetectSpriteInPointInCell(int cell,int x,int y){
 		OneSprite* OS=&Sprites[CEL[i]];
 		//assert(OS->Enabled);
 		ObjCharacter* OC=OS->OC;
-		if(OC->ResType!=0xFE){
-			int dr=OC->ShieldRadius;
+		if(OC->ResType){ //BILO if(OC->ResType!=0xFE)
+			//int dr=OC->ShieldRadius;
 			//if(OC->IntResType>8)dr=0;
-			if(Norma(OS->x-x,OS->y-y)<dr&&OC->ShieldProbability>(rando()%100))
+			if((Norma(OS->x-x,OS->y-y)<OC->ShieldRadius)&&(OC->ShieldProbability>(rando() % 100))) //Was like this maybe this fixes tree shield if(Norma(OS->x-x,OS->y-y)<dr&&OC->ShieldProbability>(rando()%100))
 				return true;
         };
     };
