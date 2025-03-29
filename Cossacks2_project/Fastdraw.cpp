@@ -22,6 +22,8 @@ extern int RSCRSizeY;
 extern int COPYSizeX;
 extern int LOADED;
 
+CEXPORT void ShowCharUNICODE(int x, int y, byte* strptr, lpRLCFont lpr);
+
 byte PAL1[256];
 byte PAL2[256];
 byte PAL3[256];
@@ -2527,10 +2529,10 @@ void ShowCharUNICODE(int x,int y,byte* strptr,lpRLCFont lpr){
 #ifdef _USE3D
 			GPS.SetCurrentDiffuse(0xFF462814);
 #else
-            //DIPLOMACY CRASHES GAME WHEN THIS ISNT COMMENTED I SMAESHED MY HEAD ABOUT THIS AND DIDNT FIND SOLUTION
-			//GPS.ImageType[lpr->ShadowGP]=1;
+            //DIPLOMACY CRASHES GAME WHEN THIS ISNT COMMENTED I SMASHED MY HEAD ABOUT THIS AND DIDNT FIND SOLUTION
+			///GPS.ImageType[lpr->ShadowGP]=1;
 #endif
-			GPS.ShowGP(x+lpr->ShadowDx,y+lpr->ShadowDy,lpr->ShadowGP,strptr[0],0);
+			//GPS.ShowGP(x+lpr->ShadowDx,y+lpr->ShadowDy,lpr->ShadowGP,strptr[0],0);
 		};
 		ShowChar(x,y,strptr[0],lpr);
 	};
