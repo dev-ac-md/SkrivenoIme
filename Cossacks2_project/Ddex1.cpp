@@ -1230,7 +1230,6 @@ extern bool OptHidden;
 extern word NPlayers;
 bool CheckFlagsNeed();
 void SetGameDisplayModeAnyway(int SizeX,int SizeY);
-void ReverseLMode();
 void FlipDipDialog();
 extern bool DIP_DSS_Vis;
 extern bool SHOWZONES;
@@ -2253,7 +2252,7 @@ void EditorKeyCheck(){
 #endif
 					};
 					break;
-				case 'L':
+                case 'L':
 					/*
 					if(!MiniMode)SetMiniMode();
 					else ClearMiniMode();
@@ -2867,7 +2866,7 @@ void PreDrawGameProcess() {
 	};
 	if(exFMode!=SpeedSh){
 #ifdef SPEEDFIX
-		CmdSetSpeed(exFMode);
+        CmdSetSpeed(exFMode);
 #else
         CmdSetSpeed(exFMode + 128);
 #endif
@@ -3352,7 +3351,7 @@ void PostDrawGameProcess(){
             ProcessMessages();
             if (PauseMode)GameKeyCheck();
         } while ((int(GetRealTime()) - PrevTime < (FPSTime + FPSTime)) || PauseMode);
-};
+    };
     PrevTime = GetRealTime();
 #endif
 };
@@ -3672,7 +3671,7 @@ bool RunSMD(){
 					GFILE* fff=Gopen("mode.dat","wt");
 					if(fff){
 #ifdef SPEEDFIX
-                        Gprintf(fff, "%d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, ScrollSpeed, exFMode, PlayMode);
+                        Gscanf(fff, "%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &ScrollSpeed, &exFMode, &PlayMode);
 #else
                         Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
 #endif
@@ -3927,9 +3926,15 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
         int dummy;
         //7th value was FPSTime
 #ifdef SPEEDFIX
-        Gscanf(fff, "%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &ScrollSpeed, &exFMode, &PlayMode);
+        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d",
+            &ex_window_x, &ex_window_y, &ex_x, &ex_y,
+            &WarSound, &OrderSound, &OrderSound, &MidiSound,
+            &dummy, &ScrollSpeed, &exFMode, &PlayMode);
 #else
-        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
+        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d%d",
+            &ex_window_x, &ex_window_y, &ex_x, &ex_y,
+            &WarSound, &OrderSound, &OrderSound, &MidiSound,
+            &dummy, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
 #endif
         Gclose(fff);
 
@@ -4145,9 +4150,15 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				//Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, FPSTime, ScrollSpeed, exFMode, PlayMode);
 				//Gclose(fff);
 #ifdef SPEEDFIX
-                Gprintf(fff, "%d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, ScrollSpeed, exFMode, PlayMode);
+                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d",
+                    ex_window_x, ex_window_y, ex_x, ex_y,
+                    WarSound, OrderSound, OrderSound,
+                    MidiSound, 0, ScrollSpeed, exFMode, PlayMode);
 #else
-                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, FPSTime, ScrollSpeed, exFMode, PlayMode);
+                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d &d",
+                    ex_window_x, ex_window_y, ex_x, ex_y,
+                    WarSound, OrderSound, OrderSound,
+                    MidiSound, 0, FPSTime, ScrollSpeed, exFMode, PlayMode);
 #endif
                 Gclose(fff);
 			};
