@@ -162,7 +162,6 @@ copy ..\_debug\DipServer\$(ProjectName).lib ..\lib\$(ProjectName).lib
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_USRDLL;DIPSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeaderOutputFile>.\../_release/DipServer.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\../_release/</AssemblerListingLocation>
@@ -170,6 +169,7 @@ copy ..\_debug\DipServer\$(ProjectName).lib ..\lib\$(ProjectName).lib
       <ProgramDataBaseFileName>.\../_release/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -360,8 +360,7 @@ copy ..\_debug\DipServer\$(ProjectName).lib ..\lib\$(ProjectName).lib
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Library|Win32'">true</ExcludedFromBuild>
     </Library>
     <Library Include="..\bin\IntExplorer.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Library|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </Library>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

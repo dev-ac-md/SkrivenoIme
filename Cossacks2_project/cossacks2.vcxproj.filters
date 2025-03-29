@@ -1210,6 +1210,12 @@
     <Library Include="..\lib\steam_api.lib">
       <Filter>Steam</Filter>
     </Library>
+    <Library Include="..\lib\d3dx8.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="..\lib\d3d8.lib">
+      <Filter>LIB</Filter>
+    </Library>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bat\all.bat">

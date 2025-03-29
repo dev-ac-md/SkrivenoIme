@@ -1730,7 +1730,7 @@ void EnterPersonalMessage(char* Nick){
 	strcpy(nick,Nick);
 	LocalGP BARS("Interface\\bor2");
 	DarkScreen();
-	DialogsSystem DSS(0,0);
+	DialogsSystem DSS(menu_x_off, menu_y_off);
 	int DL=60;
 	int Y0=RealLy/2-44+10+70+3;
 	int X0=RealLx/2-70-DL-80;
@@ -8839,7 +8839,7 @@ void SlideShow(){
 				ResFile F=RReset(cc);
 				if(F!=INVALID_HANDLE_VALUE){
 					RClose(F);
-					DialogsSystem DSS(0,0);
+					DialogsSystem DSS(menu_x_off, menu_y_off);
 					SQPicture PIC;
 					PIC.LoadPicture(cc);
 					DSS.addPicture(NULL,0,0,&PIC,&PIC,&PIC);
@@ -8875,7 +8875,7 @@ void ShowPreview(){
 		RClose(F);
 		ClearScreen();
 		LoadFog(2);
-		DialogsSystem DSS(0,0);
+		DialogsSystem DSS(menu_x_off, menu_y_off);
 		SQPicture PIC;
 		PIC.LoadPicture("Slides\\Preview.bmp");
 		DSS.addPicture(NULL,0,0,&PIC,&PIC,&PIC);
