@@ -486,6 +486,7 @@ int InfDX0=10+243+6;
 void ProcessInformation(bool Allow){
 	if(InfDX0==-1)InfDX0=InfDX;
 	ProcessMiniMenu();
+    ProcessResourceCall();
 	if(NoPress&&mouseX>RealLx-InfDX-32)return;
 	//bool mInZone=Inform&&mouseX>RealLx-InfDX-8&&mouseY<455;
 	if(Inform==2){
