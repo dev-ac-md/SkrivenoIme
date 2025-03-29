@@ -810,7 +810,7 @@ void WaitWithMessage(char* Message);
 void NoWaitWithMessage(char* Message);
 #ifdef MAKE_PTC
 int ProcessInternetConnection(bool Active);
-bool FindSessionAndJoin(char* Name,char* Nick,bool Style);
+bool FindSessionAndJoin(char* Name, char* Nick, bool Style, unsigned short port);
 bool CreateSession(char* SessName,char* Name,DWORD User2,bool Style,int MaxPlayers);
 extern int GMTYPE;
 int IEMMOD=0;
