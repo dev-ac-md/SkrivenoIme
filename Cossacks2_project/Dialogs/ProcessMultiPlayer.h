@@ -223,7 +223,7 @@ REINCONN:;
 	case 10://Inet Join(Deathmatch)
 			PlayerMenuMode=1;
 			strcpy(IPADDR,GlobalRIF.RoomIP);
-			if(!FindSessionAndJoin(ROOMNAMETOCONNECT,GlobalRIF.Nick,DoNewInet)){
+			if(!FindSessionAndJoin(ROOMNAMETOCONNECT, GlobalRIF.Nick, DoNewInet, GlobalRIF.port)){
 				LeaveGSCRoom();
 				WaitWithMessage(GetTextByID("ICUNJ"));
 			}else{
