@@ -1487,6 +1487,7 @@ void GFieldShow(){
 #else
 			DrawLGround();
 			MiniShowNewMonsters();
+            WallHandleDraw();
 #endif
 		}else{ 
 			TestTriangle();	
