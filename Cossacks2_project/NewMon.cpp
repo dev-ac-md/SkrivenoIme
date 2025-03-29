@@ -206,7 +206,7 @@ CEXPORT void ErrM(char* s)
 		sprintf(pal,"%d\\agew_1.pal",CurPalette);
 		LoadPalette(pal);
 	};
-	MessageBox(hwnd,s,"LOADING FAILED...",MB_ICONWARNING|MB_OK);
+	//MessageBox(hwnd,s,"LOADING FAILED...",MB_ICONWARNING|MB_OK);
 	//assert(false);
 };
 void NEPar(char* name,int line,char* Sect,int Need){
@@ -3699,7 +3699,7 @@ bool NewMonster::CreateFromFile(char* name){
 							NLine(f1);
 							Line++;
 						}else
-						if(!strcmp(gx,"VESLA")){
+                        if(!strcmp(gx,"VESLA")){
 							z=Gscanf(f1,"%d%d%s%d",&p1,&p2,gy,&p3);
 							if(z!=4)IncPar(name,Line,gx);
 							Veslo=LoadNewAnimationByName(gy);
@@ -4596,7 +4596,6 @@ void SprGroup::LoadSprites(char* fname){
 							if(z!=2)IncPar(fn,0,"[SHOTSHIELD]");
                             ObjChar[z1].ShieldRadius = a;
 							ObjChar[z1].ShieldProbability=b;
-							ObjChar[z1].ShieldRadius=a;
 						};
 						break;
 					case 13://[SECTIONS]
@@ -6863,7 +6862,11 @@ void CalculateMotionX0(){
 						};
 					}else{
 						OB->Sdoxlo++;
-						if(OB->Sdoxlo>200){
+#ifdef EW
+                        if (OB->Sdoxlo > 80000) {
+#else
+                        if (OB->Sdoxlo > 200) {
+#endif
 							if(NMN->DeathLie2.Enabled){
 								OB->NewAnm=&NMN->DeathLie2;
 								OB->NewCurSprite=0;
@@ -6875,7 +6878,11 @@ void CalculateMotionX0(){
 								OB=NULL;//died.	
 							};
 						};
-						if(OB&&OB->Sdoxlo>400){
+#ifdef EW
+                        if (OB && OB->Sdoxlo > 160000) {
+#else
+                        if (OB && OB->Sdoxlo > 400) {
+#endif
 							if(NMN->DeathLie2.Enabled){
 								OB->NewAnm=&NMN->DeathLie3;
 								OB->NewCurSprite=0;
@@ -6887,7 +6894,11 @@ void CalculateMotionX0(){
 								OB=NULL;//died.	
 							};
 						};
-						if(OB&&OB->Sdoxlo>600){
+#ifdef EW
+                        if (OB && OB->Sdoxlo > 240000) {
+#else
+                        if (OB && OB->Sdoxlo > 600) {
+#endif
 							OB->DeletePath();
 							OB->ClearOrders();
 							DelObject(OB);
@@ -8682,7 +8693,11 @@ void LongProcesses(){
 									if(OB->Sdoxlo>24000){
 #else									
 									OB->Sdoxlo+=32;
-									if(OB->Sdoxlo>1200){
+#ifdef EW
+									if(OB->Sdoxlo>48000){
+#else
+                                    if (OB->Sdoxlo > 1200) {
+#endif
 #endif
 										if(NMN->DeathLie2.Enabled){
 											OB->NewAnm=&NMN->DeathLie2;
@@ -8697,7 +8712,11 @@ void LongProcesses(){
 										};
 									};
 #ifndef _USE3D
-									if(OB&&OB->Sdoxlo>1600){
+#ifdef EW
+                                    if (OB && OB->Sdoxlo > 64000) {
+#else
+                                    if (OB && OB->Sdoxlo > 1600) {
+#endif
 										if(NMN->DeathLie2.Enabled){
 											OB->NewAnm=&NMN->DeathLie3;
 											OB->NewCurSprite=0;
@@ -8709,7 +8728,11 @@ void LongProcesses(){
 											OB=NULL;//died.	
 										};
 									};
-									if(OB&&OB->Sdoxlo>2000){
+#ifdef EW
+                                    if (OB && OB->Sdoxlo > 80000) {
+#else
+                                    if (OB && OB->Sdoxlo > 2000) {
+#endif
 										OB->DeletePath();
 										OB->ClearOrders();
 										DelObject(OB);
@@ -8795,9 +8818,15 @@ void CalculateMotionV2(){
 								free(OB);
 								OB=NULL;
 							}else{
-								if(OB->Sdoxlo<100)OB->NewAnm=&NMN->DeathLie1;
-								else if(OB->Sdoxlo<300)OB->NewAnm=&NMN->DeathLie2;
-								else if(OB->Sdoxlo<600)OB->NewAnm=&NMN->DeathLie3;
+#ifdef EW
+								if(OB->Sdoxlo<40000)OB->NewAnm=&NMN->DeathLie1;
+								else if(OB->Sdoxlo<120000)OB->NewAnm=&NMN->DeathLie2;
+								else if(OB->Sdoxlo<240000)OB->NewAnm=&NMN->DeathLie3;
+#else
+                                if (OB->Sdoxlo < 100)OB->NewAnm = &NMN->DeathLie1;
+                                else if (OB->Sdoxlo < 300)OB->NewAnm = &NMN->DeathLie2;
+                                else if (OB->Sdoxlo < 600)OB->NewAnm = &NMN->DeathLie3;
+#endif
 								else{
 									//erasing of the monster
 									if(OB->PathX)free(OB->PathX);
@@ -11419,7 +11448,7 @@ bool OneObject::AttackObj(word OID,int Prio1,byte OrdType,word NTimes){
         if (!OKK) {
             OKK = 1;
             if (NMask & OB->NMask)OKK = 0;
-		};
+        };
         if (!OKK)return false;
     }
     else
@@ -11429,7 +11458,7 @@ bool OneObject::AttackObj(word OID,int Prio1,byte OrdType,word NTimes){
         }
         else {
             if (NMask & OB->NMask)return false;
-	};
+        };
 #endif
 	if(InPatrol&&OrdType==0)
 		OrdType=1;
@@ -11942,7 +11971,7 @@ void AttackObjLink(OneObject* OBJ){
 								};
 								*/
 	DoShotA:;
-								bool AllowShot=true;
+                                bool AllowShot=true;
 								if(NMN->NShotRes){
 									for(int k=0;k<NMN->NShotRes;k++){
 										if(XRESRC(OBJ->NNUM,NMN->ShotRes[k+k])<NMN->ShotRes[k+k+1])AllowShot=false;
@@ -11990,7 +12019,7 @@ void AttackObjLink(OneObject* OBJ){
 									};
 									return;
 								};
-							};
+                               };
 							OBJ->DeleteLastOrder();
 							if(OBJ->LocalOrder)OBJ->LocalOrder->DoLink(OBJ);
 							return;
@@ -12104,7 +12133,7 @@ void AttackObjLink(OneObject* OBJ){
 				OBJ->DeleteLastOrder();
 				return;
 			};
-DoShot0:;
+        DoShot0:;
 			bool AllowShot=true;
 			if(NMN->NShotRes){
 				for(int k=0;k<NMN->NShotRes;k++){
@@ -12144,8 +12173,8 @@ DoShot0:;
 				};
 			};
 		};
-        return;
-    };
+                        return;
+                    };
 	//--------------END BUILDING ATTACK------------
 	addname(OBJ->Index);
 	addrand(OBJ->NewState);
@@ -12444,12 +12473,12 @@ DoShot:;
                                      OB->InFire = 0;
                                      OB->FireOwner = 0xFF;
                                      OB->FiringStage = 0;
-								};
+                                 };
                              }
                              else {
-								OBJ->DeleteLastOrder();
-								return;
-							};
+                                 OBJ->DeleteLastOrder();
+                                 return;
+                             };
                          }
                          #endif
                          else{
@@ -13241,7 +13270,7 @@ void WaterAttackLink(OneObject* OBJ){
 						else OBJ->RealDir+=2;
 						OBJ->GraphDir=OBJ->RealDir;
 					};
-				}else{
+                    }else{
 					//shot by the right side
 					if(abs(dR)<8){
 						//pubuhhhhhh!!!!!!!!!!
@@ -14810,15 +14839,15 @@ void OneObject::SearchVictim(){
     if (NM->Shaman) {
         if (rando() < 4096) {
             Priest = 1;
-		};
-	};
+        };
+    };
     if (Priest) {
         nmask = NMask;
         Priest = 1;
     }
     else {
         if (!(NM->Capture || LockType == 1 || NewBuilding))Priest = 2;
-	};
+    };
 #endif
     byte mmask=NM->KillMask;
     OneObject* DestObj=NULL;
