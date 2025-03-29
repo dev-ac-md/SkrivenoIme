@@ -6,6 +6,10 @@
 //#include "StdAfx.h"
 //#include <stdio.h>
 #include <stdarg.h>
+
+#include <cstring>
+#include <cstdlib>
+
 CIMPORT bool ReadWinString(GFILE* F,char* STR,int Max);
 class CNamesCash{
 public:
@@ -586,6 +590,12 @@ struct RoomInfo{
 	DWORD Profile;
 	char GameID[64];
 	int MaxPlayers;
+
+    //Additional members to pass data from server to main exe / CommCore
+    long player_id; //Necessary for host to send udp hole punching packets
+    unsigned short port; //Udp hole punching port or real port of game host
+    unsigned udp_interval; //Udp hole punching packet interval
+    char udp_server[16]; //IP of udp hole punching server
 };
 RoomInfo* GRIF=NULL;
 CEXPORT
@@ -650,6 +660,13 @@ bool WasHere=0;
 CEXPORT
 int Process_GSC_ChatWindow(bool Active,RoomInfo* RIF){
 	GRIF=RIF;
+
+    //Zero out additional variables in advance
+    RIF->player_id = 0;
+    RIF->port = 0;
+    RIF->udp_interval = 0;
+    memset(RIF->udp_server, 0, 16);
+
 	ClearGChat();
 	//will be not there
 	//SlowLoadPalette("2\\agew_1.pal");
@@ -1327,15 +1344,56 @@ int Process_GSC_ChatWindow(bool Active,RoomInfo* RIF){
 							strcpy(RIF->Nick,CSYS.chatNick);
 							RIF->Profile=atoi(CSYS.chatUser+8);
 							VAR[0]=0;
-							char* PlName=ExplorerGetVar(0,"%CG_PLNAME");
-							if(PlName){
-								strcpy(RIF->Nick,PlName);
-							};
-							char* OPT=ExplorerGetVar(0,"%GOPT");
-							if(OPT){
-								SetRoomOptions(OPT);
-								ExplorerSetVar(0,"%GOPT","");
-							}else SetRoomOptions("");
+                            char* PlName_local = ExplorerGetVar(0, "%CG_PLNAME");
+                            if (PlName_local)
+                            {
+                                strcpy(RIF->Nick, PlName_local);
+                            }
+
+                            //Variables for udp hole punching
+                            //Store them inside RoomInfo so main exe can pick them up
+
+                            //Player's ID
+                            const char* player_id_str = ExplorerGetVar(0, "%PROF");
+                            if (player_id_str)
+                            {
+                                char* end;
+                                const long player_id = std::strtol(player_id_str, &end, 10);
+                                if (player_id && '\0' == end[0])
+                                {//Conversion successful, string countained one number only
+                                    RIF->player_id = player_id;
+                                }
+                            }
+
+                            //Server port
+                            const char* hole_port_str = ExplorerGetVar(0, "%CG_HOLEPORT");
+                            if (hole_port_str)
+                            {
+                                char* end;
+                                const unsigned long port = std::strtoul(hole_port_str, &end, 10);
+                                if (port && '\0' == end[0])
+                                {//Conversion successful, string countained one number only
+                                    RIF->port = (unsigned short)port;
+                                }
+                            }
+                            //Server ip
+                            const char* hole_host_str = ExplorerGetVar(0, "%CG_HOLEHOST");
+                            if (hole_host_str)
+                            {
+                                std::strcpy(RIF->udp_server, hole_host_str);
+                                RIF->udp_server[15] = 0;
+                            }
+                            //Interval for packets
+                            const char* hole_interval_str = ExplorerGetVar(0, "%CG_HOLEINT");
+                            if (hole_interval_str)
+                            {
+                                char* end;
+                                const long interval = std::strtol(hole_interval_str, &end, 10);
+                                if (interval && '\0' == end[0])
+                                {//Conversion successful, string countained one number only
+                                    RIF->udp_interval = interval;
+                                }
+                            }
 							return 1;
 						};
 					};
