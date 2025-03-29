@@ -1534,7 +1534,7 @@ void LoadNation(char* fn,byte msk,byte NIndex,byte NatID){
                     int na;
                     z = Gscanf(f1, "%s%d", gy, &na);
 
-                    int z2 = 0;
+                    int z2;
                     for (z2 = 0; z2 < NOClasses && strcmp(gy, OrderDesc[z2].ID); z2++);//BUGFIX: s/z/z2/
                     //FUNNY: wtf officer formation buttons logic all fucked up
                     //WHY U NAME variables like z or z2 and mix them up?
