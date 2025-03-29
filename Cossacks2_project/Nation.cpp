@@ -863,12 +863,6 @@ extern City CITY[8];
 word GetDir(int dx,int dy);
 int OneObject::MakeDamage(int Fundam,int Persist,OneObject* Sender,byte AttType,bool Act){
 	if(Sender&&Sender==this)return 0;
-#ifdef NEWMORALE
-    if (Sender->newMons->CommandCenter) {
-        void OnCommandMorale(word OB);
-        OnCommandMorale(Sender->Index);
-    }
-#endif
 	if(Sender&&Sender->Index!=Index&&!(Sender->newMons->Animal||newMons->Animal||Sender->AI_Guard||AI_Guard)){
 		int ac1=GetUnitActivity(Sender);//0-neytral,1-my territory,-1-enemy's territory
 		int ac2=GetUnitActivity(this);
