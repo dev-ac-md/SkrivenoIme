@@ -1014,6 +1014,17 @@ void LoadPalette(LPCSTR lpFileName)
 #endif //_USE3D
 			
 		};
+        /*if (window_mode) {
+            if (!PalDone) {
+                lpDD->CreatePalette(DDPCAPS_8BIT, &GPal[0], &lpDDPal, NULL);
+                PalDone = true;
+                lpDDSPrimary->SetPalette(lpDDPal);
+                //lpDDSBack->SetPalette(lpDDPal);
+            }
+            else {
+                lpDDPal->SetEntries(0, 0, 256, GPal);
+            };
+        }*/
 	}
 	clrRed = 0xD0;
 	clrGreen=GetPaletteColor(0,255,0);
