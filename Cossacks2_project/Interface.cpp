@@ -5787,6 +5787,7 @@ extern IconSet PrpPanel;
 extern IconSet AblPanel;
 extern IconSet UpgPanel;
 extern IconSet BrigPanel;
+extern IconSet GeneralPanel;
 void CopyBPX2SCR(int xs,int ys,int xb,int yb,int Lx,int Ly,SQPicture* P){
     if(!Ly)return;
     word* Pic=(word*)P->GetPixelData();
@@ -5878,6 +5879,7 @@ bool Page2HaveItems=0;
 bool Page1HaveItems=0;
 NewMonster* LASTNM=NULL;
 extern bool RejectInterface;
+int GenPnX;
 void DrawZones(){
 	if(PlayGameMode==1||RejectInterface)return;
 	RunPF(5,"DrawZones");
@@ -5934,7 +5936,9 @@ void DrawZones(){
 			AblPanel.DrawIconSet(AblX,AblY,AblNx,AblNy,0);
 		};
     };
-	if(!EditMapMode)BrigPanel.DrawIconSet(BrigPnX,BrigPnY,BrigNx,BrigNy,0);
+    GenPnX = BrigPnX + 224;
+	/*if (!EditMapMode)*/BrigPanel.DrawIconSet(BrigPnX, BrigPnY, BrigNx, BrigNy, 0);
+    GeneralPanel.DrawIconSet(GenPnX, BrigPnY, BrigNx, BrigNy, 0);
 	ECOSHOW=0;
 	Page3HaveItems=0;
 	Page2HaveItems=0;

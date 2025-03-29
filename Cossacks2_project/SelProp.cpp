@@ -30,7 +30,8 @@ bool CheckUnGroupPossibility(byte NI);
 IconSet  PrpPanel;
 IconSet  AblPanel;
 IconSet  UpgPanel;
-IconSet BrigPanel;
+IconSet  BrigPanel;
+IconSet  GeneralPanel;
 extern byte   WeaponFlags[32];
 extern int MessageUX;
 extern int MessageUY;
@@ -239,8 +240,12 @@ extern int BrigNx;
 extern int BrigNy;
 extern int PreviewBrig;
 bool FullBrigMode=false;
+bool GeneralsMode = false;
 void OLIHPRO(int i){
 	FullBrigMode=!FullBrigMode;
+};
+void OLIHPRO1(int i) {
+    GeneralsMode = !GeneralsMode;
 };
 void SELBRIG(int i){
 	if(GetKeyState(VK_SHIFT)&0x8000){
@@ -249,6 +254,15 @@ void SELBRIG(int i){
 		CmdSelBrig(MyNation,0,i);
 		//FullBrigMode=false;
 	};
+};
+void SELMONSTER(int i) {
+    if (GetKeyState(VK_SHIFT) & 0x8000) {
+        CmdRememSelection(MyNation,i);
+    }
+    else {
+        CmdRememSelection(MyNation,i);
+        //FullBrigMode=false;
+    };
 };
 void CmdSetSrVictim(byte NI,byte val);
 void PreBrig(int i){
@@ -457,6 +471,7 @@ void ShowProp(){
     AblPanel.ClearIconSet();
 	UpgPanel.ClearIconSet();
 	BrigPanel.ClearIconSet();
+    GeneralPanel.ClearIconSet();
 	word MID;
 	OneObject* OBJ;
 	GeneralObject* GO;
@@ -1116,6 +1131,7 @@ void ShowProp(){
 	if(P){
 		OneIcon* OI=BrigPanel.AddIconFixed(0,ORDERS_LIST_ICON,0);
 		OI->AssignLeft(&OLIHPRO,0);
+        int brojac = 0;
 		if(FullBrigMode){
 			for(int j=0;j<N;j++){
 				Brigade* BR=BR0+j;
@@ -1137,17 +1153,60 @@ void ShowProp(){
 					if(!UNFND){
 						GeneralObject* GO=NATIONS[NatRefTBL[MyNation]].Mon[BR->MembID];
 						NewMonster* NM=GO->newMons;
-						OI=BrigPanel.AddIconFixed(NM->IconFileID,NM->IconID,j+BrigNx);
-						OI->AssignLeft(&SELBRIG,j);
+						OI=BrigPanel.AddIconFixed(NM->IconFileID,NM->IconID,brojac+BrigNx);
+						OI->AssignLeft(&SELBRIG, j);
 						OI->AssignIntVal(NU);
 						OI->AssignMoveOver(&PreBrig,BR->ID);
 						OI->AssignIntParam(j+1);
 						if(SEL)OI->SelectIcon();
+                        brojac++;
 					};
 				};
 			};
 		};
 	};
+    //SHOWING GENERALS IN TAB, P1 IS COUNTER THAT MAKES SURE THERE IS ATLEAST ONE, N IS MATRIX 5X6, THIS CHECKS IF UNIT IS DIPLOMAT AND ADDS HIM TO COUNTER IF HE IS
+    //USAGE 0x22 is diplomat to use instead officer in some cases
+    int P1 = 0;
+    for(i=0;i< N;i++){
+		OneObject* OB=Group[i];
+        if (OB && OB->newMons->Officer && OB->NNUM == NatRefTBL[MyNation])P1++;
+	};
+    if (P1) {
+        OneIcon* OI = GeneralPanel.AddIconFixed(0, ORDERS_LIST_ICON, 0);
+        OI->AssignLeft(&OLIHPRO1, 0);
+        int brojac = 0;
+        if (GeneralsMode) {
+            for (int j = 0; j < N; j++) {
+                OneObject* OB = Group[j];
+                OneObject* OB1 = Group[j];
+                Brigade* BR = BR0 + j;
+                bool UNFND = true;
+                bool SEL = false;
+                if (OB && OB->newMons->Officer && OB->NNUM == NatRefTBL[MyNation]) {
+                    OneObject* OB1 = Group[j];
+                    UNFND = false;
+                    if (BR->Enabled) UNFND = true;
+                    SEL = OB1->Selected & GM(MyNation);
+                }
+                int NU = 0;
+                //SEL = OB1->Selected & GM(MyNation);
+                NU++;
+                if (!UNFND) {
+                    NewMonster* NM = OB1->newMons;
+                    //GeneralObject* GO = NATIONS[NatRefTBL[MyNation]].Mon[BR->MembID];
+                    //NewMonster* NM = GO->newMons;
+                    OI = GeneralPanel.AddIconFixed(NM->IconFileID, NM->IconID, brojac + BrigNx);
+                    OI->AssignLeft(&SELBRIG, OB1->Serial);
+                    //OI->AssignIntVal(NU);
+                    //OI->AssignMoveOver(&PreBrig, j);
+                    OI->AssignIntParam(brojac + 1);
+                    if(SEL)OI->SelectIcon();
+                    brojac++;
+                };
+            };
+        };
+    }
 	/*
 	if(NATIONS[MyNation].NHistory){
 		OneIcon* OI=BrigPanel.AddIconFixed(0,HISTORY_Icon,1);
