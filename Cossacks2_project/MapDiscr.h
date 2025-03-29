@@ -431,6 +431,7 @@ public:
 #ifdef NEWMORALE
 	short       MoraleDecSpeed;
 	int         StartMorale;
+    bool 		NoFear : 1;
 #else //NEWMORALE
 	word FearFactor[NFEARSUBJ];
 #endif //NEWMORALE
@@ -492,6 +493,11 @@ public:
 	bool AttBuild:1;
 	bool CanStandGr:1;
 	bool Priest:1;
+#ifdef NEWMORALEPRIEST
+    bool MoraleHealer : 1;
+    bool UnitMoralist : 1;
+    bool FormationMoralist : 1;
+#endif
 	bool Shaman:1;
 	bool ResSubst:1;
 	bool Archer:1;
@@ -774,6 +780,7 @@ public:
 #ifdef NEWMORALE
 	short       MoraleDecSpeed;
 	int         StartMorale;
+    bool 		NoFear : 1;
 #else //NEWMORALE
 	word		FearFactor[NFEARSUBJ];	
 #endif //NEWMORALE
@@ -1315,6 +1322,7 @@ public:
 #ifdef NEWMORALE
 	int Morale;
 	int MaxMorale;
+    int PriestMorale;
 #endif
 #ifdef GETTIRED
 	int GetTired;

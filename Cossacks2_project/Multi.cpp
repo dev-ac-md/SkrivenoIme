@@ -3916,16 +3916,30 @@ void SetSearchVictim(byte NI,byte Val){
 						OB->NoSearchVictim=Val&1;
 						addrand(OB->NoSearchVictim);
 						if(OB->EnemyID!=0xFFFF)OB->ClearOrders();
-					}else{
-						if(!OB->newMons->Priest){
-							addrand(OB->NoSearchVictim);
-							OB->NoSearchVictim=Val&1;
-							addrand(OB->NoSearchVictim);
-							if(OB->EnemyID!=0xFFFF)OB->ClearOrders();
-							if(OB->LocalOrder&&OB->LocalOrder->DoLink==&NewAttackPointLink)
-								OB->ClearOrders();
-						};
-					};
+					}
+#ifdef NEWMORALEPRIEST
+                    else {
+                        if (!OB->newMons->Priest) {
+                            addrand(OB->NoSearchVictim);
+                            OB->NoSearchVictim = Val & 1;
+                            addrand(OB->NoSearchVictim);
+                            if (OB->EnemyID != 0xFFFF)OB->ClearOrders();
+                            if (OB->LocalOrder && OB->LocalOrder->DoLink == &NewAttackPointLink)
+                                OB->ClearOrders();
+                        };
+                    };
+#else
+                        else {
+                        if (!OB->newMons->Priest) {
+                            addrand(OB->NoSearchVictim);
+                            OB->NoSearchVictim = Val & 1;
+                            addrand(OB->NoSearchVictim);
+                            if (OB->EnemyID != 0xFFFF)OB->ClearOrders();
+                            if (OB->LocalOrder && OB->LocalOrder->DoLink == &NewAttackPointLink)
+                                OB->ClearOrders();
+                        };
+                    };
+#endif
 				};
 			};
         };

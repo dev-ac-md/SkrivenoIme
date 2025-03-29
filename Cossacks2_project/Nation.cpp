@@ -85,17 +85,51 @@ bool CheckAttAbility(OneObject* OB,word Patient){
 		OneObject* EN=Group[Patient];
 		if(!EN)return false;
 		GeneralObject* EGO=EN->Ref.General;
-		if(OB->newMons->Priest){
-			if(!EN->NMask&OB->NMask)return false;
-			if(EN->Life>=EN->MaxLife)return false;
-		}else{
-			if(OB->newMons->Shaman){
-				if(EN->NMask&OB->NMask){
-					if(EN->Life>=EN->MaxLife)return false;
-				};
-			}else
-			if(EN->NMask&OB->NMask)return false;
-		};
+#ifdef NEWMORALEPRIEST
+        if (OB->newMons->Priest) {
+            if (!EN->NMask & OB->NMask)return false;
+            if (OB->newMons->MoraleHealer) {
+                if (OB->newMons->FormationMoralist) {
+                    if (EN->InArmy == 0) {
+                        return false;
+                    }
+                    if (EN->Morale >= EN->MaxMorale)return false;
+                }
+                if (EN->Morale >= EN->MaxMorale)return false;
+            }
+            else {
+                if (EN->Life >= EN->MaxLife)return false;
+            }
+        }
+        else {
+            if (OB->newMons->Shaman) {
+                if (EN->NMask & OB->NMask) {
+                    if (OB->newMons->MoraleHealer) {
+                        if (EN->Morale >= EN->MaxMorale)return false;
+                    }
+                    else {
+                        if (EN->Life >= EN->MaxLife)return false;
+                    }
+                };
+            }
+            else
+                if (EN->NMask & OB->NMask)return false;
+        }
+#else
+        if (OB->newMons->Priest) {
+            if (!EN->NMask & OB->NMask)return false;
+            if (EN->Life >= EN->MaxLife)return false;
+        }
+        else {
+            if (OB->newMons->Shaman) {
+                if (EN->NMask & OB->NMask) {
+                    if (EN->Life >= EN->MaxLife)return false;
+                };
+            }
+            else
+                if (EN->NMask & OB->NMask)return false;
+        }
+#endif
 		GeneralObject* GO=OB->Ref.General;
 		return true;
 	}else{
@@ -829,6 +863,12 @@ extern City CITY[8];
 word GetDir(int dx,int dy);
 int OneObject::MakeDamage(int Fundam,int Persist,OneObject* Sender,byte AttType,bool Act){
 	if(Sender&&Sender==this)return 0;
+#ifdef NEWMORALE
+    if (Sender->newMons->CommandCenter) {
+        void OnCommandMorale(word OB);
+        OnCommandMorale(Sender->Index);
+    }
+#endif
 	if(Sender&&Sender->Index!=Index&&!(Sender->newMons->Animal||newMons->Animal||Sender->AI_Guard||AI_Guard)){
 		int ac1=GetUnitActivity(Sender);//0-neytral,1-my territory,-1-enemy's territory
 		int ac2=GetUnitActivity(this);
@@ -1014,9 +1054,6 @@ int OneObject::MakeDamage(int Fundam,int Persist,OneObject* Sender,byte AttType,
 				};
 				dam+=adm;
 			};
-#ifdef EW
-            if (!(wf & 128)) {
-#endif
 			if(AddShield){
 				int adm=AddShield;
 				if(BrigadeID!=0xFFFF){
@@ -1028,11 +1065,14 @@ int OneObject::MakeDamage(int Fundam,int Persist,OneObject* Sender,byte AttType,
 						if(addr>=70)adm=0;
 					};
 				};
-				dam-=adm;
-			};
 #ifdef EW
-        }
+                if (!(wf & 128)) {
+                    dam -= adm;
+                }
+#else
+                dam -= adm;
 #endif
+			};
 			if(Act){
 				if(wf&16){
 					FiringStage=newMons->FireLimit+1;
