@@ -1473,9 +1473,20 @@ void LoadFormationsNew(ResFile f1){
 						OB->AddDamage=BR->AddDamage;
 						OB->AddShield=BR->AddShield;
 						if(q>1){
-							byte use=OB->newMons->Usage;
+							//byte use=OB->newMons->Usage;
 #ifndef COSSACKS2
-							BR->Strelki=(use==StrelokID||OB->newMons->Artilery);
+                            if (StrelokID == OB->newMons->Usage
+                                || GrenaderID == OB->newMons->Usage//BUGFIX: Non-shooting grenadiers in formations
+                                || OB->newMons->Artilery)
+                            {
+                                BR->Strelki = true;
+                            }
+                            else
+                            {
+                                BR->Strelki = false;
+                            }
+
+                            //BR->Strelki = ( use == StrelokID || use == GrenaderID || OB->newMons->Artilery );
 #endif
 						};
 						if(q>1){

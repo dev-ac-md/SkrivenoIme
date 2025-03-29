@@ -1,4 +1,4 @@
-#define COPYSCR
+//#define COPYSCR
 //#define ScreenSizeX 1024
 //#define ScreenSizeY 768
 extern int clrRed;

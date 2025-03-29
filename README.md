@@ -10,7 +10,6 @@ How to compile exe. Dlls are dependednt on library of exe which is dependent on 
 6. change configuration type to dll
 7. build one after another (Commcore and gMotor arent DLL files they stay libraries)
 
-
 Known issues for now:
 
 -Diplomacy with natives doesnt work properly

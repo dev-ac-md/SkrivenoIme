@@ -1,4 +1,5 @@
 int PanelGP=-1;
+extern int GenPnX;
 extern DialogsSystem GLOBHINT;
 void ShowRMap(){
 	if(PlayGameMode==1)return;
@@ -25,6 +26,7 @@ void ShowRMap(){
 
 	GPS.ShowGP(x0,0,PanelGP,0,MyNation);
 	GPS.ShowGP(RPMButX,0,PanelGP,2,MyNation);
+    GPS.ShowGP(RPMButX - 65, 0, PanelGP, 2, MyNation);
 #ifdef _USE3D
 	GPS.FlushBatches();
 #endif
@@ -45,6 +47,25 @@ void ShowRMap(){
 		}else
 			ShowString(x1+ii*dx0-GetRLCStrWidth(RES_LOT_MONEY,&YellowFont),7, RES_LOT_MONEY, &YellowFont);
 	};
+
+    //POPULATION COUNTER
+    Nation* NT = NATIONS + NatRefTBL[MyNation];
+    char str[128];
+    int y1 = 38;
+    int x2 = GenPnX+45;
+    if (NT->NGidot >= NT->NFarms) {
+        sprintf(str, HABITAN, NT->NGidot);//"+סר×נ×ץûץש:%d"
+        if ( NT->NFarms != 0) ShowString(x2, y1, str, &RedFont);
+        else ShowString(x2, y1, str, &YellowFont);
+        sprintf(str, MAXHABI, NT->NFarms);//"¦נת¸.‏סר×נ×ץûץש:%d"
+        ShowString(x2, y1 + 12, str, &YellowFont);
+    }else {
+        sprintf(str, HABITAN, NT->NGidot);//"+סר×נ×ץûץש:%d"
+        ShowString(x2, y1, str, &YellowFont);
+        sprintf(str, MAXHABI, NT->NFarms);//"¦נת¸.‏סר×נ×ץûץש:%d"
+        ShowString(x2, y1 + 12, str, &YellowFont);
+    }
+    
 #ifdef _USE3D
 	GPS.FlushBatches();
 #endif

@@ -310,6 +310,9 @@ void LoadRDS(){
 					if(strchr(ccc,'X'))WeaponFlags[NWeaponIDS]|=16;//extreme firing weapon
 					if(strchr(ccc,'B'))WeaponFlags[NWeaponIDS]|=32;//damage only inside units
 					if(strchr(ccc,'I'))WeaponFlags[NWeaponIDS]|=64;//invisible
+#ifdef EW
+                    if (strchr(ccc, 'S'))WeaponFlags[NWeaponIDS] |= 128;//invisible
+#endif
 					NWeaponIDS++;
 				};
 				break;

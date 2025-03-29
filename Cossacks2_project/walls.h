@@ -66,6 +66,7 @@ public:
     NewMonster* NM;
 	word  NIndex;
 	byte  NI;
+    bool  WallLMode;
 //------------------//
     WallCluster();
     ~WallCluster();
@@ -78,6 +79,7 @@ public:
     void CreateSprites();
     void AddPoint(short x,short y,bool Vis);
     void Preview();
+    void ViewMiniWall();
     void View();
 	int  CreateData(word* Data,word Health);
 	void CreateByData(word* Data);

@@ -1,4 +1,11 @@
 bool ProcessGameOptions(){
+    if (!window_mode)
+    {//Calculate offsets for centering menu in fullscreen mode
+        menu_x_off = (screen_width - 1024) / 2;
+        menu_y_off = (screen_height - 768) / 2;
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
 	// Graphics
 	LocalGP BTNS("Interf2\\G_Load_Game");	
 	LocalGP MGP("Interf2\\Options_for_Game");
@@ -15,8 +22,17 @@ bool ProcessGameOptions(){
 	int dy=-166+((RealLy-425)>>1);
 	DialogsSystem MMenu(dx,dy);
 	MMenu.HintFont=&hfnt;
-	MMenu.HintY=701;
-	MMenu.HintX=18;
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
+	MMenu.HintY= menu_hint_y;
+	MMenu.HintX= menu_hint_x;
 	
 	// Fonts
 	RLCFont* FWin = &fon16y5;
@@ -31,8 +47,10 @@ bool ProcessGameOptions(){
 	//MMenu.addGPPicture(NULL,Dx,Dy,MGP.GPID,0);
 	//MMenu.addGPPicture(NULL,dx,dy,BTNS.GPID,1);
 
-	if(FPSTime>100)FPSTime=100;
-	if(FPSTime<0)FPSTime=0;
+#ifndef SPEEDFIX
+    if (FPSTime > 100)FPSTime = 100;
+    if (FPSTime < 0)FPSTime = 0;
+#endif
 	//game speed (#3)
 	if(ScrollSpeed<2)ScrollSpeed=2;
 
@@ -72,7 +90,13 @@ bool ProcessGameOptions(){
 	VScrollBar* SVL=MMenu.addGP_ScrollBarL(NULL,X0,ScrDy+1+ComY+3*DY,100,WarSound,SCR.GPID,0,LX,12,0,0);
 	VScrollBar* MVL=MMenu.addGP_ScrollBarL(NULL,X0,ScrDy+ComY+4*DY,100,MidiSound,SCR.GPID,0,LX,12,0,0);	
 	VScrollBar* SSP=MMenu.addGP_ScrollBarL(NULL,X0,ScrDy+1+ComY+7*DY,8,ScrollSpeed-2,SCR.GPID,0,LX,12,0,0);
-	VScrollBar* HB=MMenu.addGP_ScrollBarL(NULL,X0,ScrDy+ComY+8*DY,100,100-FPSTime,SCR.GPID,0,LX,12,0,0);
+#ifndef SPEEDFIX
+#ifndef EW
+    VScrollBar* HB = MMenu.addGP_ScrollBarL(NULL, X0, ScrDy + ComY + 8 * DY, 100, 100 - FPSTime, SCR.GPID, 0, LX, 12, 0, 0);
+#else
+    VScrollBar* HB = MMenu.addGP_ScrollBarL(NULL, X0, ScrDy + ComY + 8 * DY, 100, 100 - FPSTime, SCR.GPID, 0, LX, 12, 0, 0);
+#endif
+#endif
 
 	int ButY = Y+527;
 	GP_TextButton* OkBtn=MMenu.addGP_TextButton(NULL,X+476-337,ButY,GetTextByID("INTF_ACCEPT"),BTNS.GPID,1,FABut, FPBut);
@@ -177,7 +201,9 @@ bool ProcessGameOptions(){
 		//};
 	}while(ItemChoose==-1);
 	if(ItemChoose==mcmOk){
-		FPSTime=100-HB->SPos;
+#ifndef SPEEDFIX
+        FPSTime = 100 - HB->SPos;
+#endif
 		ScrollSpeed=SSP->SPos+2;
 		exFMode=FMode->CurLine;
 		if(RealLx!=ModeLX[VMode->CurLine]||RealLy!=ModeLY[VMode->CurLine])SetGameDisplayModeAnyway(ModeLX[VMode->CurLine],ModeLY[VMode->CurLine]);

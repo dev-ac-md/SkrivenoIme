@@ -11,8 +11,17 @@ void ProcessGSaveGame(){
 	DialogsSystem MMenu(dx,dy);
 	
 	MMenu.HintFont=&hfnt;
-	MMenu.HintY=701;
-	MMenu.HintX=18;
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
+	MMenu.HintY= menu_hint_y;
+	MMenu.HintX= menu_hint_x;
 
 	// Fonts
 	RLCFont* FWin = &fon16y5;

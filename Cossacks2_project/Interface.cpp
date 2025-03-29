@@ -1,3 +1,4 @@
+#include ".\New\UdpHolePuncher.h"
 #include "Limitations.h"
 #include "ddini.h"
 #include "ResFile.h"
@@ -66,6 +67,8 @@
 
 //#define INTF_AC
 #define INTF_AC_ADD
+
+UdpHolePuncher udp_hole_puncher;
 
 extern bool RUNMAPEDITOR;
 extern bool RUNUSERMISSION;
@@ -304,188 +307,153 @@ void ExplorerOpenRef(int Index,char* ref);
 bool ServerResponce=1;
 CEXPORT
 bool ProcessMessages(){
-	if(PDIF_Inside)return false;
-	int TT=GetTickCount();
-	if(!PrevDelayTime)PrevDelayTime=TT;
-	if(TT-PrevDelayTime>560){
-		Sleep(2);
-		PrevDelayTime=TT;
-		ProcessMP3(false);
-	};
-	if(!PrevProcTime)PrevProcTime=TT;
-	if(TT-PrevProcTime>3000){
-		PDIF_Inside=1;
-		if(ProcessDownloadInternetFiles)ProcessDownloadInternetFiles();
-		ProcessExplorer(16);
-		PDIF_Inside=0;
-		PrevProcTime=TT;
-	};
-	if(NeedToPerformGSC_Report){
-		int T=GetTickCount();
-		if(!PrevReportTime)PrevReportTime=T;
-		if(T-PrevReportTime>120000){
-			int NZeros=0;
-			int PROFS[8];
-			for(int i=0;i<NPlayers;i++){
-				if(!PINFO[i].ProfileID)NZeros++;
-				PROFS[i]=PINFO[i].ProfileID;
-			};
-			if(!NZeros){
-				ReportAliveState(NPlayers,PROFS);
-				PrevReportTime=T;
-			};
-		};
-	};
-	if(NeedToReportInGameStats&&UseGSC_Login){
-		int T=GetTickCount();
-		if(!PrevInGameAliveTime)PrevInGameAliveTime=T;
-		if(T-PrevInGameAliveTime>30000){
-			if(!ServerResponce){
-				AssignHint1(GetTextByID("SERVERWARNING"),200,32);
-			};
-			char GMID[64];
-			GetGameID(GMID);
-			if(GMID[0]){
-				char REF[128];
-				sprintf(REF,"GW|gmalive&%s&%X&1",GMID,&ServerResponce);
-				ExplorerOpenRef(0,REF);
-				PrevInGameAliveTime=T;
-				ServerResponce=0;
-			};
-		};
-		if(tmtmt-LastTimeReport_tmtmt>=512){
-			int NMN[8]={0,0,0,0,0,0,0};
-			for(int i=0;i<MAXOBJECT;i++){
-				OneObject* OB=Group[i];
-				if(OB&&(OB->Hidden||!OB->Sdoxlo)&&(!OB->NewBuilding)){
-					NMN[OB->NNUM]++;
-				};
-			};
-			OnePlayerReport OPR[8];
-			for(int i=0;i<NPlayers;i++)if(PINFO[i].PlayerID==MyDPID){
-				int NI=PINFO[i].ColorID;
-				int NP=0;
-				int NW=0;
-				int NN=NATIONS[NI].NMon;
-				for(int j=0;j<NN;j++){
-					NewMonster* NM=NATIONS[NI].Mon[j]->newMons;
-					if(NM->Peasant)NP+=NATIONS[NI].NProduced[j];
-					else if(!NM->Building)NW+=NATIONS[NI].NProduced[j];
-				};
-				
-				OPR[0].NBornP=NP;
-				OPR[0].NBornUnits=NW;
-				OPR[0].Population=NMN[PINFO[i].ColorID];
-				OPR[0].Profile=PINFO[i].ProfileID;
-				for(int p=0;p<6;p++)OPR[i].ReachRes[p]=NATIONS[NI].ResTotal[p];
-				OPR[0].Score=CITY[NI].Account/100;
-				OPR[0].State=NATIONS[NI].VictState;
-				for(int q=0;q<6;q++)OPR[0].ReachRes[q]=NATIONS[NI].ResTotal[q];
-			};
-			ReportGSCGame(tmtmt,NPlayers,OPR);
-			LastTimeReport_tmtmt=tmtmt;
-		};
-	};
-	int T1=GetTickCount();
-	if((!PrevT)||T1-PrevT>10){
-        try
-        {
-            int TT0 = T1;
-            ProcessNewInternet();
-        }
-        catch (...)
-        {
-        }
+    if (PDIF_Inside)return false;
+    int TT = GetTickCount();
+    if (!PrevDelayTime)PrevDelayTime = TT;
+    if (TT - PrevDelayTime > 560) {
+        Sleep(2);
+        PrevDelayTime = TT;
+        ProcessMP3(false);
+    };
+    if (!PrevProcTime)PrevProcTime = TT;
+    if (TT - PrevProcTime > 3000) {
+        PDIF_Inside = 1;
+        if (ProcessDownloadInternetFiles)ProcessDownloadInternetFiles();
+        ProcessExplorer(16);
+        PDIF_Inside = 0;
+        PrevProcTime = TT;
+    };
+    if (NeedToPerformGSC_Report) {
+        int T = GetTickCount();
+        if (!PrevReportTime)PrevReportTime = T;
+        if (T - PrevReportTime > 120000) {
+            int NZeros = 0;
+            int PROFS[8];
+            for (int i = 0; i < NPlayers; i++) {
+                if (!PINFO[i].ProfileID)NZeros++;
+                PROFS[i] = PINFO[i].ProfileID;
+            };
+            if (!NZeros) {
+                ReportAliveState(NPlayers, PROFS);
+                PrevReportTime = T;
+            };
+        };
+    };
+    if (NeedToReportInGameStats && UseGSC_Login) {
+        int T = GetTickCount();
+        if (!PrevInGameAliveTime)PrevInGameAliveTime = T;
+        if (T - PrevInGameAliveTime > 30000) {
+            if (!ServerResponce) {
+                AssignHint1(GetTextByID("SERVERWARNING"), 200, 32);
+            };
+            char GMID[64];
+            GetGameID(GMID);
+            if (GMID[0]) {
+                char REF[128];
+                sprintf(REF, "GW|gmalive&%s&%X&1", GMID, &ServerResponce);
+                ExplorerOpenRef(0, REF);
+                PrevInGameAliveTime = T;
+                ServerResponce = 0;
+            };
+        };
+        if (tmtmt - LastTimeReport_tmtmt >= 512) {
+            int NMN[8] = { 0,0,0,0,0,0,0 };
+            for (int i = 0; i < MAXOBJECT; i++) {
+                OneObject* OB = Group[i];
+                if (OB && (OB->Hidden || !OB->Sdoxlo) && (!OB->NewBuilding)) {
+                    NMN[OB->NNUM]++;
+                };
+            };
+            OnePlayerReport OPR[8];
+            for (int i = 0; i < NPlayers; i++)if (PINFO[i].PlayerID == MyDPID) {
+                int NI = PINFO[i].ColorID;
+                int NP = 0;
+                int NW = 0;
+                int NN = NATIONS[NI].NMon;
+                for (int j = 0; j < NN; j++) {
+                    NewMonster* NM = NATIONS[NI].Mon[j]->newMons;
+                    if (NM->Peasant)NP += NATIONS[NI].NProduced[j];
+                    else if (!NM->Building)NW += NATIONS[NI].NProduced[j];
+                };
 
-        int TT0 = GetTickCount() - T1;
-        if (TT0 > COUNTER)
-        {
-            COUNTER = TT0;
-        }
-
-
-        if (GetKeyState(VK_CONTROL) & 0x8000)
-        {
+                OPR[0].NBornP = NP;
+                OPR[0].NBornUnits = NW;
+                OPR[0].Population = NMN[PINFO[i].ColorID];
+                OPR[0].Profile = PINFO[i].ProfileID;
+                for (int p = 0; p < 6; p++)OPR[i].ReachRes[p] = NATIONS[NI].ResTotal[p];
+                OPR[0].Score = CITY[NI].Account / 100;
+                OPR[0].State = NATIONS[NI].VictState;
+                for (int q = 0; q < 6; q++)OPR[0].ReachRes[q] = NATIONS[NI].ResTotal[q];
+            };
+            ReportGSCGame(tmtmt, NPlayers, OPR);
+            LastTimeReport_tmtmt = tmtmt;
+        };
+    };
+    int T1 = GetTickCount();
+    if ((!PrevT) || T1 - PrevT > 10) {
+        int TT0 = T1;
+        ProcessNewInternet();
+        TT0 = GetTickCount() - T1;
+        if (TT0 > COUNTER)COUNTER = TT0;
+        //ProcessLogin();
+        //TPEN.Process();
+        //NPROCM++;
+        //int T0=GetTickCount();
+        if (GetKeyState(VK_CONTROL) & 0x8000) {
             LastCTRLPressTime = GetTickCount();
-        }
-
+        };
         TT0 = GetTickCount();
-
-        try
-        {
-            ProcessReceive();
-        }
-        catch (...)
-        {
-        }
-
+        ProcessReceive();
         TT0 = GetTickCount() - TT0;
-
-        if (TT0 > COUNTER1)
-        {
-            COUNTER1 = TT0;
+        if (TT0 > COUNTER1)COUNTER1 = TT0;
+        ProcessNetCash();
+        PrevT = T1;
+        if (bActive) {
+            LastBActiveTime = T1;
         }
-
-        try
+        else {
+            if (GameInProgress && NPlayers > 1 && T1 - LastBActiveTime > 20000) {
+                if (NATIONS[MyNation].VictState != 2) {
+                    IAmLeft();
+                    SpecCmd = 199;
+                    ShowOptMessage("#ALTTABDEFEAT", 0);
+                };
+            };
+        };
+    };
+    MSG         msg;
+    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+        if (msg.message == WM_QUIT)
         {
-            ProcessNetCash();
+            //FreeDDObjects();
+            //PostQuitMessage(msg.wParam);
+            //TPROCM+=GetTickCount()-T0;
+            return true;
         }
-        catch (...)
-        {
-        }
-		PrevT=T1;
-        /*
-		if(bActive){
-			LastBActiveTime=T1;
-		}else{
-			if(GameInProgress&&NPlayers>1&&T1-LastBActiveTime>20000){
-				if(NATIONS[MyNation].VictState!=2){
-					IAmLeft();
-					SpecCmd=199;
-					ShowOptMessage("#ALTTABDEFEAT",0);
-				};
-			};
-		};
-        */
-	};
-    BOOL ret = FALSE;
-	MSG         msg;
-	while (FALSE != (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))){
-        if (-1 == ret)
-        {
-            continue;
-        }
-		if (msg.message == WM_QUIT)
-		{
-			//FreeDDObjects();
-			//PostQuitMessage(msg.wParam);
-			//TPROCM+=GetTickCount()-T0;
-			return true;
-		}
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-	//TPROCM+=GetTickCount()-T0;
-	if(GPROG.NWeights){
-		if((!PrevProgStage)||GetTickCount()-PrevProgStage>300){
-			PrevProgStage=GetTickCount();
-			if(!PROGSTR)PROGSTR=GetTextByID("PROGSTR%s");
-			char ccx[128];
-			char tmp[32];
-			DWORD CID=GPROG.StageID[GPROG.CurStage];
-			tmp[0]=char(CID>>24);
-			tmp[1]=char((CID>>16)&255);
-			tmp[2]=char((CID>>8)&255);
-			tmp[3]=char((CID)&255);
-			tmp[4]=' ';
-			tmp[5]=0;
-			int cpr=GPROG.GetCurProgress();
-			sprintf(tmp+5,"%d%%",cpr);
-			sprintf(ccx,PROGSTR,tmp);
-			ShowProgStr(ccx,/*PROGSTR,*/cpr);
-		};
-	};
-	return false;
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    //TPROCM+=GetTickCount()-T0;
+    if (GPROG.NWeights) {
+        if ((!PrevProgStage) || GetTickCount() - PrevProgStage > 300) {
+            PrevProgStage = GetTickCount();
+            if (!PROGSTR)PROGSTR = GetTextByID("PROGSTR%s");
+            char ccx[128];
+            char tmp[32];
+            DWORD CID = GPROG.StageID[GPROG.CurStage];
+            tmp[0] = char(CID >> 24);
+            tmp[1] = char((CID >> 16) & 255);
+            tmp[2] = char((CID >> 8) & 255);
+            tmp[3] = char((CID) & 255);
+            tmp[4] = ' ';
+            tmp[5] = 0;
+            int cpr = GPROG.GetCurProgress();
+            sprintf(tmp + 5, "%d%%", cpr);
+            sprintf(ccx, PROGSTR, tmp);
+            ShowProgStr(ccx,/*PROGSTR,*/cpr);
+        };
+    };
+    return false;
 };
 extern bool EnterChatMode;
 void ProcessChatKeys();
@@ -540,6 +508,18 @@ bool MMItemChoose(SimpleDialog* SD){
 	Lpressed=false;
 	return true;
 };
+
+bool CHANGESORT(SimpleDialog* SD) {
+    /*
+    if (TPEN.SORTTYPE == SD->UserParam)TPEN.SORTTYPE = -TPEN.SORTTYPE;
+
+    else TPEN.SORTTYPE = SD->UserParam;
+    */
+    Lpressed = 0;
+    return true;
+    
+};
+
 CEXPORT
 void StdKeys(){
 	if(KeyPressed&&(LastKey==27||LastKey==13)){
@@ -578,7 +558,11 @@ int OldSizeX;
 int OldSizeY;
 int mul3(int);
 extern LPDIRECTDRAW            lpDD;
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 bool CheckMode(){
 	return true;
 	SQPicture Pan("pan17.bpx");
@@ -747,8 +731,10 @@ bool SetGameDisplayMode(int SizeX,int SizeY){
 	return false;
 };
 extern int ScrollSpeed;
+#ifndef SPEEDFIX
 CEXPORT
 int FPSTime;
+#endif
 
 //-----------------Speed menu------------------//
 void ProcessSpeed(int x,int y){
@@ -814,7 +800,6 @@ CEXPORT int menu_x_off = 0;
 CEXPORT int menu_y_off = 0;
 int menu_hint_x = 18;
 int menu_hint_y = 701;
-
 //--------------------HOST THE SESSION---------------------//
 bool processHostGame(){
 	return false;
@@ -825,11 +810,12 @@ void WaitWithMessage(char* Message);
 void NoWaitWithMessage(char* Message);
 #ifdef MAKE_PTC
 int ProcessInternetConnection(bool Active);
-bool FindSessionAndJoin(char* Name,char* Nick,bool Style);
+bool FindSessionAndJoin(char* Name, char* Nick, bool Style, unsigned short port);
 bool CreateSession(char* SessName,char* Name,DWORD User2,bool Style,int MaxPlayers);
 extern int GMTYPE;
 int IEMMOD=0;
 bool DoNewInet=0;
+//bool InternetGameLogin();
 extern int GMMAXPL;
 extern CEXPORT bool TOTALEXIT;
 bool ProcessNewInternetLogin();
@@ -1243,9 +1229,130 @@ CEXPORT
 void ShowClanString(int x,int y,char* s,byte State,RLCFont* Fn,RLCFont* Fn1,int DY);
 void xLine(int x,int y,int x1,int y1,byte c);
 
+int SearchPlayer(char* Nick) {
+    /*
+    for (int i = 0; i < TPEN.NPlayers; i++) {
+
+        if (!strcmp(Nick, TPEN.Players[i].Name))return i;
+
+    };
+
+    for (i = 0; i < TPEN.ABPL.NPlayers; i++) {
+
+        if (!strcmp(Nick, TPEN.ABPL.Names[i]))return i + TPEN.NPlayers;
+
+    };
+    */
+    return -1;
+
+};
+
+void Draw_PLISTA(int x, int y, int Lx, int Ly, int Index, byte Active, int param) {
+    /*
+    if (Index < TPEN.NPlayers) {
+
+        int GPF = param;
+
+        RLCFont* FONT = Active == 2 ? &WhiteFont : &YellowFont;
+
+        RLCFont* FONT1 = NULL;
+
+        char cc3[256];
+
+        strcpy(cc3, TPEN.Players[Index].Name);
+
+        //char* cc=strstr(cc3,"[inside]");
+
+        //if(cc)cc[0]=0;
+
+        bool Really = 1;
+
+        int DYF = 0;
+
+        if (TPEN.Players[Index].ProfState == 15 && TPEN.Players[Index].ProfileID) {
+
+            //strcat(cc3,"(R)");
+
+            FONT = Active == 2 ? &SpecialWhiteFont : &SpecialYellowFont;
+
+            FONT1 = &SpecialRedFont;
+
+            DYF = -5;
+
+            Really = 1;
+
+        };
+
+        if (TPEN.Players[Index].ProfState == 1 ||
+
+            (TPEN.Players[Index].ProfState == 3 && TPEN.Players[Index].ProfileID)) {
+
+            strcat(cc3, "(?)");
+
+        };
+
+        if (Really)ShowClanString(x + 45 - 6, y + 3, cc3, Active, FONT, FONT1, DYF);
+
+        else {
+
+            if (FONT1)ShowString(x + 45 - 6 + 1, y + 3 + DYF + 1, cc3, FONT1);
+
+            ShowString(x + 45 - 6, y + 3 + DYF, cc3, FONT);
+
+        };
+
+        int png = TPEN.Players[Index].Ping;
+
+        int spp = 0;
+
+        if (png < 0)spp = 16;
+
+        else if (png < 300)spp = 12;
+
+        else if (png < 500)spp = 13;
+
+        else if (png < 900)spp = 14;
+
+        else spp = 15;
+
+        GPS.ShowGP(x, y, GPF, spp, 0);
+
+        if (TPEN.Players[Index].Muted) {
+
+            xLine(x + 45 - 7, y + 12, x + 45 + GetRLCStrWidth(cc3, &YellowFont), y + 12, RedColor2);
+
+            xLine(x + 45 - 7, y + 13, x + 45 + GetRLCStrWidth(cc3, &YellowFont), y + 13, RedColor2);
+
+        };
+
+
+
+    }
+    else {
+
+        Index -= TPEN.NPlayers;
+
+        //if(Index<TPEN.NRoomPlayers){
+
+        if (Index < TPEN.ABPL.NPlayers) {
+
+            RLCFont* FONT = &RedFont;
+
+            int GPF = param;
+
+            ShowString(x + 45, y + 3, TPEN.ABPL.Names[Index], FONT);
+
+            GPS.ShowGP(x, y, GPF, 17, 0);
+
+        };
+
+    };*/
+
+};
+
 char* BATTLTXT=NULL;
 char* DEATHTXT=NULL;
-void LimitString(char* str,lpRLCFont FONT,int L){
+CEXPORT void LimitString(char* str,lpRLCFont FONT,int L){
 	int L0;
 	do{
 		L0=GetRLCStrWidth(str,FONT);
@@ -1261,6 +1368,329 @@ void LimitString(char* str,lpRLCFont FONT,int L){
 extern word dwVersion;
 void CreateRoomsHintString(int Idx,char* hint,bool Active){
 	hint[0]=0;
+    /*if (Idx < TPEN.NFRooms) {
+
+        int Index = TPEN.FiltRef[Idx];
+
+        if (Index < 1000000) {
+
+            if (Index >= TPEN.NRooms)return;
+
+            GServer G = TPEN.Room[Index].G;
+
+            strcpy(hint, TPEN.Room[Index].Name);
+
+            char* cc = ServerGetStringValue(G, "mapname", "");
+
+            cc = strstr(cc, "|");
+
+            if (cc) {
+
+                strcat(hint, ", ");
+
+                strcat(hint, cc + 1);
+
+                strcat(hint, "\\");
+
+            }
+            else strcat(hint, "\\");
+
+            cc = ServerGetStringValue(G, "gamemode", "x");
+
+            if (!strcmp(cc, "closedplaying")) {
+
+                strcat(hint, GetTextByID("GAMINPR"));
+
+            }
+            else {
+
+                if (strcmp(cc, "wait")) {
+
+                    strcat(hint, GetTextByID("GAMINAR"));
+
+                }
+                else {
+
+                    if (Active) {
+
+                        cc = ServerGetStringValue(G, "gamever", "0");
+
+                        char test[16];
+
+                        sprintf(test, "%d.%d%d", dwVersion / 100, (dwVersion / 10) % 10, dwVersion % 10);
+
+                        if (strcmp(cc, test)) {
+
+                            sprintf(hint + strlen(hint), GetTextByID("IINVVER"), test);
+
+                        }
+                        else {
+
+                            int max = ServerGetIntValue(G, "maxplayers", 0);
+
+                            int np = ServerGetIntValue(G, "numplayers", 0);
+
+                            if (np >= max) {
+
+                                strcat(hint, GetTextByID("ROMFULL"));
+
+                            }
+                            else {
+
+                                cc = ServerGetStringValue(G, "password", "0");
+
+                                if (cc[0] == '1') {
+
+                                    strcat(hint, GetTextByID("RMPASSW"));
+
+                                }
+                                else {
+
+                                    int L = GetCEW(G, 1);
+
+                                    if (L == 3)strcat(hint, GetTextByID("CANJOIN3")); else
+
+                                        if (L == 2)strcat(hint, GetTextByID("CANJOIN2")); else
+
+                                            if (L == 1)strcat(hint, GetTextByID("CANJOIN1")); else
+
+                                                strcat(hint, GetTextByID("CANJOIN0"));
+
+                                };
+
+                            };
+
+                        };
+
+                    };
+
+                };
+
+            };
+
+        };
+
+    }
+    else hint[0] = 0;
+    */
+};
+
+void CreatePlayerHintString(int Index, char* hint) {
+    /*
+    if (Index < TPEN.NPlayers) {
+
+        if (TPEN.Players[Index].Ping == -1) {
+
+            sprintf(hint, GetTextByID("DBLCLICKU"),
+
+                TPEN.Players[Index].Name);
+
+        }
+        else {
+
+            sprintf(hint, GetTextByID("DBLCLICK"),
+
+                TPEN.Players[Index].Name, TPEN.Players[Index].Ping);
+
+        };
+
+    }
+    else {
+
+        Index -= TPEN.NPlayers;
+
+        if (Index < TPEN.ABPL.NPlayers) {
+
+            sprintf(hint, GetTextByID("PLINGAME"), TPEN.ABPL.Names[Index]);
+
+        };
+
+    };*/
+
+};
+
+void Draw_RLIST(int x, int y, int Lx, int Ly, int Idx, byte Active, int param) {
+    /*
+    if (Idx < TPEN.NFRooms) {
+
+        int Index = TPEN.FiltRef[Idx];
+
+        if (Index < 1000000) {
+
+            int Sign = 0;
+
+            if (Index >= TPEN.NRooms)return;
+
+            int GPF = param;
+
+            RLCFont* FONT = Active == 2 ? &WhiteFont : &YellowFont;
+
+            GServer GG = TPEN.Room[Index].G;
+
+            char ccc3[256];
+
+            char* ccx1 = ServerGetStringValue(GG, "password", "0");
+
+            strcpy(ccc3, TPEN.Room[Index].Name);
+
+            char* ccv1 = ServerGetStringValue(GG, "mapname", "0");
+
+            ccv1 = strstr(ccv1, "|");
+
+            if (ccv1) {
+
+                strcat(ccc3, ", ");
+
+                strcat(ccc3, ccv1 + 1);
+
+            }
+
+            if (ccx1[0] == '1')Sign = 1;//strcat(ccc3," [PASSWORD]");
+
+            LimitString(ccc3, FONT, 310);
+
+            ShowString(x + 45, y + 3, ccc3, FONT);
+
+            int png = ServerGetPing(GG);
+
+            char cc[32];
+
+            if (png != 9999) {
+
+                sprintf(cc, "%d", png);
+
+                ShowString(486 - GetRLCStrWidth(cc, FONT) / 2, y + 3, cc, FONT);
+
+            };
+
+            char* ccx = ServerGetStringValue(GG, "gamever", "?");
+
+            if (ccx) {
+
+                ShowString(552 - GetRLCStrWidth(ccx, FONT) / 2, y + 3, ccx, FONT);
+
+            };
+
+            int max = ServerGetIntValue(GG, "maxplayers", 0);
+
+            int np = ServerGetIntValue(GG, "numplayers", 0);
+
+            sprintf(cc, "%d/%d", np, max);
+
+            ShowString(422 - GetRLCStrWidth(cc, FONT) / 2, y + 3, cc, FONT);
+
+            if (!BATTLTXT) {
+
+                BATTLTXT = GetTextByID("BATTLTXT");
+
+                DEATHTXT = GetTextByID("DEATHTXT");
+
+            };
+
+            int TYPE = GetCEW(GG, 0);
+
+            if (TYPE) {
+
+                ShowString(593, y + 3, BATTLTXT, FONT);
+
+            }
+            else {
+
+                ShowString(593, y + 3, DEATHTXT, FONT);
+
+            };
+
+            ccx = ServerGetStringValue(GG, "gamemode", "x");
+
+            if (!strcmp(ccx, "closedplaying")) {
+
+                GPS.ShowGP(x, y, GPF, 17, 0);
+
+            }
+            else
+
+                if (strcmp(ccx, "wait")) {
+
+                    GPS.ShowGP(x, y, GPF, 60, 0);//spy icon
+
+                }
+                else if (Sign) {
+
+                    GPS.ShowGP(x, y, GPF, 61, 0);//lock
+
+                };
+
+            int Lev = GetCEW(GG, 1);
+
+            if (Lev && Lev < 4)GPS.ShowGP(731, y + 2, GPF, 61 + Lev, 0);
+
+           
+
+            //int png=TPEN.Players[Index].Ping;
+
+            //int spp=0;
+
+            //if(png<0)spp=16;
+
+            //else if(png<300)spp=12;
+
+            //else if(png<500)spp=13;
+
+            //else if(png<900)spp=14;
+
+            //else spp=15;
+
+            //GPS.ShowGP(x,y,GPF,spp,0);
+
+            //
+
+        }
+        else {
+
+            Index -= 1000000;
+
+            if (Index < TPEN.NRInGame) {
+
+                RoomInGame* RIG = TPEN.RInGame + Index;
+
+                int GPF = param;
+
+                RLCFont* FONT = &RedFont;
+
+                ShowString(x + 45, y + 3, RIG->Name, FONT);
+
+                char cc[32];
+
+                sprintf(cc, "%d", RIG->NPlayers);
+
+                ShowString(422 - GetRLCStrWidth(cc, FONT) / 2, y + 3, cc, FONT);
+
+                GPS.ShowGP(x, y, GPF, 17, 0);
+
+                if (!BATTLTXT) {
+
+                    BATTLTXT = GetTextByID("BATTLTXT");
+
+                    DEATHTXT = GetTextByID("DEATHTXT");
+
+                };
+
+                if (RIG->Type) {
+
+                    ShowString(593, y + 3, BATTLTXT, FONT);
+
+                }
+                else {
+
+                    ShowString(593, y + 3, DEATHTXT, FONT);
+
+                };
+
+            };
+
+        };
+
+    };*/
 };
 char SessionName[128]="";
 char SessPassword[64]="";
@@ -1273,7 +1703,7 @@ CEXPORT void DRAWBOX(int x,int y,int Lx,int Ly,int Idx,byte Active,int param){
 bool EnterPassword(){
 	LocalGP BARS("Interface\\bor2");
 	DarkScreen();
-	DialogsSystem DSS(0,0);
+	DialogsSystem DSS(menu_x_off, menu_y_off);
 	SessPassword[0]=0;
 	CustomBox* CBOX=DSS.addCustomBox(RealLx/2-170,RealLy/2-44,340,80,&DRAWBOX);
 	CBOX->param=BARS.GPID;
@@ -1300,7 +1730,7 @@ void EnterPersonalMessage(char* Nick){
 	strcpy(nick,Nick);
 	LocalGP BARS("Interface\\bor2");
 	DarkScreen();
-	DialogsSystem DSS(0,0);
+	DialogsSystem DSS(menu_x_off, menu_y_off);
 	int DL=60;
 	int Y0=RealLy/2-44+10+70+3;
 	int X0=RealLx/2-70-DL-80;
@@ -1340,9 +1770,204 @@ void EnterPersonalMessage(char* Nick){
 		DSS.ProcessDialogs();
 		DSS.RefreshView();
 	}while(ItemChoose==-1&&!GameInProgress);
+    /*if (ItemChoose == mcmOk) {
+
+        if (TPEN.Peer && TPEN.Connected) {
+
+            if (MESSAGE[0]) {
+
+                peerMessagePlayer(TPEN.Peer, nick, MESSAGE);
+
+                char ccc[128];
+
+                sprintf(ccc, "%s-->%s", TPEN.MyNick, nick);
+
+                TPEN.GlobalChat.Add(ccc, MESSAGE);
+
+            };
+
+
+
+        };
+
+    };*/
 
 	ItemChoose=-1;
 };
+
+/*bool CreateSessionDialog() {
+
+    if (SessionName[0] == 127)strcpy(SessionName, SessionName + 5);
+
+    LocalGP BTNS("Interface\\CreateIGame");
+
+    DialogsSystem DSS(((1024 - 452) >> 1) - 80, (768 - 237 - 26) >> 1);
+
+    GPS.ShowGP(DSS.BaseX, DSS.BaseY, BTNS.GPID, 1, 1);
+
+    DSS.addGPPicture(NULL, 0, 0, BTNS.GPID, 0);
+
+    GP_Button* OKBTN = DSS.addGP_Button(NULL, 67, 192 + 26, BTNS.GPID, 4, 5);
+
+    OKBTN->UserParam = mcmOk;
+
+    OKBTN->OnUserClick = &MMItemChoose;
+
+    GP_Button* CANCELBTN = DSS.addGP_Button(NULL, 256, 192 + 26, BTNS.GPID, 2, 3);
+
+    CANCELBTN->UserParam = mcmCancel;
+
+    CANCELBTN->OnUserClick = &MMItemChoose;
+
+    InputBox* SESSN = DSS.addInputBox(NULL, 191, 58, SessionName, 120, 230, 20, &YellowFont, &WhiteFont);
+
+    SESSN->Active = 1;
+
+    InputBox* SESSPS = DSS.addInputBox(NULL, 191, 136 + 26 + 3, SessPassword, 63, 230, 20, &YellowFont, &WhiteFont);
+
+    GPPicture* GPNP = DSS.addGPPicture(NULL, 195 + (236 - 195) * (GMMAXPL - 2), 111 + 26, BTNS.GPID, 15);
+
+    GP_TextButton* NPL[6];
+
+    for (int i = 0; i < 6; i++) {
+
+        char cc1[3] = "2";
+
+        cc1[0] = '2' + i;
+
+        NPL[i] = DSS.addGP_TextButton(NULL, 195 + (236 - 195) * i, 111 + 26, cc1, BTNS.GPID, 14, &WhiteFont, &YellowFont);
+
+        NPL[i]->OnUserClick = &MMItemChoose;
+
+        NPL[i]->UserParam = i;
+
+    };
+
+    ComboBox* LEV = DSS.addGP_ComboBox(NULL, 195, 85, BTNS.GPID, 6, 9, 0, &WhiteFont, &YellowFont, NULL);
+
+    LEV->AddLine(GetTextByID("LEV_0M"));
+
+    LEV->AddLine(GetTextByID("LEV_1M"));
+
+    LEV->AddLine(GetTextByID("LEV_2M"));
+
+    LEV->AddLine(GetTextByID("LEV_3M"));
+
+    LEV->CurLine = GMLEV;
+
+
+
+    ComboBox* GCB = DSS.addGP_ComboBox(NULL, 195, 85 + 26, BTNS.GPID, 6, 9, 0, &WhiteFont, &YellowFont, NULL);
+
+    GCB->AddLine(GetTextByID("Deathmatch"));
+
+    GCB->AddLine(GetTextByID("Battle"));
+
+    GCB->AddLine(GetTextByID("Rated_Deathmatch"));
+
+    GCB->CurLine = 2;
+
+    ItemChoose = -1;
+
+    do {
+
+        ProcessMessages();
+
+        StdKeys();
+
+        DSS.ProcessDialogs();
+
+        DSS.RefreshView();
+
+        GPNP->x = DSS.BaseX + 195 + (236 - 195) * (GMMAXPL - 2);
+
+        if (GCB->CurLine == 1) {
+
+            for (int i = 0; i < 6; i++) {
+
+                NPL[i]->Visible = 0;
+
+                NPL[i]->Enabled = 0;
+
+            };
+
+            GPNP->Visible = 0;
+
+        }
+        else {
+
+            for (int i = 0; i < 6; i++) {
+
+                NPL[i]->Visible = 1;
+
+                NPL[i]->Enabled = 1;
+
+                
+
+                //if(i==GMMAXPL-2){
+
+                //    NPL[i]->ActiveFont=&BigWhiteFont;
+
+                //    NPL[i]->PassiveFont=&BigYellowFont;
+
+                //    NPL[i]->FontDy=-4;
+
+                //}else{
+
+                //    NPL[i]->ActiveFont=&WhiteFont;
+
+                //    NPL[i]->PassiveFont=&YellowFont;
+
+                //    NPL[i]->FontDy=0;
+
+                //};
+
+                
+
+            };
+
+            GPNP->Visible = 1;
+
+        };
+
+        if (ItemChoose >= 0 && ItemChoose < 7) {
+
+            GMMAXPL = ItemChoose + 2;
+
+            ItemChoose = -1;
+
+        };
+
+        for (int i = 0; i < 6; i++) {
+
+            NPL[i]->Sprite = 14 + (i == (GMMAXPL - 2));
+
+        };
+
+        OKBTN->Enabled = SessionName[0] != 0;
+
+    } while (ItemChoose == -1);
+
+    if (GMMOD = GCB->CurLine == 2) {
+
+        char ccc[256];
+
+        strcpy(ccc, "0017");
+
+        strcat(ccc, SessionName);
+
+        strcpy(SessionName, ccc);
+
+    };
+
+    GMMOD = GCB->CurLine & 1;
+
+    GMLEV = LEV->CurLine;
+
+    return ItemChoose == mcmOk;
+
+};*/
+
 void NoWaitWithMessage(char* Message){
 	LocalGP BOR2("Interface\\bor2");
 	DarkScreen();
@@ -1364,6 +1989,19 @@ void WaitWithMessage(char* Message){
 char ROOMNAMETOCONNECT[128];
 extern char LobbyVersion[32];
 extern word dwVersion;
+
+
+/*bool CheckJoin(GServer G) {
+
+    char* ccx = ServerGetStringValue(G, "gamemode", "x");
+
+    char* ccv = ServerGetStringValue(G, "gamever", "x");
+
+    //sprintf(cc3,"%d.%d%d",dwVersion/100,(dwVersion/10)%10,dwVersion%10);
+
+    return strcmp(ccx, "wait") == 0 && !strcmp(ccv, LobbyVersion);
+
+};*/
 
 
 int NCHATS=0;
@@ -1432,6 +2070,37 @@ CEXPORT void AddChatString(char* Nick,char* str,int MaxLx,lpRLCFont FONT,
 	};
 };
 
+/*bool SENDPRIVMESS(SimpleDialog* SD) {
+
+    ComplexBox* CB = (ComplexBox*)SD;
+
+    if (CB->CurrentItem >= 0) {
+
+        if (CB->CurrentItem < TPEN.NPlayers) {
+
+            EnterPersonalMessage(TPEN.Players[CB->CurrentItem].Name);
+
+        }
+        else {
+
+            if (CB->CurrentItem - TPEN.NPlayers < TPEN.ABPL.NPlayers) {
+
+                EnterPersonalMessage(TPEN.ABPL.Names[CB->CurrentItem - TPEN.NPlayers]);
+
+            };
+
+        };
+
+    };
+
+    KeyPressed = 0;
+
+    LastKey = 0;
+
+    return true;
+
+};*/
+
 bool DisableCreate=0;
 extern bool UnderFirewall;
 
@@ -1470,7 +2139,134 @@ int GetRankByScore(int Score){
 };
 extern char** NatNames;
 
+
+/*void GPI_callback3(GPConnection* gp, void* arg, void* par) {
+
+    GPGetInfoResponseArg* GIRA = (GPGetInfoResponseArg*)arg;
+
+    GPGetInfoResponseArg* GPI = (GPGetInfoResponseArg*)par;
+
+    *GPI = *GIRA;
+
+};
+
+extern GPConnection* LOGIN_gp;*/
+
 void GETCOUNTRY(char* code,char* res);
+
+void DRAW_TOP100(int x, int y, int Lx, int Ly, int Index, byte Active, int param) {
+
+    if (Index >= 0 && Index < 100) {
+
+        int fdy = 3;
+
+        RLCFont* FNT = &YellowFont;
+
+        if (Active == 2) {
+
+            FNT = &WhiteFont;
+
+        };
+        /*
+        if (T100.CLIENT[Index].PLINF
+
+            && T100.CLIENT[Index].PLINF->nick[0]) {
+
+            ShowString(x + 40, y + fdy, T100.CLIENT[Index].PLINF->nick, FNT);
+
+            char ccc[64];
+
+            if (T100.CLIENT[Index].Score) {
+
+                sprintf(ccc, "%d", T100.CLIENT[Index].Score - 1);
+
+            }
+            else {
+
+                strcpy(ccc, "???");
+
+            };
+
+            ShowString(x + 698 - GetRLCStrWidth(ccc, FNT) / 2, y + fdy, ccc, FNT);
+
+            sprintf(ccc, "%d", Index + 1);
+
+            ShowString(x + 15 - GetRLCStrWidth(ccc, FNT) / 2, y + fdy, ccc, FNT);
+
+            strcpy(ccc, T100.CLIENT[Index].PLINF->homepage);
+
+            ShowString(x + 261 - GetRLCStrWidth(ccc, FNT) / 2, y + fdy, ccc, FNT);
+
+            SYSTEMTIME BIRTH;
+
+            SYSTEMTIME CURTIME;
+
+            FILETIME FT_BIRTH;
+
+            FILETIME FT_CURTIME;
+
+            GetSystemTime(&CURTIME);
+
+            memset(&BIRTH, 0, sizeof BIRTH);
+
+            BIRTH.wYear = T100.CLIENT[Index].PLINF->birthyear;
+
+            BIRTH.wMonth = T100.CLIENT[Index].PLINF->birthmonth;
+
+            BIRTH.wDay = T100.CLIENT[Index].PLINF->birthday;
+
+            SystemTimeToFileTime(&BIRTH, &FT_BIRTH);
+
+            SystemTimeToFileTime(&CURTIME, &FT_CURTIME);
+
+            LARGE_INTEGER L_BIRTH;
+
+            LARGE_INTEGER L_CURTIME;
+
+            memcpy(&L_BIRTH, &FT_BIRTH, 8);
+
+            memcpy(&L_CURTIME, &FT_CURTIME, 8);
+
+            L_CURTIME.QuadPart -= L_BIRTH.QuadPart;
+
+            memcpy(&FT_CURTIME, &L_CURTIME, 8);
+
+            FileTimeToSystemTime(&FT_CURTIME, &CURTIME);
+
+            sprintf(ccc, "%d", CURTIME.wYear - 1601);
+
+            ShowString(x + 378 - GetRLCStrWidth(ccc, FNT) / 2, y + fdy, ccc, FNT);
+
+
+
+            int NT = T100.CLIENT[Index].NBattl;
+
+            int NV = T100.CLIENT[Index].NVict;
+
+            int NI = T100.CLIENT[Index].NIncomp;
+
+
+
+            sprintf(ccc, "%d", NT + NI);
+
+            ShowString(x + 459 - GetRLCStrWidth(ccc, FNT) / 2, y + fdy, ccc, FNT);
+
+            sprintf(ccc, "%d", NV);
+
+            ShowString(x + 539 - GetRLCStrWidth(ccc, FNT) / 2, y + fdy, ccc, FNT);
+
+            if (NT)sprintf(ccc, "%d(%d%%)", NI, NI * 100 / (NT + NI));
+
+            else sprintf(ccc, "%d", NI);
+
+            ShowString(x + 618 - GetRLCStrWidth(ccc, FNT) / 2, y + fdy, ccc, FNT);
+
+        };
+        */
+    };
+
+};
+
 typedef byte GR_ARR[8][32]; 
 int DrawGraph(Canvas* CAN,int y0,int Npt,GR_ARR Data,byte* Col,int N,word* Max,char* Text){
 	byte COL=0x7C;
@@ -1527,6 +2323,9 @@ DWORD CalcPassHash(char* pass){
 	return S;
 };
 bool GetPLIP(char* Nick,char* IP);
+
+//extern char RESPNICK[128];
+
 bool TryToJoinToPlayer(char* name){
 	char Name[128];
 	strcpy(Name,name);
@@ -1534,6 +2333,7 @@ bool TryToJoinToPlayer(char* name){
 	RESPOND=0;
 	PASSHASH=0;
 	JP_ver=0;
+    //peerMessagePlayer(TPEN.Peer, Name, "@@@I_WANT_TO_JOIN");
 	int T0=GetTickCount();
 	DarkScreen();
 	ShowCentralMessage(GetTextByID("ICJOIN"),BOR2.GPID);
@@ -1541,8 +2341,10 @@ bool TryToJoinToPlayer(char* name){
 	int TT=GetTickCount();
 	do{
 		if(GetTickCount()-TT>3000){
+            //peerMessagePlayer(TPEN.Peer, Name, "@@@I_WANT_TO_JOIN");
 			TT=GetTickCount();
 		};
+        //if (RESPOND && _stricmp(RESPNICK, Name))RESPOND = 0;
 		ProcessMessages();
 	}while(GetTickCount()-T0<20000&&RESPOND==0);
 	char* ERR=NULL;
@@ -1628,6 +2430,2277 @@ int GetGSC_Profile(){
 
 int ProcessInternetConnection(bool Active){
     return Process_GSC_ChatWindow(Active, &GlobalRIF);
+    if(UseGSC_Login){
+
+		int r=Process_GSC_ChatWindow(Active,&GlobalRIF);
+
+		return r;
+
+	};
+
+	if(Active){
+
+		ItemChoose=-1;
+
+		GameInProgress=0;
+
+		PlayerMenuMode=1;
+
+
+		//for(int i=0;i<NCHATS;i++){
+
+		//	free(ChatMess[i]);
+
+		//	free(ChatSender[i]);
+
+		//};
+
+		//if(MAXCHATS){
+
+		//	free(ChatMess);
+
+		//	free(ChatSender);
+
+		//};
+
+		//NCHATS=0;
+
+		//MAXCHATS=0;
+
+		//ChatMess=NULL;
+
+		//ChatSender=NULL;
+
+	
+
+    };
+
+    ClearScreen();
+
+    LoadFog(2);
+
+    LoadPalette("2\\agew_1.pal");
+
+    LocalGP BTNS("Interface\\igame");
+
+    LocalGP OK1("Interface\\anm_start_1_on");
+
+    LocalGP OK2("Interface\\anm_start_1_off");
+
+    LocalGP CANCEL1("Interface\\anm_cancel_on");
+
+    LocalGP CANCEL2("Interface\\anm_cancel_off");
+
+    LocalGP DIS("Interface\\an_start_disable");
+
+    LocalGP SCROL("Interface\\_Slider");
+
+    LocalGP BOR2("Interface\\bor2");
+
+    LocalGP IBTN("Interface\\IButtons");
+
+    LocalGP GERB("Interface\\gerb_low2");
+
+    LocalGP TOPGP("Interface\\top100");
+
+    LocalGP SYM3("Interface\\isymb3");
+
+    SQPicture Back("Interface\\Backgroung_Internet_Game.bmp");
+
+    SQPicture IPLInfoBack("Interface\\Background_Player_Info.bmp");
+
+    SQPicture ITOPBACK("Interface\\Background_Top100.bmp");
+
+    Back.Draw(0, 0);
+
+    DarkScreen();
+
+    ShowCentralMessage(GetTextByID("ICCONN"), BOR2.GPID);
+
+    FlipPages();
+
+    CheckProfileInit();
+
+    /*if (!TPEN.Connected) {
+
+        Back.Draw(0, 0);
+
+        DarkScreen();
+
+        ShowCentralMessage(GetTextByID("ICCONN"), BOR2.GPID);
+
+        FlipPages();
+
+        TPEN.Connect(PlName);
+
+        bool NeedDraw = 1;
+
+        do {
+
+            ProcessMessages();
+
+            if (bActive) {
+
+                if (NeedDraw)FlipPages();
+
+                NeedDraw = 0;
+
+            }
+            else NeedDraw = 1;
+
+            if (GetTickCount() - TPEN.ConnStartTime > 60000) {
+
+                TPEN.ErrorType = 1;
+
+            };
+
+        } while (!(TPEN.Connected || TPEN.ErrorType));
+
+        if (TPEN.ErrorType) {
+
+            Back.Draw(0, 0);
+
+            DarkScreen();
+
+            ShowCentralMessage(GetTextByID("ICUNCON"), BOR2.GPID);
+
+            FlipPages();
+
+            bool NeedDraw = 1;
+
+            KeyPressed = 0;
+
+            int t0 = GetTickCount();
+
+            do {
+
+                ProcessMessages();
+
+                if (bActive) {
+
+                    if (NeedDraw)FlipPages();
+
+                    NeedDraw = 0;
+
+                }
+                else NeedDraw = 1;
+
+            } while ((GetTickCount() - t0 < 20000) && !KeyPressed);
+
+            KeyPressed = 0;
+
+            peerShutdown(TPEN.Peer);
+
+            TPEN.Peer = NULL;
+
+            return false;
+
+        };
+
+        TPEN.MyIP[0] = 0;
+
+        GetPLIP(TPEN.MyNick, TPEN.MyIP);
+
+    };
+
+    if (TPEN.MyRoom && Active)TPEN.LeaveMyRoom();
+    */
+        
+    DialogsSystem DSS(menu_x_off, menu_y_off);
+
+
+
+    LocalGP HFONT("rom10");
+
+    RLCFont hfnt(HFONT.GPID);
+
+    hfnt.SetWhiteColor();
+
+    DSS.HintFont = &hfnt;
+
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
+
+    DSS.HintY = menu_hint_y;
+
+    DSS.HintX = menu_hint_x;
+
+
+
+    DSS.addPicture(NULL, 0, 0, &Back, &Back, &Back);
+
+    int PLIX = 32;
+
+    int PLIY = 123;
+
+
+
+    Picture* IPINF = DSS.addPicture(NULL, PLIX, PLIY, &IPLInfoBack, &IPLInfoBack, &IPLInfoBack);
+
+    IPINF->Visible = 0;
+
+    int GRBX = 158 - 177;
+
+    int GRBY = 123 - 133 + 8;
+
+    //GPPicture* GERBACK=DSS.addGPPicture(NULL,PLIX+GRBX,PLIY+GRBY,GERB.GPID,0);
+
+    //GERBACK->Visible=0;
+
+    GPPicture* GERBVAL = DSS.addGPPicture(NULL, PLIX + GRBX, PLIY + GRBY, GERB.GPID, 1);
+
+    GERBVAL->Visible = 0;
+
+    //ListBox* PILB=DSS.addListBox(NULL,PLIX+327,PLIY+36,8,300,26,&YellowFont,&YellowFont,NULL);
+
+    //PILB->Visible=0;
+
+    Canvas* PILB = DSS.AddCanvas(PLIX + 337, PLIY + 36, 394, 215);
+
+    PILB->BottomY = 0;
+
+
+
+    VScrollBar* PIVS = DSS.addNewGP_VScrollBar(NULL, PLIX + 745, PLIY + 28, 226, 1, 0, SCROL.GPID, 0);
+
+    PIVS->Visible = 0;
+
+    PILB->VS = PIVS;
+
+    PIVS->ScrDy = 100;
+
+    PIVS->OnesDy = 32;
+
+    //top100
+
+    Picture* TOPBACK = DSS.addPicture(NULL, PLIX, PLIY, &ITOPBACK, &ITOPBACK, &ITOPBACK);
+
+    TOPBACK->Visible = 0;
+
+    TOPBACK->Enabled = 0;
+
+    ComplexBox* TOPBOX = DSS.addComplexBox(PLIX + 4, PLIY + 36, 8, 26, &DRAW_TOP100, TOPGP.GPID, 0);
+
+    TOPBOX->Visible = 0;
+
+    TOPBOX->Enabled = 0;
+
+    TOPBOX->N = 100;
+
+    TOPBOX->OnUserClick = &MMItemChoose;
+
+    TOPBOX->Hint = GetTextByID("INHIN2");
+
+    TOPBOX->UserParam = 43;
+
+
+
+    VScrollBar* TOPVS = DSS.addNewGP_VScrollBar(NULL, PLIX + 745, PLIY + 28, 226, 1, 0, SCROL.GPID, 0);
+
+    TOPVS->Visible = 0;
+
+    TOPBOX->VS = TOPVS;
+
+    TOPVS->Visible = 0;
+
+    TOPVS->Enabled = 0;
+
+    TOPVS->ScrDy = 70;
+
+    TOPVS->OnesDy = 10;
+
+
+
+    byte BCL = 79;
+
+    ColoredBar* TOPBTN = DSS.addViewPort2(632 - 10, 613, 25, 19, BCL);
+
+    TOPBTN->OnUserClick = &MMItemChoose;
+
+    TOPBTN->Hint = GetTextByID("INHIN1");
+
+    TOPBTN->UserParam = 10;
+
+    ColoredBar* PLIBTN = DSS.addViewPort2(658 - 10, 613, 26, 19, BCL);
+
+    PLIBTN->OnUserClick = &MMItemChoose;
+
+    PLIBTN->Hint = GetTextByID("INHIN2");
+
+    PLIBTN->UserParam = 11;
+
+    ColoredBar* LETBTN = DSS.addViewPort2(686 - 10, 613, 27, 19, BCL);
+
+    LETBTN->OnUserClick = &MMItemChoose;
+
+    LETBTN->Hint = GetTextByID("INHIN4");
+
+    LETBTN->UserParam = 31;
+
+    ColoredBar* SRVBTN = DSS.addViewPort2(607 - 10, 613, 25, 19, BCL);
+
+    SRVBTN->OnUserClick = &MMItemChoose;
+
+    SRVBTN->Hint = GetTextByID("INHIN3");
+
+    SRVBTN->UserParam = 13;
+
+    GPPicture* KICKPIC = DSS.addGPPicture(NULL, 714 - 10 + 2, 613, SYM3.GPID, 0);
+
+    ColoredBar* KICKBTN = DSS.addViewPort2(714 - 10, 613, 25, 19, BCL);
+
+    KICKBTN->OnUserClick = &MMItemChoose;
+
+    char* MUTE = GetTextByID("INHIN5");
+
+    char* NOMUTE = GetTextByID("INHIN6");
+
+    KICKBTN->Hint = MUTE;
+
+    KICKBTN->UserParam = 14;
+
+    if (Active) {
+
+        ColoredBar* JOINPL = DSS.addViewPort2(715 - 10 + 25, 613, 23, 19, BCL);
+
+        JOINPL->OnUserClick = &MMItemChoose;
+
+        JOINPL->Hint = GetTextByID("JOINPLGM");
+
+        JOINPL->UserParam = 15;
+
+    }
+    else {
+
+        DSS.addGPPicture(NULL, 715 - 10 + 25, 613, SYM3.GPID, 1);
+
+    };
+
+    CHATSTRING[0] = 0;
+
+    ChatViewer* CHVIEW = DSS.addChatViewer(NULL, 42, 418 + 5, 7, 26, 462, &ChatMess, &ChatSender, &NCHATS);
+
+    char CHATMESSAGE[256] = "";
+
+    InputBox* CHATBOX = DSS.addInputBox(NULL, 122, 612, CHATMESSAGE, 200, 392, 20, &YellowFont, &WhiteFont);
+
+    CHATBOX->Active = 1;
+
+    VScrollBar* CHSCR = DSS.addNewGP_VScrollBar(NULL, 505, 411, 197, 1, 0, SCROL.GPID, 0);
+
+    CHSCR->Visible = 0;
+
+
+
+    KeyPressed = 0;
+
+    VScrollBar* RMVS = DSS.addNewGP_VScrollBar(NULL, 778, 152, 193, 1, 0, SCROL.GPID, 0);
+
+    RMVS->ScrDy = 6 * 10;
+
+    RMVS->OnesDy = 10;
+
+    ComplexBox* RMLIST = DSS.addComplexBox(37, 155 + 5, 7, 26, &Draw_RLIST, BTNS.GPID, 0);
+
+    RMLIST->param = BTNS.GPID;
+
+    RMLIST->VS = RMVS;
+
+
+
+    VScrollBar* PLVS = DSS.addNewGP_VScrollBar(NULL, 778, 438, 197 - 26, 1, 0, SCROL.GPID, 0);
+
+    PLVS->ScrDy = 6 * 10;
+
+    PLVS->OnesDy = 10;
+
+    ComplexBox* PLLIST = DSS.addComplexBox(559, 447, 6, 26, &Draw_PLISTA, BTNS.GPID, 6);
+
+    PLLIST->param = BTNS.GPID;
+
+    PLLIST->VS = PLVS;
+
+    //PLLIST->OnUserClick=&MMItemChoose;
+
+    //PLLIST->UserParam=31;
+
+    int NL = 3;
+
+    if (!Active)NL--;
+
+    int LONE = 32;
+
+    int LLX = 60;
+
+    int LY1 = LONE * NL;
+
+    int xc = 916;
+
+    int yc = 380;
+
+    //CustomBox* BARX=DSS.addCustomBox(xc-LLX,yc-LY1/2-20,LLX*2,LY1+40,&DRAWBOX);
+
+    //BARX->param=BOR2.GPID;
+
+    GP_Button* CREATE = NULL;
+
+    GP_Button* JOIN = NULL;
+
+    GP_Button* REFRESH = NULL;
+
+    if (!Active) {
+
+        CREATE = DSS.addGP_Button(NULL, 862, 668, IBTN.GPID, 7, 6);
+
+        CREATE->UserParam = 78;
+
+        CREATE->OnUserClick = &MMItemChoose;
+
+        CREATE->Hint = GetTextByID("IG_BACK");
+
+        REFRESH = DSS.addGP_Button(NULL, 862, 668 - 100, IBTN.GPID, 11, 10);
+
+        REFRESH->UserParam = 77;
+
+        REFRESH->OnUserClick = &MMItemChoose;
+
+        REFRESH->Hint = GetTextByID("IG_REFRESH");
+
+    }
+    else {
+
+        DSS.addGPPicture(NULL, 862, 668 - 100, IBTN.GPID, 3);
+
+        JOIN = DSS.addGP_Button(NULL, 862, 668 - 100, IBTN.GPID, 5, 4);
+
+        JOIN->UserParam = mcmJoin;
+
+        JOIN->OnUserClick = &MMItemChoose;
+
+        JOIN->Hint = GetTextByID("IG_JOIN");
+
+
+
+        DSS.addGPPicture(NULL, 862, 668 - 200, IBTN.GPID, 0);
+
+        CREATE = DSS.addGP_Button(NULL, 862, 668 - 200, IBTN.GPID, 2, 1);
+
+        CREATE->UserParam = mcmOk;
+
+        CREATE->OnUserClick = &MMItemChoose;
+
+        CREATE->Hint = GetTextByID("IG_CREATE");
+
+
+
+        REFRESH = DSS.addGP_Button(NULL, 862, 668 - 300, IBTN.GPID, 11, 10);
+
+        REFRESH->UserParam = 77;
+
+        REFRESH->OnUserClick = &MMItemChoose;
+
+        REFRESH->Hint = GetTextByID("IG_REFRESH");
+
+    };
+
+    //VideoButton* OkBtn=DSS.addVideoButton(NULL,862,568,OK1.GPID,OK2.GPID);
+
+    //OkBtn->Hint=GetTextByID("MOSTART");
+
+    //OkBtn->UserParam=mcmOk;
+
+    //OkBtn->OnUserClick=&MMItemChoose;
+
+    if (Active) {
+
+        VideoButton* CancelBtn = DSS.addVideoButton(NULL, 862, 668, CANCEL1.GPID, CANCEL2.GPID);
+
+        CancelBtn->UserParam = mcmCancel;
+
+        CancelBtn->OnUserClick = &MMItemChoose;
+
+        CancelBtn->Hint = GetTextByID("IG_CANCEL");
+
+    };
+
+
+
+    //FILTERS
+
+    char* ALLTX = GetTextByID("ALL");
+
+    ComboBox* PLAYERS = DSS.addGP_ComboBox(NULL, 398, 352, BTNS.GPID, 18, 9, 0, &WhiteFont, &YellowFont, NULL);
+
+    PLAYERS->Hint = GetTextByID("FIL_PLAYERS");
+
+    PLAYERS->FontDx -= 4;
+
+    PLAYERS->AddLine(ALLTX);
+
+    PLAYERS->AddLine("1");
+
+    PLAYERS->AddLine("2");
+
+    PLAYERS->AddLine("3");
+
+    PLAYERS->AddLine("4");
+
+    PLAYERS->AddLine("5");
+
+    PLAYERS->AddLine("6");
+
+    PLAYERS->AddLine(">1");
+
+    PLAYERS->AddLine(">2");
+
+    PLAYERS->AddLine(">3");
+
+    PLAYERS->AddLine(">4");
+
+    PLAYERS->AddLine(">5");
+
+    PLAYERS->AddLine(">6");
+
+    ComboBox* PING = DSS.addGP_ComboBox(NULL, 456, 352, BTNS.GPID, 26, 9, 0, &WhiteFont, &YellowFont, NULL);
+
+    PING->Hint = GetTextByID("FIL_PING");
+
+    PING->FontDx -= 4;
+
+    PING->AddLine(ALLTX);
+
+    PING->AddLine("<100");
+
+    PING->AddLine("<200");
+
+    PING->AddLine("<300");
+
+    PING->AddLine("<400");
+
+    PING->AddLine("<500");
+
+    PING->AddLine("<600");
+
+    PING->AddLine("<700");
+
+    PING->AddLine("<800");
+
+    ComboBox* VERSION = DSS.addGP_ComboBox(NULL, 524, 352, BTNS.GPID, 26, 9, 0, &WhiteFont, &YellowFont, NULL);
+
+    VERSION->Hint = GetTextByID("FIL_VERS");
+
+    char cc[32];
+
+    sprintf(cc, "%s", LobbyVersion);
+
+    VERSION->AddLine(ALLTX);
+
+    VERSION->AddLine(cc);
+
+    VERSION->FontDx -= 4;
+
+    ComboBox* TYPE = DSS.addGP_ComboBox(NULL, 590, 352, BTNS.GPID, 34, 9, 0, &WhiteFont, &YellowFont, NULL);
+
+    TYPE->Hint = GetTextByID("FIL_TYPE");
+
+    TYPE->AddLine(ALLTX);
+
+    TYPE->AddLine(GetTextByID("DEATHTXT"));
+
+    TYPE->AddLine(GetTextByID("BATTLTXT"));
+
+    ComboBox* LEVEL = DSS.addGP_ComboBox(NULL, 723, 352, BTNS.GPID, 18, 9, 0, &WhiteFont, &YellowFont, NULL);
+
+    LEVEL->Hint = GetTextByID("FIL_LEVEL");
+
+    LEVEL->FontDx -= 4;
+
+    LEVEL->OneDx -= 4;
+
+    LEVEL->AddLine(ALLTX);
+
+    LEVEL->AddLine(GetTextByID("LEV_1"));
+
+    LEVEL->AddLine(GetTextByID("LEV_2"));
+
+    LEVEL->AddLine(GetTextByID("LEV_3"));
+
+
+
+    char MASK[64] = "";
+
+    GP_Button* CBI[6];
+
+    InputBox* MSIB = DSS.addInputBox(NULL, 73, 351, MASK, 60, 300, 20, &YellowFont, &WhiteFont);
+
+    MSIB->Hint = GetTextByID("FIL_NAME");
+
+    int ccc = 152;
+
+    SimpleDialog* SORT_Name = DSS.addViewPort(70, 129, 321, 19);
+
+    SORT_Name->Hint = GetTextByID("SRT_ROOM");
+
+    SORT_Name->UserParam = 1;
+
+    SORT_Name->OnUserClick = &CHANGESORT;
+
+    CBI[0] = DSS.addGP_Button(NULL, 69 + 3, 128, BTNS.GPID, 51, 50);
+
+    SimpleDialog* SORT_Players = DSS.addViewPort(395, 128, 55, 19);
+
+    SORT_Players->Hint = GetTextByID("SRT_PLAYERS");
+
+    SORT_Players->UserParam = 2;
+
+    SORT_Players->OnUserClick = &CHANGESORT;
+
+    CBI[1] = DSS.addGP_Button(NULL, 395 + 3, 128, BTNS.GPID, 55, 54);
+
+    SimpleDialog* SORT_Ping = DSS.addViewPort(454, 129, 63, 19);
+
+    SORT_Ping->Hint = GetTextByID("SRT_PING");
+
+    SORT_Ping->UserParam = 3;
+
+    SORT_Ping->OnUserClick = &CHANGESORT;
+
+    CBI[2] = DSS.addGP_Button(NULL, 453 + 3, 128, BTNS.GPID, 53, 52);
+
+    SimpleDialog* SORT_Vers = DSS.addViewPort(522, 129, 62, 19);
+
+    SORT_Vers->Hint = GetTextByID("SRT_VERS");
+
+    SORT_Vers->UserParam = 4;
+
+    SORT_Vers->OnUserClick = &CHANGESORT;
+
+    CBI[3] = DSS.addGP_Button(NULL, 521 + 3, 128, BTNS.GPID, 59, 58);
+
+    SimpleDialog* SORT_Type = DSS.addViewPort(588, 129, 200 - 61, 19);
+
+    SORT_Type->Hint = GetTextByID("SRT_TYPE");
+
+    SORT_Type->UserParam = 5;
+
+    SORT_Type->OnUserClick = &CHANGESORT;
+
+    CBI[4] = DSS.addGP_Button(NULL, 587 + 3, 128, BTNS.GPID, 57, 56);
+
+    SimpleDialog* SORT_Level = DSS.addViewPort(722, 129, 55, 19);
+
+    SORT_Level->Hint = GetTextByID("SRT_LEVEL");
+
+    SORT_Level->UserParam = 6;
+
+    SORT_Level->OnUserClick = &CHANGESORT;
+
+    CBI[5] = DSS.addGP_Button(NULL, 723, 128, BTNS.GPID, 66, 65);
+
+    int LOSPR[6] = { 50,54,52,58,56,65 };
+
+    //-------//
+
+    int NCLINES = 0;
+
+    char* PNAME = "";
+
+    int i;
+
+    ItemChoose = -1;
+
+    //TPEN.FILTER.CRC += 10;
+
+    bool FIRST = 1;
+
+    char ROOMLISTHINT[512] = "";
+
+    char PLLISTHINT[512] = "";
+
+    RMLIST->Hint = ROOMLISTHINT;
+
+    PLLIST->Hint = PLLISTHINT;
+
+    TextButton* TBNP = DSS.addTextButton(NULL, 785, 417, "                        ", &SmallYellowFont, &SmallYellowFont, &SmallYellowFont, 0);
+
+    TextButton* TBNG = DSS.addTextButton(NULL, 386, 132, "                        ", &SmallYellowFont, &SmallYellowFont, &SmallYellowFont, 0);
+
+    char* tx_NPL = GetTextByID("NPLAYMSS");
+
+    char* tx_NRM = GetTextByID("NROOMMSS");
+
+    int PLINFMOD = 0;
+
+    InternetStatsChunks ISC;
+
+    ISC.Clear();
+
+    //GPGetInfoResponseArg GPI;
+
+    if (Active) {
+
+        RunHTTPC();
+
+    };
+
+    char CURRNICK[128];
+
+    CURRNICK[0] = 0;
+
+    int CurLBP = PLAYERS->CurLine;
+
+    bool DOPASS = 0;
+
+    if (Active && CheckLogin()) {
+
+        SendPlayerRequest();
+
+    };
+    /*
+    do {
+
+        if (CURRNICK[0] && CurLBP == PLLIST->CurrentItem && CurLBP != -1) {
+
+            int cp = SearchPlayer(CURRNICK);
+
+            if (cp != -1)PLLIST->CurrentItem = cp;
+
+        };
+
+        if (PLLIST->CurrentItem >= 0) {
+
+            int v = PLLIST->CurrentItem;
+
+            if (v < TPEN.NPlayers) {
+
+                strcpy(CURRNICK, TPEN.Players[v].Name);
+
+                CurLBP = v;
+
+            }
+            else {
+
+                v -= TPEN.NPlayers;
+
+                if (v < TPEN.ABPL.NPlayers) {
+
+                    strcpy(CURRNICK, TPEN.ABPL.Names[v]);
+
+                    CurLBP = v + TPEN.NPlayers;
+
+                };
+
+            };
+
+        };
+
+
+
+        if (PLLIST->CurrentItem >= 0) {
+
+            if (PLLIST->CurrentItem < TPEN.NPlayers) {
+
+                if (TPEN.Players[PLLIST->CurrentItem].Muted) {
+
+                    KICKBTN->Hint = NOMUTE;
+
+                    KICKPIC->Visible = 0;
+
+                }
+                else {
+
+                    KICKBTN->Hint = MUTE;
+
+                    KICKPIC->Visible = 1;
+
+                };
+
+            }
+            else KICKBTN->Hint = MUTE;
+
+        }
+        else KICKBTN->Hint = MUTE;
+
+        if (PLINFMOD == 1 || PLINFMOD == 2) {
+
+            for (int p = 0; p < 6; p++) {
+
+                CBI[p]->Enabled = 0;
+
+                CBI[p]->Visible = 0;
+
+            };
+
+            PLAYERS->Visible = 0;
+
+            PING->Visible = 0;
+
+            VERSION->Visible = 0;
+
+            TYPE->Visible = 0;
+
+            LEVEL->Visible = 0;
+
+
+
+            SORT_Name->Visible = 0;
+
+            SORT_Players->Visible = 0;
+
+            SORT_Ping->Visible = 0;
+
+            SORT_Vers->Visible = 0;
+
+            SORT_Type->Visible = 0;
+
+            SORT_Level->Visible = 0;
+
+            MSIB->Enabled = 0;
+
+            MSIB->Visible = 0;
+
+
+
+            RMLIST->Visible = 0;
+
+            RMLIST->Enabled = 0;
+
+            RMVS->Visible = 0;
+
+            RMVS->Enabled = 0;
+
+
+
+            IPINF->Visible = 1;
+
+            IPINF->Enabled = 1;
+
+            //GERBACK->Visible=1;
+
+            //GERBACK->Enabled=1;
+
+            GERBVAL->Visible = 1;
+
+            GERBVAL->Enabled = 1;
+
+            PILB->Visible = 1;
+
+            PILB->Enabled = 1;
+
+
+
+            TOPBACK->Visible = 0;
+
+            TOPBOX->Visible = 0;
+
+            TOPVS->Visible = 0;
+
+            TOPBACK->Enabled = 0;
+
+            TOPBOX->Enabled = 0;
+
+            TOPVS->Enabled = 0;
+
+            //PIVS->Visible=PILB->NItems>PILB->ny;
+
+            TBNG->Visible = 0;
+
+            if (PLINFMOD == 1) {
+
+                if (GPI.result != GP_NO_ERROR) {
+
+                    PLINFMOD = 2;
+
+                    int y0 = PILB->BottomY;
+
+                    PILB->AddText(16, y0, GetTextByID("PIF_UNACC"), &RedFont);
+
+                    PILB->BottomY += 18;
+
+                };
+
+                if (GPI.nick[0] && GPI.result == GP_NO_ERROR) {
+
+                    PLINFMOD = 2;
+
+                    byte cc = 0x7C;
+
+                    int y0 = PILB->BottomY;
+
+                    int tdy = 5;
+
+                    int msx1 = 120;
+
+                    char ccc[256];
+
+
+
+                    PILB->AddRect(0, y0, 393, 27, cc);
+
+                    PILB->AddLine(msx1, y0, msx1, y0 + 26, cc);
+
+                    PILB->AddText(16, y0 + tdy, GetTextByID("PIF_ST0"), &YellowFont);
+
+                    GETCOUNTRY(GPI.countrycode, ccc);
+
+                    PILB->AddText(msx1 + 16, y0 + tdy, ccc, &YellowFont);
+
+                    y0 += 26;
+
+
+
+                    PILB->AddRect(0, y0, 393, 27, cc);
+
+                    PILB->AddLine(msx1, y0, msx1, y0 + 26, cc);
+
+                    PILB->AddText(16, y0 + tdy, GetTextByID("PIF_ST1"), &YellowFont);
+
+                    sprintf(ccc, "%d.%d.%d", GPI.birthday, GPI.birthmonth, GPI.birthyear);
+
+                    PILB->AddText(msx1 + 16, y0 + tdy, ccc, &YellowFont);
+
+                    y0 += 26;
+
+
+
+                    PILB->AddRect(0, y0, 393, 27, cc);
+
+                    PILB->AddLine(msx1, y0, msx1, y0 + 26, cc);
+
+                    PILB->AddText(16, y0 + tdy, GetTextByID("PIF_ST2"), &YellowFont);
+
+                    switch (GPI.sex) {
+
+                    case GP_MALE:
+
+                        PILB->AddText(msx1 + 16, y0 + tdy, GetTextByID("GEN_M"), &YellowFont);
+
+                        break;
+
+                    case GP_FEMALE:
+
+                        PILB->AddText(msx1 + 16, y0 + tdy, GetTextByID("GEN_F"), &YellowFont);
+
+                        break;
+
+                    default:
+
+                        PILB->AddText(msx1 + 16, y0 + tdy, GetTextByID("GEN_U"), &YellowFont);
+
+                        break;
+
+                    };
+
+                    y0 += 26;
+
+
+
+                    PILB->AddRect(0, y0, 393, 27, cc);
+
+                    PILB->AddLine(msx1, y0, msx1, y0 + 26, cc);
+
+                    PILB->AddText(16, y0 + tdy, GetTextByID("PIF_ST3"), &YellowFont);
+
+                    PILB->AddText(msx1 + 16, y0 + tdy, GPI.email, &YellowFont);
+
+                    y0 += 26;
+
+
+
+                    if (GPI.icquin) {
+
+                        PILB->AddRect(0, y0, 393, 27, cc);
+
+                        PILB->AddLine(msx1, y0, msx1, y0 + 26, cc);
+
+                        PILB->AddText(16, y0 + tdy, GetTextByID("ICQ#"), &YellowFont);
+
+                        sprintf(ccc, "%d", GPI.icquin);
+
+                        PILB->AddText(msx1 + 16, y0 + tdy, ccc, &YellowFont);
+
+                        y0 += 26;
+
+                    };
+
+
+
+                    if (GPI.homepage[0]) {
+
+                        PILB->AddRect(0, y0, 393, 27, cc);
+
+                        PILB->AddLine(msx1, y0, msx1, y0 + 26, cc);
+
+                        PILB->AddText(16, y0 + tdy, GetTextByID("PIF_ST5"), &YellowFont);
+
+                        PILB->AddText(msx1 + 16, y0 + tdy, GPI.homepage, &YellowFont);
+
+                        y0 += 26;
+
+                    };
+
+                    //y0+=16;
+
+                    PILB->BottomY = y0;
+
+                    if (DOPASS)ISC.StartDownload(GPI.profile, 1);
+
+                    else ISC.StartDownload(GPI.profile, 0);
+
+                };
+
+            };
+
+            if (ISC.CDOWN.Started && (ISC.CDOWN.Finished || ISC.Error)) {
+
+                if (ISC.CDOWN.CurPage == 1 && !ISC.CDOWN.Error) {
+
+                    char res[128], rrr[128];
+
+                    DecodeGS_Password(res, (char*)ISC.Chunks[0]->Data);
+
+                    sprintf(rrr, "password: %s", res);
+
+                    PILB->AddText(0, PILB->BottomY, rrr, &YellowFont);
+
+                    PILB->BottomY += 24;
+
+                    ISC.Clear();
+
+                    ISC.StartDownload(GPI.profile, 0);
+
+                };
+
+                if (ISC.CDOWN.CurPage == 0 && !ISC.CDOWN.Error) {
+
+                    int NREC = 0;
+
+                    int CURSCORE = 0;
+
+                    int NINCOMP = 0;
+
+                    for (int i = 0; i < ISC.N; i++) {
+
+                        if (ISC.Chunks[i]->Index == 0 || ISC.Chunks[i]->Index == 27) {
+
+                            int ProfileID = ISC.CDOWN.CurProfile;
+
+                            int w1 = *((DWORD*)ISC.Chunks[i]->Data);
+
+                            int w2 = *((DWORD*)(ISC.Chunks[i]->Data + 4));
+
+                            int w3 = *((DWORD*)(ISC.Chunks[i]->Data + 8));
+
+
+
+                            int sco1 = w1 ^ DWORD(ProfileID);
+
+                            int sco2 = w2 ^ 0xFB47E6C3;
+
+                            if (sco1 == sco2) {
+
+                                NREC = w3;
+
+                                CURSCORE = sco1;
+
+                            };
+
+                        };
+
+                        if (ISC.Chunks[i]->Index == 28) {
+
+                            int ProfileID = ISC.CDOWN.CurProfile;
+
+                            int w1 = *((DWORD*)ISC.Chunks[i]->Data);
+
+                            int w2 = *((DWORD*)(ISC.Chunks[i]->Data + 4));
+
+                            int w3 = *((DWORD*)(ISC.Chunks[i]->Data + 8));
+
+                            int w5 = *((DWORD*)(ISC.Chunks[i]->Data + 16));
+
+                            int w6 = *((DWORD*)(ISC.Chunks[i]->Data + 20));
+
+                            int sco1 = w1 ^ DWORD(ProfileID);
+
+                            int sco2 = w2 ^ 0xFB47E6C3;
+
+                            int incomp1 = (w5 + DWORD(ProfileID)) ^ (0x6523A4 + DWORD(ProfileID));
+
+                            int incomp2 = (w6 + DWORD(ProfileID)) ^ (0x1234E6 - DWORD(ProfileID));
+
+
+
+                            if (sco1 == sco2 && incomp1 == incomp2) {
+
+                                NREC = w3;
+
+                                CURSCORE = sco1;
+
+                                NINCOMP = incomp1;
+
+                            };
+
+                        };
+
+                    };
+
+                    ISC.Clear();
+
+                    ISC.CDOWN.Started = 0;
+
+                    if (NREC) {
+
+                        ISC.StartDownload(ISC.CDOWN.CurProfile, 2 + NREC);
+
+                    };
+
+                    char ccc[128];
+
+                    char cc2[36];
+
+                    sprintf(cc2, "RS_RANK_%d", GetRankByScore(CURSCORE));
+
+                    sprintf(ccc, GetTextByID("SCORANK"), CURSCORE, GetTextByID(cc2));
+
+                    PILB->AddText(0, PILB->BottomY, ccc, &YellowFont);
+
+                    PILB->BottomY += 24;
+
+                    if (NREC) {
+
+                        sprintf(ccc, GetTextByID("TX_INCOMP"), NINCOMP, NREC + NINCOMP, (NINCOMP * 100) / (NREC + NINCOMP));
+
+                        PILB->AddText(0, PILB->BottomY, ccc, &YellowFont);
+
+                        PILB->BottomY += 24;
+
+                    };
+
+                    GERBVAL->SpriteID = GetGerbByScore(CURSCORE) + 1;
+
+                    GERBVAL->Visible = 1;
+
+                }
+                else if (ISC.CDOWN.CurPage > 1) {
+
+                    if (!ISC.CDOWN.Error) {
+
+                        int TextDy = 5;
+
+                        int XB0 = 0;
+
+                        int XB1 = 18;
+
+                        int XB2 = XB1 + 18;
+
+                        int XB3 = XB2 + 123;
+
+                        int XB4 = XB3 + 64;
+
+                        int XB5 = XB4 + 90;
+
+                        int XB6 = XB5 + 80;
+
+                        byte COL = 0x7C;
+
+                        for (int j = ISC.N - 1; j >= 0; j--) {
+
+                            char ccc[128];
+
+                            char MapName[128];
+
+                            char GameName[128];
+
+                            if (ISC.Chunks[j]->Index == 81) {
+
+                                byte* data = ISC.Chunks[j]->Data;
+
+                                int pos = 0;
+
+                                DWORD Date = *((DWORD*)data);
+
+                                int Min = Date % 60;
+
+                                Date /= 60;
+
+                                int Hour = Date % 24;
+
+                                Date /= 24;
+
+                                int Day = (Date % 31) + 1;
+
+                                Date /= 31;
+
+                                int Month = (Date % 12) + 1;
+
+                                Date /= 12;
+
+                                int Year = 2000 + Date;
+
+                                int Npl = data[4];
+
+                                word PTime = *((word*)(data + 5));
+
+                                int DScore = data[8];
+
+                                int LMap = data[9];
+
+                                memcpy(MapName, data + 10, LMap);
+
+                                MapName[LMap] = 0;
+
+                                int LGame = data[10 + LMap];
+
+                                memcpy(GameName, data + 11 + LMap, LGame);
+
+                                GameName[LGame] = 0;
+
+                                int Y0 = PILB->BottomY;
+
+
+
+                                RLCFont* FNT = &YellowFont;
+
+                                PILB->AddRect(XB0, Y0, 393, 27, COL);
+
+                                PILB->AddRect(XB0 + 1, Y0 + 1, 393 - 2, 27 - 2, COL);
+
+                                int xx3 = 120;
+
+                                PILB->AddLine(xx3, Y0, xx3, Y0 + 26, COL);
+
+                                sprintf(ccc, "%d.%d.%d %d:%d%d", Day, Month, Year, Hour, Min / 10, Min % 10);
+
+                                PILB->AddCText((xx3 + XB0) >> 1, Y0 + TextDy, ccc, FNT);
+
+                                sprintf(ccc, "%s (%d min)", GameName, PTime);
+
+                                PILB->AddText(xx3 + 16, Y0 + TextDy, ccc, FNT);
+
+                                Y0 += 26;
+
+                            
+
+                                //sprintf(ccc,"Map: %s",MapName);
+
+                                //PILB->AddRect(XB0,Y0,393,27,COL);
+
+                                //PILB->AddText(0,Y0,ccc,&YellowFont);
+
+                                //Y0+=26;
+
+                            
+
+
+
+                                pos = 11 + LMap + LGame;
+
+                                //PILB->AddItem("Players:",0);
+
+                                int TeamID = 0;
+
+                                byte pmask = 0;
+
+
+
+                                byte Popul[8][32];
+
+                                byte SCORE[8][32];
+
+                                word MaxPopul[8];
+
+                                word MaxScore[8];
+
+                                byte ColorN[8];
+
+
+
+                                for (int i = 0; i < Npl; i++) {
+
+
+
+                                    PILB->AddRect(XB0, Y0, 393, 27, COL);
+
+                                    PILB->AddLine(XB1, Y0, XB1, Y0 + 26, COL);
+
+                                    PILB->AddLine(XB2, Y0, XB2, Y0 + 26, COL);
+
+                                    PILB->AddLine(XB3, Y0, XB3, Y0 + 26, COL);
+
+                                    PILB->AddLine(XB4, Y0, XB4, Y0 + 26, COL);
+
+                                    PILB->AddLine(XB5, Y0, XB5, Y0 + 26, COL);
+
+
+
+                                    int LNick = data[pos + 6 + 7];
+
+                                    memcpy(MapName, data + pos + 7 + 7, LNick);
+
+                                    MapName[LNick] = 0;
+
+                                    DWORD Score = *((DWORD*)(data + pos + 2));
+
+                                    byte Mask = data[pos + 6];
+
+                                    if (!(Mask & pmask)) {
+
+                                        pmask = Mask;
+
+                                        TeamID++;
+
+                                    };
+
+                                    byte Color = data[pos + 7];
+
+                                    ColorN[i] = Color;
+
+                                    byte NationID = data[pos + 8];
+
+                                    //sprintf(ccc,"%s (%.2f), ",MapName,float(Score)/100);
+
+                                    sprintf(ccc, "%d", TeamID);
+
+                                    int xc = (XB1 + XB2) >> 1;
+
+                                    PILB->AddBar(xc - 4, Y0 + 13 - 4, 8, 8, 0xD0 + Color * 4);
+
+                                    PILB->AddCText((XB0 + XB1) >> 1, Y0 + TextDy, ccc, FNT);
+
+                                    PILB->AddText(XB2 + 5, Y0 + TextDy, MapName, FNT);
+
+                                    sprintf(ccc, "%.2f", float(Score) / 100);
+
+                                    PILB->AddCText((XB3 + XB4) >> 1, Y0 + TextDy, ccc, FNT);
+
+                                    if (NationID < NNations)PILB->AddCText((XB4 + XB5) >> 1, Y0 + TextDy, NatNames[NationID], FNT);
+
+                                    ccc[0] = 0;
+
+                                    switch (data[pos + 1]) {
+
+                                    case 1://defeat
+
+                                        strcat(ccc, "Defeat.");
+
+                                        break;
+
+                                    case 0://victory
+
+                                        strcat(ccc, "Victory!");
+
+                                        break;
+
+                                    case 3://disconnectted
+
+                                        strcat(ccc, "???");
+
+                                        break;
+
+                                    default:
+
+                                        strcat(ccc, "?unknown?");
+
+                                        break;
+
+                                    };
+
+                                    pos += 7 + 7 + LNick;
+
+                                    PILB->AddCText((XB5 + XB6) >> 1, Y0 + TextDy, ccc, FNT);
+
+                                    Y0 += 26;
+
+                                    MaxScore[i] = word(*((DWORD*)(data + pos)));
+
+                                    MaxPopul[i] = word(*((DWORD*)(data + pos + 2)));
+
+                                    pos += 4;
+
+                                    memcpy(SCORE[i], data + pos, 32);
+
+                                    pos += 32;
+
+                                    memcpy(Popul[i], data + pos, 32);
+
+                                    pos += 32;
+
+                                };
+
+
+
+                                word CSCOR = *((word*)(data + pos));
+
+                                char dscor = data[pos + 2];
+
+                                //pos+3;
+
+
+
+                                Y0 += DrawGraph(PILB, Y0, 32, SCORE, ColorN, Npl, MaxScore, GetTextByID("HDR_SCORE:"));
+
+                                Y0 += DrawGraph(PILB, Y0, 32, Popul, ColorN, Npl, MaxPopul, GetTextByID("HDR_POPUL:"));
+
+                                sprintf(ccc, GetTextByID("HDR_DSCORE"), CSCOR, dscor);
+
+                                PILB->AddText(0, Y0, ccc, FNT);
+
+                                Y0 += 26;
+
+                                Y0 += 16;
+
+                                PILB->BottomY = Y0;
+
+                            };
+
+                        };
+
+                    };
+
+                    ISC.Clear();
+
+                    if (ISC.CDOWN.CurPage > 2) {
+
+                        ISC.StartDownload(ISC.CDOWN.CurProfile, ISC.CDOWN.CurPage - 1);
+
+                    };
+
+                };
+
+            };
+
+            if (ISC.Error)PLINFMOD = 0;
+
+            if (!GERBVAL->SpriteID)GERBVAL->Visible = 0;
+
+        }
+        else if (PLINFMOD == 3) {
+
+            TOPBACK->Visible = 1;
+
+            TOPBOX->Visible = 1;
+
+            TOPBACK->Enabled = 1;
+
+            TOPBOX->Enabled = 1;
+
+            MSIB->Enabled = 0;
+
+            MSIB->Visible = 0;
+
+            RMLIST->Visible = 0;
+
+            RMLIST->Enabled = 0;
+
+
+
+            IPINF->Visible = 0;
+
+            IPINF->Enabled = 0;
+
+            GERBVAL->Visible = 0;
+
+            GERBVAL->Enabled = 0;
+
+            PILB->Visible = 0;
+
+            PILB->Enabled = 0;
+
+            PIVS->Visible = 0;
+
+            RMVS->Visible = 0;
+
+            RMVS->Enabled = 0;
+
+            for (int p = 0; p < 6; p++) {
+
+                CBI[p]->Enabled = 0;
+
+                CBI[p]->Visible = 0;
+
+            };
+
+            PLAYERS->Visible = 0;
+
+            PING->Visible = 0;
+
+            VERSION->Visible = 0;
+
+            TYPE->Visible = 0;
+
+            LEVEL->Visible = 0;
+
+            TBNG->Visible = 0;
+
+
+
+            SORT_Name->Visible = 0;
+
+            SORT_Players->Visible = 0;
+
+            SORT_Ping->Visible = 0;
+
+            SORT_Vers->Visible = 0;
+
+            SORT_Type->Visible = 0;
+
+            SORT_Level->Visible = 0;
+
+
+
+            TOPBACK->Visible = 1;
+
+            TOPBACK->Enabled = 1;
+
+            TOPBOX->Visible = 1;
+
+            TOPBOX->Enabled = 1;
+
+        }
+        else {
+
+            RMLIST->Visible = 1;
+
+            RMLIST->Enabled = 1;
+
+
+
+            MSIB->Enabled = 1;
+
+            MSIB->Visible = 1;
+
+
+
+            IPINF->Visible = 0;
+
+            IPINF->Enabled = 0;
+
+            //GERBACK->Visible=0;
+
+            //GERBACK->Enabled=0;
+
+            GERBVAL->Visible = 0;
+
+            GERBVAL->Enabled = 0;
+
+            PILB->Visible = 0;
+
+            PILB->Enabled = 0;
+
+            PIVS->Visible = 0;
+
+            for (int p = 0; p < 6; p++) {
+
+                CBI[p]->Enabled = 1;
+
+                CBI[p]->Visible = 1;
+
+            };
+
+            PLAYERS->Visible = 1;
+
+            PING->Visible = 1;
+
+            VERSION->Visible = 1;
+
+            TYPE->Visible = 1;
+
+            LEVEL->Visible = 1;
+
+            TBNG->Visible = 1;
+
+
+
+            SORT_Name->Visible = 1;
+
+            SORT_Players->Visible = 1;
+
+            SORT_Ping->Visible = 1;
+
+            SORT_Vers->Visible = 1;
+
+            SORT_Type->Visible = 1;
+
+            SORT_Level->Visible = 1;
+
+
+
+            TOPBACK->Visible = 0;
+
+            TOPBOX->Visible = 0;
+
+            TOPVS->Visible = 0;
+
+            TOPBACK->Enabled = 0;
+
+            TOPBOX->Enabled = 0;
+
+            TOPVS->Enabled = 0;
+
+        };
+
+        if (UnderFirewall) {
+
+            DisableCreate = NotifyFirewallState();
+
+            UnderFirewall = 0;
+
+        };
+
+        sprintf(TBNP->Message, tx_NPL, TPEN.NPlayers + TPEN.ABPL.NPlayers);
+
+        sprintf(TBNG->Message, tx_NRM, RMLIST->N);
+
+        TBNP->x = 785 - GetRLCStrWidth(TBNP->Message, &YellowFont);
+
+        TBNG->x = 386 - GetRLCStrWidth(TBNG->Message, &YellowFont);
+
+        if (!Active) {
+
+            PIEnumeratePlayers(PINFO, false);
+
+            SendPings();
+
+            if (NPlayers > 7)NPlayers = 7;
+
+        };
+
+        for (i = 0; i < 6; i++) {
+
+            if (abs(TPEN.SORTTYPE) == i + 1) {
+
+                CBI[i]->PassiveFrame = LOSPR[i];
+
+            }
+            else {
+
+                CBI[i]->PassiveFrame = 1000;
+
+            }
+
+            //CBI[i]->Visible=abs(TPEN.SORTTYPE)==i+1;
+
+            //CBI[i]->Enabled=abs(TPEN.SORTTYPE)==i+1;
+
+            //CBI[i]->Style=1;
+
+        };
+
+        if (RMLIST->M_OvrItem >= 0) {
+
+            CreateRoomsHintString(RMLIST->M_OvrItem, ROOMLISTHINT, Active);
+
+        };
+
+        if (PLLIST->M_OvrItem >= 0) {
+
+            CreatePlayerHintString(PLLIST->M_OvrItem, PLLISTHINT);
+
+        };
+
+        TPEN.FILTER.CHK_Ver = VERSION->CurLine != 0;
+
+        TPEN.FILTER.CHK_Ping = PING->CurLine != 0;
+
+        TPEN.FILTER.MinPing = PING->CurLine * 100;
+
+        TPEN.FILTER.CHK_Type = TYPE->CurLine;
+
+        TPEN.FILTER.CHK_Level = LEVEL->CurLine;
+
+        strcpy(TPEN.FILTER.MASKSTR, MASK);
+
+        if (PLAYERS->CurLine) {
+
+            if (PLAYERS->CurLine < 7) {
+
+                TPEN.FILTER.CHK_Players = 1;
+
+                TPEN.FILTER.CHK_MinPlayers = 0;
+
+                TPEN.FILTER.NPlayers = PLAYERS->CurLine;
+
+            }
+            else {
+
+                TPEN.FILTER.CHK_Players = 0;
+
+                TPEN.FILTER.CHK_MinPlayers = 1;
+
+                TPEN.FILTER.NPlayers = PLAYERS->CurLine - 6;
+
+            };
+
+        }
+        else {
+
+            TPEN.FILTER.CHK_Players = 0;
+
+            TPEN.FILTER.CHK_MinPlayers = 0;
+
+        };
+
+        TPEN.ProcessRoomsInGame();
+
+        PLLIST->N = TPEN.NPlayers + TPEN.ABPL.NPlayers;//TPEN.NRoomPlayers;
+
+        GServer CSRV = NULL;
+
+        if (RMLIST->CurrentItem != -1 && RMLIST->CurrentItem < TPEN.NFRooms && TPEN.FiltRef[RMLIST->CurrentItem] < 1000000) {
+
+            CSRV = TPEN.Room[TPEN.FiltRef[RMLIST->CurrentItem]].G;
+
+        };
+
+        TPEN.ProcessFilter();
+
+        RMLIST->CurrentItem = -1;
+
+        for (i = 0; i < TPEN.NFRooms; i++)if (TPEN.FiltRef[i] < 1000000)if (TPEN.Room[TPEN.FiltRef[i]].G == CSRV)
+
+            RMLIST->CurrentItem = i;
+
+        if (PLLIST->CurrentItem >= PLLIST->N)PLLIST->CurrentItem = PLLIST->N - 1;
+
+        RMLIST->N = TPEN.NFRooms;//+TPEN.NRInGame;
+
+        if (RMLIST->FirstVisItem + RMLIST->NOnScr >= RMLIST->N)
+
+            RMLIST->FirstVisItem = RMLIST->N - RMLIST->NOnScr;
+
+        if (RMLIST->FirstVisItem < 0)RMLIST->FirstVisItem = 0;
+
+        if (RMLIST->CurrentItem >= RMLIST->N)RMLIST->CurrentItem = RMLIST->N - 1;
+
+        int NCL = 7;
+
+        bool AddChat = FIRST;
+
+        FIRST = 0;
+
+        if (TPEN.GlobalChat.NCStr) {
+
+            for (int j = 0; j < TPEN.GlobalChat.NCStr; j++) {
+
+                AddChatString(
+
+                    TPEN.GlobalChat.CStr[j].PlName,
+
+                    TPEN.GlobalChat.CStr[j].Message, 430,
+
+                    &WhiteFont, ChatMess, ChatSender, NCHATS, MAXCHATS);
+
+                AddChat = 1;
+
+            };
+
+            TPEN.GlobalChat.Clear();
+
+        };
+
+        PNAME = "";
+
+        if (NCHATS > NCL) {
+
+            CHSCR->SMaxPos = NCHATS - NCL;
+
+            if (AddChat)CHSCR->SPos = CHSCR->SMaxPos;
+
+            CHSCR->Visible = 1;
+
+            CHVIEW->ChatDY = CHSCR->SPos;
+
+        }
+        else {
+
+            CHSCR->Visible = 0;
+
+            CHSCR->SPos = 0;
+
+            CHVIEW->ChatDY = 0;
+
+        };
+
+        ProcessMessages();
+
+        ISC.ProcessDownload();
+
+        T100.Process();
+
+        if (!TPEN.Connected) {
+
+            DarkScreen();
+
+            ShowCentralMessage(GetTextByID("ICCONN"), BOR2.GPID);
+
+            FlipPages();
+
+            TPEN.Connect(PlName);
+
+            bool NeedDraw = 1;
+
+            do {
+
+                ProcessMessages();
+
+                if (bActive) {
+
+                    if (NeedDraw)FlipPages();
+
+                    NeedDraw = 0;
+
+                }
+                else NeedDraw = 1;
+
+                if (GetTickCount() - TPEN.ConnStartTime > 60000) {
+
+                    TPEN.ErrorType = 1;
+
+                };
+
+            } while (!(TPEN.Connected || TPEN.ErrorType));
+
+            if (TPEN.ErrorType) {
+
+                Back.Draw(0, 0);
+
+                DarkScreen();
+
+                ShowCentralMessage(GetTextByID("ICUNCON"), BOR2.GPID);
+
+                FlipPages();
+
+                bool NeedDraw = 1;
+
+                KeyPressed = 0;
+
+                int t0 = GetTickCount();
+
+                do {
+
+                    ProcessMessages();
+
+                    if (bActive) {
+
+                        if (NeedDraw)FlipPages();
+
+                        NeedDraw = 0;
+
+                    }
+                    else NeedDraw = 1;
+
+                } while ((GetTickCount() - t0 < 20000) && !KeyPressed);
+
+                KeyPressed = 0;
+
+                peerShutdown(TPEN.Peer);
+
+                TPEN.Peer = NULL;
+
+                return false;
+
+            };
+
+            TPEN.MyIP[0] = 0;
+
+            GetPLIP(TPEN.MyNick, TPEN.MyIP);
+
+        };
+
+        if (KeyPressed && LastKey == 13) {
+
+            KeyPressed = 0;
+
+            if (CHATMESSAGE[0]) {
+
+                TPEN.SendGlobalChat(CHATMESSAGE);
+
+                CHATMESSAGE[0] = 0;
+
+            };
+
+        };
+
+        if (GameInProgress)return 0;
+
+        DSS.MarkToDraw();
+
+        DSS.ProcessDialogs();
+
+        DSS.RefreshView();
+
+
+
+        if (RMLIST->CurrentItem >= 0 && TPEN.FiltRef && (!DisableCreate)
+
+            && TPEN.FiltRef[RMLIST->CurrentItem] < 1000000
+
+            && TPEN.FiltRef[RMLIST->CurrentItem] < TPEN.NRooms
+
+            && RMLIST->CurrentItem < TPEN.NFRooms
+
+            && CheckJoin(TPEN.Room[TPEN.FiltRef[RMLIST->CurrentItem]].G)) {
+
+            if (JOIN) {
+
+                JOIN->Visible = 1;
+
+                JOIN->Enabled = 1;
+
+            };
+
+        }
+        else {
+
+            if (JOIN) {
+
+                JOIN->Visible = 0;
+
+                JOIN->Enabled = 0;
+
+            };
+
+        };
+
+        if (CREATE) {
+
+            CREATE->Visible = !DisableCreate;
+
+            CREATE->Enabled = !DisableCreate;
+
+        }
+
+        if (ItemChoose == mcmJoin) {
+
+            if (RMLIST->CurrentItem >= 0 && TPEN.FiltRef[RMLIST->CurrentItem] < 1000000 && RMLIST->CurrentItem < TPEN.NFRooms
+
+                && CheckJoin(TPEN.Room[TPEN.FiltRef[RMLIST->CurrentItem]].G)) {
+
+                char* gg = ServerGetStringValue(TPEN.Room[TPEN.FiltRef[RMLIST->CurrentItem]].G, "password", "0");
+
+                bool okk = 0;
+
+                if (gg[0] == '1') {
+
+                    okk = EnterPassword();
+
+                    KeyPressed = 0;
+
+                }
+                else {
+
+                    SessPassword[0] = 0;
+
+                    okk = 1;
+
+                };
+
+                if (okk) {
+
+                    DarkScreen();
+
+                    ShowCentralMessage(GetTextByID("ICJOIN"), BOR2.GPID);
+
+                    FlipPages();
+
+                    strcpy(TPEN.HostMessage, TPEN.Room[TPEN.FiltRef[RMLIST->CurrentItem]].Name);
+
+                    strcpy(ROOMNAMETOCONNECT, TPEN.Room[TPEN.FiltRef[RMLIST->CurrentItem]].Name);
+
+                    TPEN.JoinRoom(TPEN.Room + TPEN.FiltRef[RMLIST->CurrentItem], SessPassword);
+
+                    if (!TPEN.MyRoom) {
+
+                        //Unable to connect.
+
+                        ItemChoose = -1;
+
+                    }
+                    else {
+
+                        if (SessPassword[0] == '1') {
+
+                            do {
+
+                                ProcessMessages();
+
+                            } while (TPEN.MyRoom && !TPEN.MyRoom->RoomConnected);
+
+                            if (TPEN.MyRoom && TPEN.MyRoom->RoomConnected) {
+
+                                strcpy(IPADDR, ServerGetAddress(TPEN.Room[TPEN.FiltRef[RMLIST->CurrentItem]].G));
+
+                                return 2;
+
+                            }
+                            else {
+
+                                WaitWithMessage(GetTextByID("ICUNJ"));
+
+                                IPADDR[0] = 0;
+
+                            };
+
+                        }
+                        else {
+
+                            strcpy(IPADDR, ServerGetAddress(TPEN.Room[TPEN.FiltRef[RMLIST->CurrentItem]].G));
+
+                            return 2;
+
+                        };
+
+                    };
+
+                };
+
+            };
+
+            ItemChoose = -1;
+
+        }
+        else
+
+            if (ItemChoose == mcmOk) {
+
+                if (CreateSessionDialog()) {
+
+                    DarkScreen();
+
+                    ShowCentralMessage(GetTextByID("ICCREATE"), BOR2.GPID);
+
+                    FlipPages();
+
+                    if (GMMOD & 1)TPEN.CreateStagingRoom(SessionName, SessPassword, 2, GMMOD, GMLEV);
+
+                    else TPEN.CreateStagingRoom(SessionName, SessPassword, GMMAXPL, GMMOD, GMLEV);
+
+                    return 1 + GMMOD * 2;
+
+                }
+                else {
+
+                    ItemChoose = -1;
+
+                };
+
+            }
+            else if (ItemChoose == 77) {
+
+                ItemChoose = -1;
+
+                TPEN.RefreshSessions();
+
+            }
+            else if (ItemChoose == 31) {
+
+                ItemChoose = -1;
+
+                //if(PLLIST->CurrentItem>=0&&PLLIST->CurrentItem<TPEN.NPlayers){
+
+                //	EnterPersonalMessage(TPEN.Players[PLLIST->CurrentItem].Name);
+
+                //};
+
+                if (PLLIST->CurrentItem >= 0) {
+
+                    if (PLLIST->CurrentItem < TPEN.NPlayers) {
+
+                        EnterPersonalMessage(TPEN.Players[PLLIST->CurrentItem].Name);
+
+                    }
+                    else {
+
+                        if (PLLIST->CurrentItem - TPEN.NPlayers < TPEN.ABPL.NPlayers) {
+
+                            EnterPersonalMessage(TPEN.ABPL.Names[PLLIST->CurrentItem - TPEN.NPlayers]);
+
+                        };
+
+                    };
+
+                };
+
+                KeyPressed = 0;
+
+                LastKey = 0;
+
+            }
+            else if (ItemChoose == 10) {//top100
+
+                if (CheckLogin()) {
+
+                    //if(!T100_cmd_done){
+
+                    T100.Clear();
+
+                    T100.Download();
+
+                    T100.Started = 1;
+
+                    //	T100_cmd_done=1;
+
+                    //};
+
+                    TOPVS->SPos = 0;
+
+                    PLINFMOD = 3;
+
+                };
+
+                ItemChoose = -1;
+
+            }
+            else if (ItemChoose == 11) {//player info
+
+                if (PLLIST->CurrentItem >= 0 && CheckLogin()) {
+
+                    if (PLLIST->CurrentItem < TPEN.NPlayers) {
+
+                        PILB->L = 0;
+
+                        PILB->BottomY = 0;
+
+                        if (TPEN.Players[PLLIST->CurrentItem].ProfileID) {
+
+                            //ISC.StartDownload(TPEN.Players[PLLIST->CurrentItem].ProfileID,0);
+
+                            ISC.CDOWN.Started = 0;
+
+                            ISC.Error = 0;
+
+                            ISC.Clear();
+
+                            PLINFMOD = 1;
+
+                            char* Name = TPEN.Players[PLLIST->CurrentItem].Name;
+
+                            PILB->AddText(2, PILB->BottomY + 2, Name, &BigRedFont);
+
+                            PILB->AddText(0, PILB->BottomY, Name, &BigYellowFont);
+
+                            PILB->BottomY += 32;
+
+                            memset(&GPI, 0, sizeof GPI);
+
+                            GPResult Res = gpGetInfo(LOGIN_gp, TPEN.Players[PLLIST->CurrentItem].ProfileID, GP_DONT_CHECK_CACHE, GP_NON_BLOCKING, &GPI_callback3, &GPI);
+
+                            PIVS->SPos = 0;
+
+                        };
+
+                    };
+
+                };
+
+                ItemChoose = -1;
+
+                GERBVAL->SpriteID = 0;
+
+            }
+            else if (ItemChoose == 43) {//t100 click
+
+                int Index = TOPBOX->CurrentItem;
+
+                if (Index < 100 && T100.CLIENT[Index].PLINF) {
+
+                    int prof = T100.CLIENT[Index].PLINF->profile;
+
+                    if (prof) {
+
+                        PILB->L = 0;
+
+                        PILB->BottomY = 0;
+
+                        ISC.CDOWN.Started = 0;
+
+                        ISC.Error = 0;
+
+                        ISC.Clear();
+
+                        PLINFMOD = 1;
+
+                        char* Name = T100.CLIENT[Index].PLINF->nick;
+
+                        PILB->AddText(2, PILB->BottomY + 2, Name, &BigRedFont);
+
+                        PILB->AddText(0, PILB->BottomY, Name, &BigYellowFont);
+
+                        PILB->BottomY += 32;
+
+                        memset(&GPI, 0, sizeof GPI);
+
+                        GPResult Res = gpGetInfo(LOGIN_gp, prof, GP_DONT_CHECK_CACHE, GP_NON_BLOCKING, &GPI_callback3, &GPI);
+
+                        PIVS->SPos = 0;
+
+                    };
+
+                    GERBVAL->SpriteID = 0;
+
+                };
+
+                ItemChoose = -1;
+
+            }
+            else if (ItemChoose == 13) {//servers list
+
+                PLINFMOD = 0;
+
+                ItemChoose = -1;
+
+            }
+            else if (ItemChoose == 14) {
+
+                if (PLLIST->CurrentItem >= 0) {
+
+                    if (PLLIST->CurrentItem < TPEN.NPlayers) {
+
+                        TPEN.Players[PLLIST->CurrentItem].Muted = !TPEN.Players[PLLIST->CurrentItem].Muted;
+
+                    };
+
+                };
+
+                ItemChoose = -1;
+
+            }
+            else if (ItemChoose == 15) {
+
+                if (PLLIST->CurrentItem < TPEN.NPlayers) {
+
+                    if (TryToJoinToPlayer(TPEN.Players[PLLIST->CurrentItem].Name)) {
+
+                        return 2;
+
+                    }
+                    else ItemChoose = -1;
+
+                };
+
+
+
+            };
+
+        if (RejectThisPlayer || CheckPlayerToExit())ItemChoose = mcmCancel;
+
+    }while (ItemChoose == -1 && !GameInProgress);
+
+    if (Active && TPEN.Connected) {
+
+        TPEN.Disconnect();
+
+    };*/
+
+    return 0; 
 };
 CEXPORT
 void SendPings();
@@ -1812,7 +4885,7 @@ extern int AddIconLx;
 extern int AddIconLy;
 //extern int IconLx;
 extern int IconLy;
-DialogsSystem GSYS(0,0);
+DialogsSystem GSYS(menu_x_off, menu_y_off);
 SimpleDialog* GVPort;
 SimpleDialog* MiniVPort;
 SimpleDialog* AblVPort;
@@ -2714,6 +5787,7 @@ extern IconSet PrpPanel;
 extern IconSet AblPanel;
 extern IconSet UpgPanel;
 extern IconSet BrigPanel;
+extern IconSet GeneralPanel;
 void CopyBPX2SCR(int xs,int ys,int xb,int yb,int Lx,int Ly,SQPicture* P){
     if(!Ly)return;
     word* Pic=(word*)P->GetPixelData();
@@ -2805,6 +5879,7 @@ bool Page2HaveItems=0;
 bool Page1HaveItems=0;
 NewMonster* LASTNM=NULL;
 extern bool RejectInterface;
+int GenPnX;
 void DrawZones(){
 	if(PlayGameMode==1||RejectInterface)return;
 	RunPF(5,"DrawZones");
@@ -2861,7 +5936,9 @@ void DrawZones(){
 			AblPanel.DrawIconSet(AblX,AblY,AblNx,AblNy,0);
 		};
     };
-	if(!EditMapMode)BrigPanel.DrawIconSet(BrigPnX,BrigPnY,BrigNx,BrigNy,0);
+    GenPnX = BrigPnX + 224;
+	/*if (!EditMapMode)*/BrigPanel.DrawIconSet(BrigPnX, BrigPnY, BrigNx, BrigNy, 0);
+    GeneralPanel.DrawIconSet(GenPnX, BrigPnY, BrigNx, BrigNy, 0);
 	ECOSHOW=0;
 	Page3HaveItems=0;
 	Page2HaveItems=0;
@@ -3059,7 +6136,6 @@ void GMiniShow();
 void GlobalHandleMouse();
 void DRAW_MAP_TMP();
 void DrawAllScreen(){
-
     if (NeedLoadGamePalette) {
         if (IgnoreSlow) {
             LoadPalette("0\\agew_1.pal");
@@ -3089,10 +6165,10 @@ void DrawAllScreen(){
 	CopyToScreen(0,0,RealLx,RSCRSizeY);
 	GlobalHandleMouse();//mouseX,mouseY);
 	MFix();
-    
 };
 void GlobalHandleMouse();
-void FastScreenProcess(){
+
+void FastScreenProcess() {
 	RunPF(7,"FastScreenProcess");
 	if(NeedLoadGamePalette){
 		if(IgnoreSlow){
@@ -3104,7 +6180,7 @@ void FastScreenProcess(){
 		};
 		CreateMiniMap();
 	};
-//	SERROR2();
+    //SERROR2();
 	///RunPF(14);
 	SUSP("GFIELDSHOW");
 	RunPF(8,"GFieldShow");
@@ -3145,9 +6221,10 @@ void FastScreenProcess(){
 	
 	NeedLoadGamePalette=false;
 	//StopPF(14);
-//	SERROR1();
+    //SERROR1();
 	StopPF(7);
 };
+
 void PreDrawGameProcess();
 void PostDrawGameProcess();
 void IAmLeft();
@@ -3196,6 +6273,18 @@ void PlayGame(){
     if (window_mode)
     {//Explicit call in case if game starts at 1024x768
         ResizeAndCenterWindow();
+    }
+    //Reset resolution for main menu
+    if (window_mode)
+    {//Dont't do in fullscreen to prevent menu stretching
+        if (RealLx != 1024 || RealLy != 768)
+        {
+            SetGameDisplayModeAnyway(1024, 768);
+        }
+    }
+    else
+    {//Always go for native screen resolution when showing menu in fullscreen
+        SetGameDisplayModeAnyway(screen_width, screen_height);
     }
 	GSSetup800();
 	LoadFog(0);
@@ -3327,18 +6416,6 @@ resgame:;
 	};
 	ClearScreen();
 	IgnoreSlow=false;
-    //Reset resolution for main menu
-    if (window_mode)
-    {//Dont't do in fullscreen to prevent menu stretching
-        if (RealLx != 1024 || RealLy != 768)
-        {
-            SetGameDisplayModeAnyway(1024, 768);
-        }
-    }
-    else
-    {//Always go for native screen resolution when showing menu in fullscreen
-        SetGameDisplayModeAnyway(screen_width, screen_height);
-    }
 };
 void DrawAllEditScreen(){
 	if(NeedLoadGamePalette){
@@ -3763,6 +6840,11 @@ void PlayVideo();
 //#ifdef MAKE_PTC
 
 void AllGame() {
+    if (!window_mode)
+    {//Calculate offsets for centering menu in fullscreen mode
+        menu_x_off = (screen_width - 1024) / 2;
+        menu_y_off = (screen_height - 768) / 2;
+    }
 	if(CheckLobby()){
 		EditMapMode=0;
 		Lobby=1;
@@ -3787,6 +6869,11 @@ stgame:
 /*void AllGame()
 {
     int menuChoice;
+    if (!window_mode)
+    {//Calculate offsets for centering menu in fullscreen mode
+        menu_x_off = (screen_width - 1024) / 2;
+        menu_y_off = (screen_height - 768) / 2;
+    }
     do
     {
         menuChoice = processMainMenu();
@@ -4289,7 +7376,6 @@ void CreateHiMap(){
 	if(!higrad){
 		grsize=24;
 		higrad=znew(byte,grsize);
-		for(int i=0;i<grsize;i++)higrad[i]=GetPaletteColor(i*255/grsize,i*255/grsize,i*255/grsize);
 	};
 	int mpx=256;
 	int mpy=256;
@@ -4970,7 +8056,7 @@ bool WaitingGame(bool Host){
 	TextButton* MGRP   [8];
 	RLCFont     FontA(GETS("@MNMENUACTF"));
 	RLCFont     FontP(GETS("@MNMENUPASF"));
-	DialogsSystem MPLAY(0,0);
+	DialogsSystem MPLAY(menu_x_off, menu_y_off);
 	MPLAY.addPicture(NULL,0,0,&MPL,&MPL,&MPL);
 	char NAMY[16];
 	int NameX=GETV("MINAMEX");
@@ -5752,7 +8838,7 @@ void SlideShow(){
 				ResFile F=RReset(cc);
 				if(F!=INVALID_HANDLE_VALUE){
 					RClose(F);
-					DialogsSystem DSS(0,0);
+					DialogsSystem DSS(menu_x_off, menu_y_off);
 					SQPicture PIC;
 					PIC.LoadPicture(cc);
 					DSS.addPicture(NULL,0,0,&PIC,&PIC,&PIC);
@@ -5788,7 +8874,7 @@ void ShowPreview(){
 		RClose(F);
 		ClearScreen();
 		LoadFog(2);
-		DialogsSystem DSS(0,0);
+		DialogsSystem DSS(menu_x_off, menu_y_off);
 		SQPicture PIC;
 		PIC.LoadPicture("Slides\\Preview.bmp");
 		DSS.addPicture(NULL,0,0,&PIC,&PIC,&PIC);
@@ -5972,7 +9058,7 @@ int ShowStatScreen(bool Next,bool Prev,byte Kind){
 		int NGridY=(MaxPop/deal)+1;
 		MaxPop=NGridY*deal;
 
-		DialogsSystem STAT(0,0);
+		DialogsSystem STAT(menu_x_off, menu_y_off);
 		STAT.addPicture(NULL,0,0,&BACK,&BACK,&BACK);
 		int DDX=110;
 		//if(!ExStyle)DDX=0;
@@ -6075,10 +9161,10 @@ int ShowStatScreen(bool Next,bool Prev,byte Kind){
 			STAT.MarkToDraw();
 			STAT.ProcessDialogs();
 			//DrawStatTable(x,y-ODY,Lx,GrLy+ODY,OneLy,NNAT);
-			int gx0=GrpX+x;
-			int gx1=GrpX+x+GrpLx-1;
-			int gy0=GrpY+y;
-			int gy1=GrpY+y+GrpLy-1;
+			int gx0=GrpX+x+ menu_x_off;
+			int gx1=GrpX+x+GrpLx-1+ menu_x_off;
+			int gy0=GrpY+y+ menu_y_off;
+			int gy1=GrpY+y+GrpLy-1+ menu_y_off;
 			Xbar(gx0-1,gy0-1,gx1-gx0+4,gy1-gy0+4,0xEC);
 			//Xbar(gx0-2,gy0-2,gx1-gx0+5,gy1-gy0+5,0x3A);
 			//Xbar(gx0-3,gy0-3,gx1-gx0+7,gy1-gy0+7,0x39);
@@ -6087,11 +9173,11 @@ int ShowStatScreen(bool Next,bool Prev,byte Kind){
 			//Xbar(gx0-6,gy0-6,gx1-gx0+13,gy1-gy0+13,0xAE);
 			//drawing grids
 			for(int ix=0;ix<8;ix++){
-				int gx0=x+GrpX+((GrpLx*ix)>>3);
-				int gx1=x+GrpX+((GrpLx*(ix+1))>>3);
+				int gx0=x+GrpX+((GrpLx*ix)>>3)+ menu_x_off;
+				int gx1=x+GrpX+((GrpLx*(ix+1))>>3)+ menu_x_off;
 				for(int iy=0;iy<NGridY;iy++){
-					int gy0=y+GrpY+((GrpLy*iy)/NGridY);
-					int gy1=y+GrpY+((GrpLy*(iy+1))/NGridY);
+					int gy0=y+GrpY+((GrpLy*iy)/NGridY)+ menu_y_off;
+					int gy1=y+GrpY+((GrpLy*(iy+1))/NGridY)+ menu_y_off;
 					Xbar(gx0,gy0,gx1-gx0+1,gy1-gy0+1,0xEC);
 					//Xbar(gx0+1,gy0+1,gx1-gx0-1,gy1-gy0-1,0x3B);
 					//Xbar(gx0+2,gy0+2,gx1-gx0-3,gy1-gy0-3,0x3A);
@@ -6116,8 +9202,8 @@ int ShowStatScreen(bool Next,bool Prev,byte Kind){
 						X0=X1;
 						Y0=Y1;
 					};
-					X1=x+GrpX+((j<<8)*GrpLx)/MaxUpgTime;
-					Y1=y+GrpY+GrpLy-(VAL[j]*(GrpLy-10))/MaxPop;
+					X1=x+GrpX+((j<<8)*GrpLx)/MaxUpgTime+ menu_x_off;
+					Y1=y+GrpY+GrpLy-(VAL[j]*(GrpLy-10))/MaxPop+ menu_y_off;
 					if(j>0){
 						DrawLine(X0,Y0,X1,Y1,c);
 						DrawLine(X0+1,Y0,X1+1,Y1,c);
@@ -6153,7 +9239,7 @@ int ShowUserStat(bool Prev,bool Next){
 	LocalGP BTNS;
 	SQPicture BACK2("Interf2\\statistic_background.bmp");
 	BTNS.Load("Interf2\\stats");
-	DialogsSystem STAT(0,0);
+	DialogsSystem STAT(menu_x_off, menu_y_off);
 	STAT.addPicture(NULL,0,0,&BACK2,&BACK2,&BACK2);
 	int DDX=110;
 	//if(!ExStyle)DDX=0;
@@ -6226,13 +9312,13 @@ int ShowUserStat(bool Prev,bool Next){
 	char* PHDR=GetTextByID("ST_PROD");
 	int curnat=0;
 
-	int ux=230-30;
-	int uy=320;
+	int ux=230-30+ menu_x_off;
+	int uy=320+ menu_y_off;
 	int ulx=353;
 	int uly=373;
 	int kx=ux+ulx+45;
-	VScrollBar* PBR=STAT.addNewGP_VScrollBar(NULL,ux+ulx+11-15,uy+1+2,uly-2-2,1,0,3,0);
-	VScrollBar* KBR=STAT.addNewGP_VScrollBar(NULL,kx+ulx+11-15,uy+1+2,uly-2-2,1,0,3,0);
+	VScrollBar* PBR=STAT.addNewGP_VScrollBar(NULL,ux+ulx+11-15- menu_x_off,uy+1+2- menu_y_off,uly-2-2,1,0,3,0);
+	VScrollBar* KBR=STAT.addNewGP_VScrollBar(NULL,kx+ulx+11-15- menu_x_off,uy+1+2- menu_y_off,uly-2-2,1,0,3,0);
 	PBR->ScrDy=200;
 	KBR->ScrDy=200;
 	do{
@@ -6247,11 +9333,11 @@ int ShowUserStat(bool Prev,bool Next){
 		for(int i=0;i<LB->NItems;i++){
 			CBar(LB->x-15,LB->y+15+i*25,12,3,0xD0+NatRefTBL[NATS[i]]*4);
 		};
-		ShowString(512-GetRLCStrWidth(STHDR,&fon18y5)/2,26,STHDR,&fon18y5);
+		ShowString(512-GetRLCStrWidth(STHDR,&fon18y5)/2+ menu_x_off,26+ menu_y_off,STHDR,&fon18y5);
 		ShowString(ux+(ulx>>1)+7-(GetRLCStrWidth(PHDR,&YellowFont)>>1),uy-22,PHDR,Statfont);
 		ShowString(kx+(ulx>>1)+7-(GetRLCStrWidth(KHDR,&YellowFont)>>1),uy-22,KHDR,Statfont);
-		int rx=190;
-		int ry=y+48;
+		int rx=190+ menu_x_off;
+		int ry=y+48+ menu_y_off;
 		int rx1=rx+219+5;
 		int rxl=80;
 		for(int q=0;q<6;q++){
@@ -7035,16 +10121,30 @@ void ShowMultiplayerChat(){
 	};
 };
 bool CheckFNSend(int idx){
-    if (!EnterChatMode)
-    {
-        return false;
-    }
+    if (!EnterChatMode)return false;
 
-    if (idx < NGSPlayers)
-    {
+    if (idx < NGSPlayers) {
+
+        /*if (TPEN.Peer && TPEN.Connected && ChatString[0]) {
+
+            peerMessagePlayer(TPEN.Peer, GSPLAYERS[idx], ChatString);
+
+            char cc3[1024];
+
+            sprintf(cc3, GetTextByID("CHATHELP4"), GSPLAYERS[idx], ChatString);
+
+            AssignHint1(cc3, 100, 0);
+
+            ChatString[0] = 0;
+
+        };*/
+
         EnterChatMode = 0;
+
         return true;
-    }
+
+    };
+
     return false;
 };
 void GetTimeString(int t,char* str){
@@ -7055,6 +10155,83 @@ void GetTimeString(int t,char* str){
 };
 int SortPlayers(byte* Res,int* par);
 void ShowVictInFormat(char* Res,int idx,byte Type);
+/*void SendInfoString(char* nick) {
+
+    if (!(TPEN.Peer && TPEN.Connected && !TPEN.ChatConnected))return;
+
+    char BIGINFO[2048];
+
+    sprintf(BIGINFO, "@@@GMRIN %s\\", TPEN.HostMessage);
+
+    switch (PINFO[0].VictCond) {
+
+    case 0:
+
+        strcat(BIGINFO, "Total Destruction\\");
+
+        break;
+
+    case 1:
+
+        strcat(BIGINFO, "Territory Capture ");
+
+        GetTimeString(PINFO[0].GameTime, BIGINFO + strlen(BIGINFO));
+
+        strcat(BIGINFO, "\\");
+
+        break;
+
+    case 2:
+
+        strcat(BIGINFO, "Game on score ");
+
+        GetTimeString(PINFO[0].GameTime, BIGINFO + strlen(BIGINFO));
+
+        strcat(BIGINFO, "\\");
+
+        break;
+
+    default:
+
+        return;
+
+    };
+
+    byte ord[8];
+
+    int  par[8];
+
+    int no = SortPlayers(ord, par);
+
+    byte prevms = 0;
+
+    int teamidx = 0;
+
+    if (no) {
+
+        byte prevms = 0;
+
+        for (int q = 0; q < no; q++) {
+
+            byte ms = NATIONS[ord[q]].NMask;
+
+            if (!(ms & prevms))teamidx++;
+
+            prevms = ms;
+
+            char ccr[64];
+
+            ShowVictInFormat(ccr, ord[q], PINFO[0].VictCond);
+
+            sprintf(BIGINFO + strlen(BIGINFO), "%d %s (%s)\\", teamidx, GetPName(ord[q]), ccr);
+
+        };
+
+    };
+
+    if (strlen(BIGINFO) < 200)peerMessagePlayer(TPEN.Peer, nick, BIGINFO);
+
+};*/
 #include "Dialogs\EditorToolsPanel.h"
 //-----------------Clans support----------------//
 struct ClanInfo{
@@ -7181,7 +10358,7 @@ void ShowClanString(int x,int y,char* s,byte State,RLCFont* Fn,RLCFont* Fn1,int 
 	return;
 };
 //--------------DIPLOMACY IMPLEMENTATION-------------
-DialogsSystem DIP_DSS(0,0);
+DialogsSystem DIP_DSS(menu_x_off, menu_y_off);
 bool DIP_DSS_Init=0;
 bool DIP_DSS_Vis=0;
 char CUR_Request[256]="LF|LW_new|open&req1.txt";

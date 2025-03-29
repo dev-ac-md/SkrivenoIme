@@ -1,3 +1,8 @@
+extern int menu_x_off;
+extern int menu_y_off;
+extern int menu_hint_x;
+extern int menu_hint_y;
+
 bool EnterName(){
 	LoadFog(1);
 	LocalGP BTN("Interf2\\Buttons");
@@ -18,7 +23,7 @@ bool EnterName(){
 	RLCFont hfnt(FONT1.GPID);
 
 	SQPicture Back("Interf2\\Background_Player_Name.bmp");
-	DialogsSystem MENU(0,0);
+	DialogsSystem MENU(menu_x_off, menu_y_off);
 	MENU.UserClickSound=-1;
 	MENU.addPicture(NULL,0,0,&Back,&Back,&Back);
 
@@ -36,12 +41,21 @@ bool EnterName(){
 	TextButton* CurPlayer=MENU.addTextButton(NULL,446,528,GetTextByID("INTF_PLAYER_CP"),FYellow,FYellow,FYellow,0);
 
 	// Hint
-	int HintX = 490;
-	int HintY = 745;
+	//int HintX = 490;
+	//int HintY = 745;
+
+    if (!window_mode)
+    {
+        menu_hint_x = 490 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }else{
+        menu_hint_x = 490;
+        menu_hint_y = 745;
+    }
 
 	MENU.HintFont=FHint;
-	MENU.HintX=HintX;
-	MENU.HintY=HintY;
+	MENU.HintX= menu_hint_x;
+	MENU.HintY= menu_hint_y;
 
 	InputBox* IB=MENU.addInputBox(NULL,594,524,PlName,16,308,40,FYellow,FWhite,0);	
 	IB->Active=true;

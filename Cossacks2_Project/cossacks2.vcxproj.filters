@@ -102,6 +102,12 @@
     <Filter Include="New">
       <UniqueIdentifier>{d96500d6-e917-4112-a735-63b1ed309952}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Steam">
+      <UniqueIdentifier>{0bc4a979-676d-4052-9a52-3643b0f5ea44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Steam\Steam Header">
+      <UniqueIdentifier>{a96cef58-7cb7-47fa-b52d-de542f2a6f62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dplay.h">
@@ -605,6 +611,144 @@
     <ClInclude Include="Ddini.h">
       <Filter>Graphic\Graphic Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Steam\isteammusicremote.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamnetworking.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamnetworkingmessages.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamnetworkingsockets.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamnetworkingutils.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamparentalsettings.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamps3overlayrenderer.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamremoteplay.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamremotestorage.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamscreenshots.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamtimeline.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamugc.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamuser.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamuserstats.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamutils.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamvideo.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\matchmakingtypes.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steam_api.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steam_api_common.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steam_api_flat.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steam_api_internal.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steam_gameserver.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steamclientpublic.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steamencryptedappticket.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steamhttpenums.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steamnetworkingfakeip.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steamnetworkingtypes.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steamps3params.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steamtypes.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\steamuniverse.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamapps.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamappticket.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamclient.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamcontroller.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamdualsense.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamfriends.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamgamecoordinator.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamgameserver.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamgameserverstats.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamhtmlsurface.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteamhttp.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteaminput.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteaminventory.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteammatchmaking.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Steam\isteammusic.h">
+      <Filter>Steam\Steam Header</Filter>
+    </ClInclude>
+    <ClInclude Include="New\UdpHolePuncher.h">
+      <Filter>New</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Lines.cpp">
@@ -1016,6 +1160,9 @@
     <ClCompile Include="New\MapOptionsEncoder.cpp">
       <Filter>New</Filter>
     </ClCompile>
+    <ClCompile Include="New\UdpHolePuncher.cpp">
+      <Filter>New</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Bink\binkw32.lib">
@@ -1060,6 +1207,15 @@
     <Library Include="..\bin\LF_Server.lib">
       <Filter>LIB</Filter>
     </Library>
+    <Library Include="..\lib\steam_api.lib">
+      <Filter>Steam</Filter>
+    </Library>
+    <Library Include="..\lib\d3dx8.lib">
+      <Filter>LIB</Filter>
+    </Library>
+    <Library Include="..\lib\d3d8.lib">
+      <Filter>LIB</Filter>
+    </Library>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bat\all.bat">
@@ -1067,6 +1223,12 @@
     </None>
     <None Include="mode.dat">
       <Filter>Graphic\Graphic Headers</Filter>
+    </None>
+    <None Include="..\lib\steam_api.dll">
+      <Filter>Steam</Filter>
+    </None>
+    <None Include="Steam\steam_api.json">
+      <Filter>Steam\Steam Header</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -2191,7 +2191,7 @@ int FindCommandPlace(int* x,int* y,byte dir,OneObject* OB,int Indx,int Indx1,Ord
 	int idx=-1;
 	int rx=OB->RealX;
 	int ry=OB->RealY;
-	int bx=0,by=0;
+	int bx,by;
 	for(int i=0;i<N;i++){
 		if(i!=Indx&&i!=Indx1){
 			int xc=ODS->ComX[i];
@@ -2575,10 +2575,10 @@ void HumanEscapeLink(Brigade* BR){
 		};
 	};
 	BR->DeleteBOrder();
-	BR->KeepPositions(0,pri);
+	BR->KeepPositions(1,pri);
 #else
 	BR->DeleteBOrder();
-	BR->KeepPositions(1,pri);
+	BR->KeepPositions(0,pri);
 #endif
 };
 char* HLST_Message="[HumanLocalSendTo]";
@@ -3337,7 +3337,11 @@ void B_HumanGlobalSendToLink(Brigade* BR){
 	};
 	if(NextNextTop!=0xFFFF){
 		//atttempt to optomise way
-		int MaxPre=5;
+#ifdef EW
+        int MaxPre = 10;
+#else
+        int MaxPre = 5;
+#endif
 		int cox=xc>>4;
 		int coy=yc>>4;
 		int NSteps=0;		
@@ -3384,7 +3388,7 @@ void Brigade::HumanGlobalSendTo(int x,int y,short Dir,byte Prio,byte OrdType){
 
 	// TOP_HASH
 	byte LockType=0xFF;
-	for(int i=0;i<NMemb;i++){
+	for (int i = 0; i<NMemb; i++) {
 		if(Memb[i]!=0xFFFF){
 			OneObject* OB=Group[Memb[i]];
 			if(OB&&!OB->Sdoxlo) LockType=OB->LockType;

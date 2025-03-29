@@ -202,13 +202,23 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 	RLCFont hfnt(HFONT.GPID);
 	hfnt.SetWhiteColor();
 	
-	DialogsSystem MENU(0,0);
+	DialogsSystem MENU(menu_x_off, menu_y_off);
 	
 	MENU.OkSound=GetSound("START");
 
+    if (!window_mode)
+    {
+        menu_hint_x = 440 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 440;
+        menu_hint_y = 745;
+    }
+
 	MENU.HintFont=FHint;
-	MENU.HintX=440;
-	MENU.HintY=745;
+	MENU.HintX= menu_hint_x;
+	MENU.HintY= menu_hint_y;
 
 	Picture* GPPB=MENU.addPicture(NULL,0,0,&Back,&Back,&Back);
 	
@@ -471,6 +481,7 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 #ifndef TUTORIAL_DEMOVERSION
 		MNATION[i]->AddLine(rtxt);
 #endif
+        MNATION[i]->CurLine = NG;
 		MNATION[i]->FontDx-=2;
 
 		//MNATION[i]->OneDx-=2;
@@ -520,7 +531,7 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 	
 	int FAO=6; // First number of additional options
 
-	SimpleDialog* ListClip=MENU.addClipper(601,185,952,340);
+    SimpleDialog* ListClip = MENU.addClipper(601 + menu_x_off, 185 + menu_y_off, 952 + menu_x_off, 340 + menu_y_off);
 	//SimpleDialog* ListClip=MENU.addClipper(0,0,RealLx,RealLy);
 	
 	TGRP1[0] = MENU.addTextButton(NULL,Tx2,0,GetTextByID("INTF_CROOM_O0"),FYellow,FYellow,FYellow,0);
@@ -705,7 +716,7 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 	LBSav->FontDx -= 16;
 
 	//---------------  Options of the Current Game  --------------
-	GP_PageControl* GPP=MENU.addPageControl(NULL,11,-150,BTNS.GPID,0);
+    GP_PageControl* GPP = MENU.addPageControl(NULL, 11, -1500, BTNS.GPID, 0);
 
 	int PageX = 602;
 	int PageW = 125;
@@ -724,10 +735,10 @@ bool MPL_WaitingGame(bool Host,bool SINGLE){
 	Page2->FontDy -= 1;
 
 	GPP->Hint=GetTextByID("MOPAGES");
-
-	GPP->AddPage(495,128,495+88,128+22,22);
-	GPP->AddPage(495+88,128,495+197,128+22,23);
-	GPP->AddPage(495+197,128,495+292,128+22,24);
+    GPP->AddPage(495, 128, 495 + 88, 128 + 22, 22);
+    GPP->AddPage(495 + 88, 128, 495 + 197, 128 + 22, 23);
+    GPP->AddPage(495 + 197, 128, 495 + 292, 128 + 22, 24);
+	
 
 	GPP->CurPage=1;
 
@@ -935,6 +946,7 @@ ffe2:;
 	int NL0=CMGRP1[0]->NLines;
 	do{
 		if(UseGSC_Login){
+            udp_hole_puncher.KeepAlive();
 			ChatProcess();
 			if(CheckPersonality(CHATMESSAGE)){
 				CHATBOX->CursPos=strlen(CHATMESSAGE);
@@ -974,7 +986,7 @@ ffe2:;
 		};
 		int a=AOScr->GetPos();
 		for(int i=0; i<NGRP1; i++){
-			int y = y2+(i-a)*26;
+			int y = y2+menu_y_off +(i-a)*26;
 			int y1 = y+CMGRP1[i]->y1-CMGRP1[i]->y;
 			if(CMGRP1[i]){
 				CMGRP1[i]->y=y;
@@ -1345,11 +1357,16 @@ ffe2:;
 				int PPP;
 				if(!SINGLE){
 					if((PPP=GetReadyPercent())<100){
-						sprintf(ReadyFlow[HostID]->Message,"%d%%",PPP);
-						ReadyFlow[HostID]->Visible=1;
-						MREADY[HostID]->Visible=0;
-						MREADY[HostID]->Enabled=0;
-						NOMREADY=HostID;
+                        //READY STATUS
+						//sprintf(ReadyFlow[HostID]->Message,"%d%%",PPP);
+						//ReadyFlow[HostID]->Visible=1;
+						//MREADY[HostID]->Visible=0;
+						//MREADY[HostID]->Enabled=0;
+						//NOMREADY=HostID;
+                        ReadyFlow[HostID]->Visible = 0;
+                        MREADY[HostID]->Visible = 1;
+                        MREADY[HostID]->Enabled = 1;
+                        NOMREADY = -1;;
 					}else{
 						ReadyFlow[HostID]->Visible=0;
 						MREADY[HostID]->Visible=1;
@@ -1838,7 +1855,7 @@ ffe2:;
 					COMPS[i]->Visible=(i>=NPlayers);
 #endif
 					COMPS[i]->Enabled=COMPS[i]->Visible;
-					int j = 0;
+					int j;
 					//BCOMP[i]->Visible=0;
 					if(COMPS[i]->Visible&&COMPS[i]->CurLine){
 						if(!COMPPREV[i]){
@@ -1855,7 +1872,7 @@ ffe2:;
 							};
 							if(defc==-1)defc=0;
 							ColorBack[i]->Nation=defc;
-							AliasBack[i]->Nation=7;
+							AliasBack[i]->Nation=0;
 						};
 
 						if(!SINGLE){
@@ -1991,7 +2008,7 @@ ffe2:;
 //#ifndef SINGLETESTNETWORK
 			if(!SINGLE){
 				if(NPlayers<2)GMREADY=false;
-				if(!CheckPingsReady())GMREADY=false;
+				//if(!CheckPingsReady())GMREADY=false;
 				byte bs=0;
 				for(int i=0;i<NPlayers;i++)bs|=1<<AliasBack[i]->Nation;
 				if(!(bs&1)){
@@ -2062,6 +2079,7 @@ ffe2:;
 		}else{
 			OkBtn->Enabled=!MyOldVers;
 			//OkBtn->Visible=!MyOldVers;
+            /* BUGFIX: Disable no direct connection check
 			if(!CheckExistConn()){
 				OkBtn->Enabled=0;
 				//OkBtn->Visible=0;
@@ -2069,7 +2087,7 @@ ffe2:;
 					strcpy(MENU.DefaultHint,NOCONN);
 					PrintBadConn(MENU.DefaultHint+strlen(MENU.DefaultHint));
 				};
-			};
+			};*/
 			if(P1E){
 				//OkBtn->Enabled=PREV->Visible;
 				//OkBtn->Visible=PREV->Visible;
@@ -2121,7 +2139,7 @@ FinCLC:;
 		};
 	};
 	if(Host&&PlayerMenuMode!=-1){
-		int i = 0;
+		int i;
 		for(i=0;i<8;i++)MPL_NatRefTBL[i]=0xFF;
 		int NN[8]={0,0,0,0,0,0,0,0};
 		for(i=NPlayers;i<7;i++)if(PINFO[HostID].COMPINFO[i]){

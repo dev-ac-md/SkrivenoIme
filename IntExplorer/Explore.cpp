@@ -987,7 +987,7 @@ int OneSicWindow::ParseTheWholeText(){
 				OneInterfaceElement IFS;
 				memset(&IFS,0,sizeof IFS);
 				DialogsSystem* DSS=NULL;
-				int j = 0;
+				int j;
 				for(int i=0;i<N_IFNS;i++){
 					if(!strcmp(IFNS[i].Name,com)){
 						if(IFNS[i].ReqName&&Result[pos]=='['){

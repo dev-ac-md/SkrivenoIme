@@ -1,6 +1,21 @@
 CIMPORT void GoHomeAnyway();
+
+extern int menu_x_off;
+extern int menu_y_off;
+extern int menu_hint_x;
+extern int menu_hint_y;
+
 int MM_ProcessMultiPlayer(){	
 	GoHomeAnyway();
+    if (!window_mode)
+    {
+        menu_hint_x = 18 + menu_x_off;
+        menu_hint_y = 701 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 18;
+        menu_hint_y = 701;
+    }
 	LocalGP BTNS("Interface\\Multi_Player");
 	LocalGP HFONT("rom10");
 	RLCFont hfnt(HFONT.GPID);
@@ -10,10 +25,10 @@ int MM_ProcessMultiPlayer(){
 	SQPicture MnPanel("Interface\\Background_Multi_Player.bmp");
 	
 	
-	DialogsSystem MMenu(0,0);
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 	MMenu.HintFont=&hfnt;
-	MMenu.HintY=701;
-	MMenu.HintX=18;
+	MMenu.HintY= menu_hint_y;
+	MMenu.HintX= menu_hint_x;
 
 	int Dy=110;
 	Picture* PIC=MMenu.addPicture(NULL,0,0,&MnPanel,&MnPanel,&MnPanel);
@@ -71,6 +86,8 @@ int MM_ProcessMultiPlayer(){
 
 
 bool ProcessNewInternetLogin();
+
+extern char ACCESS[16];
 
 bool processMultiplayer(){
 	GoHomeAnyway();
@@ -168,6 +185,7 @@ REINCONN:;
 		PlayerMenuMode=1;
 			if(CreateSession(GlobalRIF.Name,GlobalRIF.Nick, 0,DoNewInet,GlobalRIF.MaxPlayers)){
 				NeedToPerformGSC_Report=1;
+                udp_hole_puncher.Init(GlobalRIF.udp_server, GlobalRIF.port, GlobalRIF.udp_interval,GlobalRIF.player_id, ACCESS);
 				WaitingHostGame(0);
 				NeedToPerformGSC_Report=0;
 				if(PlayerMenuMode==1){
@@ -205,7 +223,7 @@ REINCONN:;
 	case 10://Inet Join(Deathmatch)
 			PlayerMenuMode=1;
 			strcpy(IPADDR,GlobalRIF.RoomIP);
-			if(!FindSessionAndJoin(ROOMNAMETOCONNECT,GlobalRIF.Nick,DoNewInet)){
+			if(!FindSessionAndJoin(ROOMNAMETOCONNECT, GlobalRIF.Nick, DoNewInet, GlobalRIF.port)){
 				LeaveGSCRoom();
 				WaitWithMessage(GetTextByID("ICUNJ"));
 			}else{

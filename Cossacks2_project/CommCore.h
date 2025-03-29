@@ -1,15 +1,15 @@
-//
+п»ї//
 //	UDP based Communication Core
 //	GSC Game World
-//	© 2001 Serguei I. Ivantsov aka ManOwaR Linux Lover
+//	В© 2001 Serguei I. Ivantsov aka ManOwaR Linux Lover
 //
 //	Jun 22, 2001		V0.1
 //	Jul 09, 2001		V0.2
 //	Aug	06, 2001		V0.4
 // 
 //
-// Для корректной работы за NAT-ом, последний должен удовлетворять рекомендациям
-// фирмы Microsoft на трансляцию UDP-пакетов через шлюз
+// Р”Р»СЏ РєРѕСЂСЂРµРєС‚РЅРѕР№ СЂР°Р±РѕС‚С‹ Р·Р° NAT-РѕРј, РїРѕСЃР»РµРґРЅРёР№ РґРѕР»Р¶РµРЅ СѓРґРѕРІР»РµС‚РІРѕСЂСЏС‚СЊ СЂРµРєРѕРјРµРЅРґР°С†РёСЏРј
+// С„РёСЂРјС‹ Microsoft РЅР° С‚СЂР°РЅСЃР»СЏС†РёСЋ UDP-РїР°РєРµС‚РѕРІ С‡РµСЂРµР· С€Р»СЋР·
 
 #define _COOL_
 //#define CC_DEBUG
@@ -44,386 +44,459 @@
 
 typedef in_addr PEER_ADDR;
 typedef u_short	PEER_PORT;
-typedef u_short	PEER_ID,*LPPEER_ID;
+typedef u_short	PEER_ID, * LPPEER_ID;
 
 // ---------------------------------------------------------------------------------------------
-// Константы
-#define PROTO_ID				0x47534370	// Идентификатор протокола ('GSCp')
-#define DATA_PORT				34000		// Порт данных (34000)
-#define RETRY_COUNT				8			// Сколько раз нужно пытаться отослать пакет
-											// в случае неподтверждения
-											// после чего пакет удаляется из очереди
-#define RETRY_TIME				700			// Интервал повтора отправки пакет в миллисекундах
-#define MAX_QUEUE_LEN			4096		// Максимальная длина очереди пакетов
-											// ожидающих подтверждения
-#define MAX_PEERS				7			// Максимальное число хостов 
-#define CC_PROTO_VERSION		0x03		// Версия коммуникационного протокола
-#define MAX_PACKET_STAMP		0xEE6B2800	// Максимальный номер пакета (используется для идентификации)
-#define RECV_BUFFER_LENGTH		8192		// Размер приемного буфера (8 килобайт)
-#define MAX_HOST_NAME			32			// Максимальная длина имени хоста
+// РљРѕРЅСЃС‚Р°РЅС‚С‹
+#define PROTO_ID				0x47534370	// РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїСЂРѕС‚РѕРєРѕР»Р° ('GSCp')
+#define DATA_PORT				34000		// РџРѕСЂС‚ РґР°РЅРЅС‹С… (34000)
+#define RETRY_COUNT				16			// РЎРєРѕР»СЊРєРѕ СЂР°Р· РЅСѓР¶РЅРѕ РїС‹С‚Р°С‚СЊСЃСЏ РѕС‚РѕСЃР»Р°С‚СЊ РїР°РєРµС‚
+                                            // РІ СЃР»СѓС‡Р°Рµ РЅРµРїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ
+                                            // РїРѕСЃР»Рµ С‡РµРіРѕ РїР°РєРµС‚ СѓРґР°Р»СЏРµС‚СЃСЏ РёР· РѕС‡РµСЂРµРґРё
+
+//in main exe's commcore.h default RETRY_TIME was 700
+//in commlib's commcore.h default RETRY_TIME was 2800
+#define RETRY_TIME				200			// РРЅС‚РµСЂРІР°Р» РїРѕРІС‚РѕСЂР° РѕС‚РїСЂР°РІРєРё РїР°РєРµС‚ РІ РјРёР»Р»РёСЃРµРєСѓРЅРґР°С…
+
+#define MAX_QUEUE_LEN			8192		// РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° РѕС‡РµСЂРµРґРё РїР°РєРµС‚РѕРІ
+                                            // РѕР¶РёРґР°СЋС‰РёС… РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ
+#define MAX_PEERS				7			// РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ С‡РёСЃР»Рѕ С…РѕСЃС‚РѕРІ 
+#define CC_PROTO_VERSION		0x03		// Р’РµСЂСЃРёСЏ РєРѕРјРјСѓРЅРёРєР°С†РёРѕРЅРЅРѕРіРѕ РїСЂРѕС‚РѕРєРѕР»Р°
+#define MAX_PACKET_STAMP		0xEE6B2800	// РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ РЅРѕРјРµСЂ РїР°РєРµС‚Р° (РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РёРґРµРЅС‚РёС„РёРєР°С†РёРё)
+#define RECV_BUFFER_LENGTH		8192		// Р Р°Р·РјРµСЂ РїСЂРёРµРјРЅРѕРіРѕ Р±СѓС„РµСЂР° (8 РєРёР»РѕР±Р°Р№С‚)
+#define MAX_HOST_NAME			32			// РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° РёРјРµРЅРё С…РѕСЃС‚Р°
 
 // ---------------------------------------------------------------------------------------------
-// Описание хоста
-typedef struct PEER_ENTRY{						// Хост
-	PEER_ADDR	m_ex_Addr;						// Внешний адрес хоста (или NAT-а)
-	PEER_PORT	m_ex_Port;						// Внешний порт хоста (или NAT-а)
-	PEER_ID		m_Id;							// Идентификатор хоста в списке сервера
-	BOOL		m_bAlive;						// Доступен ли хост на данный момент
-	BOOL		m_bOverNAT;						// Находится ли хост за NAT-ом по отношению к серверу
-	u_short		m_uLatency;						// Время ответа хоста
-	CHAR		m_szUserName[MAX_HOST_NAME];	// Название хоста / пользователя
-	u_short		m_uUserDataSize;				// Размер пользовательских данных
-	LPBYTE		m_lpbUserData;					// Указатель на пользовательские данные
-	CHAR		m_szCCUID[23];					// Глобальный идентификатор хоста
+// РћРїРёСЃР°РЅРёРµ С…РѕСЃС‚Р°
+typedef struct PEER_ENTRY
+{						// РҐРѕСЃС‚
+    PEER_ADDR	m_ex_Addr;						// Р’РЅРµС€РЅРёР№ Р°РґСЂРµСЃ С…РѕСЃС‚Р° (РёР»Рё NAT-Р°)
+    PEER_PORT	m_ex_Port;						// Р’РЅРµС€РЅРёР№ РїРѕСЂС‚ С…РѕСЃС‚Р° (РёР»Рё NAT-Р°)
+    PEER_ID		m_Id;							// РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С…РѕСЃС‚Р° РІ СЃРїРёСЃРєРµ СЃРµСЂРІРµСЂР°
+    BOOL		m_bAlive;						// Р”РѕСЃС‚СѓРїРµРЅ Р»Рё С…РѕСЃС‚ РЅР° РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚
+    BOOL		m_bOverNAT;						// РќР°С…РѕРґРёС‚СЃСЏ Р»Рё С…РѕСЃС‚ Р·Р° NAT-РѕРј РїРѕ РѕС‚РЅРѕС€РµРЅРёСЋ Рє СЃРµСЂРІРµСЂСѓ
+    u_short		m_uLatency;						// Р’СЂРµРјСЏ РѕС‚РІРµС‚Р° С…РѕСЃС‚Р°
+    CHAR		m_szUserName[MAX_HOST_NAME];	// РќР°Р·РІР°РЅРёРµ С…РѕСЃС‚Р° / РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+    u_short		m_uUserDataSize;				// Р Р°Р·РјРµСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёС… РґР°РЅРЅС‹С…
+    LPBYTE		m_lpbUserData;					// РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёРµ РґР°РЅРЅС‹Рµ
+    CHAR		m_szCCUID[23];					// Р“Р»РѕР±Р°Р»СЊРЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С…РѕСЃС‚Р°
 } *LPPEER_ENTRY;
 
 // ---------------------------------------------------------------------------------------------
-// Типы пакетов (указываются в заголовке)
-#define CC_PT_FRAME_CONFIRM		0x01	// Хост подтверждает прием пакета данных
-#define CC_PT_HOST_ALIVE		0x02	// Хост подтверждает, что он живой; измерение Latency
-#define CC_PT_SEND_DATA			0x03	// Пакет пользовательских данными без подтверждения
-#define CC_PT_SEND_DATA_SECURE	0x04	// Пакет пользовательских данными с подтверждением
-#define CC_PT_CHCK_HOST			0x05	// Пакет запроса доступности хоста; измерение Latency
-#define CC_PT_TRY_CONNECT		0x06	// Попытка подключения к серверу
-#define CC_PT_CONNECT_OK		0x07	// Разрешение на подключение к серверу
-#define CC_PT_CONNECT_REJECT	0x08	// Отказ в подключении к серверу
-#define CC_PT_SERVER_LIST		0x09	// Рассылка списка хостов (от сервера)
-#define CC_PT_HOST_EXIT			0x0A	// Хост выходит из игры
-#define CC_PT_HOST_DROP			0x0B	// Хост выброшен из игры (от сервера)
-#define CC_PT_CONNECT_DIFF		0x0C	// Пакет приходит к хосту от другого хоста, если он знает кто сервер
-#define CC_PT_HOST_DROP_OK		0x0D	// Сервер подтверждает отключение хоста
+// РўРёРїС‹ РїР°РєРµС‚РѕРІ (СѓРєР°Р·С‹РІР°СЋС‚СЃСЏ РІ Р·Р°РіРѕР»РѕРІРєРµ)
+#define CC_PT_FRAME_CONFIRM		0x01	// РҐРѕСЃС‚ РїРѕРґС‚РІРµСЂР¶РґР°РµС‚ РїСЂРёРµРј РїР°РєРµС‚Р° РґР°РЅРЅС‹С…
+#define CC_PT_HOST_ALIVE		0x02	// РҐРѕСЃС‚ РїРѕРґС‚РІРµСЂР¶РґР°РµС‚, С‡С‚Рѕ РѕРЅ Р¶РёРІРѕР№; РёР·РјРµСЂРµРЅРёРµ Latency
+#define CC_PT_SEND_DATA			0x03	// РџР°РєРµС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёС… РґР°РЅРЅС‹РјРё Р±РµР· РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ
+#define CC_PT_SEND_DATA_SECURE	0x04	// РџР°РєРµС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёС… РґР°РЅРЅС‹РјРё СЃ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµРј
+#define CC_PT_CHCK_HOST			0x05	// РџР°РєРµС‚ Р·Р°РїСЂРѕСЃР° РґРѕСЃС‚СѓРїРЅРѕСЃС‚Рё С…РѕСЃС‚Р°; РёР·РјРµСЂРµРЅРёРµ Latency
+#define CC_PT_TRY_CONNECT		0x06	// РџРѕРїС‹С‚РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ
+#define CC_PT_CONNECT_OK		0x07	// Р Р°Р·СЂРµС€РµРЅРёРµ РЅР° РїРѕРґРєР»СЋС‡РµРЅРёРµ Рє СЃРµСЂРІРµСЂСѓ
+#define CC_PT_CONNECT_REJECT	0x08	// РћС‚РєР°Р· РІ РїРѕРґРєР»СЋС‡РµРЅРёРё Рє СЃРµСЂРІРµСЂСѓ
+#define CC_PT_SERVER_LIST		0x09	// Р Р°СЃСЃС‹Р»РєР° СЃРїРёСЃРєР° С…РѕСЃС‚РѕРІ (РѕС‚ СЃРµСЂРІРµСЂР°)
+#define CC_PT_HOST_EXIT			0x0A	// РҐРѕСЃС‚ РІС‹С…РѕРґРёС‚ РёР· РёРіСЂС‹
+#define CC_PT_HOST_DROP			0x0B	// РҐРѕСЃС‚ РІС‹Р±СЂРѕС€РµРЅ РёР· РёРіСЂС‹ (РѕС‚ СЃРµСЂРІРµСЂР°)
+#define CC_PT_CONNECT_DIFF		0x0C	// РџР°РєРµС‚ РїСЂРёС…РѕРґРёС‚ Рє С…РѕСЃС‚Сѓ РѕС‚ РґСЂСѓРіРѕРіРѕ С…РѕСЃС‚Р°, РµСЃР»Рё РѕРЅ Р·РЅР°РµС‚ РєС‚Рѕ СЃРµСЂРІРµСЂ
+#define CC_PT_HOST_DROP_OK		0x0D	// РЎРµСЂРІРµСЂ РїРѕРґС‚РІРµСЂР¶РґР°РµС‚ РѕС‚РєР»СЋС‡РµРЅРёРµ С…РѕСЃС‚Р°
 
-#define CC_PT_SEND_USER_NAME	0x0E	// Пользователь посылает свое имя
-#define CC_PT_SEND_USER_DATA	0x0F	// Пользователь посылает свои данные
+#define CC_PT_SEND_USER_NAME	0x0E	// РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїРѕСЃС‹Р»Р°РµС‚ СЃРІРѕРµ РёРјСЏ
+#define CC_PT_SEND_USER_DATA	0x0F	// РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїРѕСЃС‹Р»Р°РµС‚ СЃРІРѕРё РґР°РЅРЅС‹Рµ
 
-#define CC_PT_SEND_NEW_NAME		0x10	// Сервер отсылает данные об изменившимся имени пользователя
-#define CC_PT_SEND_NEW_DATA		0x11	// Сервер отсылает данные об изменившихся данных пользователя
+#define CC_PT_SEND_NEW_NAME		0x10	// РЎРµСЂРІРµСЂ РѕС‚СЃС‹Р»Р°РµС‚ РґР°РЅРЅС‹Рµ РѕР± РёР·РјРµРЅРёРІС€РёРјСЃСЏ РёРјРµРЅРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+#define CC_PT_SEND_NEW_DATA		0x11	// РЎРµСЂРІРµСЂ РѕС‚СЃС‹Р»Р°РµС‚ РґР°РЅРЅС‹Рµ РѕР± РёР·РјРµРЅРёРІС€РёС…СЃСЏ РґР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 
 //
 // ---------------------------------------------------------------------------------------------
-enum ConnectState{
-	csNone,csWait,csRejected,csConnected,csTimedOut,csBadProto,csSynch
+enum ConnectState
+{
+    csNone, csWait, csRejected, csConnected, csTimedOut, csBadProto, csSynch
 };
 
-enum SessionState{
-	ssNone,ssOpen,ssClosed
+enum SessionState
+{
+    ssNone, ssOpen, ssClosed
 };
 
 // ---------------------------------------------------------------------------------------------
-// Ошибки
-#define	BAD_PEER_ID				255		// Неверный идентификатор хоста
-#define CE_NOT_SERVER			0x01	// Попытка подключения не к серверу
-#define CE_NO_ROOM				0x02	// Нет свободых слотов подключения
-#define CE_NO_ERROR				0x03	// Нет ошибок
-#define CE_BAD_VERSION			0x04	// Неверная версия протокола
-#define CE_BAD_MSG_SIZE			0x05	// Недопустимая длина сообщения
-#define CE_SESSION_CLOSED		0x06	// Невозможно подключить хост, т.к. сессия уже закрыта
+// РћС€РёР±РєРё
+#define	BAD_PEER_ID				255		// РќРµРІРµСЂРЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С…РѕСЃС‚Р°
+#define CE_NOT_SERVER			0x01	// РџРѕРїС‹С‚РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ РЅРµ Рє СЃРµСЂРІРµСЂСѓ
+#define CE_NO_ROOM				0x02	// РќРµС‚ СЃРІРѕР±РѕРґС‹С… СЃР»РѕС‚РѕРІ РїРѕРґРєР»СЋС‡РµРЅРёСЏ
+#define CE_NO_ERROR				0x03	// РќРµС‚ РѕС€РёР±РѕРє
+#define CE_BAD_VERSION			0x04	// РќРµРІРµСЂРЅР°СЏ РІРµСЂСЃРёСЏ РїСЂРѕС‚РѕРєРѕР»Р°
+#define CE_BAD_MSG_SIZE			0x05	// РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ РґР»РёРЅР° СЃРѕРѕР±С‰РµРЅРёСЏ
+#define CE_SESSION_CLOSED		0x06	// РќРµРІРѕР·РјРѕР¶РЅРѕ РїРѕРґРєР»СЋС‡РёС‚СЊ С…РѕСЃС‚, С‚.Рє. СЃРµСЃСЃРёСЏ СѓР¶Рµ Р·Р°РєСЂС‹С‚Р°
 
 // ---------------------------------------------------------------------------------------------
-// Заголовки пакетов
+// Р—Р°РіРѕР»РѕРІРєРё РїР°РєРµС‚РѕРІ
 
-// Общий вид кадра для протокола
-typedef struct CC_PK_RAW_FRAME{
-	u_long	m_lProto;				// Тип протокола
-	u_short	m_uType;				// Тип пакета
-	u_long	m_lStamp;				// Уникальный номер пакета; 0, если не требуется подтверждение
-	PEER_ID	m_PeerId;				// Идентификатор отправителя
-// ----------------------------------
-	BYTE	m_bData[];				// Специфические для пакета данные переменной длины
+// РћР±С‰РёР№ РІРёРґ РєР°РґСЂР° РґР»СЏ РїСЂРѕС‚РѕРєРѕР»Р°
+typedef struct CC_PK_RAW_FRAME
+{
+    u_long	m_lProto;				// РўРёРї РїСЂРѕС‚РѕРєРѕР»Р°
+    u_short	m_uType;				// РўРёРї РїР°РєРµС‚Р°
+    u_long	m_lStamp;				// РЈРЅРёРєР°Р»СЊРЅС‹Р№ РЅРѕРјРµСЂ РїР°РєРµС‚Р°; 0, РµСЃР»Рё РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ
+    PEER_ID	m_PeerId;				// РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕС‚РїСЂР°РІРёС‚РµР»СЏ
+    // ----------------------------------
+    BYTE	m_bData[];				// РЎРїРµС†РёС„РёС‡РµСЃРєРёРµ РґР»СЏ РїР°РєРµС‚Р° РґР°РЅРЅС‹Рµ РїРµСЂРµРјРµРЅРЅРѕР№ РґР»РёРЅС‹
 } *LPCC_PK_RAW_FRAME;
 
 // CC_PT_FRAME_CONFIRM
-typedef struct CC_PK_FRAME_CONFIRM{
-	u_long	m_lConfirmStamp;		// Уникальный номер пакета, подтверждающий прием
+typedef struct CC_PK_FRAME_CONFIRM
+{
+    u_long	m_lConfirmStamp;		// РЈРЅРёРєР°Р»СЊРЅС‹Р№ РЅРѕРјРµСЂ РїР°РєРµС‚Р°, РїРѕРґС‚РІРµСЂР¶РґР°СЋС‰РёР№ РїСЂРёРµРј
 } *LPCC_PK_FRAME_CONFIRM;
 
 // CC_PT_SEND_DATA
-typedef struct CC_PK_SEND_DATA{
-	u_short	m_uSize;				// Размер поля данных
-	BYTE	m_bData[];				// Поле данных переменной длины
+typedef struct CC_PK_SEND_DATA
+{
+    u_short	m_uSize;				// Р Р°Р·РјРµСЂ РїРѕР»СЏ РґР°РЅРЅС‹С…
+    BYTE	m_bData[];				// РџРѕР»Рµ РґР°РЅРЅС‹С… РїРµСЂРµРјРµРЅРЅРѕР№ РґР»РёРЅС‹
 } *LPCC_PK_SEND_DATA;
 
 // CC_PT_TRY_CONNECT
-typedef struct CC_PK_TRY_CONNECT{
-	CHAR		m_cProtoVersion;	// Номер версии протокола / приложения
-	CHAR		m_szUserName[MAX_HOST_NAME];
-	CHAR		m_szCCUID[23];
-	u_short		m_uAddrCount;
-	DWORD		m_dwAddrList[];
+typedef struct CC_PK_TRY_CONNECT
+{
+    CHAR		m_cProtoVersion;	// РќРѕРјРµСЂ РІРµСЂСЃРёРё РїСЂРѕС‚РѕРєРѕР»Р° / РїСЂРёР»РѕР¶РµРЅРёСЏ
+    CHAR		m_szUserName[MAX_HOST_NAME];
+    CHAR		m_szCCUID[23];
+    u_short		m_uAddrCount;
+    DWORD		m_dwAddrList[];
 } *LPCC_PK_TRY_CONNECT;
 
 // CC_PT_CONNECT_OK
-typedef struct CC_PK_CONNECT_OK{
-	PEER_ID		m_Id;							// Номер хоста в списке сервера
-	CHAR		m_szSessionName[MAX_HOST_NAME];	// Название сессии
-	DWORD		m_dwOptions;
+typedef struct CC_PK_CONNECT_OK
+{
+    PEER_ID		m_Id;							// РќРѕРјРµСЂ С…РѕСЃС‚Р° РІ СЃРїРёСЃРєРµ СЃРµСЂРІРµСЂР°
+    CHAR		m_szSessionName[MAX_HOST_NAME];	// РќР°Р·РІР°РЅРёРµ СЃРµСЃСЃРёРё
+    DWORD		m_dwOptions;
 } *LPCC_PK_CONNECT_OK;
 
 // CC_PT_CONNECT_REJECT
-typedef struct CC_PK_CONNECT_REJECT{
-	u_short		m_uReason;			// Причина отказа
+typedef struct CC_PK_CONNECT_REJECT
+{
+    u_short		m_uReason;			// РџСЂРёС‡РёРЅР° РѕС‚РєР°Р·Р°
 } *LPCC_PK_CONNECT_REJECT;
 
 // CC_PT_SERVER_LIST
-typedef struct CC_PK_SERVER_LIST{
-	CHAR		m_szSessionName[MAX_HOST_NAME];	// Название сессии
-	u_short		m_uCount;						// Количество хостов
-	BYTE		m_PeerList[];					// Список хостов переменной + динамические данные :)
+typedef struct CC_PK_SERVER_LIST
+{
+    CHAR		m_szSessionName[MAX_HOST_NAME];	// РќР°Р·РІР°РЅРёРµ СЃРµСЃСЃРёРё
+    u_short		m_uCount;						// РљРѕР»РёС‡РµСЃС‚РІРѕ С…РѕСЃС‚РѕРІ
+    BYTE		m_PeerList[];					// РЎРїРёСЃРѕРє С…РѕСЃС‚РѕРІ РїРµСЂРµРјРµРЅРЅРѕР№ + РґРёРЅР°РјРёС‡РµСЃРєРёРµ РґР°РЅРЅС‹Рµ :)
 } *LPCC_PK_SERVER_LIST;
 
 // CC_PT_CHCK_HOST
-typedef struct CC_PK_CHCK_HOST{
-	DWORD		m_dwTickCount;		// Текущее число тиков
+typedef struct CC_PK_CHCK_HOST
+{
+    DWORD		m_dwTickCount;		// РўРµРєСѓС‰РµРµ С‡РёСЃР»Рѕ С‚РёРєРѕРІ
 } *LPCC_PK_CHCK_HOST;
 
 // CC_PT_HOST_ALIVE
-typedef struct CC_PK_HOST_ALIVE{
-	DWORD		m_dwTickCount;		// Число тиков в момент отправки пакета (оригинального)
+typedef struct CC_PK_HOST_ALIVE
+{
+    DWORD		m_dwTickCount;		// Р§РёСЃР»Рѕ С‚РёРєРѕРІ РІ РјРѕРјРµРЅС‚ РѕС‚РїСЂР°РІРєРё РїР°РєРµС‚Р° (РѕСЂРёРіРёРЅР°Р»СЊРЅРѕРіРѕ)
 } *LPCC_PK_HOST_ALIVE;
 
 // CC_PT_HOST_EXIT
-typedef struct CC_PK_HOST_EXIT{
-	DWORD		m_dwReserved;		//
+typedef struct CC_PK_HOST_EXIT
+{
+    DWORD		m_dwReserved;		//
 } *LPCC_PK_HOST_EXIT;
 
 // CC_PT_HOST_DROP
-typedef struct CC_PK_HOST_DROP{
-	DWORD		m_dwReserved;		//
+typedef struct CC_PK_HOST_DROP
+{
+    DWORD		m_dwReserved;		//
 } *LPCC_PK_HOST_DROP;
 
 // CC_PT_HOST_DROP_OK
-typedef struct CC_PK_HOST_DROP_OK{
-	DWORD		m_dwReserved;		//
+typedef struct CC_PK_HOST_DROP_OK
+{
+    DWORD		m_dwReserved;		//
 } *LPCC_PK_HOST_DROP_OK;
 
 // CC_PT_SEND_USER_NAME
-typedef struct CC_PK_SEND_USER_NAME{
-	CHAR		m_szUserName[MAX_HOST_NAME];
+typedef struct CC_PK_SEND_USER_NAME
+{
+    CHAR		m_szUserName[MAX_HOST_NAME];
 } *LPCC_PK_SEND_USER_NAME;
 
 // CC_PT_SEND_USER_DATA
-typedef struct CC_PK_SEND_USER_DATA{
-	u_short		m_uUserDataSize;
-	BYTE		m_UserData[];
+typedef struct CC_PK_SEND_USER_DATA
+{
+    u_short		m_uUserDataSize;
+    BYTE		m_UserData[];
 } *LPCC_PK_SEND_USER_DATA;
 
 // CC_PT_SEND_NEW_NAME
-typedef struct CC_PK_SEND_NEW_NAME{
-	PEER_ID		m_PeerId;
-	CHAR		m_szUserName[MAX_HOST_NAME];
+typedef struct CC_PK_SEND_NEW_NAME
+{
+    PEER_ID		m_PeerId;
+    CHAR		m_szUserName[MAX_HOST_NAME];
 } *LPCC_PK_SEND_NEW_NAME;
 
 // CC_PT_SEND_NEW_DATA
-typedef struct CC_PK_SEND_NEW_DATA{
-	PEER_ID		m_PeerId;
-	u_short		m_uUserDataSize;
-	BYTE		m_UserData[];
+typedef struct CC_PK_SEND_NEW_DATA
+{
+    PEER_ID		m_PeerId;
+    u_short		m_uUserDataSize;
+    BYTE		m_UserData[];
 } *LPCC_PK_SEND_NEW_DATA;
 
 // ---------------------------------------------------------------------------------------------
-// Описание пакета в очереди сообщений, ожидающих подтверждение
-typedef struct FRAME_ENTRY{						// Пакет
-	LPCC_PK_RAW_FRAME			m_lpFrame;		// Указатель на пакет
-	u_short						m_uSize;		// Размер пакета
-	PEER_ADDR					m_PeerAddr;		// Адрес хоста
-	PEER_PORT					m_PeerPort;		// Порт хоста
-	DWORD						m_dwSendTime;	// Время последней отправки пакета
-												// в миллисекундах
-	u_short						m_uRetrCount;	// Количество попыток отправки пакета
+// РћРїРёСЃР°РЅРёРµ РїР°РєРµС‚Р° РІ РѕС‡РµСЂРµРґРё СЃРѕРѕР±С‰РµРЅРёР№, РѕР¶РёРґР°СЋС‰РёС… РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ
+typedef struct FRAME_ENTRY
+{						// РџР°РєРµС‚
+    LPCC_PK_RAW_FRAME			m_lpFrame;		// РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РїР°РєРµС‚
+    u_short						m_uSize;		// Р Р°Р·РјРµСЂ РїР°РєРµС‚Р°
+    PEER_ADDR					m_PeerAddr;		// РђРґСЂРµСЃ С…РѕСЃС‚Р°
+    PEER_PORT					m_PeerPort;		// РџРѕСЂС‚ С…РѕСЃС‚Р°
+    DWORD						m_dwSendTime;	// Р’СЂРµРјСЏ РїРѕСЃР»РµРґРЅРµР№ РѕС‚РїСЂР°РІРєРё РїР°РєРµС‚Р°
+    // РІ РјРёР»Р»РёСЃРµРєСѓРЅРґР°С…
+    u_short						m_uRetrCount;	// РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕРїС‹С‚РѕРє РѕС‚РїСЂР°РІРєРё РїР°РєРµС‚Р°
 } *LPFRAME_ENTRY;
 
-// Описание функций обратного вызова
-typedef BOOL (CALLBACK* LP_CC_IDLE_PROC)();
-typedef BOOL (CALLBACK* LP_CC_ENUM_PROC)(const PEER_ID PeerID, LPCSTR lpcszPeerName);
+// РћРїРёСЃР°РЅРёРµ С„СѓРЅРєС†РёР№ РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР°
+typedef BOOL(CALLBACK* LP_CC_IDLE_PROC)();
+typedef BOOL(CALLBACK* LP_CC_ENUM_PROC)(const PEER_ID PeerID, LPCSTR lpcszPeerName);
 
 // ---------------------------------------------------------------------------------------------
-// Класс ядра связи
-class CCommCore  
+// РљР»Р°СЃСЃ СЏРґСЂР° СЃРІСЏР·Рё
+class CCommCore
 {
-// ---------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------
 public:
-// ---------------------------------------------------------------------------------------------
-	LP_CC_IDLE_PROC	lpIdleProc;				// Функция обратного вызова, вызывается ядром во время
-											// работы блокирующих функций
-	LP_CC_ENUM_PROC	lpEnumProc;				// Функция обратного вызова для перечисления хостов
-// ---------------------------------------------------------------------------------------------
-											// Послать сообщение выбранному хосту
-	BOOL SendToPeer	(PEER_ID piNumber, LPBYTE lpbBuffer, u_short u_Size, BOOL bSecure=FALSE);
-											// Послать сообщение всем хостам
-	BOOL SendToAll	(LPBYTE lpbBuffer, u_short u_Size, BOOL bSecure=FALSE);
-											
-	u_short ReceiveData	(LPBYTE lpbBuffer, LPPEER_ID lpPeerId=NULL);	// Извлекает один пакет из очереди
-											// должна часто вызываться, во избежание переполнения буфера
-	BOOL SendDropClient(PEER_ID PeerID);	// Сервер просит клиента выйти
-	BOOL InitClient	(LPCSTR lpcszServerIP, LPCSTR lpcszUserName);	// IP адрес в виде строки с точками aaa.bbb.ccc.ddd
-	BOOL DoneClient ();						// Клиент отсылает запрос на удаление серверу 
-	BOOL DoneServer ();						// Завершает работу сервера удаляя все хосты
-	BOOL DeletePeer (PEER_ID piNumber);		// Удаляет хост из списка хостов
-	BOOL InitServer	(LPCSTR lpcszSessionName, LPCSTR lpcszUserName);	// Инициализирует сервер
-	BOOL QueueProcess();					// Обрабатывает очередь отправки пакетов
-											// Должна часто вызываться
+    // ---------------------------------------------------------------------------------------------
+    LP_CC_IDLE_PROC	lpIdleProc;				// Р¤СѓРЅРєС†РёСЏ РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР°, РІС‹Р·С‹РІР°РµС‚СЃСЏ СЏРґСЂРѕРј РІРѕ РІСЂРµРјСЏ
+    // СЂР°Р±РѕС‚С‹ Р±Р»РѕРєРёСЂСѓСЋС‰РёС… С„СѓРЅРєС†РёР№
+    LP_CC_ENUM_PROC	lpEnumProc;				// Р¤СѓРЅРєС†РёСЏ РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР° РґР»СЏ РїРµСЂРµС‡РёСЃР»РµРЅРёСЏ С…РѕСЃС‚РѕРІ
+    // ---------------------------------------------------------------------------------------------
+                                                // РџРѕСЃР»Р°С‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ РІС‹Р±СЂР°РЅРЅРѕРјСѓ С…РѕСЃС‚Сѓ
+    BOOL SendToPeer(PEER_ID piNumber, LPBYTE lpbBuffer, u_short u_Size, BOOL bSecure = FALSE);
 
-	BOOL SendServerList();					// Рассылает список хостов
+    // РџРѕСЃР»Р°С‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ РІСЃРµРј С…РѕСЃС‚Р°Рј
+    BOOL SendToAll(LPBYTE lpbBuffer, u_short u_Size, BOOL bSecure = FALSE);
+
+    u_short ReceiveData(LPBYTE lpbBuffer, LPPEER_ID lpPeerId = NULL);	// РР·РІР»РµРєР°РµС‚ РѕРґРёРЅ РїР°РєРµС‚ РёР· РѕС‡РµСЂРµРґРё
+    // РґРѕР»Р¶РЅР° С‡Р°СЃС‚Рѕ РІС‹Р·С‹РІР°С‚СЊСЃСЏ, РІРѕ РёР·Р±РµР¶Р°РЅРёРµ РїРµСЂРµРїРѕР»РЅРµРЅРёСЏ Р±СѓС„РµСЂР°
+    BOOL SendDropClient(PEER_ID PeerID);	// РЎРµСЂРІРµСЂ РїСЂРѕСЃРёС‚ РєР»РёРµРЅС‚Р° РІС‹Р№С‚Рё
+
+    // IP Р°РґСЂРµСЃ РІ РІРёРґРµ СЃС‚СЂРѕРєРё СЃ С‚РѕС‡РєР°РјРё aaa.bbb.ccc.ddd
+    BOOL InitClient(LPCSTR lpcszServerIP, LPCSTR lpcszUserName, unsigned short port);
+
+    BOOL DoneClient();						// РљР»РёРµРЅС‚ РѕС‚СЃС‹Р»Р°РµС‚ Р·Р°РїСЂРѕСЃ РЅР° СѓРґР°Р»РµРЅРёРµ СЃРµСЂРІРµСЂСѓ 
+    BOOL DoneServer();						// Р—Р°РІРµСЂС€Р°РµС‚ СЂР°Р±РѕС‚Сѓ СЃРµСЂРІРµСЂР° СѓРґР°Р»СЏСЏ РІСЃРµ С…РѕСЃС‚С‹
+    BOOL DeletePeer(PEER_ID piNumber);		// РЈРґР°Р»СЏРµС‚ С…РѕСЃС‚ РёР· СЃРїРёСЃРєР° С…РѕСЃС‚РѕРІ
+    BOOL InitServer(LPCSTR lpcszSessionName, LPCSTR lpcszUserName);	// РРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ СЃРµСЂРІРµСЂ
+    BOOL QueueProcess();					// РћР±СЂР°Р±Р°С‚С‹РІР°РµС‚ РѕС‡РµСЂРµРґСЊ РѕС‚РїСЂР°РІРєРё РїР°РєРµС‚РѕРІ
+    // Р”РѕР»Р¶РЅР° С‡Р°СЃС‚Рѕ РІС‹Р·С‹РІР°С‚СЊСЃСЏ
+
+    BOOL SendServerList();					// Р Р°СЃСЃС‹Р»Р°РµС‚ СЃРїРёСЃРѕРє С…РѕСЃС‚РѕРІ
 
 
-	BOOL	IsOverNAT(PEER_ID PeerId);	
+    BOOL	IsOverNAT(PEER_ID PeerId);
 
 
-	LPCSTR	GetUserName(PEER_ID PeerId);	
-	BOOL	SetUserName(LPCSTR lpcszUserName);	
-	BOOL	SendUserName();
+    LPCSTR	GetUserName(PEER_ID PeerId);
+    BOOL	SetUserName(LPCSTR lpcszUserName);
+    BOOL	SendUserName();
 
-	BOOL	SetSessionName(LPCSTR lpcszSessionName);
+    BOOL	SetSessionName(LPCSTR lpcszSessionName);
 
-	BOOL	GetUserData(PEER_ID PeerId, LPBYTE lpbUserData, u_short * puUserDataSize);
-	BOOL	SetUserData(const LPBYTE lpcbUserData, u_short uUserDataSize);
-	BOOL	SendUserData();
+    BOOL	GetUserData(PEER_ID PeerId, LPBYTE lpbUserData, u_short* puUserDataSize);
+    BOOL	SetUserData(const LPBYTE lpcbUserData, u_short uUserDataSize);
+    BOOL	SendUserData();
 
-	VOID	GetServerAddress(LPSTR lpszServerAddress);
+    BOOL	SendUdpHolePunch(sockaddr* server, char* content, const int content_len);
 
-	BOOL	EnumPeers();
+    VOID	GetServerAddress(LPSTR lpszServerAddress);
 
-	BOOL	InitNetwork();					// Инициализация сетевого интерфейса
-	BOOL	CloseNetwork();					// Закрытие сетевого интерфейса
+    BOOL	EnumPeers();
 
-	CCommCore		();
-	virtual ~CCommCore();
+    BOOL	InitNetwork();					// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃРµС‚РµРІРѕРіРѕ РёРЅС‚РµСЂС„РµР№СЃР°
+    BOOL	CloseNetwork();					// Р—Р°РєСЂС‹С‚РёРµ СЃРµС‚РµРІРѕРіРѕ РёРЅС‚РµСЂС„РµР№СЃР°
 
-	PEER_ID	GetPeerID()						{	return m_piNumber;		}
+    CCommCore();
+    virtual ~CCommCore();
 
-	u_short GetPeersCount()					{	return m_uPeerCount;	}
-	LPCSTR	GetSessionName()				{	return m_szSessionName;	}
+    PEER_ID	GetPeerID()
+    {
+        return m_piNumber;
+    }
 
-	u_short	GetMaxPeers()					{	return m_uMaxPeers;		}
-	VOID	SetMaxPeers(u_short uMaxPeers)	{	m_uMaxPeers=uMaxPeers;	}
+    u_short GetPeersCount()
+    {
+        return m_uPeerCount;
+    }
+    LPCSTR	GetSessionName()
+    {
+        return m_szSessionName;
+    }
 
-	VOID	CloseSession()					{	m_ssState=ssClosed;		}
+    u_short	GetMaxPeers()
+    {
+        return m_uMaxPeers;
+    }
+    VOID	SetMaxPeers(u_short uMaxPeers)
+    {
+        m_uMaxPeers = uMaxPeers;
+    }
 
-	BOOL	IsClient()						{	return !m_bServer;		}
-	BOOL	IsServer()						{	return m_bServer;		}
+    VOID	CloseSession()
+    {
+        m_ssState = ssClosed;
+    }
 
-	VOID	SetOptions(DWORD dwOptions)		{	m_dwOptions=dwOptions;	}
-	DWORD	GetOptions()					{	return m_dwOptions;		}
+    BOOL	IsClient()
+    {
+        return !m_bServer;
+    }
+    BOOL	IsServer()
+    {
+        return m_bServer;
+    }
 
-	// Сколько получено байт
-	DWORD	GetRxBytes()					{	return m_dwRxBytes;		}
-	// Сколько послано байт
-	DWORD	GetTxBytes()					{	return m_dwTxBytes;		}
-	// Сколько перепослано байт
-	DWORD	GetNxBytes()					{	return m_dwNxBytes;		}
-	// Какое число миллисекунд назад был принят последний пакет
-	DWORD	GetRecvTimeOut()				{	return (GetTickCount()-m_dwLastPacketTime);	}
+    VOID	SetOptions(DWORD dwOptions)
+    {
+        m_dwOptions = dwOptions;
+    }
+    DWORD	GetOptions()
+    {
+        return m_dwOptions;
+    }
 
-// ---------------------------------------------------------------------------------------------
+    // РЎРєРѕР»СЊРєРѕ РїРѕР»СѓС‡РµРЅРѕ Р±Р°Р№С‚
+    DWORD	GetRxBytes()
+    {
+        return m_dwRxBytes;
+    }
+    // РЎРєРѕР»СЊРєРѕ РїРѕСЃР»Р°РЅРѕ Р±Р°Р№С‚
+    DWORD	GetTxBytes()
+    {
+        return m_dwTxBytes;
+    }
+    // РЎРєРѕР»СЊРєРѕ РїРµСЂРµРїРѕСЃР»Р°РЅРѕ Р±Р°Р№С‚
+    DWORD	GetNxBytes()
+    {
+        return m_dwNxBytes;
+    }
+    // РљР°РєРѕРµ С‡РёСЃР»Рѕ РјРёР»Р»РёСЃРµРєСѓРЅРґ РЅР°Р·Р°Рґ Р±С‹Р» РїСЂРёРЅСЏС‚ РїРѕСЃР»РµРґРЅРёР№ РїР°РєРµС‚
+    DWORD	GetRecvTimeOut()
+    {
+        return (GetTickCount() - m_dwLastPacketTime);
+    }
+
+    // ---------------------------------------------------------------------------------------------
 protected:
-// ---------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------
 #ifdef CC_DEBUG
-	FILE	*	m_DebugStream;	
-	VOID		DebugMessage(LPCSTR lpcszMessage);
+    FILE* m_DebugStream;
+    VOID		DebugMessage(LPCSTR lpcszMessage);
 #endif //CC_DEBUG
-	
-	CHAR		m_szUserName[MAX_HOST_NAME];		//
-//	PEER_ADDR	m_paHostAddr;						//
-//	CHAR		m_szDotAddr[18];					//
-	PEER_ADDR	m_paServAddr;						//
 
-	DWORD		m_dwAddrList[8];					// Список адресов локальной машины в network order формате
-	u_short		m_uAddrCount;						// Количество адресов локальной машины
+    CHAR		m_szUserName[MAX_HOST_NAME];		//
+    //	PEER_ADDR	m_paHostAddr;						//
+    //	CHAR		m_szDotAddr[18];					//
+    PEER_ADDR	m_paServAddr;						//
+    PEER_PORT	m_paServPort;						// True port of game host (recieved from server)
 
-	DWORD		m_dwLastPacketTime;
+    DWORD		m_dwAddrList[8];					// РЎРїРёСЃРѕРє Р°РґСЂРµСЃРѕРІ Р»РѕРєР°Р»СЊРЅРѕР№ РјР°С€РёРЅС‹ РІ network order С„РѕСЂРјР°С‚Рµ
+    u_short		m_uAddrCount;						// РљРѕР»РёС‡РµСЃС‚РІРѕ Р°РґСЂРµСЃРѕРІ Р»РѕРєР°Р»СЊРЅРѕР№ РјР°С€РёРЅС‹
 
-	u_short		m_uMaxPeers;
-	BOOL		m_bOverNAT;
+    DWORD		m_dwLastPacketTime;
 
-	DWORD		m_dwRxBytes;
-	DWORD		m_dwTxBytes;
-	DWORD		m_dwNxBytes;
+    u_short		m_uMaxPeers;
+    BOOL		m_bOverNAT;
 
-	DWORD		m_dwOptions;
+    DWORD		m_dwRxBytes;
+    DWORD		m_dwTxBytes;
+    DWORD		m_dwNxBytes;
 
-	CHAR		m_szSessionName[MAX_HOST_NAME];		//
+    DWORD		m_dwOptions;
 
-	CHAR		m_szCCUID[23];
+    CHAR		m_szSessionName[MAX_HOST_NAME];		//
 
-	LPBYTE		m_lpbRecvBuffer;					//
+    CHAR		m_szCCUID[23];
 
-	SessionState	m_ssState;						//
-	ConnectState	m_csState;						//
-	BOOL			m_bBlockingCall;				// В режиме блокировки обрабатываются только
-													// пакеты-подтверждения
+    LPBYTE		m_lpbRecvBuffer;					//
 
-	u_short		m_uRejectReason;					//
+    SessionState	m_ssState;						//
+    ConnectState	m_csState;						//
+    BOOL			m_bBlockingCall;				// Р’ СЂРµР¶РёРјРµ Р±Р»РѕРєРёСЂРѕРІРєРё РѕР±СЂР°Р±Р°С‚С‹РІР°СЋС‚СЃСЏ С‚РѕР»СЊРєРѕ
+    // РїР°РєРµС‚С‹-РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ
 
-	u_short		m_uMaxMsgSize;						//
+    u_short		m_uRejectReason;					//
 
-	SOCKET		m_DataSocket;						// Сокет, обслуживающий пользовательские сообщения
+    u_short		m_uMaxMsgSize;						//
 
-	u_long		m_lStamp;							// Автоинкрементный счетчик пакетов
+    SOCKET		m_DataSocket;						// РЎРѕРєРµС‚, РѕР±СЃР»СѓР¶РёРІР°СЋС‰РёР№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёРµ СЃРѕРѕР±С‰РµРЅРёСЏ
 
-	BOOL		m_bServer;							// Является ли хост сервером
-	PEER_ID		m_piNumber;							// Идентификатор хоста в списке сервера
-													// для сервера всегда равен 0x01
-	PEER_ID		m_piAutoInc;						// Автоинкрементный счетчик хостов
+    u_long		m_lStamp;							// РђРІС‚РѕРёРЅРєСЂРµРјРµРЅС‚РЅС‹Р№ СЃС‡РµС‚С‡РёРє РїР°РєРµС‚РѕРІ
 
-	LPBYTE		m_lpbUserData;						// Динамические данные о пользователе
-	u_short		m_uUserDataSize;					// Размер динамических данных о пользователе
+    BOOL		m_bServer;							// РЇРІР»СЏРµС‚СЃСЏ Р»Рё С…РѕСЃС‚ СЃРµСЂРІРµСЂРѕРј
+    PEER_ID		m_piNumber;							// РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ С…РѕСЃС‚Р° РІ СЃРїРёСЃРєРµ СЃРµСЂРІРµСЂР°
+    // РґР»СЏ СЃРµСЂРІРµСЂР° РІСЃРµРіРґР° СЂР°РІРµРЅ 0x01
+    PEER_ID		m_piAutoInc;						// РђРІС‚РѕРёРЅРєСЂРµРјРµРЅС‚РЅС‹Р№ СЃС‡РµС‚С‡РёРє С…РѕСЃС‚РѕРІ
 
-	PEER_ENTRY	m_PeerList[MAX_PEERS];				// Список доступных хостов
-	u_short		m_uPeerCount;						// Количество доступных хостов
+    LPBYTE		m_lpbUserData;						// Р”РёРЅР°РјРёС‡РµСЃРєРёРµ РґР°РЅРЅС‹Рµ Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ
+    u_short		m_uUserDataSize;					// Р Р°Р·РјРµСЂ РґРёРЅР°РјРёС‡РµСЃРєРёС… РґР°РЅРЅС‹С… Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ
 
-	FRAME_ENTRY m_FrameList[MAX_QUEUE_LEN];			// Очередь сообщений, ожидающих подтверждения
-	u_short		m_uFrameCount;						// Количество сообщений в очереди
+    PEER_ENTRY	m_PeerList[MAX_PEERS];				// РЎРїРёСЃРѕРє РґРѕСЃС‚СѓРїРЅС‹С… С…РѕСЃС‚РѕРІ
+    u_short		m_uPeerCount;						// РљРѕР»РёС‡РµСЃС‚РІРѕ РґРѕСЃС‚СѓРїРЅС‹С… С…РѕСЃС‚РѕРІ
 
-// ---------------------------------------------------------------------------------------------
+    FRAME_ENTRY m_FrameList[MAX_QUEUE_LEN];			// РћС‡РµСЂРµРґСЊ СЃРѕРѕР±С‰РµРЅРёР№, РѕР¶РёРґР°СЋС‰РёС… РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ
+    u_short		m_uFrameCount;						// РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРѕРѕР±С‰РµРЅРёР№ РІ РѕС‡РµСЂРµРґРё
 
-//	PEER_ID		GetIdBySender();					// Возвращает логический номер хоста
-													// По его адресу/порту
-	u_short GetPeerById(PEER_ID PeerId);			//
-	u_short GetPeerByCCUID(LPCSTR lpcszCCUID);
-	BOOL	DropPeer(u_short uPeer);					//
+    // ---------------------------------------------------------------------------------------------
 
-	BOOL InitSocket();
-	BOOL CloseSocket();
-	BOOL InitHost();
+    //	PEER_ID		GetIdBySender();					// Р’РѕР·РІСЂР°С‰Р°РµС‚ Р»РѕРіРёС‡РµСЃРєРёР№ РЅРѕРјРµСЂ С…РѕСЃС‚Р°
+                                                        // РџРѕ РµРіРѕ Р°РґСЂРµСЃСѓ/РїРѕСЂС‚Сѓ
+    u_short GetPeerById(PEER_ID PeerId);			//
+    u_short GetPeerByCCUID(LPCSTR lpcszCCUID);
+    BOOL	DropPeer(u_short uPeer);					//
 
-	BOOL QueueAddPacket(	PEER_ADDR			PeerAddr, 
-							PEER_PORT			PeerPort, 
-							LPCC_PK_RAW_FRAME	lpRawFrame,
-							u_short				uSize);
+    BOOL InitSocket();
+    BOOL CloseSocket();
+    BOOL InitHost();
 
-	BOOL SendRawPacket(		PEER_ADDR			PeerAddr,				// Адрес хоста
-							PEER_PORT			PeerPort,				// Порт хоста
-							u_short				uType,					// Тип пакета
-							LPBYTE				lpbBuffer,				// Буфер с данными
-							u_short				uSize,					// Размер данных в байтах
-							BOOL				bSecureMessage,			// TRUE, если нужна псевдо-гарантированная доставка данных
-							BOOL				bWaitForCompletion);	// TRUE, если блокирующий вызов,
-																		// т.е. ждать подтверждения или таймаута
+    BOOL QueueAddPacket(PEER_ADDR			PeerAddr,
+        PEER_PORT			PeerPort,
+        LPCC_PK_RAW_FRAME	lpRawFrame,
+        u_short				uSize);
+
+    BOOL SendRawPacket(PEER_ADDR			PeerAddr,				// РђРґСЂРµСЃ С…РѕСЃС‚Р°
+        PEER_PORT			PeerPort,				// РџРѕСЂС‚ С…РѕСЃС‚Р°
+        u_short				uType,					// РўРёРї РїР°РєРµС‚Р°
+        LPBYTE				lpbBuffer,				// Р‘СѓС„РµСЂ СЃ РґР°РЅРЅС‹РјРё
+        u_short				uSize,					// Р Р°Р·РјРµСЂ РґР°РЅРЅС‹С… РІ Р±Р°Р№С‚Р°С…
+        BOOL				bSecureMessage,			// TRUE, РµСЃР»Рё РЅСѓР¶РЅР° РїСЃРµРІРґРѕ-РіР°СЂР°РЅС‚РёСЂРѕРІР°РЅРЅР°СЏ РґРѕСЃС‚Р°РІРєР° РґР°РЅРЅС‹С…
+        BOOL				bWaitForCompletion);	// TRUE, РµСЃР»Рё Р±Р»РѕРєРёСЂСѓСЋС‰РёР№ РІС‹Р·РѕРІ,
+    // С‚.Рµ. Р¶РґР°С‚СЊ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ РёР»Рё С‚Р°Р№РјР°СѓС‚Р°
 
 
-	BOOL ProcessServerList(LPCC_PK_SERVER_LIST lpServerList);
-	
-	BOOL ReSendFrame( u_short uFrameNum);
-	VOID Cleanup();
+    BOOL ProcessServerList(LPCC_PK_SERVER_LIST lpServerList);
 
-	BOOL QueueDropPacket(int iFrameNum);
-	BOOL QueueDropConfirmedPacket(u_long lStamp);
-	BOOL QueueClearAll();
-	BOOL QueuePacketExists(u_long lStamp);
+    BOOL ReSendFrame(u_short uFrameNum);
+    VOID Cleanup();
 
-	BOOL SendConfirmDataPacket(sockaddr_in * lpSender, u_long lStamp);
-	BOOL SendConnectReject(sockaddr_in *lpSender, u_short uReason);
-	BOOL SendConnectOk(sockaddr_in *lpSender, PEER_ID PeerId);
-	BOOL SendDropOk(sockaddr_in *lpSender);
+    BOOL QueueDropPacket(int iFrameNum);
+    BOOL QueueDropConfirmedPacket(u_long lStamp);
+    BOOL QueueClearAll();
+    BOOL QueuePacketExists(u_long lStamp);
 
-	BOOL SendNewName(PEER_ID PeerId);		// Отсылает информацию о имени	(сервер)
-	BOOL SendNewData(PEER_ID PeerId);		// Отсылает информацию о дате	(сервер)
+    BOOL SendConfirmDataPacket(sockaddr_in* lpSender, u_long lStamp);
+    BOOL SendConnectReject(sockaddr_in* lpSender, u_short uReason);
+    BOOL SendConnectOk(sockaddr_in* lpSender, PEER_ID PeerId);
+    BOOL SendDropOk(sockaddr_in* lpSender);
 
-	VOID SetCommCoreUID(LPCSTR lpcszCCUID);
-	VOID NewCommCoreUID(LPSTR lpszCCUID);
-	VOID GetCommCoreUID(LPSTR lpszCCUID);
+    BOOL SendNewName(PEER_ID PeerId);		// РћС‚СЃС‹Р»Р°РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РёРјРµРЅРё	(СЃРµСЂРІРµСЂ)
+    BOOL SendNewData(PEER_ID PeerId);		// РћС‚СЃС‹Р»Р°РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РґР°С‚Рµ	(СЃРµСЂРІРµСЂ)
 
-// ---------------------------------------------------------------------------------------------
+    VOID SetCommCoreUID(LPCSTR lpcszCCUID);
+    VOID NewCommCoreUID(LPSTR lpszCCUID);
+    VOID GetCommCoreUID(LPSTR lpszCCUID);
+
+    // ---------------------------------------------------------------------------------------------
 };
 
 #pragma warning (default : 4200)

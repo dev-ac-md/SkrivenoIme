@@ -36,6 +36,7 @@ SprGroup STONES;
 SprGroup HOLES;
 SprGroup SPECIAL;
 SprGroup ANMSPR;
+SprGroup WALLS;
 SprGroup COMPLEX;
 #ifdef _USE3D
 SprGroup MODELS3D;
@@ -184,6 +185,7 @@ void InitSprites(){
 #ifdef CONQUEST
 	SPECIAL.LoadSprites("meat");
 	ANMSPR.LoadSprites("Animations");
+    WALLS.LoadSprites("walls");
 #endif
     COMPLEX.LoadSprites("complex");
 	//memset(SpRefs,0,sizeof SpRefs);

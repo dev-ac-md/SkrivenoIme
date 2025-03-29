@@ -1,3 +1,8 @@
+extern int menu_x_off;
+extern int menu_y_off;
+extern int menu_hint_x;
+extern int menu_hint_y;
+
 bool ProcessSingleCampagin(int n){
 	KeyPressed=0;
 	LastKey=0;
@@ -28,7 +33,17 @@ bool ProcessSingleCampagin(int n){
 	FontW.SetColorTable(4);
 	LoadOptionalTable(4,"1\\white.grd");
 */
-	DialogsSystem MMenu(0,0);
+    if (!window_mode)
+    {
+        menu_hint_x = 440 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 440;
+        menu_hint_y = 745;
+    }
+
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
 	MMenu.OkSound=GetSound("START");
 	MMenu.addPicture(NULL,0,0,&Back,&Back,&Back);
 
@@ -55,12 +70,10 @@ bool ProcessSingleCampagin(int n){
 	RLCFont* FHint = &SmallYellowFont;
 
 	// Hint
-	int HintX = 440;
-	int HintY = 745;
 
 	MMenu.HintFont=FHint;
-	MMenu.HintX=-HintX;
-	MMenu.HintY=-HintY;	
+	MMenu.HintX= menu_hint_x;
+	MMenu.HintY= menu_hint_y;
 
 	TextButton* HintTxt = MMenu.addTextButton(NULL,HintX,HintY,"                                                                                                                                 ",FHint,FHint,FHint,1);
 

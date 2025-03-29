@@ -1171,17 +1171,17 @@ qqw1:		mov		eax,ebx
 	};
 };
 #define shf 300
-#define fmin 1500
+//#define fmin 1500
 byte fden[8192];
-void makeFden(){
+void makeFden() {
 	for(int i=0;i<8192;i++){
 		if(i>shf)fden[i]=158;
 		else fden[i]=5+div(i*153,shf).quot;
 	};
 };
 int GetF(word k){
-	if(k>=fmin)return 5;
-	return fden[fmin-k];
+	if(k>=1500)return 5;
+	return fden[1500-k];
 };
 
 
@@ -1251,85 +1251,140 @@ void UnitLight(OneObject* OB){
 	int rr1=rr-(rr>>2);
 	yy-=OB->RZ;//(GetHeight(xx,yy)<<1);
 	NewMonster* NM=OB->newMons;
-	switch(NM->VisionType){
-	case 0:
-		FogSpot(xx,yy);
-		break;
-	case 1:
-		FogSpot(xx+128,yy);
-		FogSpot(xx-128,yy);
-		FogSpot(xx,yy+128);
-		FogSpot(xx,yy-128);
-		break;
-	case 2:
-		FogSpot(xx+128,yy+128);
-		FogSpot(xx-128,yy+128);
-		FogSpot(xx+128,yy-128);
-		FogSpot(xx-128,yy-128);
-		break;
-	case 3:
-		FogSpot(xx+2*128,yy);
-		FogSpot(xx-2*128,yy);
-		FogSpot(xx,yy-2*128);
-		FogSpot(xx,yy+2*128);
-		FogSpot(xx+128,yy+128);
-		FogSpot(xx-128,yy+128);
-		FogSpot(xx+128,yy-128);
-		FogSpot(xx-128,yy-128);
-		break;
-	case 4:
-		FogSpot(xx+3*128,yy);
-		FogSpot(xx-3*128,yy);
-		FogSpot(xx,yy+3*128);
-		FogSpot(xx,yy-3*128);
-		FogSpot(xx+2*128,yy+2*128);
-		FogSpot(xx-2*128,yy+2*128);
-		FogSpot(xx+2*128,yy-2*128);
-		FogSpot(xx-2*128,yy-2*128);
-		break;
-	case 5:
-		FogSpot(xx+4*128,yy);
-		FogSpot(xx-4*128,yy);
-		FogSpot(xx,yy+4*128);
-		FogSpot(xx,yy-4*128);
-		FogSpot(xx+3*128,yy+3*128);
-		FogSpot(xx-3*128,yy+3*128);
-		FogSpot(xx+3*128,yy-3*128);
-		FogSpot(xx-3*128,yy-3*128);
-		break;
-	case 6:
-		FogSpot(xx+5*128,yy);
-		FogSpot(xx-5*128,yy);
-		FogSpot(xx,yy+5*128);
-		FogSpot(xx,yy-5*128);
-		FogSpot(xx+4*128,yy+4*128);
-		FogSpot(xx-4*128,yy+4*128);
-		FogSpot(xx+4*128,yy-4*128);
-		FogSpot(xx-4*128,yy-4*128);
-		break;
-	case 7:
-		FogSpot(xx+6*128,yy);
-		FogSpot(xx-6*128,yy);
-		FogSpot(xx,yy+6*128);
-		FogSpot(xx,yy-6*128);
-		FogSpot(xx+4*128,yy+4);
-		FogSpot(xx-4*128,yy+4*128);
-		FogSpot(xx+4*128,yy-4*128);
-		FogSpot(xx-4*128,yy-4*128);
-		break;
-	case 8:
+    switch (NM->VisionType) {
+    case 0:
+        FogSpot(xx, yy);
+        break;
+    case 1:
+        FogSpot(xx + 128, yy);
+        FogSpot(xx - 128, yy);
+        FogSpot(xx, yy + 128);
+        FogSpot(xx, yy - 128);
+        break;
+    case 2:
+        FogSpot(xx + 128, yy + 128);
+        FogSpot(xx - 128, yy + 128);
+        FogSpot(xx + 128, yy - 128);
+        FogSpot(xx - 128, yy - 128);
+        break;
+    case 3:
+        FogSpot(xx + 2 * 128, yy);
+        FogSpot(xx - 2 * 128, yy);
+        FogSpot(xx, yy - 2 * 128);
+        FogSpot(xx, yy + 2 * 128);
+        FogSpot(xx + 128, yy + 128);
+        FogSpot(xx - 128, yy + 128);
+        FogSpot(xx + 128, yy - 128);
+        FogSpot(xx - 128, yy - 128);
+        break;
+    case 4:
+        FogSpot(xx + 3 * 128, yy);
+        FogSpot(xx - 3 * 128, yy);
+        FogSpot(xx, yy + 3 * 128);
+        FogSpot(xx, yy - 3 * 128);
+        FogSpot(xx + 2 * 128, yy + 2 * 128);
+        FogSpot(xx - 2 * 128, yy + 2 * 128);
+        FogSpot(xx + 2 * 128, yy - 2 * 128);
+        FogSpot(xx - 2 * 128, yy - 2 * 128);
+        break;
+    case 5:
+        FogSpot(xx + 4 * 128, yy);
+        FogSpot(xx - 4 * 128, yy);
+        FogSpot(xx, yy + 4 * 128);
+        FogSpot(xx, yy - 4 * 128);
+        FogSpot(xx + 3 * 128, yy + 3 * 128);
+        FogSpot(xx - 3 * 128, yy + 3 * 128);
+        FogSpot(xx + 3 * 128, yy - 3 * 128);
+        FogSpot(xx - 3 * 128, yy - 3 * 128);
+        break;
+    case 6:
+        FogSpot(xx + 5 * 128, yy);
+        FogSpot(xx - 5 * 128, yy);
+        FogSpot(xx, yy + 5 * 128);
+        FogSpot(xx, yy - 5 * 128);
+        FogSpot(xx + 4 * 128, yy + 4 * 128);
+        FogSpot(xx - 4 * 128, yy + 4 * 128);
+        FogSpot(xx + 4 * 128, yy - 4 * 128);
+        FogSpot(xx - 4 * 128, yy - 4 * 128);
+        break;
+    case 7:
+        FogSpot(xx + 6 * 128, yy);
+        FogSpot(xx - 6 * 128, yy);
+        FogSpot(xx, yy + 6 * 128);
+        FogSpot(xx, yy - 6 * 128);
+        FogSpot(xx + 4 * 128, yy + 4);
+        FogSpot(xx - 4 * 128, yy + 4 * 128);
+        FogSpot(xx + 4 * 128, yy - 4 * 128);
+        FogSpot(xx - 4 * 128, yy - 4 * 128);
+        break;
+    case 8:
         //Ukrainian peasant line of view
         FogSpot(xx, yy);//BUGFIX: Make peasants visible immediately at game start
-		FogSpot(xx+7*128,yy);
-		FogSpot(xx-7*128,yy);
-		FogSpot(xx,yy+7*128);
-		FogSpot(xx,yy-7*128);
-		FogSpot(xx+5*128,yy+3);
-		FogSpot(xx-5*128,yy+5*128);
-		FogSpot(xx+5*128,yy-5*128);
-		FogSpot(xx-5*128,yy-5*128);
-		break;
-	};
+        FogSpot(xx + 7 * 128, yy);
+        FogSpot(xx - 7 * 128, yy);
+        FogSpot(xx, yy + 7 * 128);
+        FogSpot(xx, yy - 7 * 128);
+        FogSpot(xx + 5 * 128, yy + 3);
+        FogSpot(xx - 5 * 128, yy + 5 * 128);
+        FogSpot(xx + 5 * 128, yy - 5 * 128);
+        FogSpot(xx - 5 * 128, yy - 5 * 128);
+        break;
+#ifdef EW
+    case 9:
+        FogSpot(xx, yy);
+        FogSpot(xx + 10 * 128, yy);
+        FogSpot(xx - 10 * 128, yy);
+        FogSpot(xx, yy + 10 * 128);
+        FogSpot(xx, yy - 10 * 128);
+        FogSpot(xx + 8 * 128, yy + 8 * 128);
+        FogSpot(xx - 8 * 128, yy + 8 * 128);
+        FogSpot(xx + 8 * 128, yy - 8 * 128);
+        FogSpot(xx - 8 * 128, yy - 8 * 128);
+        break;
+    case 10:
+        FogSpot(xx, yy);
+        FogSpot(xx + 14 * 128, yy);
+        FogSpot(xx - 14 * 128, yy);
+        FogSpot(xx, yy + 14 * 128);
+        FogSpot(xx, yy - 14 * 128);
+        FogSpot(xx + 12 * 128, yy + 12 * 128);
+        FogSpot(xx - 12 * 128, yy + 12 * 128);
+        FogSpot(xx + 12 * 128, yy - 12 * 128);
+        FogSpot(xx - 12 * 128, yy - 12 * 128);
+        break;
+    case 11:
+        FogSpot(xx, yy);
+        FogSpot(xx + 18 * 128, yy);
+        FogSpot(xx - 18 * 128, yy);
+        FogSpot(xx, yy + 18 * 128);
+        FogSpot(xx, yy - 18 * 128);
+        FogSpot(xx + 16 * 128, yy + 16 * 128);
+        FogSpot(xx - 16 * 128, yy + 16 * 128);
+        FogSpot(xx + 16 * 128, yy - 16 * 128);
+        FogSpot(xx - 16 * 128, yy - 16 * 128);
+        break;
+    case 12:
+        FogSpot(xx, yy);
+        FogSpot(xx + 22 * 128, yy);
+        FogSpot(xx - 22 * 128, yy);
+        FogSpot(xx, yy + 22 * 128);
+        FogSpot(xx, yy - 22 * 128);
+        FogSpot(xx + 10 * 128, yy);
+        FogSpot(xx - 10 * 128, yy);
+        FogSpot(xx, yy + 10 * 128);
+        FogSpot(xx, yy - 10 * 128);
+        FogSpot(xx + 8 * 128, yy + 8 * 128);
+        FogSpot(xx - 8 * 128, yy + 8 * 128);
+        FogSpot(xx + 8 * 128, yy - 8 * 128);
+        FogSpot(xx - 8 * 128, yy - 8 * 128);
+        FogSpot(xx + 20 * 128, yy + 20 * 128);
+        FogSpot(xx - 20 * 128, yy + 20 * 128);
+        FogSpot(xx + 20 * 128, yy - 20 * 128);
+        FogSpot(xx - 20 * 128, yy - 20 * 128);
+        break;
+
+#endif
+    };
 };
 //New fog of war
 word WFSC[128*128];

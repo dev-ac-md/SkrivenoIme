@@ -110,7 +110,7 @@ void HandleBattleCml(char* com,char** params,int npr,ParsedRQ* Result){
 	}
 	
 }
-
+void SXP_SetVar(int Index, char* Name, char* value);
 void RunStartTimer(){
 	word Data[3];
 	Data[0]=2050;
@@ -126,7 +126,7 @@ int CBattle::ShowTimer(){
 	}else{
 		char newval[100];
 		_itoa(val/1000,newval,10);
-		//SXP_SetVar(1,var,newval);
+		SXP_SetVar(1,var,newval);
 	}
 	return val;
 }

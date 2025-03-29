@@ -2259,6 +2259,7 @@ void SendSelectedToXY(byte NI,int xx,int yy,short Dir,byte Type){
 	SendSelectedToXY(NI,xx,yy,Dir,16+128,Type);
 }
 extern int exFMode;
+#ifndef SPEEDFIX
 void ChGSpeed(){
 	if(FrmDec==1){
 		FrmDec=2;
@@ -2269,13 +2270,23 @@ void ChGSpeed(){
 	};
 	exFMode=SpeedSh;
 };
+#endif
 extern bool AutoSpeed;
 void SetGSpeed(byte Speed){
-	byte speed=Speed&127;
-	FrmDec=speed+1;
-	SpeedSh=speed;
-	exFMode=speed;
-	if(Speed&128)AutoSpeed=0;
+#ifdef SPEEDFIX
+    if (1 == NPlayers)//BUGFIX: allow ingame speed changing in single player only
+    {
+        FrmDec = Speed + 1;
+        SpeedSh = Speed;
+        exFMode = Speed;
+    }
+#else
+    byte speed = Speed & 127;
+    FrmDec = speed + 1;
+    SpeedSh = speed;
+    exFMode = speed;
+    if (Speed & 128)AutoSpeed = 0;
+#endif
 };
 void AttackToXY(byte NI,byte x,byte y){
 	word Nsel=NSL[NI];
@@ -3032,7 +3043,11 @@ extern char SaveFileName[128];
 extern EXBUFFER EBufs1[MaxPL];
 extern word PrevRpos;
 extern DWORD RealTime;
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 bool ProcessMessages();
 extern int PitchTicks;
 extern int PREVGLOBALTIME;
@@ -3901,16 +3916,30 @@ void SetSearchVictim(byte NI,byte Val){
 						OB->NoSearchVictim=Val&1;
 						addrand(OB->NoSearchVictim);
 						if(OB->EnemyID!=0xFFFF)OB->ClearOrders();
-					}else{
-						if(!OB->newMons->Priest){
-							addrand(OB->NoSearchVictim);
-							OB->NoSearchVictim=Val&1;
-							addrand(OB->NoSearchVictim);
-							if(OB->EnemyID!=0xFFFF)OB->ClearOrders();
-							if(OB->LocalOrder&&OB->LocalOrder->DoLink==&NewAttackPointLink)
-								OB->ClearOrders();
-						};
-					};
+					}
+#ifdef NEWMORALEPRIEST
+                    else {
+                        if (!OB->newMons->Priest) {
+                            addrand(OB->NoSearchVictim);
+                            OB->NoSearchVictim = Val & 1;
+                            addrand(OB->NoSearchVictim);
+                            if (OB->EnemyID != 0xFFFF)OB->ClearOrders();
+                            if (OB->LocalOrder && OB->LocalOrder->DoLink == &NewAttackPointLink)
+                                OB->ClearOrders();
+                        };
+                    };
+#else
+                        else {
+                        if (!OB->newMons->Priest) {
+                            addrand(OB->NoSearchVictim);
+                            OB->NoSearchVictim = Val & 1;
+                            addrand(OB->NoSearchVictim);
+                            if (OB->EnemyID != 0xFFFF)OB->ClearOrders();
+                            if (OB->LocalOrder && OB->LocalOrder->DoLink == &NewAttackPointLink)
+                                OB->ClearOrders();
+                        };
+                    };
+#endif
 				};
 			};
         };
@@ -4834,7 +4863,9 @@ void ExecuteBuffer(){
 			pos++;
 			break;
 		case 68:
+#ifndef SPEEDFIX
 			ChGSpeed();
+#endif
 			pos++;
 			break;
 		case 69:

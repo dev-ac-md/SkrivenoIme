@@ -1,4 +1,4 @@
-/*==========================================================================
+Ôªø/*==========================================================================
  *
  *  Copyright (C) 1997-1998 Andrew(GSC). All Rights Reserved.
  *
@@ -10,6 +10,7 @@
 //#define VIEW_TOP
 //#define WIN32_LEAN_AND_MEAN
 #include "ddini.h"
+//#include "./Steam/steam_api.h"
 
 bool window_mode;
 int screen_width;
@@ -153,13 +154,29 @@ extern int WarSound;
 extern int WorkSound;
 extern int OrderSound;
 extern int MidiSound;
+#ifndef SPEEDFIX
 extern int FPSTime;
+#endif
 extern int NMyUnits;
 extern int NThemUnits;
 void LoadNewAimations();
 void MFix();
 void WinnerControl(bool);
 bool Fixed;
+
+#ifdef SPEEDFIX
+
+//Timespan in ms after last LastCTRLPressTime which allows setting unit control groups
+const int kCtrlStickyTime = 50;
+
+//Minimal delay between two PostDrawGameProcess() returns, in ms
+const unsigned int kPostDrawInterval = 16;//~60 Hz
+
+//Time of the last PostDrawGameProcess() return
+unsigned long prev_postdraw_time = 0;
+
+#endif
+
 bool MUSTDRAW;
 bool SHOWSLIDE=true;
 int  HISPEED=0;
@@ -200,7 +217,7 @@ HugeExplosion HE;
 bool FASTMODE;
 SFLB_DLLEXPORT InitDialogs();
 int processMainMenu();
-//+®Û˝¯˜°¯† ˇ®˚˚ı˚π˝˛ Úvˇ˛˚˝†ı¸vø ˜Ù¢
+//+¬®√≥ƒë√Ω≈ô√∑ƒëÀá≈ô¬† Àôƒë¬®ƒë≈±≈±≈ë≈±ƒÖ√Ω≈£ ≈àvÀô≈£≈±√Ω¬†≈ë√ºv≈º √∑ƒë√¥ƒëÀò
 typedef void EventHandPro(void*);
 void HandleMultiplayer();
 bool EgoFlag;
@@ -644,7 +661,7 @@ void SaveBMP8(char* Name,int lx,int ly,byte* Data){
 	byte PAL[1024];
 	memset(PAL,0,1024);
 	char ccc[128];
-    int i = 0;
+    int i;
 	sprintf(ccc,"%d\\agew_1.pal",CurPalette);
 	ResFile f=RReset(ccc);
 	for(i =0;i<256;i++){
@@ -908,6 +925,7 @@ extern bool PATROLMODE;
 extern byte NeedToPopUp;
 short WheelDelta=0;
 void IAmLeft();
+void ReverseLMode();
 void LOOSEANDEXITFAST();
 extern bool DoNewInet;
 bool ReadWinString(GFILE* F,char* STR,int Max);
@@ -915,6 +933,8 @@ extern bool RUNMAPEDITOR;
 extern bool RUNUSERMISSION;
 extern char USERMISSPATH[128];
 void OnWTPacket(WPARAM wSerial, LPARAM hCtx);
+
+//MOUSE HANDLING, HANDLING OF MOUSE, MOUSE BUTTONS
 long FAR PASCAL WindowProc( HWND hWnd, UINT message, 
                             WPARAM wParam, LPARAM lParam )
 {
@@ -1022,6 +1042,14 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
 		AddMouseEvent(mouseX,mouseY,Lpressed,Rpressed);
 		//HandleMouse(mouseX,mouseY);
 		break;
+    case WM_MBUTTONDOWN:
+        wParam = wParam | MK_MBUTTON;
+        //xLpressed=true;
+        ReverseLMode();
+        SetMPtr(LOWORD(lParam), HIWORD(lParam), wParam);
+        AddMouseEvent(mouseX, mouseY, Lpressed, Rpressed);
+        //HandleMouse(mouseX,mouseY);
+        break;
 	case WM_MOUSEMOVE:
 #ifndef _USE3D
 		if(ScreenPtr)
@@ -1090,27 +1118,62 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
 	
 	
     case WM_KEYDOWN:
-		//AddKey(wParam);
-		if(wParam<256)ScanPressed[wParam]=1;
-		LastKey=wParam;
-		KeyPressed=true;
-		if(LastKey==VK_F11){
-			SaveScreen();
-		};
-		if((!GameInProgress)&&LastKey=='R'&&GetKeyState(VK_CONTROL)&0x8000)RecordMode=!RecordMode;
-		{
-			int nVirtKey = (int) wParam;    // virtual-key code 
-			int lKeyData = lParam;    
-			byte PST[256];
-			GetKeyboardState(PST);
-			word res;
-			int s=ToAscii(nVirtKey,lKeyData,PST,&res,0);
-			if(s==1){
-				LastAsciiKey=res;
-			}else LastAsciiKey=0;
-			AddKey(wParam,LastAsciiKey);
-		};
-		break;
+        if (wParam < 256)
+        {
+            ScanPressed[wParam] = 1;
+        }
+
+        LastKey = wParam;
+        KeyPressed = true;
+
+        if (LastKey == VK_F11)
+        {
+            SaveScreen();
+        }
+
+        /*
+        //Can't see where it was supposed to work. Cut it out.
+        if (( !GameInProgress ) && LastKey == 'R' &&
+            GetKeyState( VK_CONTROL ) & 0x8000)
+        {
+            //RecordMode = !RecordMode;//BUGFIX: remove switching record mode in real time
+        }
+        */
+
+        {
+            int nVirtKey = (int)wParam;
+            int lKeyData = lParam;
+            byte PST[256];
+            GetKeyboardState(PST);
+
+            word ascii_key;
+            int result = ToAscii(nVirtKey, lKeyData, PST, &ascii_key, 0);
+
+            WCHAR u_buf[5] = {};
+            if (1 <= ToUnicode(nVirtKey, lKeyData, PST, u_buf, 4, 0))
+            {//Valid UTF character
+                wchar_t unicode_char = u_buf[0];
+                if (1040 <= unicode_char && 1103 >= unicode_char)
+                {//UTF code is in cyrillic range
+                    //Adjust ascii code to match sprite index in mainfont.gp file
+                    //Sprites 192 to 255 ('–ê' to '—è')
+                    //(taken from russian cossacks version ALL.GSC)
+                    ascii_key = unicode_char - 848;
+                }
+            }
+
+            if (1 == result)
+            {
+                LastAsciiKey = ascii_key;
+            }
+            else
+            {
+                LastAsciiKey = 0;
+            }
+
+            AddKey(wParam, LastAsciiKey);
+        }
+        break;
     case WM_PAINT:
 		/*
         BeginPaint( hWnd, &ps );
@@ -1167,7 +1230,6 @@ extern bool OptHidden;
 extern word NPlayers;
 bool CheckFlagsNeed();
 void SetGameDisplayModeAnyway(int SizeX,int SizeY);
-void ReverseLMode();
 void FlipDipDialog();
 extern bool DIP_DSS_Vis;
 extern bool SHOWZONES;
@@ -1337,13 +1399,14 @@ void GameKeyCheck(){
 				case 46:
 					SpecCmd=200;
 					break;
+#ifndef SPEEDFIX
 				case 'D':
 					if(!(GetKeyState(VK_CONTROL)&0x8000)){
 						if(!(GetKeyState(VK_SHIFT)&0x8000)){
 							//FlipDipDialog();
 						}else
 						if(NPlayers<2){
-							if((GetKeyState(VK_SHIFT)&0x8000)/*&&PlayGameMode*/){
+							if((GetKeyState(VK_SHIFT)&0x8000)//&&PlayGameMode){
 								switch(HISPEED){
 								case 0:
 									HISPEED=1;
@@ -1365,6 +1428,7 @@ void GameKeyCheck(){
 						else CmdSetSpeed(128);
 					};
 					break;
+#endif
 				case 'A':
 					if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=1;
 					else if(NSL[MyNation])GoAndAttackMode=1;
@@ -1397,6 +1461,24 @@ void GameKeyCheck(){
 					//RSCRSizeX--;
 					break;
 				case 'N':
+#ifdef EW
+
+                    //if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=3;
+                    //else SpecCmd=4;
+                    if (!(GetKeyState(VK_CONTROL) & 0x8000)) LockGrid++;
+                    if (LockGrid > NMFIELDS) LockGrid = 0;
+#ifdef VIEW_TOP					
+                    //if(LockGrid>NMFIELDS) LockGrid=0;
+                    if (GetKeyState(VK_CONTROL) & 0x8000) TopTypeMode++;
+                    if (TopTypeMode > NMFIELDS) TopTypeMode = 0;
+
+#else
+                    //if(LockGrid>1)LockGrid=0;					
+#endif //VIEW_TOP
+
+                    MiniActive = 0;
+                    Recreate = 1;
+#endif
 					//switch(RSCRSizeX){
 					//	case 800:RSCRSizeX=1024;
 					//			break;
@@ -1431,6 +1513,7 @@ void GameKeyCheck(){
 					//else SpecCmd=6;
 					break;
 				case 'Q':
+#ifndef EW
 					//if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=3;
 					//else SpecCmd=4;
 					if(!(GetKeyState(VK_CONTROL)&0x8000)) LockGrid++;
@@ -1446,6 +1529,7 @@ void GameKeyCheck(){
 					
 					MiniActive=0;
 					Recreate=1;
+#endif
 					break;
 				case 'B':
 					if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=9;
@@ -1927,10 +2011,11 @@ void EditorKeyCheck(){
 				case 46:
 					if(!DelCurrentAZone())SpecCmd=200;
 					break;
+#ifndef SPEEDFIX
 				case 'D':
 					
 					if(!(GetKeyState(VK_CONTROL)&0x8000)){
-						if((GetKeyState(VK_SHIFT)&0x8000)/*&&PlayGameMode*/){
+						if((GetKeyState(VK_SHIFT)&0x8000)//&&PlayGameMode){
 							switch(HISPEED){
 							case 0:
 								HISPEED=1;
@@ -1953,6 +2038,7 @@ void EditorKeyCheck(){
 						else CmdSetSpeed(128);
 					};
 					break;
+#endif
 				case 'A':
 					if(GetKeyState(VK_CONTROL)&0x8000)SpecCmd=1;
 					else if(NSL[MyNation])GoAndAttackMode=1;
@@ -2166,7 +2252,7 @@ void EditorKeyCheck(){
 #endif
 					};
 					break;
-				case 'L':
+                case 'L':
 					/*
 					if(!MiniMode)SetMiniMode();
 					else ClearMiniMode();
@@ -2573,8 +2659,8 @@ static BOOL doInit( HINSTANCE hInstance, int nCmdShow )
     ShowWindow( hwnd, SW_SHOWNORMAL);//nCmdShow );
     UpdateWindow( hwnd );
 
-	void ov_Init(HWND hExtWnd);
-	ov_Init(hwnd);
+	//void ov_Init(HWND hExtWnd);
+	//ov_Init(hwnd);
 
 	CDIRSND.CreateDirSound(hwnd);
 	CDS=&CDIRSND;
@@ -2746,7 +2832,7 @@ void CreateFields(byte NI);
 extern int LastWaterchange;
 extern int LastBrightspot;
 void RESEARCH_WAVES();
-void PreDrawGameProcess(){
+void PreDrawGameProcess() {
 	//RunPF(19);
 	if(EditMapMode){
 		if(LastWaterchange&&GetTickCount()-LastWaterchange>5000){
@@ -2779,7 +2865,11 @@ void PreDrawGameProcess(){
 		if(CITY[g].Account<0)CITY[g].Account=0;
 	};
 	if(exFMode!=SpeedSh){
-		CmdSetSpeed(exFMode+128);
+#ifdef SPEEDFIX
+        CmdSetSpeed(exFMode);
+#else
+        CmdSetSpeed(exFMode + 128);
+#endif
 	};
 	if((tmtmt&255)==32)EnumPopulation();
 	ProcessCostPoints();
@@ -3043,7 +3133,11 @@ int RealPause=0;
 int RealStTime=0;
 int RealGameLength=0;
 int CurrentStepTime=80;
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 void MakePause(int dt){
 	int t0=GetRealTime();
 	do{
@@ -3203,26 +3297,63 @@ void PostDrawGameProcess(){
 		};
 	    AutoTime=GetRealTime();
 	};
-	if(!PrevCheckTime)PrevCheckTime=GetRealTime();
-	if(GetRealTime()-PrevCheckTime>30000){
-		PrevCheckTime=GetRealTime();
-		//if(PeaceTimeLeft/60<PeaceTimeStage){
-			CmdChangePeaceTimeStage(PeaceTimeLeft/60);
-		//};
-	};
+#ifdef SPEEDFIX
+    if (!PrevCheckTime)
+    {
+        PrevCheckTime = GetRealTime();
+    }
+
+    if (GetRealTime() - PrevCheckTime > 90000)
+    {
+        PrevCheckTime = GetRealTime();
+        if (PeaceTimeLeft / 60 < PeaceTimeStage)
+        {
+            CmdChangePeaceTimeStage(PeaceTimeLeft / 60);
+        }
+    }
+#else
+    if (!PrevCheckTime)PrevCheckTime = GetRealTime();
+    if (GetRealTime() - PrevCheckTime > 30000) {
+        PrevCheckTime = GetRealTime();
+        //if(PeaceTimeLeft/60<PeaceTimeStage){
+        CmdChangePeaceTimeStage(PeaceTimeLeft / 60);
+        //};
+    };
+#endif
 	/*
 	if(NPlayers>1&&MyDPID==ServerDPID&&SaveTime-GetRealTime()>60000*5){
 		CmdSaveNetworkGame(MyNation,GetRealTime(),"NETWORK SAVE");
 		SaveTime=GetRealTime();
 	};
 	*/
-	if(NPlayers<2){
-		do{
-			ProcessMessages(); 
-			if(PauseMode)GameKeyCheck();
-		}while((int(GetRealTime())-PrevTime<(FPSTime+FPSTime))||PauseMode);
-	};
-	PrevTime=GetRealTime();
+#ifdef SPEEDFIX
+    if (0 == prev_postdraw_time)
+    {
+        prev_postdraw_time = GetRealTime();
+    }
+
+
+    unsigned long time_since_last_call = 0;
+    do
+    {
+        ProcessMessages();
+        if (PauseMode)
+        {
+            GameKeyCheck();
+        }
+        time_since_last_call = GetRealTime() - prev_postdraw_time;
+    } while (PauseMode || time_since_last_call < kPostDrawInterval);
+
+    prev_postdraw_time = GetRealTime();
+#else
+    if (NPlayers < 2) {
+        do {
+            ProcessMessages();
+            if (PauseMode)GameKeyCheck();
+        } while ((int(GetRealTime()) - PrevTime < (FPSTime + FPSTime)) || PauseMode);
+    };
+    PrevTime = GetRealTime();
+#endif
 };
 
 /*
@@ -3454,7 +3585,11 @@ void FilesExit();
 void PlayCDTrack(int Id);
 void PlayRandomTrack();
 extern int PlayMode;
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 void CreateReg(){
 	char path [300];
 	char path1[350];
@@ -3517,11 +3652,11 @@ bool RunSMD(){
                 ex_window_y = ex_other_RealLy;
             }
 			if(fff){
-				//Gscanf(fff,"%d%d%d%d%d%d%d%d%d%d",&exRealLx,&exRealLy,&WarSound,&OrderSound,&OrderSound,&MidiSound,&FPSTime,&ScrollSpeed,&exFMode,&PlayMode);
-                Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d%d",
-                    &ex_window_x, &ex_window_y, &ex_x, &ex_y,
-                    &WarSound, &OrderSound, &OrderSound, &MidiSound,
-                    &dummy, &ScrollSpeed, &exFMode, &PlayMode, &FPSTime);
+#ifdef SPEEDFIX
+                Gscanf(fff, "%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &ScrollSpeed, &exFMode, &PlayMode);
+#else
+                Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
+#endif
                 SetCDVolume(MidiSound);
 				Gclose(fff);
                 
@@ -3535,11 +3670,11 @@ bool RunSMD(){
 					exRealLy=ModeLY[cr];
 					GFILE* fff=Gopen("mode.dat","wt");
 					if(fff){
-						//Gprintf(fff,"%d %d %d %d %d %d %d %d %d %d",exRealLx,exRealLy,WarSound,OrderSound,OrderSound,MidiSound,FPSTime,ScrollSpeed,exFMode,PlayMode);
-                        Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d %d",
-                            ex_window_x, ex_window_y, ex_x, ex_y,
-                            WarSound, OrderSound, OrderSound,
-                            MidiSound, 0, ScrollSpeed, exFMode, PlayMode, FPSTime);
+#ifdef SPEEDFIX
+                        Gscanf(fff, "%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &ScrollSpeed, &exFMode, &PlayMode);
+#else
+                        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, &MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
+#endif
                         SetCDVolume(MidiSound);
 						Gclose(fff);
 					};
@@ -3620,11 +3755,53 @@ void ClearMessages();
 extern MEMORYSTATUS FEX_MemStatus1;
 void DelLog();
 void DDLog (LPSTR sz,...);
+
+int Alert(const char* lpCaption, const char* lpText)
+{
+#ifndef _WIN32
+    fprintf(stderr, "Message: '%s', Detail: '%s'\n", lpCaption, lpText);
+    return 0;
+#else
+    return ::MessageBox(NULL, lpText, lpCaption, MB_OK);
+#endif
+}
+
+/*
+int SteamInitialisation() {
+    if (SteamAPI_RestartAppIfNecessary(k_uAppIdInvalid))
+    {
+        // if Steam is not running or the game wasn't started through Steam, SteamAPI_RestartAppIfNecessary starts the 
+        // local Steam client and also launches this game again.
+
+        // Once you get a public Steam AppID assigned for this game, you need to replace k_uAppIdInvalid with it and
+        // removed steam_appid.txt from the game depot.
+
+        return EXIT_FAILURE;
+    }
+    SteamErrMsg errMsg = { 0 };
+    if (SteamAPI_InitEx(&errMsg) != k_ESteamAPIInitResult_OK)
+    {
+        OutputDebugString("SteamAPI_Init() failed: ");
+        OutputDebugString(errMsg);
+        OutputDebugString("\n");
+
+        Alert("Fatal Error", "Steam must be running to play this game (SteamAPI_Init() failed).\n");
+        return EXIT_FAILURE;
+    }
+    if (!SteamUser()->BLoggedOn())
+    {
+        OutputDebugString("Steam user is not logged in\n");
+        Alert("Fatal Error", "Steam user must be logged in to play this game (SteamUser()->BLoggedOn() returned false).\n");
+        return EXIT_FAILURE;
+    }
+}
+*/
 int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                         LPSTR lpCmdLine, int nCmdShow)
 {
 	
 	//TestHash();
+    //SteamInitialisation();
 	DelLog();
 	FEX_BEGIN();	
 	if(FEX_MemStatus1.dwTotalVirtual<1024*1024*700){
@@ -3729,7 +3906,9 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	
 	InitObjs3();
 
-	FPSTime=50;
+#ifndef SPEEDFIX
+    FPSTime = 50;
+#endif
 
 	GFILE* FF1=Gopen("Lobby.txt","r");
 	if(FF1){
@@ -3742,17 +3921,21 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	AText("mode.dat");
 	ScrollSpeed=5;
 	if(fff){
-		//Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d", &exRealLx, &exRealLy, &WarSound, &OrderSound, &OrderSound, 
-        //&MidiSound, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
-		//Gclose(fff);
         //Distinguish between last window adn fullscreen resolutions
         int ex_window_x, ex_window_y, ex_x, ex_y;
         int dummy;
         //7th value was FPSTime
+#ifdef SPEEDFIX
+        Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d",
+            &ex_window_x, &ex_window_y, &ex_x, &ex_y,
+            &WarSound, &OrderSound, &OrderSound, &MidiSound,
+            &dummy, &ScrollSpeed, &exFMode, &PlayMode);
+#else
         Gscanf(fff, "%d%d%d%d%d%d%d%d%d%d%d%d%d",
             &ex_window_x, &ex_window_y, &ex_x, &ex_y,
             &WarSound, &OrderSound, &OrderSound, &MidiSound,
-            &dummy, &ScrollSpeed, &exFMode, &PlayMode, &FPSTime);
+            &dummy, &FPSTime, &ScrollSpeed, &exFMode, &PlayMode);
+#endif
         Gclose(fff);
 
         //Set last 'global resolution' according to current mode
@@ -3966,15 +4149,23 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if(fff){
 				//Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d", exRealLx, exRealLy, WarSound, OrderSound, OrderSound, MidiSound, FPSTime, ScrollSpeed, exFMode, PlayMode);
 				//Gclose(fff);
-                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d %d",
+#ifdef SPEEDFIX
+                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d",
                     ex_window_x, ex_window_y, ex_x, ex_y,
                     WarSound, OrderSound, OrderSound,
-                    MidiSound, 0, ScrollSpeed, exFMode, PlayMode, FPSTime);
+                    MidiSound, 0, ScrollSpeed, exFMode, PlayMode);
+#else
+                Gprintf(fff, "%d %d %d %d %d %d %d %d %d %d %d %d &d",
+                    ex_window_x, ex_window_y, ex_x, ex_y,
+                    WarSound, OrderSound, OrderSound,
+                    MidiSound, 0, FPSTime, ScrollSpeed, exFMode, PlayMode);
+#endif
                 Gclose(fff);
 			};
 			//CDS->~CDirSound();
 			FilesExit();
 			StopPlayCD();
+            //SteamAPI_Shutdown();
 			if(TOTALEXIT)
 				ShellExecute(NULL,"open","http://www.goa.com/goa/z-home.asp?gotogame=8247",NULL,NULL,SW_MAXIMIZE);
 #ifdef STARFORCE

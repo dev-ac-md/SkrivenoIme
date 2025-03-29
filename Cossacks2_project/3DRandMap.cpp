@@ -34,7 +34,7 @@
 #include "bmptool.h"
 #include "GP_Draw.h"
 #include "DrawForm.h"
-#include "Fonts.h"
+//#include "Fonts.h"
 #include <crtdbg.h>
 #include "activezone.h"
 int MinLinkDist=9;
@@ -1394,6 +1394,7 @@ void CreateMapByName(char* Name){
 	int x1,x2;
 	int ADD_PARAM=0;
 	sscanf(Name,"%s%x%x%s%d",cc1,&x1,&x2,cc2,&ADD_PARAM);
+    //sscanf(Name, "%*s %*s %*s %s %d", cc2, &ADD_PARAM);
 	for(int i=0;i<8;i++){
 		char c=cc2[7-i];
 		int id=0;

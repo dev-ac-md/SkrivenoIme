@@ -213,9 +213,9 @@ void LoadErr(char* sz,...)
         va_start( va, sz );
         vsprintf ( ach, sz, va );   
         va_end( va );
-		if(MessageBox(NULL,ach,"Loading error!",MB_RETRYCANCEL|MB_ICONSTOP)==IDCANCEL){
-			exit(3);
-		};
+		//if(MessageBox(NULL,ach,"Loading error!",MB_RETRYCANCEL|MB_ICONSTOP)==IDCANCEL){
+		//	exit(3);
+		//};
 };
 char* RANDPMESS[8]={NULL};
 word GetDir(int,int);
@@ -539,7 +539,7 @@ int PANIC_VERAFACTOR=256;
 bool ReadWinString(GFILE* F,char* STR,int Max);
 void ReadMoraleData(){
 	GFILE* F=Gopen("morale.dat","r");
-	if(!F)MessageBox(NULL,"Unable to open MORALE.DAT","ERROR!!!",0);
+    if (!F);//MessageBox(NULL,"Unable to open MORALE.DAT","ERROR!!!",0);
 	else{
 		char s[512];
 		char var[128];
@@ -598,11 +598,11 @@ void ReadMoraleData(){
 					if(!strcmp(var,"DAMPERCENTBACK5"))DAMPERCENTBACK[5]=val*32768/1000;else
 					if(!strcmp(var,"TBL_MOR_B"))TBL_MOR_B=val;else{
 						sprintf(s,"Unknown variable <%s> in MORALE.DAT, line %d",var,line);
-						MessageBox(NULL,s,"ERROR!!!",0);
+						//MessageBox(NULL,s,"ERROR!!!",0);
 					};
 				}else{
 					sprintf(s,"Error in MORALE.DAT, line %d",line);
-					MessageBox(NULL,s,"ERROR!!!",0);
+					//MessageBox(NULL,s,"ERROR!!!",0);
 				};
 			};
 		}while(neof);
@@ -1768,9 +1768,22 @@ void OnUnitDamage(word MID,word Sender,int FType){
 		if(abs(DD)<74)DM=(&Morale_DamageDec)[FType];
 		else DM=(&Morale_BackDamageDec)[FType];
 		AddMoraleInRadius(OB->RealX>>4,OB->RealY>>4,OB->NMask,256,-DM,1);
-		AddMoraleInRadius(SOB->RealX>>4,SOB->RealY>>4,SOB->NMask,256,DM,1);
+#ifdef EW
+        //AddMoraleInRadius(SOB->RealX>>4,SOB->RealY>>4,SOB->NMask,256,DM,1);
+#else
+        AddMoraleInRadius(SOB->RealX >> 4, SOB->RealY >> 4, SOB->NMask, 256, DM, 1);
+#endif EW
 	};
 };
+
+void OnCommandMorale(word Sender) {
+    OneObject* SOB;
+    GETOB(SOB, Sender);
+    if (SOB) {
+        if (SOB)AddMoraleInRadius(SOB->RealX >> 4, SOB->RealY >> 4, SOB->NMask, MaxMorale_CenterRadius, MaxMorale_CenterInc, 1);
+    };
+};
+
 void OnUnitDeath(word MID,word Sender){
 	OneObject* OB;
 	OneObject* SOB;
@@ -1788,7 +1801,7 @@ int GetMaxMorale(Brigade* BR,bool Act){
 	if(BR->WarType){
 		int STM=int(BR->CT->Nat->Mon[BR->MembID]->MoreCharacter->StartMorale)*MR_ONE;
 		STM+=(BR->NMemb-3)*MaxMorale_FormIncPerUnit;
-		STM+=int(BR->NKills)*MaxMorale_FormIncPerFrag;
+        //STM += NK * MaxMorale_FormIncPerFrag;
 		if(BR->Memb[0]!=0xFFFF)STM+=MaxMorale_FormIncOfficer;
 		if(BR->Memb[1]!=0xFFFF)STM+=MaxMorale_FormIncBaraban;
 		if(BR->Memb[2]!=0xFFFF)STM+=MaxMorale_FormIncFlag;
@@ -1797,6 +1810,17 @@ int GetMaxMorale(Brigade* BR,bool Act){
 			word* Mem=BR->Memb;
 			word* MSN=BR->MembSN;
 			int N=0;
+            int NK = 0;
+            for (int j = 0; j < NM; j++) {
+                word MID = Mem[j];
+                if (MID != 0xFFFF) {
+                    OneObject* OB = Group[MID];
+                    if (OB && OB->Serial == MSN[j]) {
+                        NK += OB->Kills;
+                    };
+                };
+            };
+            STM += NK * MaxMorale_FormIncPerFrag;
 			for(int i=NCOMM;i<NM;i++)if(Mem[i]!=0xFFFF)N++;
 			int per=(NM-N-NCOMM)*100/(NM-NCOMM);
 			if(per>MaxMorale_LostCriticalPercent){
@@ -1829,6 +1853,10 @@ void RemakeMaxMorale(){
 	for(int i=v;i<MAXOBJECT;i+=32){
 		OneObject* OB=Group[i];
 		if(OB){
+            if (OB->newMons->CommandCenter) {
+                void OnCommandMorale(word OB);
+                OnCommandMorale(OB->Index);
+            }
 			if(OB->BrigadeID==0xFFFF){
 				OB->MaxMorale=GetMaxMorale(OB);
 				OB->Morale+=Morale_IncTime*FrmDec*32;

@@ -506,25 +506,24 @@ void ProduceObjLink(OneObject* OBJ){
 		OneObject* OB=Group[ID];
 		NewMonster* NM1=OB->newMons;
 		{
-            int novo;
+            
 			OB->SetOrderedUnlimitedMotion(0);
 			if(NM1->BornSoundID!=-1)AddEffect(OB->RealX>>4,(OB->RealY>>5)-GetHeight(OB->RealX>>4,OB->RealY>>4),NM1->BornSoundID);
 			//OB->PrioryLevel=16;
 			OB->RealDir=byte(GetDir(PTX[1]-PTX[0],PTY[1]-PTY[0]));
 			OB->GraphDir=OB->RealDir;
-	
-			for(int j=1;j<nc;j++){
+            int j;
+			for(j=1;j<nc;j++){
 				if(j==nc-1){
 					//OB->ClearOrderedUnlimitedMotion(2);
 					OB->NewMonsterSendTo(((xx+PTX[j]+1)<<8),((yy+PTY[j]+1)<<8),16,2+128);
 				}
 				else OB->NewMonsterSendTo(((xx+PTX[j]+1)<<8),((yy+PTY[j]+1)<<8),16,2+128);
-                novo=j;
 			};
 			if(GID<0xFFFE)OB->ClearOrderedUnlimitedMotion(2,GID);
 			else if(AI_GID<0xFFFE)OB->ClearOrderedUnlimitedMotion(2,AI_GID);
 			else OB->ClearOrderedUnlimitedMotion(2,0xFFFF);
-			OB->NewMonsterSendTo(((xx+PTX[novo-1])<<8)/*+(rando()&1023)-512*/,((yy+PTY[novo-1])<<8)/*+(rando()&1023)-512*/,16,2+128);
+			OB->NewMonsterSendTo(((xx+PTX[j-1])<<8)/*+(rando()&1023)-512*/,((yy+PTY[j-1])<<8)/*+(rando()&1023)-512*/,16,2+128);
 			//if(OBJ->DstX<=0){
 			//	j--;
 			//	OBJ->DstX=((xx+NM->BornPtX[j])<<8);

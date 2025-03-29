@@ -74,6 +74,12 @@ struct RoomInfo{
 	DWORD Profile;
 	char GameID[64];
 	int MaxPlayers;
+
+    //Additional members to pass data from server to main exe / CommCore
+    long player_id; //Necessary for host to send udp hole punching packets
+    unsigned short port; //Udp hole punching port or real port of game host
+    unsigned udp_interval; //Udp hole punching packet interval
+    char udp_server[16]; //IP of udp hole punching server
 };
 CIMPORT
 int Process_GSC_ChatWindow(bool Active,RoomInfo* RIF);

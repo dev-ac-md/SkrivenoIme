@@ -1,5 +1,10 @@
+extern int menu_x_off;
+extern int menu_y_off;
+extern int menu_hint_x;
+extern int menu_hint_y;
+
 bool ProcessNewInternetLogin(){
-	DialogsSystem DSS(0,0);
+	DialogsSystem DSS(menu_x_off, menu_y_off);
 	DarkScreen();
 	FlipPages();
 	LoadFog(1);

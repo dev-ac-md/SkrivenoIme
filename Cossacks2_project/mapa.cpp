@@ -973,7 +973,7 @@ int GetBestPlayer(){
 int SortPlayers(byte* Res,int* par){
 	CreateSumm();
 	int con=PINFO[0].VictCond;
-	int q = 0;
+	int q;
 	SortClass SC;
 	SC.CheckSize(8);
 	int np=0;
@@ -1028,7 +1028,11 @@ bool NoWinner=0;
 bool ShowStat=0;
 extern bool NOPAUSE;
 void CmdEndGame(byte NI,byte state,byte cause);
+#ifdef SPEEDFIX
+unsigned long GetRealTime();
+#else
 int GetRealTime();
+#endif
 extern int WaitState;
 extern bool EnterChatMode;
 extern int ShowGameScreen;
@@ -1483,6 +1487,7 @@ void GFieldShow(){
 #else
 			DrawLGround();
 			MiniShowNewMonsters();
+            WallHandleDraw();
 #endif
 		}else{ 
 			TestTriangle();	
@@ -2019,12 +2024,13 @@ void GFieldShow(){
 			};
 			if(no/*&&NPlayers>1*/){
 				int y=miniy-22-4-no*14+DY;
-				int w = 0;
+				
 				for(int q=0;q<no;q++){
 					byte ms=NATIONS[NatRefTBL[ord[q]]].NMask;
 					byte c=0xD0+4*NatRefTBL[ord[q]];
 					if(!(ms&prevms)){
-						for(int w=q;w<no&&(NATIONS[NatRefTBL[ord[w]]].NMask&ms);w++);
+                        int w;
+						for(w=q;w<no&&(NATIONS[NatRefTBL[ord[w]]].NMask&ms);w++);
 						w-=q;
 						if(w>1){
 							int y0=y+1+2;
@@ -2747,17 +2753,20 @@ void GlobalHandleMouse(){
 		CmdEndGame(ExitNI,1,0);
 		ExitNI=-1;
 	};
-	if(AutoSpeed){
-		if(FrmDec==1){
-			if(Flips<22){
-				CmdSetSpeed(1);
-			};
-		}else{
-			if(Flips>28){
-				CmdSetSpeed(0);
-			};
-		};
-	};
+#ifndef SPEEDFIX
+    if (AutoSpeed) {
+        if (FrmDec == 1) {
+            if (Flips < 22) {
+                CmdSetSpeed(1);
+            };
+        }
+        else {
+            if (Flips > 28) {
+                CmdSetSpeed(0);
+            };
+        };
+    };
+#endif
 	if(SpecCmd==199){
 		CmdEndGame(MyNation,1,115);
 		SpecCmd=0;

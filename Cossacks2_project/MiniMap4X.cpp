@@ -2096,13 +2096,13 @@ void PreShowMiniSprites(){
 									else AddSuperLoPoint((rx-dx)>>2,(ry1-SG->Dy[OS->SGIndex])>>2,NULL,SG->FileID,sp,0,0);
 								}else if(SG==&TREES){
 #ifdef _USE3D
-								extern int g_CurTree; 
-								g_CurTree = OS->Index;
+                                    extern int g_CurTree;
+                                    g_CurTree = OS->Index;
 								AddPoint(rx>>SH,ry>>SH,(rx-SG->Dx[OS->SGIndex])>>SH,(ry1-SG->Dy[OS->SGIndex])>>SH,NULL,SG->FileID,SG->ObjChar[OS->SGIndex].SpriteIndex,AV_ROUGH,AV_ROUGH);
 #else
     								AddPoint(rx>>2,ry>>2,(rx-SG->Dx[OS->SGIndex])>>2,(ry1-SG->Dy[OS->SGIndex])>>2,NULL,SG->FileID,SG->ObjChar[OS->SGIndex].SpriteIndex,AV_ROUGH,AV_ROUGH);
 #endif // _USE3D
-								};
+                                };
 							};
 						};
 					};

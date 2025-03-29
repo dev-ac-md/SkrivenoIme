@@ -30,12 +30,20 @@ bool ProcessMenuOptions(){
 	*/
 
 	// Main menu	
-	DialogsSystem MMenu(0,0);	
-	
+	DialogsSystem MMenu(menu_x_off, menu_y_off);
+    if (!window_mode)
+    {
+        menu_hint_x = 513 + menu_x_off;
+        menu_hint_y = 745 + menu_y_off;
+    }
+    else {
+        menu_hint_x = 513;
+        menu_hint_y = 745;
+    }
 	// Hint
 	MMenu.HintFont=FHint;
-	MMenu.HintX=513;
-	MMenu.HintY=745;
+    MMenu.HintY = menu_hint_y;
+    MMenu.HintX = menu_hint_x;
 	
 	//int dx=((RealLx-GPS.GetGPWidth(BTNS.GPID,1))>>1)-85-125;
 	//int dy=(RealLy-GPS.GetGPHeight(BTNS.GPID,1))>>1;
@@ -82,9 +90,10 @@ bool ProcessMenuOptions(){
 	OkBtn->FontDy -= 1;
 	ExitBtn->FontDy -= 1;
 
-	//
-	if(FPSTime>100)FPSTime=100;
-	if(FPSTime<0)FPSTime=0;
+#ifndef SPEEDFIX
+    if (FPSTime > 100)FPSTime = 100;
+    if (FPSTime < 0)FPSTime = 0;
+#endif
 	//game speed (#3)
 	if(ScrollSpeed<2)ScrollSpeed=2;
 	int X0=619+2;
@@ -94,12 +103,20 @@ bool ProcessMenuOptions(){
 	VScrollBar* SVL=MMenu.addGP_ScrollBarL(NULL,X0,366+DY,100,WarSound,SCR.GPID,0,LX,12,0,0);
 	VScrollBar* MVL=MMenu.addGP_ScrollBarL(NULL,X0,392+DY,100,MidiSound,SCR.GPID,0,LX,12,0,0); //music volume (#2)
 	VScrollBar* SSP=MMenu.addGP_ScrollBarL(NULL,X0,474+DY,8,ScrollSpeed-2,SCR.GPID,0,LX,12,0,0); //sound volume (#1)		
-	VScrollBar* HB=MMenu.addGP_ScrollBarL(NULL,X0,500+DY,100,100-FPSTime,SCR.GPID,0,LX,12,0,0);
+#ifndef SPEEDFIX	
+#ifndef EW
+    VScrollBar* HB = MMenu.addGP_ScrollBarL(NULL, X0, 500 + DY, 100, 100 - FPSTime, SCR.GPID, 0, LX, 12, 0, 0);
+#else
+    VScrollBar* HB = MMenu.addGP_ScrollBarL(NULL, X0, 500 + DY, 100, 100 - FPSTime, SCR.GPID, 0, LX, 12, 0, 0);
+#endif
+#endif
 	
 	SVL->Hint=GetTextByID("INTF5_HINT4");
 	MVL->Hint=GetTextByID("INTF5_HINT5");
 	SSP->Hint=GetTextByID("INTF5_HINT7");
-	HB->Hint=GetTextByID("INTF5_HINT8");
+#ifndef SPEEDFIX
+    HB->Hint = GetTextByID("INTF5_HINT8");
+#endif
 
 	ComboBox* VMode=MMenu.addGP_ComboBox(NULL,619,284,CMB.GPID,0,9,0,FWhite,FYellow,NULL);
 	ComboBox* FMode=MMenu.addGP_ComboBox(NULL,619,448,CMB.GPID,0,9,0,FWhite,FYellow,NULL);
@@ -208,7 +225,9 @@ bool ProcessMenuOptions(){
 	}while(ItemChoose==-1);
 	
 	if(ItemChoose==mcmOk){
-		FPSTime=100-HB->SPos;
+#ifndef SPEEDFIX
+        FPSTime = 100 - HB->SPos;
+#endif
 		ScrollSpeed=SSP->SPos+2;
 		exRealLx=ModeLX[VMode->CurLine];
 		exRealLy=ModeLY[VMode->CurLine];

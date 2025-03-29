@@ -180,13 +180,13 @@ void ExplorerResize(int Index,int x,int y,int x1,int y1){
 	if(ResizeSXP)ResizeSXP(Index,x,y,x1,y1);
 };
 bool ProcessNewInternetLogin();
-
+extern int menu_x_off, menu_y_off;
 void StartTest(){
 	StartExplorer();
 	//ProcessNewInternetLogin();
 	//Process_GSC_ChatWindow();
 	return;
-	DialogsSystem DSS(0,0);
+	DialogsSystem DSS(menu_x_off, menu_y_off);
 	SQPicture BACK("Interface\\Back_shell.bmp");
 	DSS.addPicture(NULL,0,0,&BACK,&BACK,&BACK);
 	RunExplorer(0,"LF|LW_new|open&req.txt",35,152,35+758,152+315-2);

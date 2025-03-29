@@ -206,7 +206,7 @@ CEXPORT void ErrM(char* s)
 		sprintf(pal,"%d\\agew_1.pal",CurPalette);
 		LoadPalette(pal);
 	};
-	MessageBox(hwnd,s,"LOADING FAILED...",MB_ICONWARNING|MB_OK);
+	//MessageBox(hwnd,s,"LOADING FAILED...",MB_ICONWARNING|MB_OK);
 	//assert(false);
 };
 void NEPar(char* name,int line,char* Sect,int Need){
@@ -243,8 +243,8 @@ void UpConv(char* str){
 //RLCTable miniSRMImages[512];
 word RLCNSpr[MaxGPIdx];
 word NNewMon;
-NewMonster NewMon[350];
-char* MonNames[350];
+NewMonster NewMon[750];
+char* MonNames[750];
 //-----------------New weapon animation discription------------
 NewAnimation WNewAnm[768];
 char* WAnmNames[768];
@@ -1946,7 +1946,7 @@ bool NewMonster::CreateFromFile(char* name){
 							if(z!=2)NEPar(name,Line,gx,2);
 							p2=GetExMedia(gy);
 							if(p2==-1){
-								sprintf(gz,"%s , line %d : %s :Unknown media :%s",name,Line,gy);
+								sprintf(gz,"%s , line %d : %s :Unknown media :%s",name,Line,gy,gx);
 								ErrM(gz);
 							};
 							ExplosionMedia=p2;
@@ -2092,6 +2092,11 @@ bool NewMonster::CreateFromFile(char* name){
 							NLine(f1);
 							Line++;
 						}else
+						if(!strcmp(gx,"FEARNOT")){
+							NoFear=1;
+							NLine(f1);
+							Line++;
+						}else
 						if(!strcmp(gx,"FEARSPEED")){
 							int v;
 							z=Gscanf(f1,"%d",&v);
@@ -2103,7 +2108,22 @@ bool NewMonster::CreateFromFile(char* name){
 							};
 							NLine(f1);
 							Line++;
-						}else
+						}
+                        else
+                            if (!strcmp(gx, "FEARNOT")) {
+                                NoFear = 1;
+                                NLine(f1);
+                                Line++;
+                            }
+#ifdef NEWMORALEPRIEST
+                            else
+                                if (!strcmp(gx, "FORMMORALE")) {
+                                    FormationMoralist = 1;
+                                    NLine(f1);
+                                    Line++;
+                                }
+#endif
+                        else
 						if(!strcmp(gx,"FEARFACTOR")){
 							int idx,v;
 							z=Gscanf(f1,"%d%d",&idx,&v);
@@ -2525,7 +2545,16 @@ bool NewMonster::CreateFromFile(char* name){
 							};
 							NLine(f1);
 							Line++;
-						}else
+						}
+#ifdef NEWMORALEPRIEST
+                        else
+                            if (!strcmp(gx, "MORALEHEALER")) {
+                                MoraleHealer = 1;
+                                NLine(f1);
+                                Line++;
+                            }
+                        #endif
+                            else
 						if(!strcmp(gx,"MAXINDEPO")){
 							z=Gscanf(f1,"%d%d",&p1,&p2);
 							if(z!=2)NEPar(name,Line,gx,1);
@@ -3529,7 +3558,16 @@ bool NewMonster::CreateFromFile(char* name){
 							RLCPartSize[p1]=0;
 							NLine(f1);
 							Line++;
-						}else
+						}
+#ifdef NEWMORALEPRIEST
+                        else
+                            if (!strcmp(gx, "UNITONLY")) {
+                                UnitMoralist = 1;
+                                NLine(f1);
+                                Line++;
+                            }
+#endif
+                        else
 						if(!strcmp(gx,"USERLCEXT")){
 							z=Gscanf(f1,"%d%d%d%s%s%d%d",&p1,&p4,&p5,gy,gz,&p2,&p3);
 							if(z!=7)IncPar(name,Line,"USERLCEXT");
@@ -3652,7 +3690,7 @@ bool NewMonster::CreateFromFile(char* name){
 						}else
 						if(!strcmp(gx,"VISION")){
 							z=Gscanf(f1,"%d",&p1);
-							if(p1<0||p1>8){
+							if(p1<0||p1>12){
 								sprintf(gy,"%s, Line %d :%s: Argument must be 0..8",name,Line,gx);
 								ErrM(gy);
 							};
@@ -3661,7 +3699,7 @@ bool NewMonster::CreateFromFile(char* name){
 							NLine(f1);
 							Line++;
 						}else
-						if(!strcmp(gx,"VESLA")){
+                        if(!strcmp(gx,"VESLA")){
 							z=Gscanf(f1,"%d%d%s%d",&p1,&p2,gy,&p3);
 							if(z!=4)IncPar(name,Line,gx);
 							Veslo=LoadNewAnimationByName(gy);
@@ -4558,7 +4596,6 @@ void SprGroup::LoadSprites(char* fname){
 							if(z!=2)IncPar(fn,0,"[SHOTSHIELD]");
                             ObjChar[z1].ShieldRadius = a;
 							ObjChar[z1].ShieldProbability=b;
-							ObjChar[z1].ShieldRadius=a;
 						};
 						break;
 					case 13://[SECTIONS]
@@ -6825,7 +6862,11 @@ void CalculateMotionX0(){
 						};
 					}else{
 						OB->Sdoxlo++;
-						if(OB->Sdoxlo>200){
+#ifdef EW
+                        if (OB->Sdoxlo > 80000) {
+#else
+                        if (OB->Sdoxlo > 200) {
+#endif
 							if(NMN->DeathLie2.Enabled){
 								OB->NewAnm=&NMN->DeathLie2;
 								OB->NewCurSprite=0;
@@ -6837,7 +6878,11 @@ void CalculateMotionX0(){
 								OB=NULL;//died.	
 							};
 						};
-						if(OB&&OB->Sdoxlo>400){
+#ifdef EW
+                        if (OB && OB->Sdoxlo > 160000) {
+#else
+                        if (OB && OB->Sdoxlo > 400) {
+#endif
 							if(NMN->DeathLie2.Enabled){
 								OB->NewAnm=&NMN->DeathLie3;
 								OB->NewCurSprite=0;
@@ -6849,7 +6894,11 @@ void CalculateMotionX0(){
 								OB=NULL;//died.	
 							};
 						};
-						if(OB&&OB->Sdoxlo>600){
+#ifdef EW
+                        if (OB && OB->Sdoxlo > 240000) {
+#else
+                        if (OB && OB->Sdoxlo > 600) {
+#endif
 							OB->DeletePath();
 							OB->ClearOrders();
 							DelObject(OB);
@@ -8644,7 +8693,11 @@ void LongProcesses(){
 									if(OB->Sdoxlo>24000){
 #else									
 									OB->Sdoxlo+=32;
-									if(OB->Sdoxlo>1200){
+#ifdef EW
+									if(OB->Sdoxlo>48000){
+#else
+                                    if (OB->Sdoxlo > 1200) {
+#endif
 #endif
 										if(NMN->DeathLie2.Enabled){
 											OB->NewAnm=&NMN->DeathLie2;
@@ -8659,7 +8712,11 @@ void LongProcesses(){
 										};
 									};
 #ifndef _USE3D
-									if(OB&&OB->Sdoxlo>1600){
+#ifdef EW
+                                    if (OB && OB->Sdoxlo > 64000) {
+#else
+                                    if (OB && OB->Sdoxlo > 1600) {
+#endif
 										if(NMN->DeathLie2.Enabled){
 											OB->NewAnm=&NMN->DeathLie3;
 											OB->NewCurSprite=0;
@@ -8671,7 +8728,11 @@ void LongProcesses(){
 											OB=NULL;//died.	
 										};
 									};
-									if(OB&&OB->Sdoxlo>2000){
+#ifdef EW
+                                    if (OB && OB->Sdoxlo > 80000) {
+#else
+                                    if (OB && OB->Sdoxlo > 2000) {
+#endif
 										OB->DeletePath();
 										OB->ClearOrders();
 										DelObject(OB);
@@ -8757,9 +8818,15 @@ void CalculateMotionV2(){
 								free(OB);
 								OB=NULL;
 							}else{
-								if(OB->Sdoxlo<100)OB->NewAnm=&NMN->DeathLie1;
-								else if(OB->Sdoxlo<300)OB->NewAnm=&NMN->DeathLie2;
-								else if(OB->Sdoxlo<600)OB->NewAnm=&NMN->DeathLie3;
+#ifdef EW
+								if(OB->Sdoxlo<40000)OB->NewAnm=&NMN->DeathLie1;
+								else if(OB->Sdoxlo<120000)OB->NewAnm=&NMN->DeathLie2;
+								else if(OB->Sdoxlo<240000)OB->NewAnm=&NMN->DeathLie3;
+#else
+                                if (OB->Sdoxlo < 100)OB->NewAnm = &NMN->DeathLie1;
+                                else if (OB->Sdoxlo < 300)OB->NewAnm = &NMN->DeathLie2;
+                                else if (OB->Sdoxlo < 600)OB->NewAnm = &NMN->DeathLie3;
+#endif
 								else{
 									//erasing of the monster
 									if(OB->PathX)free(OB->PathX);
@@ -11344,22 +11411,55 @@ bool OneObject::AttackObj(word OID,int Prio1,byte OrdType,word NTimes){
 		};
 	};
 	//SearchSupport(OID);
-	if(newMons->Shaman){
-		bool OKK=1;
-		if(OB->Life>=OB->MaxLife)OKK=0;
-		if(!(NMask&OB->NMask))OKK=0;
-		if(!OKK){
-			OKK=1;
-			if(NMask&OB->NMask)OKK=0;
-		};
-		if(!OKK)return false;
-	}else
-	if(newMons->Priest){
-		if(OB->Life>=OB->MaxLife)return false;
-		if(!(NMask&OB->NMask))return false;
-	}else{
-		if(NMask&OB->NMask)return false;
-	};
+#ifdef NEWMORALEPRIEST
+    if (newMons->Shaman) {
+        bool OKK = 1;
+        if (newMons->MoraleHealer) {
+            if (OB->Morale >= OB->MaxMorale)OKK = 0;
+        }
+        else {
+            if (OB->Life >= OB->MaxLife)OKK = 0;
+        }
+        if (!(NMask & OB->NMask))OKK = 0;
+        if (!OKK) {
+            OKK = 1;
+            if (NMask & OB->NMask)OKK = 0;
+        };
+        if (!OKK)return false;
+    }
+    else
+        if (newMons->Priest) {
+            if (newMons->MoraleHealer) {
+                if (OB->Morale >= OB->MaxMorale)return false;
+            }
+            else {
+                if (OB->Life >= OB->MaxLife)return false;
+            }
+            if (!(NMask & OB->NMask))return false;
+        }
+        else {
+            if (NMask & OB->NMask)return false;
+        };
+#else
+    if (newMons->Shaman) {
+        bool OKK = 1;
+        if (OB->Life >= OB->MaxLife)OKK = 0;
+        if (!(NMask & OB->NMask))OKK = 0;
+        if (!OKK) {
+            OKK = 1;
+            if (NMask & OB->NMask)OKK = 0;
+        };
+        if (!OKK)return false;
+    }
+    else
+        if (newMons->Priest) {
+            if (OB->Life >= OB->MaxLife)return false;
+            if (!(NMask & OB->NMask))return false;
+        }
+        else {
+            if (NMask & OB->NMask)return false;
+        };
+#endif
 	if(InPatrol&&OrdType==0)
 		OrdType=1;
 	if(newMons->ShotDir){
@@ -11871,7 +11971,7 @@ void AttackObjLink(OneObject* OBJ){
 								};
 								*/
 	DoShotA:;
-								bool AllowShot=true;
+                                bool AllowShot=true;
 								if(NMN->NShotRes){
 									for(int k=0;k<NMN->NShotRes;k++){
 										if(XRESRC(OBJ->NNUM,NMN->ShotRes[k+k])<NMN->ShotRes[k+k+1])AllowShot=false;
@@ -11919,7 +12019,7 @@ void AttackObjLink(OneObject* OBJ){
 									};
 									return;
 								};
-							};
+                               };
 							OBJ->DeleteLastOrder();
 							if(OBJ->LocalOrder)OBJ->LocalOrder->DoLink(OBJ);
 							return;
@@ -12033,7 +12133,7 @@ void AttackObjLink(OneObject* OBJ){
 				OBJ->DeleteLastOrder();
 				return;
 			};
-DoShot0:;
+        DoShot0:;
 			bool AllowShot=true;
 			if(NMN->NShotRes){
 				for(int k=0;k<NMN->NShotRes;k++){
@@ -12073,8 +12173,8 @@ DoShot0:;
 				};
 			};
 		};
-        return;
-    };
+                        return;
+                    };
 	//--------------END BUILDING ATTACK------------
 	addname(OBJ->Index);
 	addrand(OBJ->NewState);
@@ -12333,20 +12433,55 @@ DoShot:;
 							};
 						};
 	                 }else{
-							if(NMN->Priest||(NMN->Shaman&&OB->NMask&OBJ->NMask)){
-							if(OB->Life<OB->MaxLife){
-								OB->Life+=OBJ->Ref.General->MoreCharacter->MaxDamage[0];
-								if(OB->Life>=OB->MaxLife){
-									OB->Life=OB->MaxLife;
-									OB->InFire=0;
-									OB->FireOwner=0xFF;
-									OB->FiringStage=0;
-								};
-							}else{
-								OBJ->DeleteLastOrder();
-								return;
-							};
-						}else{
+#ifdef NEWMORALEPRIEST
+                         if (NMN->Priest || (NMN->Shaman && OB->NMask & OBJ->NMask)) {
+                             if (NMN->MoraleHealer) {
+                                 if (OB->Morale < OB->MaxMorale) {
+                                     if (NMN->UnitMoralist) OB->Morale += (OBJ->Ref.General->MoreCharacter->MaxDamage[0]) * 10000;
+                                     if (NMN->FormationMoralist) OB->PriestMorale = (OBJ->Ref.General->MoreCharacter->MaxDamage[0]) * 10000;
+                                     //lokalnimoral=1000000;
+                                     //OB->MaxMorale=lokalnimoral;
+                                     if (OB->Morale >= OB->MaxMorale) OB->Morale = OB->MaxMorale;
+                                 }
+                                 else {
+                                     OBJ->DeleteLastOrder();
+                                     return;
+                                 };
+                             }
+                             else {
+                                 if (OB->Life < OB->MaxLife) {
+                                     OB->Life += OBJ->Ref.General->MoreCharacter->MaxDamage[0];
+                                     if (OB->Life >= OB->MaxLife) {
+                                         OB->Life = OB->MaxLife;
+                                         OB->InFire = 0;
+                                         OB->FireOwner = 0xFF;
+                                         OB->FiringStage = 0;
+                                     };
+                                 }
+                                 else {
+                                     OBJ->DeleteLastOrder();
+                                     return;
+                                 };
+                             }
+                         }
+#else
+                         if (NMN->Priest || (NMN->Shaman && OB->NMask & OBJ->NMask)) {
+                             if (OB->Life < OB->MaxLife) {
+                                 OB->Life += OBJ->Ref.General->MoreCharacter->MaxDamage[0];;
+                                 if (OB->Life >= OB->MaxLife) {
+                                     OB->Life = OB->MaxLife;
+                                     OB->InFire = 0;
+                                     OB->FireOwner = 0xFF;
+                                     OB->FiringStage = 0;
+                                 };
+                             }
+                             else {
+                                 OBJ->DeleteLastOrder();
+                                 return;
+                             };
+                         }
+                         #endif
+                         else{
 	                        OB->MakeDamage(0,ADC->MaxDamage[OBJ->NewState-1],OBJ,OBJ->NewState-1);
 							AddEffect(OBJ->RealX>>4,(OBJ->RealY>>5)-OBJ->RZ,NMN->StrikeSoundID);
 							if(OB->newMons->Usage!=PushkaID)OB->AttackObj(OBJ->Index,2);
@@ -13135,7 +13270,7 @@ void WaterAttackLink(OneObject* OBJ){
 						else OBJ->RealDir+=2;
 						OBJ->GraphDir=OBJ->RealDir;
 					};
-				}else{
+                    }else{
 					//shot by the right side
 					if(abs(dR)<8){
 						//pubuhhhhhh!!!!!!!!!!
@@ -14336,9 +14471,20 @@ OneObject* SearchEnemyInCell(int cell,byte nmask,byte mmask,byte Priest){
 					return OB;
 				}else{
 					if((!(OB->NMask&nmask))&&OB->newMons->MathMask&mmask){
-						if(Priest==1){
-							if(OB->Life<OB->MaxLife)return OB;
-						}else return OB;
+#ifdef NEWMORALEPRIEST
+                        if (Priest == 1) {
+                            if (OB->Morale < OB->MaxMorale)return OB;
+                        }
+                        else if (Priest == 4) {
+                            if (OB->Life < OB->MaxLife)return OB;
+                        }
+                        else return OB;
+#else
+                        if (Priest == 1) {
+                            if (OB->Life < OB->MaxLife)return OB;
+                        }
+                        else return OB;
+#endif
 					};
 				};
 			};
@@ -14674,17 +14820,35 @@ void OneObject::SearchVictim(){
     int rx1=(rr>>11)+1;
     byte nmask=~NMask;
 	byte Priest=NM->Priest;
-	if(NM->Shaman){
-		if(rando()<4096){
-			Priest=1;
-		};
-	};
-	if(Priest){
-		nmask=NMask;
-		Priest=1;
-	}else{
-		if(!(NM->Capture||LockType==1||NewBuilding))Priest=2;
-	};
+#ifdef NEWMORALEPRIEST
+    if (NM->Shaman) {
+        if (rando() < 4096) {
+            if (NM->MoraleHealer) Priest = 1;
+            else Priest = 4;
+        };
+    };
+    if (Priest) {
+        nmask = NMask;
+        if (NM->MoraleHealer) Priest = 1;
+        else Priest = 4;
+    }
+    else {
+        if (!(NM->Capture || LockType == 1 || NewBuilding))Priest = 2;
+    };
+#else
+    if (NM->Shaman) {
+        if (rando() < 4096) {
+            Priest = 1;
+        };
+    };
+    if (Priest) {
+        nmask = NMask;
+        Priest = 1;
+    }
+    else {
+        if (!(NM->Capture || LockType == 1 || NewBuilding))Priest = 2;
+    };
+#endif
     byte mmask=NM->KillMask;
     OneObject* DestObj=NULL;
     int mindist=10000000;

@@ -30,7 +30,8 @@ bool CheckUnGroupPossibility(byte NI);
 IconSet  PrpPanel;
 IconSet  AblPanel;
 IconSet  UpgPanel;
-IconSet BrigPanel;
+IconSet  BrigPanel;
+IconSet  GeneralPanel;
 extern byte   WeaponFlags[32];
 extern int MessageUX;
 extern int MessageUY;
@@ -239,8 +240,12 @@ extern int BrigNx;
 extern int BrigNy;
 extern int PreviewBrig;
 bool FullBrigMode=false;
+bool GeneralsMode = false;
 void OLIHPRO(int i){
 	FullBrigMode=!FullBrigMode;
+};
+void OLIHPRO1(int i) {
+    GeneralsMode = !GeneralsMode;
 };
 void SELBRIG(int i){
 	if(GetKeyState(VK_SHIFT)&0x8000){
@@ -249,6 +254,15 @@ void SELBRIG(int i){
 		CmdSelBrig(MyNation,0,i);
 		//FullBrigMode=false;
 	};
+};
+void SELMONSTER(int i) {
+    if (GetKeyState(VK_SHIFT) & 0x8000) {
+        CmdRememSelection(MyNation,i);
+    }
+    else {
+        CmdRememSelection(MyNation,i);
+        //FullBrigMode=false;
+    };
 };
 void CmdSetSrVictim(byte NI,byte val);
 void PreBrig(int i){
@@ -457,6 +471,7 @@ void ShowProp(){
     AblPanel.ClearIconSet();
 	UpgPanel.ClearIconSet();
 	BrigPanel.ClearIconSet();
+    GeneralPanel.ClearIconSet();
 	word MID;
 	OneObject* OBJ;
 	GeneralObject* GO;
@@ -1116,6 +1131,7 @@ void ShowProp(){
 	if(P){
 		OneIcon* OI=BrigPanel.AddIconFixed(0,ORDERS_LIST_ICON,0);
 		OI->AssignLeft(&OLIHPRO,0);
+        int brojac = 0;
 		if(FullBrigMode){
 			for(int j=0;j<N;j++){
 				Brigade* BR=BR0+j;
@@ -1137,17 +1153,60 @@ void ShowProp(){
 					if(!UNFND){
 						GeneralObject* GO=NATIONS[NatRefTBL[MyNation]].Mon[BR->MembID];
 						NewMonster* NM=GO->newMons;
-						OI=BrigPanel.AddIconFixed(NM->IconFileID,NM->IconID,j+BrigNx);
-						OI->AssignLeft(&SELBRIG,j);
+						OI=BrigPanel.AddIconFixed(NM->IconFileID,NM->IconID,brojac+BrigNx);
+						OI->AssignLeft(&SELBRIG, j);
 						OI->AssignIntVal(NU);
 						OI->AssignMoveOver(&PreBrig,BR->ID);
 						OI->AssignIntParam(j+1);
 						if(SEL)OI->SelectIcon();
+                        brojac++;
 					};
 				};
 			};
 		};
 	};
+    //SHOWING GENERALS IN TAB, P1 IS COUNTER THAT MAKES SURE THERE IS ATLEAST ONE, N IS MATRIX 5X6, THIS CHECKS IF UNIT IS DIPLOMAT AND ADDS HIM TO COUNTER IF HE IS
+    //USAGE 0x22 is diplomat to use instead officer in some cases
+    int P1 = 0;
+    for(i=0;i< N;i++){
+		OneObject* OB=Group[i];
+        if (OB && OB->newMons->Officer && OB->NNUM == NatRefTBL[MyNation])P1++;
+	};
+    if (P1) {
+        OneIcon* OI = GeneralPanel.AddIconFixed(0, ORDERS_LIST_ICON, 0);
+        OI->AssignLeft(&OLIHPRO1, 0);
+        int brojac = 0;
+        if (GeneralsMode) {
+            for (int j = 0; j < N; j++) {
+                OneObject* OB = Group[j];
+                OneObject* OB1 = Group[j];
+                Brigade* BR = BR0 + j;
+                bool UNFND = true;
+                bool SEL = false;
+                if (OB && OB->newMons->Officer && OB->NNUM == NatRefTBL[MyNation]) {
+                    OneObject* OB1 = Group[j];
+                    UNFND = false;
+                    if (BR->Enabled) UNFND = true;
+                    SEL = OB1->Selected & GM(MyNation);
+                }
+                int NU = 0;
+                //SEL = OB1->Selected & GM(MyNation);
+                NU++;
+                if (!UNFND) {
+                    NewMonster* NM = OB1->newMons;
+                    //GeneralObject* GO = NATIONS[NatRefTBL[MyNation]].Mon[BR->MembID];
+                    //NewMonster* NM = GO->newMons;
+                    OI = GeneralPanel.AddIconFixed(NM->IconFileID, NM->IconID, brojac + BrigNx);
+                    OI->AssignLeft(&SELBRIG, OB1->Serial);
+                    //OI->AssignIntVal(NU);
+                    //OI->AssignMoveOver(&PreBrig, j);
+                    OI->AssignIntParam(brojac + 1);
+                    if(SEL)OI->SelectIcon();
+                    brojac++;
+                };
+            };
+        };
+    }
 	/*
 	if(NATIONS[MyNation].NHistory){
 		OneIcon* OI=BrigPanel.AddIconFixed(0,HISTORY_Icon,1);
@@ -1161,7 +1220,6 @@ void ShowProp(){
 int GetRLCStrWidth(char* str,lpRLCFont lpf);
 extern byte PlayGameMode;
 char* ARTCAPS[8]={NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
-
 void ShowTextDiscription(){
 	if(PlayGameMode==1)return;
 	RunPF(4,"ShowTextDescription");
@@ -1186,7 +1244,6 @@ void ShowTextDiscription(){
 			AdvCharacter* ADC=OBJ->Ref.General->MoreCharacter;
 			NewMonster* NM=OBJ->newMons;
 			int NN=0;
-
 			int EFFICACY=1000;
 			if(NM->ShotPtZ){
 				int NS=0;
@@ -1978,14 +2035,17 @@ void ShowAbility(){
 	for( i=0;i<NINF;i++){
 		OBJ=Group[MList[i].Last];
 		bool OKK=1;
-		if(OBJ&&OBJ->newMons->Peasant&&!(EditMapMode||PlayGameMode)){
-			if(NPID==0xFFFF){
-				CITY[NatRefTBL[MyNation]].NationalPeasantID=OBJ->NIndex;
-				CmdChangeNPID(NatRefTBL[MyNation],OBJ->NIndex);
-			}else{
-				if(NPID!=OBJ->NIndex)OKK=0;
-			};
-		};
+#ifndef EW
+        if (OBJ && OBJ->newMons->Peasant && !(EditMapMode || PlayGameMode)) {
+            if (NPID == 0xFFFF) {
+                CITY[NatRefTBL[MyNation]].NationalPeasantID = OBJ->NIndex;
+                CmdChangeNPID(NatRefTBL[MyNation], OBJ->NIndex);
+            }
+            else {
+                if (NPID != OBJ->NIndex)OKK = 0;
+            };
+        };
+#endif // !EW
 		bool CANDO=1;
 		if(NATID[0]){
 			CANDO=CANDO1;
@@ -2233,47 +2293,60 @@ void DosToWin(char*);
 void normstr(char* str);
 extern bool ProtectionMode;
 void LoadMessagesFromFile(char* Name){
-	if(!strstr(Name,".dat"))ProtectionMode=1;
-	GFILE* f=Gopen(Name,"r");
-	ProtectionMode=0;
-	AFile(Name);
-	if(!f)return;
-	int z,z1;
-	char IDN[128];
-	char STR[4096];
-	do{
-		z=Gscanf(f,"%s",IDN);
-		if(z==1){
-			if(NMess>=MaxMess){
-				MaxMess+=256;
-				GMessIDS=(lpCHAR*)realloc(GMessIDS,MaxMess*4);
-				GMessage=(lpCHAR*)realloc(GMessage,MaxMess*4);
-			};
-			Ggetch(f);
-			STR[0]=0;
-			int cc=0;
-			z1=0;
-			int nn=0;
-			while(!(cc==0x0A||cc==EOF)){
-				cc=Ggetch(f);
-				if(!(cc==0x0A||cc==EOF)){
-					STR[nn]=cc;
-					nn++;
-				}else{
-					//Ggetch(f);
-				};
-			};
-			STR[nn]=0;
-			//normstr(STR);
-			//DosToWin(STR);
-			GMessIDS[NMess]=znew(char,strlen(IDN)+1);
-			GMessage[NMess]=znew(char,strlen(STR)+1);
-			strcpy(GMessIDS[NMess],IDN);
-			strcpy(GMessage[NMess],STR);
-			NMess++;
-		};
-	}while(z==1);
-	Gclose(f);
+    if (!strstr(Name, ".dat"))
+    {
+        ProtectionMode = 1;
+    }
+    GFILE* f = Gopen(Name, "r");
+    ProtectionMode = 0;
+    if (!f)
+    {
+        return;
+    }
+
+    int z, z1;
+    char IDN[128];
+    char STR[4096];
+    do
+    {
+        z = Gscanf(f, "%s", IDN);
+        if (z == 1)
+        {
+            if (NMess >= MaxMess)
+            {
+                MaxMess += 256;
+                GMessIDS = (lpCHAR*)realloc(GMessIDS, MaxMess * 4);
+                GMessage = (lpCHAR*)realloc(GMessage, MaxMess * 4);
+            }
+
+            Ggetch(f);
+
+            STR[0] = 0;
+            int cc = 0;
+            z1 = 0;
+            int nn = 0;
+            while (!(cc == 0x0A || cc == EOF))
+            {
+                cc = Ggetch(f);
+                if (!(cc == 0x0A || cc == EOF))
+                {
+                    STR[nn] = cc;
+                    nn++;
+                }
+            }
+            STR[nn] = 0;
+
+            GMessIDS[NMess] = new char[strlen(IDN) + 1];
+            GMessage[NMess] = new char[strlen(STR) + 1];
+
+            strcpy(GMessIDS[NMess], IDN);
+            strcpy(GMessage[NMess], STR);
+
+            NMess++;
+        }
+    } while (z == 1);
+
+    Gclose(f);
 };
 void LoadMessages(){
 	LoadMessagesFromFile("Comment.txt");

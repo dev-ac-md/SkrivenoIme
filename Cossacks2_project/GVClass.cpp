@@ -17,7 +17,7 @@
 void PreDrawGameProcess();
 void PostDrawGameProcess();
 SimpleDialog* DialogsSystem::addViewPort(int x,int y,int Lx,int Ly){
-	int i = 0;
+	int i;
 	for(i=0;i<512&&DSS[i]!=NULL;i++);
 	if(i<512){
 		SimpleDialog* SD=new SimpleDialog;
@@ -51,7 +51,7 @@ bool MakeClipping(SimpleDialog* SD){
 	return false;
 };
 SimpleDialog* DialogsSystem::addClipper(int x0,int y0,int x1,int y1){
-	int i = 0;
+	int i;
 	for(i=0;i<512&&DSS[i]!=NULL;i++);
 	if(i<512){
 		SimpleDialog* SD=new SimpleDialog;

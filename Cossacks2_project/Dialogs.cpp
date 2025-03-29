@@ -1979,7 +1979,7 @@ bool InputBox_OnDraw(SimpleDialog* SD){
 		};
 		int xx=0;
 		if(IB->CursPos>strlen(IB->Str))IB->CursPos=strlen(IB->Str);
-		for(int j=0;j<IB->CursPos;j++){
+		for(unsigned int j=0;j<IB->CursPos;j++){
 			xx+=GetRLCWidth(IB->Font->RLC,base[j]);
 		};
 		if(xx<IB->totdx){
@@ -3281,6 +3281,7 @@ bool ComboBox_OnDrawActiveRuler(SimpleDialog* SD){
 	int MaxDeal=CB->MinDeal+CB->NLines;
 	int XI=(CB->x+CB->x1)>>1;
 	if(CB->IsActive){
+        int i;
 		if(CB->DLX){
 			TempWindow TW;
 			PushWindow(&TW);
@@ -3292,7 +3293,7 @@ bool ComboBox_OnDrawActiveRuler(SimpleDialog* SD){
 			PopWindow(&TW);
 		}else GPS.ShowGP(CB->DropX,CB->DropY,CB->GP_File,CB->UpPart+2,0);
 		int y0=CB->DropY+CB->UpLy;
-		for(int i=0;i<NLINES;i++){
+		for(i=0;i<NLINES;i++){
 			if(CB->DLX){
 				TempWindow TW;
 				PushWindow(&TW);
@@ -3320,7 +3321,6 @@ bool ComboBox_OnDrawActiveRuler(SimpleDialog* SD){
 		IntersectWindows(CB->DropX,CB->DropY+CB->UpLy-4,CB->DropX+164,CB->DropY+CB->OneLy*CB->MaxLY+12);
 		int x0=CB->DropX+16;
 		char cc[128];
-        int i;
 		for(i=StartDeal;i<FinDeal;i++){
 			if(i>=MinDeal&&i<=MaxDeal){
 				int yy=(i-CB->YPos-CB->MinDeal)*PTPERDEAL+CB->DropY+CB->UpLy+realots;
@@ -4852,64 +4852,32 @@ extern int MouseNext[256];
 int PrevCHhange=0;
 extern bool test16;
 void DialogsSystem::RefreshView(){
-	if(!InMainMenuLoop){
-		if(RUNUSERMISSION||RUNMAPEDITOR){
-			ItemChoose=mcmCancel;
-		};
-	};
-	if(!bActive)return;
-	int T0=GetTickCount();
-	if(!PrevCHhange)PrevCHhange=T0-1000;
-	if(T0-PrevCHhange>60){
-		curptr=MouseNext[curptr];
-		PrevCHhange=T0;
-	};
-	/*if (!window_mode) {
-		
-		//if(InGame)SERROR1();
-		ShowTMT();
-		RedrawOffScreenMouse();
-		if(test16){
-			FlipPages();
-		}else{
-			CopyToScreen(0,0,RealLx,RSCRSizeY);
-		};
-				
-#ifdef SCRCOPY		
-		//if(InGame)SERROR1();
-		//FlipPages();
+    if (!InMainMenuLoop)
+    {
+        if (RUNUSERMISSION || RUNMAPEDITOR)
+        {
+            ItemChoose = mcmCancel;
+        }
+    }
 
+    if (!bActive)
+    {
+        return;
+    }
 
-
-		if(!test16){
-			for(int i=0;i<MAXDLG;i++){
-				//if(InGame)SERROR();
-				SimpleDialog* SD=DSS[i];
-				if(SD&&SD->NeedToDraw){
-					CopyToScreen(SD->x,SD->y,SD->x1-SD->x+1,SD->y1-SD->y+1);
-					SD->NeedToDraw=false;
-				};
-			};
-		};
-		
-		//if(InGame)SERROR2();
-#endif		
-		PostRedrawMouse();
-		
-		//FlipPages();
-		//if(InGame)SERROR1();
-	}*/if (window_mode)
+    if (window_mode)
     {
         RSCRSizeX = SCRSizeX;
         RedrawOffScreenMouse();
         PostRedrawMouse();
         FlipPages();
     }
-    else{
+    else
+    {
         RedrawOffScreenMouse();
         CopyToScreen(0, 0, RealLx, RSCRSizeY);
         PostRedrawMouse();
-	};
+    }
 };
 void DialogsSystem::CloseDialogs(){
 	for(int i=0;i<MAXDLG;i++){
@@ -4945,14 +4913,16 @@ byte* TransPtr=NULL;
 int TransLx=0;
 int TransLy=0;
 void MakeTranspSnapshot(){
-	if(RealLx!=TransLx||RealLy!=TransLy){
-		TransPtr=(byte*)realloc(TransPtr,RealLx*RealLy);
-		TransLx=RealLx;
-		TransLy=RealLy;
-	};
-	for(int i=0;i<RealLy;i++){
-		memcpy(TransPtr+i*RealLx,(byte*)ScreenPtr+i*ScrWidth,RealLx);
-	};
+    if (RealLx != TransLx || RealLy != TransLy)
+    {
+        TransPtr = (byte*)realloc(TransPtr, RealLx * RealLy);
+        TransLx = RealLx;
+        TransLy = RealLy;
+    };
+    for (int i = 0; i < RealLy; i++)
+    {
+        memcpy(TransPtr + i * RealLx, (byte*)ScreenPtr + i * ScrWidth, RealLx);
+    };
 };
 void FreeTransBuffer(){
 	if(TransPtr)free(TransPtr);

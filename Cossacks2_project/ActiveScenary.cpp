@@ -2483,8 +2483,13 @@ extern int HISPEED;
 extern bool ShowPostScreen;
 extern int CurrentSinBattle;
 extern void SetBattleResult();
+void PlayMP3File(char* FileName);
 DLLEXPORT
 void ShowVictory(){
+#ifdef EW
+    char* victory = "specials\\001_02 game won.ogg";
+    PlayMP3File(victory);
+#endif
 	SCENINF.Victory=true;
 	if(CurrentSinBattle!=-1) SetBattleResult();
 	HISPEED=0;
@@ -2497,6 +2502,10 @@ void ShowVictory(){
 
 DLLEXPORT
 void LooseGame(){
+#ifdef EW
+    char* loss = "specials\\001_03 game lost.ogg";
+    PlayMP3File(loss);
+#endif
 	SCENINF.LooseGame=true;
 	//BattleResult=2;
 	HISPEED=0;

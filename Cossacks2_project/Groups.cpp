@@ -1040,7 +1040,11 @@ void GroupAttackSelectedBrigadesTo(byte NI,int x,int y,byte Prio,byte OrdType){
 				SetStandState(BR,1);
 				BR->AttEnm=true;
 			}else{
-				BR->LastOrderTime=REALTIME;//tmtmt;
+#ifdef SPEEDIFX
+                BR->LastOrderTime=REALTIME+3;//tmtmt;
+#else
+                BR->LastOrderTime = REALTIME;//tmtmt;
+#endif
 				BR->ClearBOrders();
 			};
 			CancelStandGroundAnyway(BR);

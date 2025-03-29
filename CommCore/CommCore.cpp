@@ -510,3 +510,14 @@ VOID CCommCore::GetServerAddress(LPSTR lpszServerAddress)
 }
 // ---------------------------------------------------------------------------------------------
 
+BOOL CCommCore::SendUdpHolePunch(sockaddr* server, char* content, const int content_len)
+{
+    const int res = sendto(m_DataSocket, content, content_len, 0, server, sizeof(sockaddr_in));
+
+    if (SOCKET_ERROR == res)
+    {
+        return FALSE;
+    }
+
+    return TRUE;
+}

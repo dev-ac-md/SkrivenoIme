@@ -483,6 +483,9 @@ CIMPORT void MemScreenPart(int x, int y, int lx, int ly, byte* Ptr);/* {
 		Ptr+=lx;
 	};
 };*/
+
+CIMPORT extern int menu_x_off, menu_y_off;
+
 void EnterPersonalMessage(char* Nick,bool Active){
 	byte* ptr=(byte*)malloc(RealLx*RealLy);
 	MemScreenPart(0,0,RealLx,RealLy,ptr);
@@ -491,7 +494,7 @@ void EnterPersonalMessage(char* Nick,bool Active){
 	LocalGP BARS("Interface\\bor2");
 	LocalGP BTNS("Internet\\pix\\i_bor1");
 	DarkScreen();
-	DialogsSystem DSS(0,0);
+	DialogsSystem DSS(menu_x_off, menu_y_off);
 	DSS.addBPXView(NULL,0,0,RealLx,RealLy,1,1,1,ptr,NULL);
 	int DL=120;
 	int ba[8]={74,75,72,73,76,77,80,79};

@@ -233,7 +233,8 @@ void CreateMiniMenu(){
 		//NInf++;
 	};
 	if(PlayGameMode){
-		if(HISPEED!=1){
+#ifndef SPEEDFIX
+        if (HISPEED != 1) {
 			MMITM[NInf]=GetTextByID("REP_NORM");
 			MMID[NInf]=42;
 			NInf++;
@@ -248,6 +249,7 @@ void CreateMiniMenu(){
 			MMID[NInf]=44;
 			NInf++;
 		};
+#endif
 		if(FogMode){
 			MMITM[NInf]=GetTextByID("REP_NOFOG");
 			MMID[NInf]=45;
@@ -395,4 +397,35 @@ void ProcessMiniMenu(){
 			if(ShowHSTR==3)RetryCQuest();
 		};
 	};
+};
+
+extern int Zone1X, PanelY, Zone1Y;
+
+//RESOURCE ON BAR, RESOURCE TRANSFER, LEVEL
+void ProcessResourceCall() {
+    if (PlayGameMode == 1)return;
+
+    int ResPanelW = 716;
+    int x0 = RealLx - ResPanelW;
+    int RPMButX = x0 - 65 - 65;
+    int RPLButX = x0 - 65 * 2;
+
+    MiniMenuX = RPMButX + 33;
+
+    bool MInZone = mouseX > (RPMButX + 23) && mouseX < (RPMButX + 44) && mouseY>8 && mouseY < 26;
+    if (MInZone) {
+        //GPS.ShowGP((RealLx-28)/2,1,BordGP,82,0);
+        //ShowString(RPMButX+29, 8, "M", &YellowFont);
+    };
+    bool MInLZone = mouseX > (RPLButX + 23) && mouseX < (RPLButX + 44) && mouseY>8 && mouseY < 26;
+
+    if (Lpressed && !NoPress) {
+        if (MInZone) {
+            //MiniActive = !MiniActive;
+            RESMODE = 1;
+            Lpressed = 0;
+            UnPress();
+        }
+        //if(MInLZone) ReverseLMode();
+    };
 };

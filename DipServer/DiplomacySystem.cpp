@@ -1,4 +1,5 @@
 #include "CommonDip.h"
+#include "DString.h"
 
 DiplomacySystem::DiplomacySystem(){
 	memset(this,0,sizeof(*this));
