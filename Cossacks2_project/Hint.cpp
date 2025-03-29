@@ -15,6 +15,39 @@
 #include "Fonts.h"
 #include "recorder.h"
 int HintTime=0;
+
+//Duration in ms for various messages and hints
+extern const int kChatMessageDisplayTime = 10000;
+extern const int kImportantMessageDisplayTime = 5000;
+extern const int kSystemMessageDisplayTime = 3000;
+extern const int kMinorMessageDisplayTime = 1500;
+
+
+extern bool RecordMode;
+extern byte PlayGameMode;
+extern byte PlayGameMode;
+extern byte CHOPT;
+extern char LASTCHATSTR[512];
+
+//Ensures that ProcessHints() does not run more frequently than every ... ms
+const unsigned int kMinimalProcessingInterval = 100;
+
+unsigned long last_hint_processing_time = 0;
+//Primary UI hint field
+char primary_hint[256];
+char primary_hint_lo[256];
+static unsigned int primary_hint_time;
+
+//Maximum number of simoultaneous shown chat messages or hints
+const int kMaxHintCount = 25;
+//Additional secondary hints and chat messages
+char additional_hints[kMaxHintCount][256];
+static unsigned int  additional_hints_times[kMaxHintCount];
+
+//Hint or chat messages design
+//0: normal; 16-23: national color border; 32: red
+byte HintOpt[kMaxHintCount];
+
 //static int HintTime1;
 void ResFon(int x,int y,int Lx,int Ly);
 void ScrCopy(int x,int y,int Lx,int Ly);
@@ -22,7 +55,7 @@ void ScrCopy(int x,int y,int Lx,int Ly);
 char HintStr[256];
 char HintStrLo[256];
 char HintStr1[NHINT][256];
-byte HintOpt[NHINT];//(0)-usual,(16+x)-in national bar,32-red 
+//byte HintOpt[NHINT];//(0)-usual,(16+x)-in national bar,32-red 
 static int  HintTime1[NHINT];
 int HintX;
 int HintY;
@@ -91,6 +124,59 @@ void AssignHintLo(char* s,int time){
 	//ShowHint();
 	HintTime=time;
 };
+
+void CreateTimedHint(char* s, int time)
+{
+    if (!strcmp(s, additional_hints[0]))
+    {//Same text already on display, reset timer and exit
+        additional_hints_times[0] = time;
+        HintOpt[0] = 0;
+        return;
+    }
+
+    for (int i = kMaxHintCount - 1; i > 0; i--)
+    {//Shift existing hints and make room for one more
+        strcpy(additional_hints[i], additional_hints[i - 1]);
+        additional_hints_times[i] = additional_hints_times[i - 1];
+        HintOpt[i] = HintOpt[i - 1];
+    }
+
+    strcpy(additional_hints[0], s);
+    additional_hints_times[0] = time;
+    HintOpt[0] = 0;
+}
+
+//Adds secondary hint or chat message with special design option for [time] ms
+void CreateTimedHintEx(char* s, int time, byte opt)
+{
+    if (opt >= 16)
+    {//National color masking requested
+        if (RecordMode && !PlayGameMode)
+        {//Do not assign option bit when watching a replay
+            strcpy(LASTCHATSTR, s);
+            CHOPT = opt;
+        }
+    }
+
+    if (!strcmp(s, additional_hints[0]))
+    {//Same text already on display, reset timer and exit
+        additional_hints_times[0] = time;
+        HintOpt[0] = opt;
+        return;
+    }
+
+    for (int i = kMaxHintCount - 1; i > 0; i--)
+    {//Shift existing hints and make room for one more
+        strcpy(additional_hints[i], additional_hints[i - 1]);
+        additional_hints_times[i] = additional_hints_times[i - 1];
+        HintOpt[i] = HintOpt[i - 1];
+
+    }
+
+    strcpy(additional_hints[0], s);
+    additional_hints_times[0] = time;
+    HintOpt[0] = opt;
+}
 CEXPORT
 void AssignHint1(char* s,int time){
 	if(!strcmp(s,HintStr1[0])){
