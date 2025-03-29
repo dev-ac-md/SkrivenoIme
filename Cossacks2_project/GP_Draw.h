@@ -34,7 +34,7 @@ struct GP_API GP_GlobalHeader{
 	int		 VocOffset;
 	short    VocLength;
 	//GP_Header* LGPH[256];
-	DWORD    LGPH[256];
+	DWORD    LGPH[4096];
 };
 struct OneUnicodeSet{
 	int DY;
