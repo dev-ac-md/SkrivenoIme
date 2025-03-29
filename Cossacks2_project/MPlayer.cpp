@@ -1175,22 +1175,23 @@ void NORMNICK1(char* Nick){
 		if(Nick[L-1]=='}'&&Nick[L-3]=='{')Nick[L-3]=0;
 	};
 };
-bool FindSessionAndJoin(char* Name,char* Nick,bool Style){
+bool FindSessionAndJoin(char* Name,char* Nick,bool Style, unsigned short port){
 	NORMNICK1(Nick);
 	if(Style){
 		if(!NETWORK_INIT){
 			IPCORE.InitNetwork();
 			NETWORK_INIT=1;
 		};
-		if(IPCORE.InitClient(IPADDR,Nick)){
-			//IPCORE.SetUserName(Nick);
-			MyDPID=IPCORE.GetPeerID();
-			GMTYPE=IPCORE.GetOptions();
-			//if(GMTYPE!=1)GMTYPE=0;
-			IPCORE_INIT=1;
-			return true;
-		};
-		return false;
+        if (IPCORE.InitClient(IPADDR, Nick, port))
+        {
+            //IPCORE.SetUserName(Nick);
+            MyDPID = IPCORE.GetPeerID();
+            GMTYPE = IPCORE.GetOptions();
+            //if(GMTYPE!=1)GMTYPE=0;
+            IPCORE_INIT = 1;
+            return true;
+        }
+        return false;
 	};
 
 	DPSESSIONDESC2		sessionDesc;
