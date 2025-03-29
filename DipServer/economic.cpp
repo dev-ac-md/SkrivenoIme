@@ -1,4 +1,5 @@
 #include "Economic.h"
+#include "DString.h"
 #include <crtdbg.h>
 // /MISSION temp2.m3d
 GAMEOBJ GD1, GD2, GD3, ONE; 

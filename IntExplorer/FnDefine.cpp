@@ -847,7 +847,7 @@ bool ADI_Poly(sicExplorer* SXP,DialogsSystem* DSS,int* x,int* y,int* x1,int* y1,
 //#tbl[%...](%...[...],{%variable},n_columns,"hdr1",sort1,filter1,
 //------------simple table-------------
 //stbl[](%...,{...}...,nx,btype,align1,lx2,align2,...,Line_height1,"text1_line1",..,Line_height2,"text1_line2",...)
-void LimitString(char* str,lpRLCFont FONT,int L){
+CIMPORT void LimitString(char* str, lpRLCFont FONT, int L);/* {
 	int L0;
 	do{
 		L0=GetRLCStrWidth(str,FONT);
@@ -859,7 +859,7 @@ void LimitString(char* str,lpRLCFont FONT,int L){
 			str[LL-1]=0;
 		};
 	}while(L0>L);
-};
+};*/
 bool ADI_Stbl(sicExplorer* SXP,DialogsSystem* DSS,int* x,int* y,int* x1,int* y1,
 			 int NActive,char** Active,int NParam,char** Param,char* param){
 	if(NParam<1)return false;

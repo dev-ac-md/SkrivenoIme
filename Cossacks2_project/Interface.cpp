@@ -1352,7 +1352,7 @@ void Draw_PLISTA(int x, int y, int Lx, int Ly, int Index, byte Active, int param
 
 char* BATTLTXT=NULL;
 char* DEATHTXT=NULL;
-void LimitString(char* str,lpRLCFont FONT,int L){
+CEXPORT void LimitString(char* str,lpRLCFont FONT,int L){
 	int L0;
 	do{
 		L0=GetRLCStrWidth(str,FONT);
@@ -7376,7 +7376,6 @@ void CreateHiMap(){
 	if(!higrad){
 		grsize=24;
 		higrad=znew(byte,grsize);
-		for(int i=0;i<grsize;i++)higrad[i]=GetPaletteColor(i*255/grsize,i*255/grsize,i*255/grsize);
 	};
 	int mpx=256;
 	int mpy=256;

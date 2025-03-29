@@ -18,7 +18,9 @@ struct BMPformat{ // bmfh
 		DWORD   biClrUsed; 
 		DWORD   biClrImportant; 
 };
-void SaveToBMP24(char* Name,int Lx,int Ly,byte* data);
-bool ReadBMP24(char* Name,BMPformat* BM,byte** data);
-bool ReadBMP8(char* Name,BMPformat* BM,byte** data);
-bool ReadBMP8TOBPX(char* Name,byte** data);
+//#define CEXPORT __declspec(dllexport)
+
+__declspec(dllexport) void SaveToBMP24(char* Name, int Lx, int Ly, byte* data);
+__declspec(dllexport) bool ReadBMP24(char* Name,BMPformat* BM,byte** data);
+__declspec(dllexport) bool ReadBMP8(char* Name,BMPformat* BM,byte** data);
+__declspec(dllexport) bool ReadBMP8TOBPX(char* Name,byte** data);
