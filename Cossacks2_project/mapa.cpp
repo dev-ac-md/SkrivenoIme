@@ -2757,14 +2757,14 @@ void GlobalHandleMouse(){
     if (AutoSpeed) {
         if (FrmDec == 1) {
             if (Flips < 22) {
-				CmdSetSpeed(1);
-			};
+                CmdSetSpeed(1);
+            };
         }
         else {
             if (Flips > 28) {
-				CmdSetSpeed(0);
-			};
-		};
+                CmdSetSpeed(0);
+            };
+        };
     };
 #endif
 	if(SpecCmd==199){
