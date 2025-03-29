@@ -10,6 +10,8 @@
 #include "GSCtypes.h"
 #include "GSCarch.h"
 #include "GSCset.h"
+    #include <fstream>
+#include <string>
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -259,6 +261,8 @@ BOOL CGSCset::gFindNext(LPGSCFindInfo gFindInfo)
  };	
 
 }
+char ModName[20];
+int ModIterator = 0;
 void GSC_OpenError();
 BOOL CGSCset::gOpen()
 {
@@ -267,160 +271,310 @@ BOOL CGSCset::gOpen()
 	LPGSCArchList		pArchList=NULL;
 
 	m_ArchList=NULL;
-//
-	hFindFile=FindFirstFile("mods02.gs1",&FindData);
+//  
+    /*std::fstream fs;
+    fs.open("modload.dat", std::fstream::in);
+    char line[256]; 
+    char ModName[20];
+    int ModIterator=0;
+    while (fs.getline(line, sizeof(line))) {
+        int i = 0;
+        int ModNmbr = 0;
 
-	if(hFindFile!=INVALID_HANDLE_VALUE){
-		pArchList=new TGSCArchList;
+        while (line[i] != '\0') {
+            if (line[i] == ';') {  
+                ModName[ModNmbr] = '\0'; 
+                ModNmbr = 0;
+            }
+            else {
+                ModName[ModNmbr++] = line[i];
+                ModIterator++;
+            }
+            i++;
+        }
+        if (ModNmbr > 0) {
+            //ModIterator++;
+            ModName[ModNmbr] = '\0';
+        }
+    }
+    fs.close();
+    if (ModIterator > 0) {
+        for (int j = 0; j < ModIterator; j++) {
+            char imemoda = ModName[j];
+            for (int i = 10; i > 0; i--) {
+                char mods[50];
+                sprintf(mods, "mods\\%d\\mods0%d.gs1", imemoda, i);
 
-		m_ArchList=pArchList;
+                hFindFile = FindFirstFile(mods, &FindData);
+                if (hFindFile != INVALID_HANDLE_VALUE) {
+                    if (m_ArchList == NULL) {
+                        pArchList = new TGSCArchList;
+                        m_ArchList = pArchList;
+                    }
+                    else {
+                        pArchList->m_NextArch = new TGSCArchList;
+                        pArchList = pArchList->m_NextArch;
+                    };
 
-		pArchList->m_NextArch=NULL;
-		pArchList->m_Arch=new CGSCarch;
-		pArchList->m_Arch->Open(FindData.cFileName);
-		FindClose(hFindFile);
-	};
-	
+                    pArchList->m_NextArch = NULL;
+                    pArchList->m_Arch = new CGSCarch;
 
-	hFindFile=FindFirstFile("mods01.gs1",&FindData);
+                    pArchList->m_Arch->Open(FindData.cFileName);
 
-	if(hFindFile!=INVALID_HANDLE_VALUE){
-		if(m_ArchList==NULL){
-				pArchList=new TGSCArchList;
-				m_ArchList=pArchList;
-			}else{
-				pArchList->m_NextArch=new TGSCArchList;
-				pArchList=pArchList->m_NextArch;
-			};
-		
-		pArchList->m_NextArch=NULL;
-		pArchList->m_Arch=new CGSCarch;
+                    while (FindNextFile(hFindFile, &FindData)) {
+                        pArchList->m_NextArch = new TGSCArchList;
+                        pArchList = pArchList->m_NextArch;
 
-		pArchList->m_Arch->Open(FindData.cFileName);
+                        pArchList->m_Arch = new CGSCarch;
+                        pArchList->m_NextArch = NULL;
+                        pArchList->m_Arch->Open(FindData.cFileName);
+                    };
+                    FindClose(hFindFile);
+                };
+            }
 
-		while(FindNextFile(hFindFile,&FindData)){
-			pArchList->m_NextArch=new TGSCArchList;
-			pArchList=pArchList->m_NextArch;
+            char singlemod[50];
+            sprintf(singlemod, "mods\\%d\\mods.gs1", imemoda);
+            hFindFile = FindFirstFile(singlemod, &FindData);
 
-			pArchList->m_Arch=new CGSCarch;
-			pArchList->m_NextArch=NULL;
-			pArchList->m_Arch->Open(FindData.cFileName);
-		};
-		FindClose(hFindFile);
-	};
+            if (hFindFile != INVALID_HANDLE_VALUE) {
+                if (m_ArchList == NULL) {
+                    pArchList = new TGSCArchList;
+                    m_ArchList = pArchList;
+                }
+                else {
+                    pArchList->m_NextArch = new TGSCArchList;
+                    pArchList = pArchList->m_NextArch;
+                };
 
-	hFindFile=FindFirstFile("mods.gs1",&FindData);
+                pArchList->m_NextArch = NULL;
+                pArchList->m_Arch = new CGSCarch;
 
-	if(hFindFile!=INVALID_HANDLE_VALUE){
-		if(m_ArchList==NULL){
-				pArchList=new TGSCArchList;
-				m_ArchList=pArchList;
-			}else{
-				pArchList->m_NextArch=new TGSCArchList;
-				pArchList=pArchList->m_NextArch;
-			};
-		
-		pArchList->m_NextArch=NULL;
-		pArchList->m_Arch=new CGSCarch;
+                pArchList->m_Arch->Open(FindData.cFileName);
 
-		pArchList->m_Arch->Open(FindData.cFileName);
+                while (FindNextFile(hFindFile, &FindData)) {
+                    pArchList->m_NextArch = new TGSCArchList;
+                    pArchList = pArchList->m_NextArch;
 
-		while(FindNextFile(hFindFile,&FindData)){
-			pArchList->m_NextArch=new TGSCArchList;
-			pArchList=pArchList->m_NextArch;
+                    pArchList->m_Arch = new CGSCarch;
+                    pArchList->m_NextArch = NULL;
+                    pArchList->m_Arch->Open(FindData.cFileName);
+                };
+                FindClose(hFindFile);
+            };
 
-			pArchList->m_Arch=new CGSCarch;
-			pArchList->m_NextArch=NULL;
-			pArchList->m_Arch->Open(FindData.cFileName);
-		};
-		FindClose(hFindFile);
-	};
+            for (int i = 10; i > 0; i--) {
 
+                char patch[50];
+                sprintf(patch, "mods\\%d\\patch0%d.gs1", imemoda, i);
 
-	hFindFile=FindFirstFile("patch02.gs1",&FindData);
+                hFindFile = FindFirstFile(patch, &FindData);
 
-	if(hFindFile!=INVALID_HANDLE_VALUE){
-		if(m_ArchList==NULL){
-				pArchList=new TGSCArchList;
-				m_ArchList=pArchList;
-			}else{
-				pArchList->m_NextArch=new TGSCArchList;
-				pArchList=pArchList->m_NextArch;
-			};
-		
-		pArchList->m_NextArch=NULL;
-		pArchList->m_Arch=new CGSCarch;
+                if (hFindFile != INVALID_HANDLE_VALUE) {
+                    if (m_ArchList == NULL) {
+                        pArchList = new TGSCArchList;
+                        m_ArchList = pArchList;
+                    }
+                    else {
+                        pArchList->m_NextArch = new TGSCArchList;
+                        pArchList = pArchList->m_NextArch;
+                    };
 
-		pArchList->m_Arch->Open(FindData.cFileName);
+                    pArchList->m_NextArch = NULL;
+                    pArchList->m_Arch = new CGSCarch;
 
-		while(FindNextFile(hFindFile,&FindData)){
-			pArchList->m_NextArch=new TGSCArchList;
-			pArchList=pArchList->m_NextArch;
+                    pArchList->m_Arch->Open(FindData.cFileName);
 
-			pArchList->m_Arch=new CGSCarch;
-			pArchList->m_NextArch=NULL;
-			pArchList->m_Arch->Open(FindData.cFileName);
-		};
-		FindClose(hFindFile);
-	};
+                    while (FindNextFile(hFindFile, &FindData)) {
+                        pArchList->m_NextArch = new TGSCArchList;
+                        pArchList = pArchList->m_NextArch;
 
-	hFindFile=FindFirstFile("patch01.gs1",&FindData);
+                        pArchList->m_Arch = new CGSCarch;
+                        pArchList->m_NextArch = NULL;
+                        pArchList->m_Arch->Open(FindData.cFileName);
+                    };
+                    FindClose(hFindFile);
+                };
+            }
 
-	if(hFindFile!=INVALID_HANDLE_VALUE){
-		if(m_ArchList==NULL){
-				pArchList=new TGSCArchList;
-				m_ArchList=pArchList;
-			}else{
-				pArchList->m_NextArch=new TGSCArchList;
-				pArchList=pArchList->m_NextArch;
-			};
-		
-		pArchList->m_NextArch=NULL;
-		pArchList->m_Arch=new CGSCarch;
+            //if(hFindFile!=INVALID_HANDLE_VALUE){
+            //	pArchList=new TGSCArchList;
 
-		pArchList->m_Arch->Open(FindData.cFileName);
+            //	m_ArchList=pArchList;
 
-		while(FindNextFile(hFindFile,&FindData)){
-			pArchList->m_NextArch=new TGSCArchList;
-			pArchList=pArchList->m_NextArch;
+            //	pArchList->m_NextArch=NULL;
+            //	pArchList->m_Arch=new CGSCarch;
+            //	pArchList->m_Arch->Open(FindData.cFileName);
+            //	FindClose(hFindFile);
+            //};
+        //
+            char all[50];
+            sprintf(all, "mods\\%d\\A*.gsc", imemoda);
+            hFindFile = FindFirstFile(all, &FindData);
 
-			pArchList->m_Arch=new CGSCarch;
-			pArchList->m_NextArch=NULL;
-			pArchList->m_Arch->Open(FindData.cFileName);
-		};
-		FindClose(hFindFile);
-	};
+            if (hFindFile != INVALID_HANDLE_VALUE) {
 
+                if (m_ArchList == NULL) {
+                    pArchList = new TGSCArchList;
+                    m_ArchList = pArchList;
+                }
+                else {
+                    pArchList->m_NextArch = new TGSCArchList;
+                    pArchList = pArchList->m_NextArch;
+                };
 
-//
-	hFindFile=FindFirstFile("A*.gsc",&FindData);
+                pArchList->m_NextArch = NULL;
+                pArchList->m_Arch = new CGSCarch;
 
-	if(hFindFile!=INVALID_HANDLE_VALUE){
-		
-		if(m_ArchList==NULL){
-				pArchList=new TGSCArchList;
-				m_ArchList=pArchList;
-			}else{
-				pArchList->m_NextArch=new TGSCArchList;
-				pArchList=pArchList->m_NextArch;
-			};
-		
-		pArchList->m_NextArch=NULL;
-		pArchList->m_Arch=new CGSCarch;
+                pArchList->m_Arch->Open(FindData.cFileName);
 
-		pArchList->m_Arch->Open(FindData.cFileName);
+                while (FindNextFile(hFindFile, &FindData)) {
+                    pArchList->m_NextArch = new TGSCArchList;
+                    pArchList = pArchList->m_NextArch;
 
-		while(FindNextFile(hFindFile,&FindData)){
-			pArchList->m_NextArch=new TGSCArchList;
-			pArchList=pArchList->m_NextArch;
+                    pArchList->m_Arch = new CGSCarch;
+                    pArchList->m_NextArch = NULL;
+                    pArchList->m_Arch->Open(FindData.cFileName);
+                };
+                FindClose(hFindFile);
+            };
+        }
+    }
+    else {*/
+        for (int i = 10; i > 0; i--) {
+            char mods[50];
+            sprintf(mods, "mods0%d.gs1", i);
 
-			pArchList->m_Arch=new CGSCarch;
-			pArchList->m_NextArch=NULL;
-			pArchList->m_Arch->Open(FindData.cFileName);
-		};
-		FindClose(hFindFile);
-	};
+            hFindFile = FindFirstFile(mods, &FindData);
+            if (hFindFile != INVALID_HANDLE_VALUE) {
+                if (m_ArchList == NULL) {
+                    pArchList = new TGSCArchList;
+                    m_ArchList = pArchList;
+                }
+                else {
+                    pArchList->m_NextArch = new TGSCArchList;
+                    pArchList = pArchList->m_NextArch;
+                };
 
+                pArchList->m_NextArch = NULL;
+                pArchList->m_Arch = new CGSCarch;
+
+                pArchList->m_Arch->Open(FindData.cFileName);
+
+                while (FindNextFile(hFindFile, &FindData)) {
+                    pArchList->m_NextArch = new TGSCArchList;
+                    pArchList = pArchList->m_NextArch;
+
+                    pArchList->m_Arch = new CGSCarch;
+                    pArchList->m_NextArch = NULL;
+                    pArchList->m_Arch->Open(FindData.cFileName);
+                };
+                FindClose(hFindFile);
+            };
+        }
+
+        hFindFile = FindFirstFile("mods.gs1", &FindData);
+
+        if (hFindFile != INVALID_HANDLE_VALUE) {
+            if (m_ArchList == NULL) {
+                pArchList = new TGSCArchList;
+                m_ArchList = pArchList;
+            }
+            else {
+                pArchList->m_NextArch = new TGSCArchList;
+                pArchList = pArchList->m_NextArch;
+            };
+
+            pArchList->m_NextArch = NULL;
+            pArchList->m_Arch = new CGSCarch;
+
+            pArchList->m_Arch->Open(FindData.cFileName);
+
+            while (FindNextFile(hFindFile, &FindData)) {
+                pArchList->m_NextArch = new TGSCArchList;
+                pArchList = pArchList->m_NextArch;
+
+                pArchList->m_Arch = new CGSCarch;
+                pArchList->m_NextArch = NULL;
+                pArchList->m_Arch->Open(FindData.cFileName);
+            };
+            FindClose(hFindFile);
+        };
+
+        for (int i = 10; i > 0; i--) {
+
+            char patch[50];
+            sprintf(patch, "patch0%d.gs1", i);
+
+            hFindFile = FindFirstFile(patch, &FindData);
+
+            if (hFindFile != INVALID_HANDLE_VALUE) {
+                if (m_ArchList == NULL) {
+                    pArchList = new TGSCArchList;
+                    m_ArchList = pArchList;
+                }
+                else {
+                    pArchList->m_NextArch = new TGSCArchList;
+                    pArchList = pArchList->m_NextArch;
+                };
+
+                pArchList->m_NextArch = NULL;
+                pArchList->m_Arch = new CGSCarch;
+
+                pArchList->m_Arch->Open(FindData.cFileName);
+
+                while (FindNextFile(hFindFile, &FindData)) {
+                    pArchList->m_NextArch = new TGSCArchList;
+                    pArchList = pArchList->m_NextArch;
+
+                    pArchList->m_Arch = new CGSCarch;
+                    pArchList->m_NextArch = NULL;
+                    pArchList->m_Arch->Open(FindData.cFileName);
+                };
+                FindClose(hFindFile);
+            };
+        }
+
+        //if(hFindFile!=INVALID_HANDLE_VALUE){
+        //	pArchList=new TGSCArchList;
+
+        //	m_ArchList=pArchList;
+
+        //	pArchList->m_NextArch=NULL;
+        //	pArchList->m_Arch=new CGSCarch;
+        //	pArchList->m_Arch->Open(FindData.cFileName);
+        //	FindClose(hFindFile);
+        //};
+    //
+        hFindFile = FindFirstFile("A*.gsc", &FindData);
+
+        if (hFindFile != INVALID_HANDLE_VALUE) {
+
+            if (m_ArchList == NULL) {
+                pArchList = new TGSCArchList;
+                m_ArchList = pArchList;
+            }
+            else {
+                pArchList->m_NextArch = new TGSCArchList;
+                pArchList = pArchList->m_NextArch;
+            };
+
+            pArchList->m_NextArch = NULL;
+            pArchList->m_Arch = new CGSCarch;
+
+            pArchList->m_Arch->Open(FindData.cFileName);
+
+            while (FindNextFile(hFindFile, &FindData)) {
+                pArchList->m_NextArch = new TGSCArchList;
+                pArchList = pArchList->m_NextArch;
+
+                pArchList->m_Arch = new CGSCarch;
+                pArchList->m_NextArch = NULL;
+                pArchList->m_Arch->Open(FindData.cFileName);
+            };
+            FindClose(hFindFile);
+        };
+    //}
 	
 	return TRUE;
 }
